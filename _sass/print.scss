@@ -1,0 +1,57 @@
+// stylelint-disable selector-max-specificity, selector-max-id, selector-max-type, selector-no-qualifying-type
+
+@media print {
+  .site-footer,
+  .site-button,
+  #edit-this-page,
+  #back-to-top,
+  .site-nav,
+  .side-bar,
+  .stackedit__left,
+  .main-header, 
+  .collapsible,
+  .btnScrollToTop,
+  .search,
+  .hamburger-button,
+  .content_answer
+   {
+    display: none !important;
+  }
+
+  h2 {
+    break-before: always;
+  }
+
+  .text-small {
+    font-size: 8pt !important;
+  }
+
+  pre.highlight {
+    border: 1px solid $border-color;
+  }
+
+  .main {
+    max-width: none;
+    margin-left: 0;
+  }
+  
+  // prevent horrendous linebreaks between texts
+  p {
+    display: inline;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  img {
+    display: inline;
+    break-inside: avoid;
+    filter: none !important;
+  }
+
+  svg, object {
+    filter: none !important;
+  }
+
+
+
+}

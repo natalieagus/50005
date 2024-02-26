@@ -1,0 +1,247 @@
+// Typography
+
+$body-font-family: system-ui, -apple-system, blinkmacsystemfont, "Segoe UI",
+  roboto, "Helvetica Neue", arial, sans-serif !default;
+$mono-font-family: "SFMono-Regular", menlo, consolas, monospace !default;
+$root-font-size: 16px !default; // Base font-size for rems
+$body-line-height: 1.4 !default;
+$content-line-height: 1.6 !default;
+$body-heading-line-height: 1.25 !default;
+
+// Font size
+// `-sm` suffix is the size at the small (and above) media query
+
+$font-size-1: 9px !default;
+$font-size-1-sm: 10px !default;
+$font-size-2: 11px !default; // h4 - uppercased!, h6 not uppercased, text-small
+$font-size-3: 12px !default; // h5
+$font-size-4: 14px !default;
+$font-size-5: 16px !default; // h3
+$font-size-6: 18px !default; // h2
+$font-size-7: 24px !default;
+$font-size-8: 32px !default; // h1
+$font-size-9: 36px !default;
+$font-size-10: 42px !default;
+$font-size-10-sm: 48px !default;
+
+// Colors
+//
+$toc-hover-light: rgba(0, 0, 0, 0.075);
+$toc-hover-dark: rgba(255, 255, 255, 0.075);
+$toc-hover: $toc-hover-light !default;
+$white: #fff !default;
+$dark-theme-background-color: #121212;
+$dark-theme-main-color-1:     #CFFAFE;
+$dark-theme-main-color-2:     #f77729;
+$dark-theme-main-color-3:     #202020;
+$dark-theme-green:           #e2cdfd;
+$dark-theme-blue:            #868cfc;
+$dark-theme-yellow:          #fcbb86;
+$dark-theme-red:             #f81597;
+$dark-theme-blood-red:       #ff0000;
+$dark-theme-orange: #f77729;
+$dark-theme-text-color: rgba(#fff, .7);
+
+$grey-dk-000: #959396 !default;
+$grey-dk-100: #5c5962 !default;
+$grey-dk-200: #44434d !default;
+$grey-dk-gatsby: #36313d !default;
+$grey-dk-250: #302d36 !default;
+$grey-dk-300: #27262b !default;
+$grey-lt-000: #f5f6fa !default;
+$grey-lt-100: #eeebee !default;
+$grey-lt-200: #ecebed !default;
+$grey-lt-300: #e6e1e8 !default;
+
+$purple-lt-50: #d2cde7 !default;
+$purple-lt-100: #b9ade8 !default;
+$purple-000: #7253ed !default;
+$purple-100: #5e41d0 !default;
+$purple-200: #4e26af !default;
+$purple-300: #381885 !default;
+$blue-000: #2c84fa !default;
+$blue-100: #2869e6 !default;
+$blue-200: #264caf !default;
+$blue-300: #183385 !default;
+$green-000: #41d693 !default;
+$green-100: #11b584 !default;
+$green-200: #009c7b !default;
+$green-300: #026e57 !default;
+$yellow-000: #ffeb82 !default;
+$yellow-100: #fadf50 !default;
+$yellow-200: #f7d12e !default;
+$yellow-300: #e7af06 !default;
+$red-000: #f77e7e !default;
+$red-100: #f96e65 !default;
+$red-200: #e94c4c !default;
+$red-300: #dd2e2e !default;
+$bluegray-50: #ECEFF1 !default;
+$bluegray-100: #CFD8DC !default;
+$bluegray-200: #B0BEC5 !default;
+$bluegray-300:  #90A4AE !default;
+$bluegray-400: #78909C !default;
+$bluegray-500: #607D8B !default;
+$bluegray-600: #546E7A !default;
+$bluegray-700: #455A64 !default;
+$bluegray-800: #37474F !default;
+$bluegray-900: #263238 !default;
+
+
+$calloutsteal-000: #0056dd;
+$calloutsteal-100: #004cc3;
+$calloutsteal-200: #0049bb;
+$calloutsteal-300: #0042aa;
+
+$calloutsgreen-000: #15bd00;
+$calloutsgreen-100: #12a400;
+$calloutsgreen-200: #0f8b00;
+$calloutsgreen-300: #0d7300;
+
+$calloutspink-000: #ff8ae0;
+$calloutspink-100: #ff57d2;
+$calloutspink-200: #ff24c4;
+$calloutspink-300: #ef00af;
+
+$calloutsred-000: #FFCDD2;
+$calloutsred-100: #f96e65;
+$calloutsred-200: #e94c4c;
+$calloutsred-300: #B71C1C;
+
+$calloutsyellow-000: #B2EBF2;
+$calloutsyellow-100: #fadf50;
+$calloutsyellow-200: #f7d12e;
+$calloutsyellow-300: #006064;
+
+$calloutsblue-000: $bluegray-300;
+$calloutsblue-100: $bluegray-400;
+$calloutsblue-200: $bluegray-500;
+$calloutsblue-300: $bluegray-900;
+
+$blue-chakra-100: #BEE3F8 !default;
+$purple-chakra-50: #FAF5FF !default;
+$pink-chakra-100: #FED7E2;
+
+$cs-orange: rgba(245, 196,113,1.0);
+$cs-red: rgb(93,34,66);
+$cs-blue: #5184c5;
+
+$btn-scroll-top-bg: $bluegray-50;
+$base-code-color: #172554;
+$bold-color: $grey-dk-300;
+$toc-color-active: $bluegray-300;
+$body-background-color: $white !default;
+$sidebar-color: $bluegray-50 !default;
+$search-background-color: $white !default;
+$table-background-color: $white !default;
+$code-background-color: $bluegray-50 !default;
+
+$copy-button-background-color: $bluegray-50;
+$search-button-active-color: $bluegray-50;
+
+$feedback-color: darken($sidebar-color, 3%) !default;
+$body-text-color: $grey-dk-200 !default;
+$body-heading-color: $grey-dk-300 !default;
+$search-result-preview-color: $grey-dk-000 !default;
+$nav-child-link-color: $grey-dk-100 !default;
+$link-color: #34465D;
+$btn-primary-color: $bluegray-100 !default;
+$base-button-color: #f7f7f7 !default;
+
+$content-answer-border: $grey-lt-100;
+// $bold-color: $grey-dk-300;
+// $toc-color-active: $purple-300;
+// $body-background-color: $white !default;
+// $sidebar-color: $grey-lt-000 !default;
+// $search-background-color: $white !default;
+// $table-background-color: $white !default;
+// $code-background-color: $grey-lt-000 !default;
+// $feedback-color: darken($sidebar-color, 3%) !default;
+// $body-text-color: $grey-dk-200 !default;
+// $body-heading-color: $grey-dk-300 !default;
+// $search-result-preview-color: $grey-dk-000 !default;
+// $nav-child-link-color: $grey-dk-100 !default;
+// $link-color: $purple-000 !default;
+// $btn-primary-color: $purple-100 !default;
+// $base-button-color: #f7f7f7 !default;
+
+$highlight-background   : #1d1f21;
+$highlight-foreground   : #f2f2f2;
+$highlight-comment      : #969896;
+$highlight-red          : #c66;
+$highlight-orange       : #de935f;
+$highlight-yellow       : #f0c674;
+$highlight-green        : #b5bd68;
+$highlight-aqua         : #8abeb7;
+$highlight-blue         : #81a2be;
+$highlight-purple       : #b294bb;
+
+// Collapsible
+$collapsible-bg-color: $grey-lt-100;
+$collapsible-font-color: $body-text-color;
+$collapsible-body-color: $grey-lt-100;
+$collapsible-active-bg-color: $bluegray-50;
+
+// Spacing
+$spacing-unit: 1rem; // 1rem == 16px
+
+$spacers: (
+  sp-0: 0,
+  sp-1: $spacing-unit * 0.25,
+  sp-2: $spacing-unit * 0.5,
+  sp-3: $spacing-unit * 0.75,
+  sp-4: $spacing-unit,
+  sp-5: $spacing-unit * 1.5,
+  sp-6: $spacing-unit * 2,
+  sp-7: $spacing-unit * 2.5,
+  sp-8: $spacing-unit * 3,
+  sp-9: $spacing-unit * 3.5,
+  sp-10: $spacing-unit * 4,
+) !default;
+$sp-1: map-get($spacers, sp-1) !default; // 0.25 rem == 4px
+$sp-2: map-get($spacers, sp-2) !default; // 0.5  rem == 8px
+$sp-3: map-get($spacers, sp-3) !default; // 0.75 rem == 12px
+$sp-4: map-get($spacers, sp-4) !default; // 1    rem == 16px
+$sp-5: map-get($spacers, sp-5) !default; // 1.5  rem == 24px
+$sp-6: map-get($spacers, sp-6) !default; // 2    rem == 32px
+$sp-7: map-get($spacers, sp-7) !default; // 2.5  rem == 40px
+$sp-8: map-get($spacers, sp-8) !default; // 3    rem == 48px
+$sp-9: map-get($spacers, sp-9) !default; // 3.5  rem == 56px
+$sp-10: map-get($spacers, sp-10) !default; // 4  rem == 64px
+
+// Borders
+
+$border: 1px solid !default;
+$border-radius: 4px !default;
+$border-color: $grey-lt-100 !default;
+$border-nav-light: $grey-lt-300;
+$border-nav-dark: $grey-dk-200;
+$border-nav: $border-nav-light !default;
+$border-nav-active-light: $bluegray-200; 
+$border-nav-active-dark: $bluegray-50;
+$border-nav-active: $border-nav-active-light;
+$top-icon-color: black;
+
+// Grid system
+$gutter-spacing: $sp-6 !default;
+$gutter-spacing-sm: $sp-4 !default;
+$gutter-spacing-xs: $sp-2 !default;
+$nav-width: 264px !default;
+$nav-width-md: 248px !default;
+$nav-list-item-height: $sp-6 !default;
+$nav-list-item-height-sm: $sp-8 !default;
+$nav-list-expander-right: false;
+$content-width: 1200px !default;
+$header-height: 60px !default;
+$search-results-width: $content-width - $nav-width;
+$transition-duration: 400ms;
+
+$stackedit-width: 250px;
+
+// Media queries in pixels
+$media-queries: (
+  xs: 320px,
+  sm: 500px,
+  md: $content-width,
+  lg: $content-width + $nav-width,
+  xl: 1400px,
+) !default;

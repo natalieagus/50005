@@ -1,0 +1,208 @@
+// Moved from _sass/code.scss
+
+.highlight .c {
+  color: #586e75;
+} // comment //
+.highlight .err {
+  color: rgb(27,34,64);
+} // error //
+.highlight .g {
+  color: rgb(27,34,64);
+} // generic //
+.highlight .k {
+  color: rgb(0, 92, 197);
+} // keyword //
+.highlight .l {
+  color: rgb(27,34,64);
+} // literal //
+.highlight .n {
+  color: rgb(27,34,64);
+} // name //
+.highlight .o {
+  color: rgb(34, 134, 58);
+} // operator //
+.highlight .x {
+  color: #cb4b16;
+} // other //
+.highlight .p {
+  color: rgb(27,34,64);
+} // punctuation //
+.highlight .cm {
+  color: #586e75;
+} // comment.multiline //
+.highlight .cp {
+  color: rgb(34, 134, 58);
+} // comment.preproc //
+.highlight .c1 {
+  color: #586e75;
+} // comment.single //
+.highlight .cs {
+  color: rgb(34, 134, 58);
+} // comment.special //
+.highlight .gd {
+  color: #2aa198;
+} // generic.deleted //
+.highlight .ge {
+  font-style: italic;
+  color: rgb(27,34,64);
+} // generic.emph //
+.highlight .gr {
+  color: #dc322f;
+} // generic.error //
+.highlight .gh {
+  color: #cb4b16;
+} // generic.heading //
+.highlight .gi {
+  color: rgb(34, 134, 58);
+} // generic.inserted //
+.highlight .go {
+  color: rgb(27,34,64);
+} // generic.output //
+.highlight .gp {
+  color: rgb(27,34,64);
+} // generic.prompt //
+.highlight .gs {
+  font-weight: bold;
+  color: rgb(27,34,64);
+} // generic.strong //
+.highlight .gu {
+  color: #cb4b16;
+} // generic.subheading //
+.highlight .gt {
+  color: rgb(27,34,64);
+} // generic.traceback //
+.highlight .kc {
+  color: #cb4b16;
+} // keyword.constant //
+.highlight .kd {
+  color: rgb(111, 66, 193);
+} // keyword.declaration //
+.highlight .kn {
+  color: rgb(34, 134, 58);
+} // keyword.namespace //
+.highlight .kp {
+  color: rgb(34, 134, 58);
+} // keyword.pseudo //
+.highlight .kr {
+  color: rgb(111, 66, 193);
+} // keyword.reserved //
+.highlight .kt {
+  color: #dc322f;
+} // keyword.type //
+.highlight .ld {
+  color: rgb(27,34,64);
+} // literal.date //
+.highlight .m {
+  color: #2aa198;
+} // literal.number //
+.highlight .s {
+  color: #2aa198;
+} // literal.string //
+.highlight .na {
+  color: #555;
+} // name.attribute //
+.highlight .nb {
+  color: #b58900;
+} // name.builtin //
+.highlight .nc {
+  color: rgb(111, 66, 193);
+} // name.class //
+.highlight .no {
+  color: #cb4b16;
+} // name.constant //
+.highlight .nd {
+  color: rgb(111, 66, 193);
+} // name.decorator //
+.highlight .ni {
+  color: #cb4b16;
+} // name.entity //
+.highlight .ne {
+  color: #cb4b16;
+} // name.exception //
+.highlight .nf {
+  color: #37474F;
+} // name.function //
+.highlight .nl {
+  color: #555;
+} // name.label //
+.highlight .nn {
+  color: rgb(27,34,64);
+} // name.namespace //
+.highlight .nx {
+  color: #555;
+} // name.other //
+.highlight .py {
+  color: rgb(27,34,64);
+} // name.property //
+.highlight .nt {
+  color: #303F9F;
+} // name.tag //
+.highlight .nv {
+  color: #303F9F;
+} // name.variable //
+.highlight .ow {
+  color: rgb(34, 134, 58);
+} // operator.word //
+.highlight .w {
+  color: rgb(27,34,64);
+} // text.whitespace //
+.highlight .mf {
+  color: #2aa198;
+} // literal.number.float //
+.highlight .mh {
+  color: #2aa198;
+} // literal.number.hex //
+.highlight .mi {
+  color: #283593;
+} // literal.number.integer //
+.highlight .mo {
+  color: #2aa198;
+} // literal.number.oct //
+.highlight .sb {
+  color: #586e75;
+} // literal.string.backtick //
+.highlight .sc {
+  color: #2aa198;
+} // literal.string.char //
+.highlight .sd {
+  color: rgb(27,34,64);
+} // literal.string.doc //
+.highlight .s2 {
+  color: #2aa198;
+} // literal.string.double //
+.highlight .se {
+  color: #cb4b16;
+} // literal.string.escape //
+.highlight .sh {
+  color: rgb(27,34,64);
+} // literal.string.heredoc //
+.highlight .si {
+  color: #2aa198;
+} // literal.string.interpol //
+.highlight .sx {
+  color: #2aa198;
+} // literal.string.other //
+.highlight .sr {
+  color: #dc322f;
+} // literal.string.regex //
+.highlight .s1 {
+  color: #2aa198;
+} // literal.string.single //
+.highlight .ss {
+  color: #2aa198;
+} // literal.string.symbol //
+.highlight .bp {
+  color: rgb(111, 66, 193);
+} // name.builtin.pseudo //
+.highlight .vc {
+  color: rgb(111, 66, 193);
+} // name.variable.class //
+.highlight .vg {
+  color: rgb(111, 66, 193);
+} // name.variable.global //
+.highlight .vi {
+  color: rgb(111, 66, 193);
+} // name.variable.instance //
+.highlight .il {
+  color: #2aa198;
+} // literal.number.integer.long //
