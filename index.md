@@ -2,7 +2,7 @@
 layout: default
 title: Home
 nav_order: 1
-description: We can write it for you, but we can't read it for you
+description: We can explain it to you, but we can't understand it for you.
 permalink: /
 ---
 
@@ -12,60 +12,48 @@ permalink: /
 # 50.005 Computer System Engineering
 {: .no_toc}
 
-## Hello World!
-<strong>*Full stack development starts here.*</strong>
+This course is about the design and implementation of complex computing systems, from single computer systems to a large-scale network of them. At the end of the course, students will be able to:
 
-**50.002** introduces the **architecture** of digital systems, emphasising **structural** principles common to a wide range of technologies. In specific, the course develops:
-* A hierarchical set of **building blocks** that make up a digital system  (logic gates, combinational and sequential circuits, finite state machines, processors, and complete systems)
-* Understanding of the operation of a moderately complex digital system; a simple RISC-based computer we called the $$\beta$$ using the building blocks above, and ability to specify, implement and **debug** its components.
-* Exploration of both **hardware** and **software** mechanisms through a series of design examples (labs and 1D/2DC projects)
+- Understand and analyse the challenges of designing and implementing complex computing systems, particularly modern operating systems and internet systems.
+- Understand and make use of basic tools and methods to overcome the challenges of creating computing systems that are easy to manage, flexible and easy to extend, have high performance, and are reliable and secure.
+- Understand and analyse the basic performance of computing systems.
 
-By the end of this course, you're expected to:
-* Be familiar with flaws and limitations in simple systems using the **static discipline**, **clocked** registers and async inputs.
-* Implement a simple RISC-based CPU architecture
-* Apply architectural support and tackle instruction set design issues for contemporary software structures.
-* Analyse of potential concurrency, precedence constraints, and performance measures.
+## To do
 
-All lesson materials: **lecture notes**, **problem sets**, and **FPGA tutorials** can be found in this site. Please refer to the **50.002 course handout** (link in edimension) to obtain the links to our lab handouts. 
+Before Anything Else, do:
 
-We have also recorded [lecture videos](https://www.youtube.com/playlist?list=PLklpDKpv-EBj1agIq4vB1iB6ahMT8_2A_) and [post-lecture videos](https://www.youtube.com/playlist?list=PLklpDKpv-EBhCVUAZDDRWEGZzR_It-FSo) for each topic. The links to the individual videos can be found in the respective lecture notes. 
+- **Bookmark** the Course Handout that can be found in eDimension
+- **Join** MS Teams Classroom
+- **Read** the **Syllabus** and **Class Calendar**
+- **Bookmark** this website
 
-## The Blind Men and an Elephant
-It is often really difficult to visualise why we learn certain topics in 50.002. Each weekly topic is a **building block** to understand how **digital systems** work (a.k.a your computers). By itself, it is **not obvious** why it is an integral part to learn in your journey as a computer scientist. It's like the parable of a [**blind men and an elephant**](https://en.m.wikipedia.org/wiki/Blind_men_and_an_elephant).
+Install POSIX-Compliant OS **before** the first Lab session in Week 1.
+{:.important}
 
-> *The parable of the blind men and an elephant is a story of a group of blind men who have **never** come across an elephant before and who learn and imagine what the elephant is like by touching it. Each blind man feels a **different** part of the elephant's body, but only one part, such as the side or the tusk. They then describe the elephant based on their limited experience and their descriptions of the elephant are different from each other. In some versions, they come to suspect that the other person is dishonest and they come to blows. The moral of the parable is that humans have a tendency to claim **absolute** truth based on their **limited**, subjective experience as they ignore other people's limited, subjective experiences which may be equally true.*
+## POSIX-Compliant OS
 
-We ask you to be patient and **bear with us** as you go through this Term. Lots of **frustration**, **confusion**, and even **exasperation** is common but not unmanaged. Talk to your TAs and Instructors for guidance at any moment in time, and **try to avoid snowballing** of work as much as possible. 
+### Purpose
 
+Please prepare your system to have a **POSIX compliant OS** (read: UNIX / UNIX-like or anything mainstream that’s not Windows) before the Lab session in Week 1.
+{:.red}
 
+This subject teaches the basics of OS, in specific we use POSIX compliant OS only as our basis. Having only Windows is **FATAL**, because it means that you can’t do anything during the Lab. We recommend [ArchLinux](https://archlinux.org), but if you’re a beginner you shall install Ubuntu 22.04.
 
-## Job Prospects
-Before you read this section, see our [roadmap](https://natalieagus.github.io/50002/notes/roadmap) first.
+- Yes, we are referring to **YOU**, Windows users, read along.
+- MacOS is POSIX compliant so you can skip this section.
 
-From that you can obtain the bird's eyeview of 50.002. Then let's briefly go through possible job prospects that you can have should you equip yourselves with the knowledge of **how computers work**.
-> *Yes, there are more Computer Science related jobs out there than web developers*.
+### Installation
 
-### System Security Engineer
-If you're planning to take [50.044](https://istd.sutd.edu.sg/undergraduate/courses/50044-system-security) in the future and work in system security related field, pay great attention to 50.002. As a system security expert, you're expected to protect the security of users, individual computer systems, including personal computers, smart cards and embedded platforms. You **need** to know how digital systems are made and work down to the hardware level before even beginning to protect it. 
+If you’re not sure what POSIX-compliant OS means, download [Ubuntu 22.04](https://ubuntu.com/download/desktop) and install it using any of the methods below:
 
-### Hardware and Embedded System Engineer, CPU and Platform Architect 
-Every year, major tech companies always release their new, cutting edge technologies, be it new CPU architecture, better and faster motherboard, etc. Terms like **unified memory**, **z-nm transistors**, basic CPU specs like **L-cache, overclocking, TDP rating, clock speed** should sound really familiar to you. Would you like to be the ones who contribute in their development? 
+- Using [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) that comes by default in your Windows OS. 
+- **Virtual Machine:** [VirtualBox](https://www.virtualbox.org), or VMWare Fusion. Be autonomous and watch some youtube guides online, there’s plenty of guides!
+- Enable [dual-boot](https://www.xda-developers.com/dual-boot-windows-11-linux/), or
+- Use cloud services (AWS EC2 + Cloud9, etc). [Refer to inhouse guide on how to setup EC2 with Cloud9 here](https://hackmd.io/6U8U5dYrSU2Ny-jBatAKiw). Although it is free, you still need a credit card to guarantee it.
 
-### System on Chip Engineer
-System on Chip (SOC) is the integration of functions necessary to implement an electronic system onto a single substrate and contains at least one processor. It is a **popular** field as of today (2023) due to its unprecendented efficiency. Have you ever wondered why? 
+### Reach out for help
 
-### Cybersecurity Expert
-Any career in cybersecurity requires a deep technical knowledge on how digital systems (that you're protecting) work. Obviously, you can't professionally protect a house without knowing its schematic, materials, weak points, etc. 
+Installing VM + Ubuntu 22.04 is the easiest option if you have no experience. There’s really plenty of guides online, and as a Sophomore ISTD student you are expected to be crafty enough to figure this out on your own.
 
-### Operating System Engineer 
-Building the next-generation Operating System? Surely you need to be familiar with the architecture of the CPU you're building it for. 
-
-### Tech Lead, DevOps Engineer
-Any good fullstack software engineer needs to have a pretty good idea about the Operating System, Network, and Security. In order to appreciate the knowledge in these domains, it is fundamental to understand basic principles of how our computers work, all the way down to its ISA. You'll never know when you'll be faced with some very weird bugs that requires systematic debugging, or needing to fix major vulnerability in your system. 
-
-### Contributing to Open Source Project
-Thinking of contributing to improve the Linux Kernel? Or writing the next-generation debugger? Contributing by making merge requests to fix open issues in famous backend/frontend framework? How about making an efficient front-end framework by yourself? Maybe you'll also want to create your own game engine, or simply answer questions in StackOverflow. Yep, think big.  
-
-### Other Fields and Application
-Other non-directly related fields that require you to work with **hardware and software optimisation**, deep diving into **assembly code** or making a tweak or two to your compiler requires the basic building blocks taught in 50.002. Knowing how digital systems work really equip you with all of the necessary knowledge to **troubleshoot** and **debug** almost anything.
-
+If you really do not know how to do it, please contact Natalie via Telegram, but maybe it's best if you consult ChatGPT/Google first 😉.
+{: .error}

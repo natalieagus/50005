@@ -115,10 +115,17 @@ callouts:
   note:
     title: Note
     color: calloutsblue
+  info:
+    title: Note
+    color: calloutsblue
   warning:
     title: Warning
     color: calloutsred
+  error:
+    title: Caution
+    color: calloutsred
 
+    
 plugins:
   - jekyll-seo-tag
 

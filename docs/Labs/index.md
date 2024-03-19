@@ -3,7 +3,7 @@ layout: default
 title: Labs 
 permalink: /labs/intro
 has_children: true
-nav_order: 22
+nav_order: 5 
 ---
 
 # 50.002 FPGA Tutorials

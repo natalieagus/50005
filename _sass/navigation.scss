@@ -106,7 +106,7 @@
 
     > .nav-list {
       display: none;
-      padding-left: #{$nav-list-item-height-sm/2};
+      padding-left: #{calc($nav-list-item-height-sm / 2)};
       @include mq(md) {
         padding-left: #{calc($nav-list-item-height / 2)};
       }
