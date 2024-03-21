@@ -66,6 +66,10 @@ p {
   margin-bottom: 1em;
 }
 
+p a{
+  color: $href-color;  
+}
+
 a {
   color: $link-color;
   text-decoration: none;

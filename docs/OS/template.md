@@ -11,10 +11,45 @@ nav_order:  1
 * TOC
 {:toc}
 
-**50.005 Computer System Engineering **
+**50.005 Computer System Engineering**
 <br>
 Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
+
+{: .note}
+Test note 
+
+{: .new} 
+Test new 
+
+{:.info }
+Test info 
+
+{: .highlight}
+Just highlight 
+
+{: .warning}
+Test warning 
+
+{: .error}
+Test error
+
+{: .important}
+Test impt
+
+Test [text here to see if it changes color.](https://google.com)
+
+testing `inline code here`, seeing if it matches `color`, these are numbers `5`, `6`. 
+
+```java
+Class Test{ 
+    public static void main(int args[]){
+        System.out.println("Hello World");
+    }
+}
+```
+
+

@@ -1,41 +1,3 @@
-$body-background-color: #121212;
-$sidebar-color:rgb(2, 6, 10);
-$border-color: $bluegray-900;
-
-$bold-color: #EBF8FF;
-$toc-color-active: $bluegray-100;
-$toc-hover: $toc-hover-dark;
-$body-text-color: $grey-lt-300;
-$body-heading-color: $grey-lt-000;
-$nav-child-link-color: $grey-dk-000;
-$search-result-preview-color: $grey-dk-000;
-$top-icon-color: white;
-$btn-scroll-top-bg: $bluegray-50;
-$copy-button-background-color: #CBD5E1;
-
-
-$collapsible-bg-color: $grey-dk-250;
-$collapsible-font-color: $body-text-color;
-$collapsible-body-color: $grey-dk-250;
-$collapsible-active-bg-color: $highlight-background;
-$search-button-active-color: $dark-theme-background-color;
-$search-button-background-color: $bluegray-900;
-
-$link-color: $dark-theme-main-color-1;
-$btn-primary-color: $blue-200;
-$base-button-color: $grey-dk-250;
-$border-nav: $border-nav-dark;
-$border-nav-active: $border-nav-active-dark;
-
-$base-code-color:#FDBA74;
-$content-answer-border: $grey-dk-250;
-
-$code-background-color: $sidebar-color;
-$search-background-color: $grey-dk-250;
-$table-background-color: $grey-dk-250;
-$feedback-color: darken($sidebar-color, 3%);
-
-
 $calloutsteal-000: #b7edfe;
 $calloutsteal-000: #b7edfe;
 $calloutsteal-100: #85e1fe;
@@ -52,10 +14,10 @@ $calloutsgreen-100: #b1dd8c;
 $calloutsgreen-200: #95d162;
 $calloutsgreen-300: #8bcd54;
 
-$calloutsred-000: #FED7AA;
+$calloutsred-000: #feb1aa;
 $calloutsred-100: #ff8f83;
 $calloutsred-200: #ff6251;
-$calloutsred-300: #EA580C;
+$calloutsred-300: #ea0c0c;
 
 $calloutsyellow-000: #fee49c;
 $calloutsyellow-100: #fed86d;
@@ -63,10 +25,52 @@ $calloutsyellow-200: #fecb3e;
 $calloutsyellow-300: #fbb901;
 
 
-$calloutsblue-000: $bluegray-50;
+$calloutsblue-000: rgb(21, 62, 75);
 $calloutsblue-100: #ca94f0;
 $calloutsblue-200: #d783ff;
-$calloutsblue-300: $bluegray-200; 
+$calloutsblue-300: rgb(76, 179, 212); 
+
+$body-background-color: #121212;
+$sidebar-color:rgb(2, 6, 10);
+$border-color: $bluegray-900;
+
+$bold-color: #EBF8FF;
+$toc-color-active: $calloutsblue-300;
+$toc-hover: $toc-hover-dark;
+$body-text-color: $grey-lt-300;
+$body-heading-color: $grey-lt-000;
+$nav-child-link-color: $grey-dk-000;
+$search-result-preview-color: $grey-dk-000;
+$top-icon-color: white;
+$btn-scroll-top-bg: $bluegray-50;
+$copy-button-background-color: #CBD5E1;
+
+
+$collapsible-bg-color: $grey-dk-250;
+$collapsible-font-color: $body-text-color;
+$collapsible-body-color: $grey-dk-250;
+$collapsible-active-bg-color: $highlight-background;
+$search-button-active-color: $bluegray-300 ;
+$search-button-background-color: $bluegray-400;
+
+$link-color: $dark-theme-main-color-1;
+$btn-primary-color: $blue-200;
+$base-button-color: $grey-dk-250;
+$border-nav: $border-nav-dark;
+$border-nav-active: $border-nav-active-dark;
+
+$base-code-color: $dark-theme-main-color-1;
+$content-answer-border: $grey-dk-250;
+
+$code-background-color: $sidebar-color;
+$search-background-color: $grey-dk-250;
+$table-background-color: $grey-dk-250;
+$feedback-color: darken($sidebar-color, 3%);
+
+$nav-list-link-active: rgb(98, 246, 246);
+$nav-list-link-active-bg: rgba(82, 186, 255, 0.1);
+$href-color: rgb(98, 246, 246);
+
 
 
 figure.highlight::before {

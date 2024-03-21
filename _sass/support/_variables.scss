@@ -31,7 +31,7 @@ $toc-hover-dark: rgba(255, 255, 255, 0.075);
 $toc-hover: $toc-hover-light !default;
 $white: #fff !default;
 $dark-theme-background-color: #121212;
-$dark-theme-main-color-1:     #CFFAFE;
+$dark-theme-main-color-1:     #a5f7ff;
 $dark-theme-main-color-2:     #f77729;
 $dark-theme-main-color-3:     #202020;
 $dark-theme-green:           #e2cdfd;
@@ -92,30 +92,35 @@ $calloutsteal-100: #004cc3;
 $calloutsteal-200: #0049bb;
 $calloutsteal-300: #0042aa;
 
-$calloutsgreen-000: #15bd00;
+$calloutsgreen-000: #dcfed8;
 $calloutsgreen-100: #12a400;
 $calloutsgreen-200: #0f8b00;
 $calloutsgreen-300: #0d7300;
 
-$calloutspink-000: #ff8ae0;
+$calloutspink-000: #ffd1f3;
 $calloutspink-100: #ff57d2;
 $calloutspink-200: #ff24c4;
-$calloutspink-300: #ef00af;
+$calloutspink-300: #ef0087;
 
-$calloutsred-000: #FFCDD2;
+$calloutsred-000: rgb(255, 235, 236);
 $calloutsred-100: #f96e65;
 $calloutsred-200: #e94c4c;
-$calloutsred-300: #B71C1C;
+$calloutsred-300: rgb(225, 50, 56);
 
-$calloutsyellow-000: #B2EBF2;
+$calloutslightred-000: rgb(244, 214, 176);
+$calloutslightred-100: #f96e65;
+$calloutslightred-200: #e94c4c;
+$calloutslightred-300: #f06225;
+
+$calloutsyellow-000:  rgb(254, 252, 232);
 $calloutsyellow-100: #fadf50;
 $calloutsyellow-200: #f7d12e;
-$calloutsyellow-300: #006064;
+$calloutsyellow-300: #ffbf00;
 
-$calloutsblue-000: $bluegray-300;
+$calloutsblue-000: rgb(219, 234, 254);;
 $calloutsblue-100: $bluegray-400;
 $calloutsblue-200: $bluegray-500;
-$calloutsblue-300: $bluegray-900;
+$calloutsblue-300: rgb(30, 58, 138);;
 
 $blue-chakra-100: #BEE3F8 !default;
 $purple-chakra-50: #FAF5FF !default;
@@ -126,9 +131,9 @@ $cs-red: rgb(93,34,66);
 $cs-blue: #5184c5;
 
 $btn-scroll-top-bg: $bluegray-50;
-$base-code-color: #172554;
+$base-code-color: #11266b;
 $bold-color: $grey-dk-300;
-$toc-color-active: $bluegray-300;
+$toc-color-active: $calloutsblue-300;
 $body-background-color: $white !default;
 $sidebar-color: $bluegray-50 !default;
 $search-background-color: $white !default;
@@ -246,3 +251,10 @@ $media-queries: (
   lg: $content-width + $nav-width,
   xl: 1400px,
 ) !default;
+
+// nav-list
+$nav-list-link-active: rgb(0, 76, 163);
+$nav-list-link-active-bg: rgb(224, 239, 255);
+
+// href color under paragraph
+$href-color: rgb(0, 76, 163);

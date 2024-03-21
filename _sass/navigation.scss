@@ -53,6 +53,8 @@
       &.active {
         font-weight: 700;
         text-decoration: none;
+        color: $nav-list-link-active !important;
+        background-color: $nav-list-link-active-bg !important;
       }
 
       &:hover,

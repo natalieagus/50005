@@ -139,7 +139,7 @@
   @include mq(md) {
     height: $header-height;
     max-height: $header-height;
-    border-bottom: $border $border-color;
+    // border-bottom: $border $border-color;
   }
 }
 
