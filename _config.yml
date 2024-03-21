@@ -109,12 +109,12 @@ callouts:
     title: 📢 Important
     color: calloutspink
   new:
-    title: 💡 New
+    title: 🔎 New
     color: calloutsgreen
-  note:
-    title: 🔎 Note
-    color: calloutsblue
   info:
+    title: 💡 Info 
+    color: calloutsteal
+  note:
     title: 📘 Note
     color: calloutsblue
   warning:

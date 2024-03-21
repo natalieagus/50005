@@ -335,11 +335,12 @@ border-bottom-right-radius: 6px;
   background-position: center;
   background-repeat: no-repeat;
   &.dark-button{
-    background-image: url("../images/moon.svg");
-    // filter: invert(1) hue-rotate(180deg);
+    background-image: url("../images/moon.png");
+    filter: $dark-img-filter;
   }
   &.light-button{
-    background-image: url("../images/sun.svg");
+    background-image: url("../images/sun.png");
+    filter: $dark-img-filter;
   }
 }
 

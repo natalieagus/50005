@@ -4,7 +4,7 @@ permalink: /os/template
 title: Template
 description: Template 
 parent: Operating System
-nav_order:  1
+nav_order:  100
 ---
 
 
@@ -18,6 +18,9 @@ Information Systems Technology and Design
 Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
+
+# Title
+{: .no_toc}
 
 {: .note}
 Test note 

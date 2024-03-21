@@ -235,3 +235,11 @@
     margin-top: $sp-2;
   }
 }
+
+h1 { 
+  border-bottom-color: $border-bottom-color;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  padding-bottom: 4px;
+
+}

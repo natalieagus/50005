@@ -4,7 +4,7 @@ permalink: /os/1-os-roles
 title: Roles of OS Kernel
 description: Various Roles of OS Kernel
 parent: Operating System
-nav_order:  1
+nav_order:  2
 ---
 * TOC
 {:toc}

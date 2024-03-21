@@ -24,6 +24,10 @@ $calloutsyellow-100: #fed86d;
 $calloutsyellow-200: #fecb3e;
 $calloutsyellow-300: #fbb901;
 
+$calloutsteal-000: #d8fffe;
+$calloutsteal-100: #004cc3;
+$calloutsteal-200: #0049bb;
+$calloutsteal-300: #00e3e3;
 
 $calloutsblue-000: rgb(21, 62, 75);
 $calloutsblue-100: #ca94f0;
@@ -152,5 +156,6 @@ figure.highlight::before {
     filter: invert(0.9) hue-rotate(180deg);
   }
 
-
+$dark-img-filter: invert(1) hue-rotate(180deg);
+$border-bottom-color: rgba(224, 243, 255, 0.1);
 

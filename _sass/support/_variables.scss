@@ -87,10 +87,10 @@ $bluegray-800: #37474F !default;
 $bluegray-900: #263238 !default;
 
 
-$calloutsteal-000: #0056dd;
+$calloutsteal-000: #d0f8ff;
 $calloutsteal-100: #004cc3;
 $calloutsteal-200: #0049bb;
-$calloutsteal-300: #0042aa;
+$calloutsteal-300: #008c96;
 
 $calloutsgreen-000: #dcfed8;
 $calloutsgreen-100: #12a400;
@@ -258,3 +258,9 @@ $nav-list-link-active-bg: rgb(224, 239, 255);
 
 // href color under paragraph
 $href-color: rgb(0, 76, 163);
+
+// night/light mode toggle svg color filter
+$dark-img-filter: None;
+
+// h1 border bottom color
+$border-bottom-color: rgb(229, 231, 235);
