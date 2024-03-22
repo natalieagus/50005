@@ -118,7 +118,7 @@ callouts:
     title: 📘 Note
     color: calloutsblue
   warning:
-    title: 🔴 Warning
+    title: ⚠️ Warning
     color: calloutslightred
   error:
     title: ❗️ Caution
