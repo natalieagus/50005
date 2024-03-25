@@ -143,6 +143,7 @@ $code-background-color: $bluegray-50 !default;
 $copy-button-background-color: $bluegray-50;
 $search-button-active-color: $bluegray-50;
 $search-button-background-color: $code-background-color;
+$hamburger-button-background-color: $search-button-background-color;
 
 $feedback-color: darken($sidebar-color, 3%) !default;
 $body-text-color: $grey-dk-200 !default;
@@ -150,6 +151,7 @@ $body-heading-color: $grey-dk-300 !default;
 $search-result-preview-color: $grey-dk-000 !default;
 $nav-child-link-color: $grey-dk-100 !default;
 $link-color: #34465D;
+$icon-color: $link-color;
 $btn-primary-color: $bluegray-100 !default;
 $base-button-color: #f7f7f7 !default;
 

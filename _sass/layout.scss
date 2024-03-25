@@ -185,7 +185,7 @@
 
 
 .hamburger-button{
-  background-color: rgba($body-background-color, 0.6);
+  background-color: rgba($hamburger-button-background-color, 0.6);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
   display: flex;
   position: fixed;
@@ -271,5 +271,5 @@ body {
 .icon {
   width: $sp-5;
   height: $sp-5;
-  color: $link-color;
+  color: $icon-color;
 }
