@@ -556,4 +556,6 @@ All processes created by Chrome have to <span style="color:#f77729;"><b>communic
 - Renderer will also be unable to access the disk and network I/O directly (runs in sandbox: limited access) thus reducing the possibility of security <span style="color:#f7007f;"><b>exploits</b></span>.
 - Each process can be scheduled <span style="color:#f77729;"><b>independently</b></span>, providing <span style="color:#f7007f;"><b>concurency</b></span> and responsiveness.
 
+<hr> 
+
 [^6]: Suppose process 1 and process 2 have successfully attached the shared memory segment.This attachment process causes this shared memory segment will be part of their address space, although the actual address could be different (_i.e._, the starting address of this shared memory segment in the address space of process 1 may be different from the starting address in the address space of process 2).

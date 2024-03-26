@@ -43,7 +43,7 @@ $body-background-color: #121212;
 $sidebar-color:rgb(2, 6, 10);
 $border-color: $bluegray-900;
 
-$bold-color: #EBF8FF;
+$bold-color: rgb(253, 236, 203);
 $toc-color-active: $calloutsblue-300;
 $toc-hover: $toc-hover-dark;
 $body-text-color: $grey-lt-300;
@@ -165,4 +165,4 @@ figure.highlight::before {
 
 $dark-img-filter: invert(1) hue-rotate(180deg);
 $border-bottom-color: rgba(224, 243, 255, 0.1);
-
+$orange-bold: orange;
