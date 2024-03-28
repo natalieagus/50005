@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /os/filesystem
-title: File System
+title: UNIX File System
 description: How UNIX file system is managed 
 parent: Operating System
 nav_order: 11
@@ -18,7 +18,7 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
 
-# File System
+# UNIX File System
 
 ## File
 A file is a <span style="color:#f77729;"><b>named</b></span> collection of related information that is stored on the secondary storage. It acts as a <span style="color:#f77729;"><b>logical</b></span> storage unit in the computer, defined by the operating system. In layman terms, they are a <span style="color:#f77729;"><b>group of data bytes</b></span> which are stored neatly in a known location with a unique name (<span style="color:#f77729;"><b>path</b></span>).
