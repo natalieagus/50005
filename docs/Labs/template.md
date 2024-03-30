@@ -1,9 +1,10 @@
 ---
 layout: default
-title: Labs 
-permalink: /labs/intro
-has_children: true
-nav_order: 5 
+permalink: /labs/part1
+title: Template
+description: Template
+parent: Labs
+nav_order:  1
 ---
 
 
@@ -18,6 +19,6 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
 
-# Template
+# Template 
 {: .no_toc}
 
