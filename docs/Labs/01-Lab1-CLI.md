@@ -679,5 +679,114 @@ Oh My Zsh is a popular framework for managing Zsh configurations, offering a wid
 
 If you're looking for alternatives that are lighter or wish to customize Zsh in a more minimalistic manner, here's a few simple steps to take.  
 
-### To-do
+```sh 
+# run these commands at ~ directory 
+# update apt 
+sudo apt update 
+# install zsh 
+sudo apt install zsh -y 
+# set  sudo and user password 
+sudo passwd 
+sudo passwd [YOUR_USERNAME]
+# change to zsh as your default shell 
+chsh -s $(which zsh) 
 
+# zsh setup at ~
+# install useful plugins like syntax highlighting, completions, auto-suggestions, fzf and fzf tab 
+# install basic theme: spaceship 
+# please give each git repo a read to understand how to use them 
+sudo apt install git
+mkdir -p ~/.zsh/plugins ~/.zsh/themes
+touch ~/.zsh/.zshrc
+touch ~/.zsh/.zsh_history
+git clone https://github.com/spaceship-prompt/spaceship-prompt.git ~/.zsh/themes/spaceship-prompt
+git clone https://github.com/zdharma-zmirror/fast-syntax-highlighting.git ~/.zsh/plugins/fast-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-completions.git ~/.zsh/plugins/zsh-completions
+git clone https://github.com/zsh-users/zsh-autosuggestions.git ~/.zsh/plugins/zsh-autosuggestions
+git clone https://github.com/unixorn/fzf-zsh-plugin.git ~/.zsh/plugins/fzf-zsh-plugin
+git clone https://github.com/Aloxaf/fzf-tab.git ~/.zsh/plugins/fzf-tab
+
+# create symbolic link
+ln -s -T ~/.zsh/.zshrc ~/.zshrc
+# open ~/.zshrc using nano
+nano ~/.zshrc 
+```
+
+Now paste the content below: 
+
+```sh
+### ZSH HOME
+export ZSH=$HOME/.zsh
+
+### ---- history config -------------------------------------
+export HISTFILE=$ZSH/.zsh_history
+
+# How many commands zsh will load to memory.
+export HISTSIZE=10000
+
+# How many commands history will save on file.
+export SAVEHIST=10000
+
+# History won't save duplicates.
+setopt HIST_IGNORE_ALL_DUPS
+
+# History won't show duplicates on search.
+setopt HIST_FIND_NO_DUPS
+
+# Immediate Append
+setopt INC_APPEND_HISTORY
+
+# Add timestamp
+export HISTTIMEFORMAT="[%F %T] "
+setopt EXTENDED_HISTORY
+
+### PATH
+export PATH=$HOME/bin:/usr/local/bin:/snap/bin:/opt/bin:$PATH
+
+### ---- PLUGINS & THEMES -----------------------------------
+source $ZSH/themes/spaceship-prompt/spaceship.zsh-theme
+source $ZSH/plugins/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+source $ZSH/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $ZSH/plugins/fzf-zsh-plugin/fzf-zsh-plugin.plugin.zsh
+source $ZSH/plugins/fzf-tab/fzf-tab.plugin.zsh
+fpath=($ZSH/plugins/zsh-completions/src $fpath)
+
+
+### --- Spaceship Config ------------------------------------
+SPACESHIP_PROMPT_ORDER=(
+  user          # Username section
+  dir           # Current directory section
+  host          # Hostname section
+  git           # Git section (git_branch + git_status)
+  hg            # Mercurial section (hg_branch  + hg_status)
+  exec_time     # Execution time
+  line_sep      # Line break
+  jobs          # Background jobs indicator
+  exit_code     # Exit code section
+  char          # Prompt character
+)
+SPACESHIP_USER_SHOW=always
+SPACESHIP_PROMPT_ADD_NEWLINE=false
+SPACESHIP_CHAR_SYMBOL="❯"
+SPACESHIP_CHAR_SUFFIX=" "
+```
+
+Afterwards, install a few more useful tools:
+
+```sh
+# exa
+sudo apt install exa -y
+echo "alias ls=\"exa --long\"" >> ~/.zshrc
+echo "alias zr=\"source ~/.zshrc\"" >> ~/.zshrc
+
+# bat
+sudo apt-get install bat -y
+echo "alias cat=\"batcat\"" >> ~/.zshrc
+
+# jump
+wget https://github.com/gsamokovarov/jump/releases/download/v0.51.0/jump_0.51.0_amd64.deb && sudo dpkg -i jump_0.51.0_amd64.deb
+echo 'eval "$(jump shell)"' >> ~/.zshrc
+```
+
+Exit your current shell and reopen. You should use `zsh` now and have your prompt look as such. Press `TAB` after a command and you will be faced with nicely rendered choices as shown. Take your time to explore and install new tools as necessary to elevate your CLI usage and navigation experience. 
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2024-04-02-01-41-22.png"  class="center_full no-invert"/>
