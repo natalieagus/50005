@@ -121,7 +121,7 @@ callouts:
     title: ⚠️ Warning
     color: calloutslightred
   error:
-    title: ❗️ Caution
+    title: 🧨️ Caution
     color: calloutsred
   task:
     title: 🎯 Task
