@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/02-tinyos
-title: Lab 2 - TinyOS IRQ handler and SVC 
+title: Lab 2 - TinyOS IRQ handler and SVC Handler
 description:  Implement a simple IO handler and SVC handler
 parent: Labs
 nav_order:  2
@@ -18,7 +18,7 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
 
-# TinyOS IRQ handler and SVC 
+# TinyOS IRQ handler and SVC Handler
 {:.no_toc}
 
 In this lab, you are tasked to write an I/O interrupt handler (**asynchronous** interrupt) and an I/O supervisor call handler (**synchronous** interrupt) for a very simple OS called the TinyOS using the Beta assembly language that you have learned from 50002 last term. This is closely related to what we have learned last week regarding [hardware interrupt](https://natalieagus.github.io/50005/os/1-os-roles#hardware-interrupt) and [system call](https://natalieagus.github.io/50005/os/3-os-services#system-call) as part of Operating System services.
@@ -112,7 +112,7 @@ All kernel code is executed with the Kernel-mode bit of the program counter -- i
 
 # Asynchronous Interrupts
 
-`tinyOS.uasm` implements the following functionality to support Asynchronous Interrupts:
+`tinyOS.uasm` implements the following Interrupt Service Routine (ISR), also known as Interrupt Handlers to support Asynchronous Interrupts:
 
 ## Vectored Interrupt Routine
 
@@ -132,6 +132,11 @@ Kernel-mode **vector interrupt routine** for handling input from the keyboard, c
 . = VEC_MOUSE
 	BR(I_BadInt)	| on Mouse interrupt
 ```
+
+Vectored interrupt is a method where the interrupt request (IRQ) directly points to the address of the Interrupt Handler (e.g: `I_Reset`, or `I_Clk` above) specific to that interrupt. This allows for faster processing compared to non-vectored interrupts, where the CPU may need to poll or search for the handler's address.
+
+An Interrupt Service Routine (ISR) or handler is a **specialized** function in an operating system or firmware that responds to interrupts by temporarily halting the main program flow to handle specific events or conditions. Triggered by hardware or software signals, ISRs manage tasks such as input from devices or timers, ensuring quick and efficient responses to immediate system needs.
+{:.info}
 
 ## Keyboard Interrupt Handling
 
@@ -282,7 +287,12 @@ The translation between `SVC(0)` to `Halt()`, `SVC(1)` to `WrMsg()` and so on is
 .macro Yield()	SVC(7)		| Give up remaining quantum
 ```
 
-Note that this is just for **convenience**. The macro declarations are made so that we can conveniently write `Halt()` as part of our instruction instead of the more unintuitive version of it, e.g: `SVC(0)`. The next few sections contain explanations about each of the handlers that are already implemented for you. 
+Note that this is just for **convenience**. The macro declarations are made so that we can conveniently write `Halt()` as part of our instruction instead of the more unintuitive version of it, e.g: `SVC(0)`. 
+
+The SVC Handler is the specific part of the operating system or kernel that responds to the SVC instruction. When an SVC instruction is executed, the processor switches to a privileged mode and begins execution of the SVC Handler. This handler is responsible for interpreting the request made by the SVC instruction (often by examining the argument or system call number provided with the SVC), carrying out the requested operation, and then returning control back to the user-space application, often with some result.
+{:.note}
+
+The next few sections contain explanations about each of the handlers that are already implemented for you. 
 
 ### Halt Handler
 
