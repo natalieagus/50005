@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /labs/part1
+permalink: /labs/01-cli
 title: Lab 1 - Command Line Interface
 description: Introduction to the CLI 
 parent: Labs
@@ -48,7 +48,8 @@ The total marks for this lab is **20**. Please answer the questionnaire provided
 
 
 ### Task 1
-`TASK 1:`{:.info} To find your current shell, type the command: `ps -p $$`
+`TASK 1:` To find your current shell, type the command: `ps -p $$`
+{:.task}
 
 ```java
 bash-3.2$ ps -p  $$
@@ -66,7 +67,8 @@ The CLI accepts **commands** (the **first** word, e.g. ps, that you type into th
 
 ### Task 2
 
-`TASK 2:`{:.info} Try the following basic commands in sequence `date`, `cal`, `pwd`, `who`, `clear`:
+`TASK 2:` Try the following basic commands in sequence `date`, `cal`, `pwd`, `who`, `clear`:
+{:.task}
 
 1. E.g: date and press enter. You should see today’s date given to you, for example:
 
@@ -141,7 +143,8 @@ If your directory has spaces in its name, you need to use the **backslash**) to 
 
 ### Task 3
 
-`TASK 3:`{:.info} Find your starting context by running the command `pwd`, followed by `ls`:
+`TASK 3:` Find your starting context by running the command `pwd`, followed by `ls`:
+{:.task}
 
 - The command `ls` lists **all** files that exist in this **context**, which is the Desktop directory in the example above (`/Users/natalie_agus/Desktop`)
 - When you run the command **ls** by itself, it uses your **current** directory as the context, and lists the files that are in the directory you are in.
@@ -189,7 +192,8 @@ For example, you can add the **binary** of the **Telegram** app onto the `$PATH`
 
 ### Task 4
 
-`TASK 4:`{:.info} Examine the value for `$PATH` in your system.
+`TASK 4:` Examine the value for `$PATH` in your system.
+{:.task}
 
 Open that folder (from your Desktop GUI) and navigate to that path. **You may need to enable viewing of hidden files.** If you are using WSL, you need to cd to this path as there’s no GUI. The screenshot below shows the content of `/bin/` directory where some default system programs like `ps, date, pwd, echo,` etc reside:
 
@@ -210,7 +214,8 @@ The term "rc" in filenames like `.bashrc`, `.zshrc`, or `.vimrc` stands for "run
 
 ### Task 5
 
-`TASK 5:`{:.info} Adding _Desktop_ to your `$PATH` environment variable **permanently**.
+`TASK 5:` Add _Desktop_ to your `$PATH` environment variable **permanently**.
+{:.task}
 
 - Go to your home directory: `cd $HOME`
 - Create a new file called .bashrc: `touch .bashrc`
@@ -414,7 +419,8 @@ Note that `stdout` redirection will **truncate** (<span class="orange-bold">eras
 
 ### Task 6
 
-`TASK 6:`{:.info} One example of a program that benefits from stream redirection is `tr`. It is a command line utility for **translating** or **deleting** characters. Do the following:
+`TASK 6:` One example of a program that benefits from stream redirection is `tr`. It is a command line utility for **translating** or **deleting** characters. Do the following:
+{:.task}
 
 1. Create a text file with the following content: ”Hello, have a good day today!”, name it `test.txt` and **save** it to your current directory.
 2. Then, type the following in the command line (don't forget to navigate to your current directory first using `cd`!): `tr "[a-z]" "[A-Z]" test.txt`
@@ -446,7 +452,8 @@ It may sound similar to stream redirection, but the general rule of thumb is tha
 
 ### Task 7
 
-`TASK 7:`{:.info} Try out how to pipe:
+`TASK 7:` Find out how pipe works.
+{:.task}
 
 1. Suppose we want to pass the output of `cat` command as the input of `sort` command. We can’t do this with redirection:
    <img src="{{ site.baseurl }}/assets/images/lab1/15.png"  class="center_fifty no-invert"/>
@@ -474,9 +481,10 @@ A filter takes input from one command, does some processing, and gives output.
 
 ### Task 8
 
-`TASK 8:`{:.info} Suppose we have a long document, that GNU license we downloaded from the task above.
+`TASK 8:` Suppose we have a long document, that GNU license we downloaded from the command `curl` above. Search and filter for a particular string. 
+{:.task}
 
-1. To download the license, type the command: `curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt`
+1. To download the license again, type the command: `curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt`
 2. Now search for a string inside a file using the commands:
 
 - `grep "<string>” <path/to/file>`
@@ -525,7 +533,8 @@ Writing shell scripts help us automate repetitive and tedious tasks.
 
 ### Task 9
 
-`TASK 9:`{:.info} Open `nano` and type the following:
+`TASK 9:` Open `nano` and type the bash script below.
+{:.task}
 
 ```bash
 #!/bin/bash
@@ -570,7 +579,8 @@ We can also compile and run programs from the **command** line, provided that yo
 
 ### Task 10
 
-`TASK 10:`{:.info} To demonstrate this idea, download this starter code: `git clone https://github.com/natalieagus/makeFileDemo.git`
+`TASK 10:` To demonstrate this idea, download this starter code: `git clone https://github.com/natalieagus/makeFileDemo.git`
+{:.task}
 
 We require you to have `gcc` for this task. If your OS doesn't have it, you can install it with (Ubuntu):
 

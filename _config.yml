@@ -123,6 +123,9 @@ callouts:
   error:
     title: ❗️ Caution
     color: calloutsred
+  task:
+    title: 🎯 Task
+    color: calloutstrongblue
 
     
 plugins:

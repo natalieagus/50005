@@ -25,6 +25,9 @@ Singapore University of Technology and Design
 {: .note}
 Test note 
 
+{:.task}
+Test task
+
 {: .new} 
 Test new 
 
@@ -42,6 +45,8 @@ Test error
 
 {: .important}
 Test impt
+
+
 
 Test [text here to see if it changes color.](https://google.com)
 
