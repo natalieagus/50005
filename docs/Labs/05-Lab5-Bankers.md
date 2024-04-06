@@ -4,7 +4,7 @@ permalink: /labs/05-bankers-algorithm
 title: Lab 5 - Banker's Algorithm
 description:  Implement Banker's Algorithm, a deadlock prevention method
 parent: Labs
-nav_order:  4
+nav_order:  5
 ---
 
 * TOC
