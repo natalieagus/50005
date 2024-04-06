@@ -149,8 +149,12 @@ $copy-button-background-color: $bluegray-50;
 $search-button-active-color: $bluegray-50;
 $search-button-background-color: $code-background-color;
 $hamburger-button-background-color: $search-button-background-color;
-
 $feedback-color: darken($sidebar-color, 3%) !default;
+$hamburger-bg-img: linear-gradient(
+  -90deg,
+  rgba($feedback-color, 1) 0%,
+  rgba($feedback-color, 0.8) 100%
+);
 $body-text-color: $grey-dk-200 !default;
 $body-heading-color: $grey-dk-300 !default;
 $search-result-preview-color: $grey-dk-000 !default;

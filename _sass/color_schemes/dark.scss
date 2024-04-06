@@ -43,7 +43,6 @@ $calloutsyellow-000:  rgb(126, 124, 99);
 $calloutsyellow-100: #fadf50;
 $calloutsyellow-200: #f7d12e;
 $calloutsyellow-300: #ffbf00;
-
 $body-background-color: #121212;
 $sidebar-color:rgb(2, 6, 10);
 $border-color: $bluegray-900;
@@ -82,7 +81,11 @@ $code-background-color: $sidebar-color;
 $search-background-color: $grey-dk-250;
 $table-background-color: $grey-dk-250;
 $feedback-color: darken($sidebar-color, 3%);
-
+$hamburger-bg-img: linear-gradient(
+  -90deg,
+  rgba(lighten($sidebar-color, 30%), 1) 0%,
+  rgba(lighten($sidebar-color, 30%), 0.8) 100%
+);
 $nav-list-link-active: rgb(98, 246, 246);
 $nav-list-link-active-bg: rgba(82, 186, 255, 0.1);
 $href-color: rgb(98, 246, 246);
