@@ -23,7 +23,9 @@ Singapore University of Technology and Design
 # CSEShell Starter Code  
 {: .no_toc}
 
-CSEShell is a simple, custom shell for Unix-based systems, designed to provide an interface for executing system programs. This project includes a basic shell implementation, a set of system programs (`find`, `ld`, `ldr`), and some test files.
+CSEShell is a simple, custom shell for Unix-based systems, designed to provide an interface for executing system programs. This project includes a basic shell framework, a set of system programs (`find`, `ld`, `ldr`), and some test files. 
+
+It incorporates a **simple** prompt display mechanism and the ability to `exit` the shell. However, it lacks the typical continuous loop for reading and processing commands, as well as the process forking logic (`fork`) that is commonly used in shell implementations to execute commands in separate processes.
 
 ## Usage Explanation 
 ### Directory Structure
@@ -64,14 +66,20 @@ After building, you can start the shell by running:
 
 From there, you can execute built-in commands and any of the included system programs (e.g., `find`, `ld`, `ldr`).
 
-<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/01-intro/2024-04-10-10-28-40.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/01-intro/2024-04-10-12-39-49.png"  class="center_full no-invert"/>
 
 You can type `exit` to exit the shell:
 
-<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/01-intro/2024-04-10-10-29-29.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/01-intro/2024-04-10-12-39-32.png"  class="center_full no-invert"/>
+
+As the starter code only contains basic shell framework, it lacks the typical continuous loop for reading an processing commaands. The shell will terminate each time you enter a command. To type another command, you need to run `./cseshell` again. 
 
 {:.note}
-Note that only system programs at `./bin` is currently accessible by the shell, and hence only these three commands: `find`, `ld`, `ldr` are supported. 
+Note that only system programs at `./bin` is currently **accessible** by the shell, and hence only these three commands: `find`, `ld`, `ldr` are supported. 
+
+If you try to type any command that's commonly available on your system's shell, such as `pwd`, you will be met with this error message: 
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/01-intro/2024-04-10-12-42-50.png"  class="center_seventy"/>
 
 ### System Programs
 
@@ -154,31 +162,34 @@ int main(void)
 {:.new-title}
 > Purpose
 > 
-> Implements the main loop of the shell, where it repeatedly displays a prompt, reads and parses a command, and then executes it.
+> Implements the main functionality of the shell. It displays a prompt, reads and parses a command, and then executes it.
 
-**Functionality**:
-  - Enters an infinite loop where it calls `type_prompt` to display the shell prompt and `read_command` to read and parse a command from the user.
-  - Skips execution if the command is empty.
-  - Exits the loop (and the shell) if the command is "exit".
-  - For other commands, it attempts to execute them by first forking the process then using `execv` in the child process to replace its image with the one specified by the command path. The parent process waits for the child to complete before continuing.
-  - Handles process creation errors and command not found errors.
-  - Cleans up by freeing allocated memory for the command arguments.
+
 
 ### Error Handling and System Calls
-The code uses `fork`, `execv`, and `waitpid` system calls for process management and executes commands in a new process.
 
-Proper error checking is performed for critical operations like reading from stdin, forking a process, and executing commands. It uses `exit(1)` to terminate the program upon encountering fatal errors.
+
+Proper error checking is performed for critical operations like reading from stdin and executing commands using `execv` system calls. It uses `exit(1)` to terminate the program upon encountering fatal errors.
 ```c
 
-    pid = fork(); // Fork a new process
-    if (pid < 0)  // Check for fork failure
+    // in read_command(char** cmd)
+    // If the command exceeds the maximum length, print an error and exit
+    if (count >= MAX_LINE)
     {
-      printf("Fork failed.\n");
+      printf("Command is too long, unable to process\n");
       exit(1);
     }
     ...
 
+    // in main()
+    execv(fullPath, cmd);
+
+    // If execv returns, command execution has failed
+    printf("Command %s not found\n", cmd[0]);
+    exit(0);
+
 ```
+
 ### Memory Management
 Dynamically allocates memory for each argument parsed in `read_command` using `strdup`. It's important to free this memory at the end of `main` to prevent memory leaks.
 ```c
@@ -200,4 +211,6 @@ Uses preprocessor directives to clear the screen in a way that is compatible wit
 #endif
     first_time = 0;
 ```
+
+
 
