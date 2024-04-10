@@ -154,8 +154,10 @@ Mode switch and Context switch -- although similar in name; they are two separat
 - Requires <span style="color:#f77729;"><b>both</b></span> saving (all) states of the old process and loading (all) states of the new process to resume execution
 - Can be caused either by timed interrupt or system call that leads to a `yield()`, e.g: when waiting for something.
 
-Think about scenarios that requires <span style="color:#f77729;"><b>mode switch</b></span> but <span style="color:#f7007f;"><b>not</b></span> context switch.
-{:.highlight}
+{:.highlight-title}
+> Ask yourself
+> 
+> Think about scenarios that requires <span style="color:#f77729;"><b>mode switch</b></span> but <span style="color:#f7007f;"><b>not</b></span> context switch.
 
 ## Process Scheduling Detail {#process-scheduling}
 
@@ -361,8 +363,10 @@ Carefully observe the output and do **not** confuse between variable `pid` to st
 
 <span style="color:#f77729;"><b>Compile</b></span> and <span style="color:#f77729;"><b>run</b></span> the C program below.
 
-How many processes are created in total? (excluding the parent process). Can you draw the process tree?
-{:.highlight}
+{:.new-title}
+> Think!
+> 
+> How many processes are created in total? (excluding the parent process). Can you draw the process tree?
 
 ```cpp
 #include <sys/wait.h>
@@ -448,8 +452,10 @@ If a parent process has died, then all the zombie children will be <span style="
 
 <span style="color:#f77729;"><b>Compile</b></span> and <span style="color:#f77729;"><b>run</b></span> the C program below. It will suspend itself at `scanf`, waiting for input at `stdin`. Do not type anything, leave it hanging there.
 
-What’s the (possible) maximum number of zombies created by this process?
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> What’s the (possible) maximum number of zombies created by this process?
 
 ```cpp
 #include <sys/wait.h>

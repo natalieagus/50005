@@ -105,8 +105,10 @@ pthread_exit(0);
 /************************************/
 ```
 
-Can you identify the order of execution that causes deadlock?
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Can you identify the order of execution that causes deadlock?
 
 Consider the scenario where Thread 1 acquires `first_mutex` and then suspended, then Thread 2 acquires `second_mutex`.
 * <span style="color:#f77729;"><b>Neither thread will give up</b></span> their currently held `mutex`,
@@ -130,8 +132,10 @@ Deadlock situation _may_ arise if the following four conditions hold <span class
 "**Simultaneously**" means all of them must happen to even have a <span style="color:#f77729;"><b>probability</b></span> of deadlock. These conditions are necessary but not sufficient, meaning that if all four are present, it is not 100% guaranteed that there is currently a deadlock.
 {:.important}
 
-Since these conditions are _necessary_ for deadlock to happen, <span style="color:#f7007f;"><b>removing</b></span> just one of them <span style="color:#f7007f;"><b>prevents</b></span> deadlock from happening at all.
-{:.new}
+{:.new-title}
+> 4 Necessary Conditions
+> 
+> Since all 4 conditions are _necessary_ for deadlock to happen, <span style="color:#f7007f;"><b>removing</b></span> just one of them <span style="color:#f7007f;"><b>prevents</b></span> deadlock from happening at all.
 
 ## Resource Allocation Graph
 

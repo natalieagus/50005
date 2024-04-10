@@ -170,7 +170,7 @@ Now go up one level by typing `cd ..` and attempt to <span style="color:#f7007f;
 
 <img src="{{ site.baseurl }}/assets/images/lab2/6.png"  class="center_full no-invert"/>
 
-What happened?
+🔎 What happened?
 {:.highlight}
 
 ## File Permission
@@ -281,8 +281,10 @@ setup:
 
 The command `chmod u+s filename` sets the `SUID` bit of that `filename`.
 
-`sudo` is <span class="orange-bold">not</span> a built-in shell command. It is an external command provided by a package that is installed on most Unix and Linux-based systems. Built-in commands are part of the shell itself, like `cd` (change directory), `echo`, or `exit`, and they are executed directly by the shell without the need for calling an external program. You will be tasked to implement both built-in command and external command in **Programming Assignment 1**.
-{:.new}
+{:.new-title}
+> About `sudo`
+> 
+> `sudo` is <span class="orange-bold">not</span> a built-in shell command. It is an external command provided by a package that is installed on most Unix and Linux-based systems. Built-in commands are part of the shell itself, like `cd` (change directory), `echo`, or `exit`, and they are executed directly by the shell without the need for calling an external program. You will be tasked to implement both built-in command and external command in **Programming Assignment 1**.
 
 Running a command with `sudo` has no direct relationship with switching the CPU to Kernel/Machine mode. 
 {:.warning}
@@ -385,8 +387,10 @@ $6$jPSpZ3iS84semtGU$DLwyTleAM2Of8NzDrwwNTnuSamJlnTx6NlMgbhPT5L8POT/J1MSCPucOAp1Q
 
 We will soon exploit this bug with <span style="color:#f77729;"><b>symbolic link</b></span>.
 
-A <span style="color:#f77729;"><b>symbolic</b></span> link is a special kind of file that points to (reference) another file, much like a <span style="color:#f77729;"><b>shortcut</b></span> in Windows or a Macintosh alias. It contains a text string that is <span style="color:#f7007f;"><b>automatically interpreted</b></span> and followed by the operating system as a path to another file or directory. You will learn more about this in the later weeks of lecture.
-{:.new}
+{:.new-title}
+> Symbolic Link
+> 
+> A <span style="color:#f77729;"><b>symbolic</b></span> link is a special kind of file that points to (reference) another file, much like a <span style="color:#f77729;"><b>shortcut</b></span> in Windows or a Macintosh alias. It contains a text string that is <span style="color:#f7007f;"><b>automatically interpreted</b></span> and followed by the operating system as a path to another file or directory. You will learn more about this in the later weeks of lecture.
 
 ### Task 9
 

@@ -512,8 +512,10 @@ The algorithm goes as follows:
 <span style="color:#f77729;"><b>Common careless mistake:</b></span> A lot of people missed the “REPEAT step 2” instruction in step 3. Step 2 and 3 must be implemented in a `while` loop, as you <span style="color:#f7007f;"><b>might NOT</b></span> necessarily obtain i in <span style="color:#f77729;"><b>sequential</b></span> (increasing) order.
 {:.error}
 
-Why is that so? Does it mean we can have a <span style="color:#f7007f;"><b>safe</b></span> execution sequence e.g: `1,0,2` for a 3-process system? Yes of course! That simply means `P1` can be executed first, then `P0`, then `P2`. Think about what `i` represents (just arbitrary naming of consumer processes), of course a safe execution sequence has nothing to do with their naming!
-{:.new}
+{:.new-title}
+> Think!
+> 
+> Why is that so? Does it mean we can have a <span style="color:#f7007f;"><b>safe</b></span> execution sequence e.g: `1,0,2` for a 3-process system? Yes of course! That simply means `P1` can be executed first, then `P0`, then `P2`. Think about what `i` represents (just arbitrary naming of consumer processes), of course a safe execution sequence has nothing to do with their naming!
 
 ### Example
 

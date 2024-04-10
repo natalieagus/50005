@@ -83,16 +83,20 @@ Fill up the table below in edimension to key in your answer.
 
 Also, go to this [online ping test site](https://tools.keycdn.com/ping) and ping www.csail.mit.edu
 
-From whom do you receive replies? You can get the IP address and use the command `whois [ip_address]`
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> From whom do you receive replies? You can get the IP address and use the command `whois [ip_address]`
 
 ### Task 2
 
 `TASK 2:` Repeat the exercise from Task 1 using packet sizes of 512 and 1024 bytes. Record the <span style="color:#f77729;"><b>minimum</b></span>, <span style="color:#f77729;"><b>average</b></span>, and <span style="color:#f77729;"><b>maximum</b></span> round trip times for each of the packet sizes with a table like the previous task, and head to edimension to key in your answer.
 {:.task}
 
-<span style="color:#f77729;"><b>Why</b></span> are the minimum round-trip times to the same hosts _different_ when using 56, 512, and 1024–byte packets?
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> <span style="color:#f77729;"><b>Why</b></span> are the minimum round-trip times to the same hosts _different_ when using 56, 512, and 1024–byte packets?
 
 ## Unanswered pings
 
@@ -105,8 +109,10 @@ Each packet should have a size of 56 bytes, and there should be an interval of 5
 
 <span style="color:#f77729;"><b>Record</b></span> the percentage of the packets sent that resulted in a successful response for each host.
 
-What are some possible reasons why you may not have received a response? (Be sure to check the host in a <span style="color:#f77729;"><b>web browser</b></span>).
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> What are some possible reasons why you may not have received a response? (Be sure to check the host in a <span style="color:#f77729;"><b>web browser</b></span>).
 
 # Traceroute 
 
@@ -137,8 +143,10 @@ For more information about `traceroute`, you can look up its manual page by runn
 `TASK 4:` Find out how `traceroute` works. You will need this to answer several questions on eDimension.
 {:.task}
 
-*Hint:* `traceroute` sends a UDP packet to the destination host's (highly likely) _unusable_ port, with increasing TTL. The routers that reduces the TTL to 0 will send an ICMP TTL Exceeded reply. The end host will send an ICMP Port unreachable reply.
-{:.highlight}
+{:.new-title}
+> Hint  
+> 
+> `traceroute` sends a UDP packet to the destination host's (highly likely) _unusable_ port, with increasing TTL. The routers that reduces the TTL to 0 will send an ICMP TTL Exceeded reply. The end host will send an ICMP Port unreachable reply.
 
 ## Route Asymmetries
 
@@ -189,8 +197,10 @@ You can <span style="color:#f77729;"><b>check</b></span> who that remote host is
 <img src="{{ site.baseurl }}//docs/Labs/images/06-Lab6-Ping/2024-04-06-13-37-18.png"  class="center_full no-invert"/>
 
 
-Are the <span style="color:#f77729;"><b>same</b></span> routers traversed in both directions? If no, could you think of a reason why? 
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Are the <span style="color:#f77729;"><b>same</b></span> routers traversed in both directions? If no, could you think of a reason why? 
 
 # Summary 
 In this lab, we have explored two network utilities: ping and traceroute. This shall help you explain the effects of varying packet sizes on delays experienced. 

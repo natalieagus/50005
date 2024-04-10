@@ -93,8 +93,10 @@ We will address such synchronisation problems in the next chapter.
 
 ### Program: IPC without SVC? {#code-ipc-is-impossible-without-system-calls}
 
-Will the value of `shared_int` and `shared_float` be the same in the parent and child process?
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Will the value of `shared_int` and `shared_float` be the same in the parent and child process?
 
 ```cpp
 #include <sys/wait.h>

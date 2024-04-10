@@ -40,8 +40,10 @@ In order for us to be able to use CLI, we need to be familiar with their **comma
 * **Open** your terminal/command line window. 
 * The terminal window in front of you contains a `shell`, which enables you to use commands to access OS services.
 
-**Fun fact:** the term "terminal" in the context of operating systems and computing has its origins in the early days of computers. Initially, computers were large, centralized machines that were accessed by multiple users through individual terminal devices. These terminals were called "terminal" because they served as the endpoint (or the terminus) of a communication line between the user and the mainframe or minicomputer. Today, when we refer to the "terminal" on a computer, we're usually talking about a <span class="orange-bold">terminal emulator</span> program that provides a text-based interface to the operating system. Users can enter commands through a shell (like bash, zsh, or PowerShell), which are then executed by the operating system. The term "terminal" has thus evolved from its original meaning but retains the core concept of being the point of interaction between a user and the computer system.
-{:.new}
+{:.new-title}
+> Fun fact 
+> 
+> The term "terminal" in the context of operating systems and computing has its origins in the early days of computers. Initially, computers were large, centralized machines that were accessed by multiple users through individual terminal devices. These terminals were called "terminal" because they served as the endpoint (or the terminus) of a communication line between the user and the mainframe or minicomputer. Today, when we refer to the "terminal" on a computer, we're usually talking about a <span class="orange-bold">terminal emulator</span> program that provides a text-based interface to the operating system. Users can enter commands through a shell (like bash, zsh, or PowerShell), which are then executed by the operating system. The term "terminal" has thus evolved from its original meaning but retains the core concept of being the point of interaction between a user and the computer system.
 
 # Submission
 The total marks for this lab is **20**. Please answer the questionnaire provided on eDimension Week 1. You are to score any **20 points** for this lab.  

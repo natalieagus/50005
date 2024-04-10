@@ -444,8 +444,10 @@ Modify it to render a proper webpage. You can see how we handled `418` above and
 
 <img src="{{ site.baseurl }}//assets/images/lab4_3-error/2023-06-27-17-50-49.png"  class="center_full no-invert"/>
 
-`CHECKOFF`: Demonstrate the above feature to our TAs to obtain the checkoff mark for this lab.
-{:.highlight}
+{:.task-title}
+> ✅ Checkoff
+> 
+> Demonstrate the above feature to our TAs to obtain the checkoff mark for this lab.
 
 # HTTPS
 

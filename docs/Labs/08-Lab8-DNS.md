@@ -108,8 +108,10 @@ Key sections of a dig response include:
 1. `dig +domain=mit.edu ai`
 2. `dig +domain=mit.edu ai.`
 
-Ask yourself: what's the difference between the two commands? Look under the **Question** section of the `dig` response.
-{:.highlight}
+{:.highlight-title}
+> Ask yourself
+> 
+> What's the difference between the two commands? Look under the **Question** section of the `dig` response.
 
 ### Task 5
 
@@ -161,8 +163,10 @@ Answer the following questions for your own practice:
 `TASK 10:` Query your default DNS server for information about the same host without using recursion. How long did the query take?
 {:.task}
 
-Has the cache served its purpose? Think about the reason(s) why.
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Has the cache served its purpose? Think about the reason(s) why.
 
 ### Task 11
 
@@ -172,8 +176,10 @@ Has the cache served its purpose? Think about the reason(s) why.
 Repeat the query a few times after waiting for a few seconds. Also, search what each <span style="color:#f77729;"><b>query option</b></span> does. You might have such output:
 <img src="{{ site.baseurl }}/assets/images/nslab3/7.png"  class="center_seventy no-invert"/>
 
-Do you observe a _pattern_ in the `TTL` field? (e.g: `TTL` value is reducing or increasing, or wrapped around).
-{:.highlight}
+{:.highlight-title}
+> Question 
+> 
+> Do you observe a _pattern_ in the `TTL` field? (e.g: `TTL` value is reducing or increasing, or wrapped around).
 
 # Wireshark
 
@@ -183,8 +189,10 @@ Do you observe a _pattern_ in the `TTL` field? (e.g: `TTL` value is reducing or 
 
 Download this file: [dnsrealtrace.pcapng](https://drive.google.com/file/d/118Z03KnN7mNchsIs3G-DUdtf1zJV3NVI/view?usp=sharing). We will use it in this lab. It contains a <span style="color:#f77729;"><b>trace</b></span> of the packets sent and received when a web page is downloaded from a web server over the SUTD network.
 
-Fun fact: In the process of downloading the web page, DNS is used to find the IP address of the server.
-{:.highlight}
+{:.new-title}
+> Fun fact
+> 
+> In the process of downloading the web page, DNS is used to find the IP address of the server.
 
 If you prefer to download the file from the CLI, enter the command:
 
@@ -237,8 +245,10 @@ termshark -r dnsrealtrace.pcapng
 `TASK 12:` <span style="color:#f77729;"><b>Locate</b></span> the DNS query and response messages. Are they sent over `UDP` or `TCP`?
 {:.task}
 
-Which numbers are these DNS query packets? Hint: look under protocol <span style="color:#f77729;"><b>DNS</b></span>
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Which numbers are these DNS query packets? Hint: look under protocol <span style="color:#f77729;"><b>DNS</b></span>
 
 ### Task 13
 
@@ -255,8 +265,10 @@ Which numbers are these DNS query packets? Hint: look under protocol <span style
 `TASK 15:` Examine the <span style="color:#f77729;"><b>second</b></span> DNS query message in the Wireshark capture. What <span style="color:#f77729;"><b>type</b></span> of DNS query is it?
 {:.task}
 
-Does the query message contain any answers?
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Does the query message contain any answers?
 
 Then examine the second DNS **response** message.
 

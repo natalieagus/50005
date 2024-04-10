@@ -660,8 +660,10 @@ The print output is:
 message_digest_bytes b'\x03\r\xc1\xf96\xc3AZ\xff?3W\x165\x15\x19\r4z(\xe7X\xe1\xf7\x17\xd1{\xaeE5A\xc9'
 ```
 
-Is the length of `message_digest_bytes` always the same (32 bytes), regardless of the length of the input `data_bytes`?
-{:.highlight}
+{:.highlight-title}
+> Question
+> 
+> Is the length of `message_digest_bytes` always the same (32 bytes), regardless of the length of the input `data_bytes`?
 
 ### Task 3-(5-8)
 

@@ -399,8 +399,11 @@ Given that $\alpha$ is the <span style="color:#f77729;"><b>fraction</b></span> o
 
 $$\frac{1}{\alpha + \frac{1-\alpha}{N}}$$
 
-Ask yourself: what is the maximum speedup we can gain when $\alpha=30$% and $N$ is $\infty$?
-{:.highlight}
+{:.highlight-title}
+> Ask yourself
+> 
+> What is the maximum speedup we can gain when $\alpha=30$% and $N$ is $\infty$?
+
 
 # Appendix: Daemon Processes {#appendix-daemon-processes}
 
