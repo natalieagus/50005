@@ -182,7 +182,7 @@ Proper error checking is performed for critical operations like reading from std
     ...
 
     // in main()
-    execv(fullPath, cmd);
+    execv(full_path, cmd);
 
     // If execv returns, command execution has failed
     printf("Command %s not found\n", cmd[0]);
@@ -198,6 +198,8 @@ Dynamically allocates memory for each argument parsed in `read_command` using `s
   {
     free(cmd[i]);
   }
+  memset(cwd, '\0', sizeof(cwd)); // clear the cwd array
+
 ```
 
 ### Portability

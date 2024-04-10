@@ -160,6 +160,88 @@ The whole expression invokes the function just like a normal function call, but 
 > 
 > It's a common pattern in C for implementing simple <span class="orange-bold">polymorphism</span> or <span class="orange-bold">callback</span> functions, enabling the selection and invocation of different functions without using if-else or switch-case statements directly on the `commandIndex`. This approach is especially useful in command line interpreters or shells, where the set of commands and their corresponding functions can be neatly organized in arrays.
 
-# Sample Output
+# Sample Output and Implementation Notes
 
+{:.note}
+You may decorate your shell prompt in any way you like. 
+
+### cd
+Change the current working directory of the shell. You can print out your current working directory as part of the shell's prompt, or you can use the `ld` command to list the current directory. 
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-18-43-05.png"  class="center_full no-invert"/>
+
+### help 
+
+Print out all builtin commands in the shell. 
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-18-33-59.png"  class="center_full no-invert"/>
+
+### usage 
+
+Print a brief description on how to use each builtin command. Also prints a useful message if the command given is not part of CSEShell's builtin command.
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-18-38-36.png"  class="center_full no-invert"/>
+
+### env 
+
+Print all environment variables of this shell. This should inherit your system's environment variables too. 
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-18-54-50.png"  class="center_full no-invert"/>
+
+
+In C programming, environment variables can be accessed using the external variable `environ`. You may refer to this code snippet to get started: 
+
+```c 
+// This program will list all the environment variables available to it at runtime
+#include <stdio.h>
+
+// Declaration of the external variable 'environ'
+// environ is actually defined in the C standard library
+extern char **environ; 
+
+int main() {
+    char **env = environ; // Pointer to the array of environment strings
+    
+    while (*env) { // Loop until NULL pointer is encountered
+        printf("%s\n", *env); // Print the current environment variable
+        env++; // Move to the next environment variable
+    }
+    
+    return 0;
+}
+
+```
+
+{:.new-title}
+> `environ` 
+>
+> The `environ` variable in C is a pointer to an array of strings that represent the environment variables for the current process
+
+### setenv 
+
+The command `setenv KEY=VALUE` simply adds to the list of this process' environment variables. It should not print anything:
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-18-59-38.png"  class="center_full no-invert"/>
+
+However, you can check that it's indeed registered to this process' (the shell) environment variables by typing `env`. Your newly set env variable should be visible at the bottom of the list:
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-19-00-56.png"  class="center_full no-invert"/>
+
+{:.important}
+It's important <span class="orange-bold">not</span> to attempt to remove an environment variable by directly modifying the `environ` global variable or the strings to which it points. The correct way to modify the environment is through the use of functions like `setenv()`, `unsetenv()`, and `putenv()`.
+
+### unsetenv 
+
+This command `unset KEY` should delete any environment variable whose `KEY` matches any existing environment variables. You don't have to do anything if you attempt to unset an environment variable that doesn't exist. 
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-19-02-30.png"  class="center_full no-invert"/>
+
+{:.note}
+If you attempt to unset an environment variable that does not exist using `unsetenv()`, the function is considered to **succeed**, and it returns `0`. The absence of the specified environment variable means there's nothing to remove, which aligns with the desired outcome of `unsetenv()`: ensuring that the environment variable is not present in the environment of the current process.
+
+### exit 
+
+As it originally was, `exit` should gracefully quit the shell. 
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-19-05-56.png"  class="center_full no-invert"/>
 
