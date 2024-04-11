@@ -79,7 +79,7 @@ Your shell must be able to process it the first time it launches:
 <img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/04-rc-file/2024-04-11-10-04-33.png"  class="center_full no-invert"/>
 
 Notice how the console is **cleared**, and calendar is printed out before the first prompt is presented. We are also able to access system program `clear` residing at `/usr/bin`, which indicates that the `PATH` is registered correctly. We can also check that using the `env` command implemented earlier and inspect the value of the PATH variable. 
-<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/04-rc-file/2024-04-11-11-15-00.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/04-rc-file/2024-04-11-11-15-00.png"  class="center_seventy no-invert"/>
 
 If `.cseshellrc` contains invalid commands or empty spaces:
 
