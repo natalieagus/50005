@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /pa1/part1
-title: Running the starter shell
+title: Running the Starter Shell
 description: Introduction about running the starter code 
 parent: Programming Assignment 1
 grand_parent: Programming Assignment
