@@ -2,7 +2,7 @@
 layout: default
 permalink: /pa1/part4
 title: The .rc File
-description: Implement more shell .rc file 
+description: Implement shell .rc file processing
 parent: Programming Assignment 1
 grand_parent: Programming Assignment
 nav_order:  4
@@ -52,7 +52,10 @@ This `.cseshellrc` file allows for <span class="orange-bold">initial</span> setu
 
 ### Setting the PATH Environment Variable
 
-If a line in .cseshellrc starts with the keyword PATH, the rest of the line should be interpreted as the value for the PATH environment variable. This involves <span class="orange-bold">setting</span> the PATH environment variable of your shell process to the specified value in `.cseshellrc`. The PATH variable is crucial as it tells the shell where to look for the executables corresponding to the command names that are entered.
+If a line in .cseshellrc starts with the keyword PATH, the rest of the line should be interpreted as the value for the PATH environment variable. This involves <span class="orange-bold">setting</span> the PATH environment variable of your shell process to the specified value in `.cseshellrc`. The PATH variable is crucial as it tells the shell where to look for the executables corresponding to the command names that are entered. 
+
+With this, we are able to execute any other system program in the system, and not only those at `[PROJECT_DIR]/bin`. 
+{:.note}
 
 ### Executing Commands
 For all other lines that do not start with "PATH", the shell should treat these lines as commands to be executed. Each line represents a separate command that should be run by the shell, just as if it were typed in by the user at the command prompt. You will still need to execute this command in the child process. This allows for automatic execution of a series of commands at the startup of your shell, enabling tasks such as setting aliases, defining functions, or performing initial setup actions.

@@ -75,7 +75,7 @@ You can type `exit` to exit the shell:
 As the starter code only contains basic shell framework, it lacks the typical continuous loop for reading an processing commaands. The shell will terminate each time you enter a command. To type another command, you need to run `./cseshell` again. 
 
 {:.note}
-Note that only system programs at `./bin` is currently **accessible** by the shell, and hence only these three commands: `find`, `ld`, `ldr` are supported. 
+Note that only system programs at `[PROJECT_DIR]/bin` is currently **accessible** by the shell, and hence only these three commands: `find`, `ld`, `ldr` are supported. 
 
 If you try to type any command that's commonly available on your system's shell, such as `pwd`, you will be met with this error message: 
 

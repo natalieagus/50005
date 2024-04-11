@@ -31,13 +31,13 @@ Your first task is to implement more shell builtin commands. Right now, only `ex
       break;
 ```
 
-All other commands will trigger a `fork` and `execvp` of a system program in `./bin` whose name matches the first word of the command. 
+All other commands should trigger a `fork` and `execvp` of a system program in `[PROJECT_DIR]/bin` whose name matches the first word of the command. 
 {:.important}
 
 # Expand the Builtin Commands 
 
 {:.task}
-The shell must be expanded support the following 7 builtin commands: `cd, help, exit, usage, env, setenv, unsetenv`. 
+The shell must be expanded support the following 7 builtin commands: `cd, help, exit, usage, env, setenv, unsetenv`.  
 
 ## List the builtin commands 
 

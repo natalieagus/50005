@@ -24,7 +24,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 
 {:.task}
-<span class="orange-bold">Expand</span> the provided basic shell starter code into a more fully-featured shell that can handle multiple commands in a session and execute commands in <span class="orange-bold">separate processes</span> without terminating after a single command. 
+<span class="orange-bold">Expand</span> the provided basic shell starter code into a more fully-featured shell that can handle multiple commands in a session and execute commands in <span class="orange-bold">separate processes</span> without terminating after a single command. This feature <span class="orange-bold">must be present</span> for us to test other functionalities. Without this functionality, you will obtain <span class="orange-bold">zero marks</span> for your PA1.
 
 You need to implement a few key features: a continuous loop to read commands, forking to create child processes for command execution, and proper process management. 
 
@@ -38,6 +38,9 @@ The `main()` function should have the following **functionality**:
 - The parent process (shell) should **wait** (block) for the child to complete before continuing using [`waitpid`](https://linux.die.net/man/2/waitpid), and inspect child process' exit status
 - Handles process creation errors and command not found errors.
 - Cleans up by freeing allocated memory for the command arguments.
+
+{.error}
+Your shell should <span class="orange-bold">never</span> abruptly terminate, even when we give commands that don't exist or simply pressing enter multiple times. Your shell should also be able to execute commands as-given, it should <span class="orange-bold">not</span> accidentally access garbage input values from uncleared buffers in any way. Failure to do this results in 1% grade penalty. 
 
 
 ## Inspect Child Process Exit Status 
