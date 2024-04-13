@@ -9,4 +9,9 @@ nav_order: 6
 # 50.005 Programming Assignments
 {: .no_toc}
 
-Details TBC.
+There are two programming assignments in this course:
+1. Programming Assignment 1: CSEShell (10%)
+2. Programming Assignment 2: Secure FTP (8%)
+
+Both assignments will be graded on two aspects: your code and your live demo. Please refer to the course calendar for the demo schedule. You should also have downloaded the starter code from the Github Classroom link provided in the course handout.
+

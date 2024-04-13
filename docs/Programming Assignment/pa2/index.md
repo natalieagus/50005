@@ -11,4 +11,121 @@ nav_order: 2
 {: .no_toc}
 
 
-Details TBC. 
+
+In this assignment, you will implement a <span style="color:#f77729;"><b>secure</b></span> file upload application from a <span style="color:#f77729;"><b>client</b></span> to a secure file <span style="color:#f77729;"><b>server</b></span>. By _secure_, we mean three <span style="color:#f77729;"><b>fulfilled</b></span> requirements:
+
+1. First, before you do your upload as the client, you should <span style="color:#f7007f;"><b>authenticate</b></span> the identity of the file server so you won’t leak your data to random entities including criminals.
+2. Secondly, you want to ensure that you’re talking to a <span style="color:#f7007f;"><b>live</b></span> server too.
+3. Thirdly, while carrying out the upload you should be able to protect the <span style="color:#f7007f;"><b>confidentiality</b></span> of the data against eavesdropping by any curious adversaries.
+
+You may complete this assignment in <span style="color:#f7007f;"><b>groups of 2-3 pax</b></span>. Indicate your partner's name in the google sheet provided in our course handout.
+{:.important}
+
+There are <span style="color:#f7007f;"><b>three</b></span> parts of this assignment:
+
+1. Authentication Protocol (AP)
+2. Confidentiality Protocol 1 (CP1)
+3. Confidentiality Protocol 2 (CP2)
+
+These three parts form a strict Secure File Transfer protocol. You will be using <span class="orange-bold">socket programming</span> (from the first half of the term) and <span class="orange-bold">cryptography</span> knowledge (from the second half of the term) to complete this assignment. 
+
+{:.error-title}
+> Secure FTP != HTTPs
+>
+> Note that you will be implementing Secure FTP as your own **whole new application layer protocol**. In **NO WAY** we are relying on HTTP/s. 
+> 
+> There seem to be some ridiculous <span class="orange-bold">misunderstanding</span> from your seniors in the past years that this assignment requires knowledge on HTTP/s and/or DNS. It's totally two different protocol even though they are both applicaiton layer protocol. HTTPs is <span class="orange-bold">not</span> equal to our SFTP, they are <span class="orange-bold">unrelated</span>, as unrelated as 🍊 fruit is to 🌹 flower. 
+
+## System Requirements
+
+The starter code provided to you is written in Python. You need at least <span style="color:#f7007f;"><b>Python 3.10</b></span> to complete this assignment and the [`cryptography`](https://pypi.org/project/cryptography/) module.
+
+While you can develop in Python using any OS, you still need to ensure that your assignment runs on a <span style="color:#f7007f;"><b>POSIX-compliant OS</b></span> (path, etc is resolved).
+{:.warning}
+
+# Starter Code
+
+You should have joined the GitHub Classroom and obtain the starter code for this assignment there. The link can be found in the Course Calendar portion of your Course Handout.
+
+
+### PA2 Files
+
+This will result in a directory called `pa2`. Anything under `source/` is where you will work for this assignment. All files in the same level as `source/` are for <span style="color:#f77729;"><b>autograding purposes</b></span>. Do <span class="orange-bold">not</span> modify these.
+
+```
+pa2/
+  |-source/
+    |-auth/
+        |-cacsertificate.crt
+        |-generate_keys.py
+    |-files/
+        |-cbc.bmp
+        |-file.txt
+        |-image.ppm
+        |-jsim.jar
+        |-player.psd
+        |-squeak.wav
+        |-vscodejsim.mp4
+        |-week9.html
+    |-recv_files/
+    |-recv_files_enc/
+    |-send_files_enc/
+    |-ClientWithoutSecurity.py
+    |-ServerWithoutSecurity.py
+  |-autograde.py
+  |-cleanup.sh
+  |-input1
+  |-input2
+  |-output_client
+  |-output_server
+  |-result
+  |-result_enc
+  |-result_plain
+```
+
+
+### Run `./cleanup.sh`
+
+`source/recv_files`, `source/recv_files_enc`, and `source/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./cleanup.sh` in `pa2` as your current working directory. 
+
+You should see exactly the above file structure afterwards. `./cleanup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
+
+
+
+# Test the Starter Code
+
+### Using the same machine
+The starter code provided to you implements a <span style="color:#f77729;"><b>simple</b></span>, non-secure file transfer protocol. We will explain in detail what the protocol is. For now, let's just ensure that everything runs normally.
+
+Change your current working directory to `[PROJECT_DIR]/source/`. This is where we assume your working directory is <span style="color:#f77729;"><b>unless otherwise stated.</b></span>
+
+Run `python3 ServerWithoutSecurity.py`, then run `python3 ClientWithoutSecurity.py` in two separate shell sessions.
+{:.highlight}
+
+You can type in the filename you want to send, e.g `files/image.ppm` from the Client's window, and the server will receive it and store it under `source/recv_files` directory.
+
+> Remember that the current working directory of the Client is `source/`
+
+You can repeat the above steps multiple times for each file you want to send to the server. If the client would like to close connection to the server, key in `-1`.
+
+The screenshot below shows how client process can send files to the server process, when both are hosted in the same computer:
+
+<img src="{{ site.baseurl }}/assets/images/pa2/4.png"  class="center_full no-invert"/>
+
+### Using different machines
+You can also host the Server file in another computer:
+
+```sh 
+python3 ServerWithoutSecurity.py [port] [server-ip-address]
+```
+
+The client computer can connect to it using the command:
+
+```sh
+python3 ClientWithoutSecurity.py [port] [server-ip-address]
+```
+
+{:.note}
+To get this to work, you most probably need to use <span style="color:#f77729;"><b>private</b></span> ip address instead of public one, unless you have set a static public IP. You might need to enable <span class="orange-bold">port forwarding</span> if you use a public IP, but if you aren't sure what you're doing then _dont_, you might expose yourself to a security vulnerability. If this is all to complicated for you, _skip_. You can totally just do the assignment in the same computer
+
+Consult the [Debug Notes](https://natalieagus.github.io/50005/pa2/debug-notes) page should you find any difficulties running the starter code. 
