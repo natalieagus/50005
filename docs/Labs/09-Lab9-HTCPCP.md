@@ -40,7 +40,7 @@ You are required to finish the lab questionnaire on eDimension and complete one 
 
 The Hyper Text Coffee Pot Control Protocol (**HTCPCP**) is a whimsical communication protocol for controlling, monitoring, and diagnosing coffee pots that is **based** on [HTTP](https://www.rfc-editor.org/rfc/rfc2616). It is specified in [RFC 2324](https://datatracker.ietf.org/doc/html/rfc2324), published on 1 April 1998 as part of an April Fools prank. In this lab, we are not going to control a real coffee pot (although it is [possible](https://github.com/HyperTextCoffeePot/HyperTextCoffeePot)) but a **virtual** one via the HTCPCP protocol.
 
-This **exploratory** lab is created to give you some kind of understanding on how to deploy fullstack (sort of) application that can be accessible via the network. You will then deploy both the web application and the HTCPCP server and sniff the packets exchanged using Wireshark.
+This lab is created to give you some kind of understanding on how to deploy fullstack (sort of) application that can be accessible via the network. You will then deploy both the web application and the HTCPCP server and sniff the packets exchanged using Wireshark.
 
 > [The base code for project was originally taken from here](https://jamesg.blog/2021/11/18/hypertext-coffee-pot/), refactored, styled and adapted with more functionalities added to suit our learning experience in the lab. Special thanks to CSE TAs Cassie and Ryan for the inspiration, ideas, and contribution to create this lab.
 
@@ -506,7 +506,7 @@ You will be prompted to key in some details as such, fill it with whatever you w
 You will have two more files in the root folder of the repository: `cert.pem` and `key.pem`. Simply restart the webapp using `-custom` option:
 
 ```
-python3 webapp/webapp_coffee.py -https -custom
+python webapp/webapp_coffee.py -https -custom
 ```
 
 When you inspect the certificate on your browser, you will notice that it will show the details you keyed in earlier:
