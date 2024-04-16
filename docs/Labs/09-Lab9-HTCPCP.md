@@ -34,7 +34,7 @@ At the end of this lab exercise, you should be able to:
 
 ## Checkoff and Lab Questionnaire
 
-You are required to finish the lab questionnaire on eDimension and complete one `CHECKOFF` with our TAs by **next week**, during your PA2 checkoff slots. Simply show that your bsim simulates the desirable checkoff outcome (binary grading, either you complete it or you don't) of the lab. Read along to find out more.
+You are required to finish the lab questionnaire on eDimension and complete one `CHECKOFF` with our TAs by **next week**, during your PA2 checkoff slots. Simply show that your app simulates the desirable checkoff outcome (binary grading, either you complete it or you don't). Read along to find out more.
 
 # The Hyper Text Coffee ☕️ Pot Control Protocol
 
@@ -450,7 +450,7 @@ Modify it to render a proper webpage. You can see how we handled `418` above and
 {:.task-title}
 > ✅ Checkoff
 > 
-> Demonstrate the above feature to our TAs to obtain the checkoff mark for this lab.
+> Demonstrate the features implemented in Task 1 and Task 7 to our TAs to obtain the checkoff mark for this lab.
 
 # HTTPS
 
