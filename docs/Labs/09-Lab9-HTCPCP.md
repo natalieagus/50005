@@ -112,7 +112,7 @@ When you access "localhost" in a web browser or any other network application on
 
 `127.0.0.1` is the loopback IP address assigned to the `localhost`. It is part of the **reserved** IP address block for loopback addresses. When you use `127.0.0.1` directly, you are specifically referring to the loopback interface's IP address. It is the most commonly used loopback address in IPv4.
 
-Since `localhost` is just a hostname, you can change them to be whatever you want. You can change the file `/etc/hosts`:
+Since `localhost` is just a hostname, you can change them to be whatever you want. You can do this by editing `/etc/hosts`:
 
 <img src="{{ site.baseurl }}//assets/images/lab4_1-intro/2023-06-08-10-54-42.png"  class="center_full no-invert"/>
 
@@ -184,7 +184,8 @@ The HTCPCP response header `headers_to_send` should contain the following <span 
 
 Additionally, **each line** in the header should be separated by line break: `\r\n` and each  field name followed by a colon (:) and a leading whitespace.
 
-Here's an example for `HTTP` response message:
+Here's an example for `HTTP` response message. This is for your **reference** only, adapt it for `HTCPCP`: 
+
 ```html
 HTTP/1.1 200 OK
 Content-Type: text/html
@@ -210,11 +211,13 @@ Date: Tue, 09 Apr 2024 18:37:30
         final_response = ""
 ```
 
-Construct `final_response` string. It should contain appropriate HTCPCP headers with error code [406](https://datatracker.ietf.org/doc/html/rfc2324#section-2.3.1) because the client requested something unacceptable.  You should write a list of accepted addition as the response body. You can obtain this using: `list(ACCEPTED_ADDITIONS.keys())`.   
+Construct `final_response` string to complete this `TODO`. It should contain appropriate HTCPCP headers with error code [406](https://datatracker.ietf.org/doc/html/rfc2324#section-2.3.1) because the client requested something unacceptable.  You should write a list of accepted addition as the response body. You can obtain this using: `list(ACCEPTED_ADDITIONS.keys())`. Don't forget to format the response properly like you did in the previous `TODO`.
 
 #### Complete message request checking 
 
-This method is called once at `main()` to ensure that the request format is valid and follows a proper `HTCPCP` protocol.  Complete it. If all checks pass, this method should return `True`, otherwise, it should call `send_error` which sends the HTCPCP response back to the client. The first check is done for you, where we check that the message contains accepted coffee schemes:
+This method is called once at `main()` to ensure that the request format is valid and follows a proper `HTCPCP` protocol.  Complete its implementation. 
+
+If all checks pass, this method should return `True`, otherwise, it should call `send_error` which sends the appropriate HTCPCP response back to the client. The first check is done for you, where we check that the message contains accepted coffee schemes:
 
 ```py
 def ensure_request_is_valid(url, content_type, method, connection, requested_pot,
