@@ -265,6 +265,10 @@ An API helps users make appropriate system calls by providing convenient wrapper
 
 For most programming languages, the <span style="color:#f77729;"><b>run-time support system</b></span> (a set of functions built into libraries included with a compiler) provides a system call <span style="color:#f77729;"><b>interface</b></span> that serves as the link to system calls made available by the operating system. The system-call <span style="color:#f77729;"><b>interface</b></span> intercepts function calls in the API and invokes the necessary system calls within the operating system.
 
+*Hopefully after understanding this part, you won't say stuffs like this at work:*
+
+<img src="{{ site.baseurl }}//docs/OS/images/03-os-services/2024-04-24-16-12-25.png"  class="center_fifty no-invert"/>
+
 ### System Call Number
 
 Typically, a <span style="color:#f77729;"><b>number</b></span> is associated with each system call, and the system-call interface maintains a table indexed according to these numbers. For example, Linux system call tables and its associated numbers can be found [here](https://github.com/torvalds/linux/blob/master/arch/x86/entry/syscalls/syscall_64.tbl) and FreeBSD Kernel System call table can be found [here](https://opensource.apple.com/source/xnu/xnu-1504.3.12/bsd/kern/syscalls.master).

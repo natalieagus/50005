@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /ns/part1
-title: Template 
-description: Template
+permalink: /ns/template
+title: Template
+description: Template 
 parent: Network Security
-nav_order:  1
+nav_order:  100
 ---
 
 
@@ -19,5 +19,45 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
 
-# Template 
+# Title
 {: .no_toc}
+
+{: .note}
+Test note 
+
+{:.task}
+Test task
+
+{: .new} 
+Test new 
+
+{:.info }
+Test info 
+
+{: .highlight}
+Just highlight 
+
+{: .warning}
+Test warning 
+
+{: .error}
+Test error
+
+{: .important}
+Test impt
+
+
+
+Test [text here to see if it changes color.](https://google.com)
+
+testing `inline code here`, seeing if it matches `color`, these are numbers `5`, `6`. 
+
+```java
+Class Test{ 
+    public static void main(int args[]){
+        System.out.println("Hello World");
+    }
+}
+```
+
+
