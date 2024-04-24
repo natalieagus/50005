@@ -485,4 +485,25 @@ We see that at each layer, a packet has two types of fields:
 {:.important}
 With layering, header vs. payload **size** is now <span class="orange-bold">relative</span> to the layer; e.g., the transport layer’s data (header + payload) becomes the network layer’s payload. 
 
+# Appendix
+## Connecting Modem, Router, Switches, and End Hosts 
+
+<img src="{{ site.baseurl }}//docs/NS/images/01-network-basics/2024-04-24-17-53-03.png"  class="center_seventy"/>
+
+<span class="orange-bold">Modem</span> (modulator demodulator) is the device that’s connected to the ISP (not drawn above), and it is used to connect your ISP using a phone line (for DSL), cable connection or fiber (ONT). Its job is mainly to convert analog to digital signals . A modem has a single coaxial port for the cable connection from your ISP and a single ethernet port to link the Internet port on your router. Recall when you subscribe to an ISP, e.g:  Starhub, Singtel, etc you will be given these modems that are supported by the ISP. 
+
+<span class="orange-bold">Router</span> is what you can use to route packages towards devices within your network system. It resolves IP addresses and route packages accordingly to end hosts within your network while modem does not. If your network system consists of more than one devices, your router will give each device a different internal IP addresses, for example, by connecting to SUTD_Wifi, an end host is given the internal IP: 10.19.24.59
+
+<img src="{{ site.baseurl }}//docs/NS/images/01-network-basics/2024-04-24-17-53-38.png"  class="center_fifty no-invert"/>
+
+Other hosts connected to this router will have a similar IP address, e.g: `10.19.24.63`. All devices connected to the same modem have the same <span class="orange-bold">public</span> IP to the outside world. 
+
+Finally, <span class="orange-bold">switches</span> are used when you want to connect multiple devices to a router. Modern routers also include switches, e.g: wireless routers allow multiple devices to connect to it. 
+
+Unlike routers, a switch doesn’t solve IP and try to find a route.  The switch simply maps multiple MAC addresses to a port. It has some sort of dynamic look-up table and it just forwards packets where it is asked to forward to, based on MAC address.
+
+{:.info}
+We do not dive too deep into details on how routers and switches work in this course. You can learn more about how switches and routers work in specialised Computer Network courses. 
+
+
 [^1]: Defined as the number of bits that a link can support per second.
