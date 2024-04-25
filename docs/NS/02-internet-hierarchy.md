@@ -4,7 +4,7 @@ permalink: /ns/02-internet-hierarchy
 title: The Internet Hierarchy
 description: Basics of internet hierarchy
 parent: Network Security
-nav_order: 1
+nav_order: 2
 ---
 
 
