@@ -20,6 +20,17 @@ Singapore University of Technology and Design
 
 # Processes and Threads Synchronization
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain **issues** of multiprogramming and concurrency: the race condition
+> * Describe and explain the concept of **critical section**
+> * Discuss how **Peterson’s** solution solve the critical section problem and prove its correctness
+> * Explain how **synchronisation hardware** works in general
+> * Describe and explain the concepts of **mutex** and **condition synchronization**
+> * Explain other critical section solutions that do not require busy waiting: **semaphores**
+> * Explain how semaphores can be used as a **mutex** and **condition** synchronization
+
 
 ## The Producer Consumer Problem
 

@@ -22,6 +22,17 @@ Singapore University of Technology and Design
 # Network Basics
 {: .no_toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+> 
+> * Explain what is a **network** and the internet
+> * Discuss **challenges** for the internet
+> * Explain what **protocol** means
+> * Explain the **difference** and pros/cons between **time** domain multiplexing, **frequency** domain multiplexing, and **packet switching**
+> * Explain the concept of **priority inversion** and **emergent behavior**
+> * Explain the internet protocol stack and each of the **5-layer OSI model**
+
+
 Computer Networking is the practice of connecting computers together to enable communication and data exchange between them. There’s two ways to define what the network is, but there’s no authoritative formal answer. 
 
 There are two *views* to computer networking: the nuts and bolts view and the service view.  Each view help to *conceptualize* different aspects of how networks are built and function.

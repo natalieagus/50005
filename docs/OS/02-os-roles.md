@@ -20,6 +20,16 @@ Singapore University of Technology and Design
 # Roles of Operating System Kernel {#roles-of-an-operating-system-kernel}
 {: .no_toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain the **roles** of an operating system as a resource allocator, controller of program execution, and a guarantee of system security.
+> * Describe the kernel's function in **controlling** and **coordinating** hardware and I/O device usage among applications.
+> * Understand **interrupt-driven I/O operations**, including the mechanisms of hardware and software interrupts.
+> * Differentiate between **vectored** and **polled** interrupt systems and their appropriate use cases.
+> * Explore how the kernel manages multiple **simultaneous** interrupts and prioritizes their handling.
+> * Discuss the i**mplications of system calls** and software interrupts for process execution and resource management.
+
 There are several purposes of an operating system: as a <span style="color:#f77729;"><b>resource</b></span> allocator, <span style="color:#f77729;"><b>controls</b></span> program execution, and guarantees <span style="color:#f77729;"><b>security</b></span> in the computer system.
 
 The kernel <span style="color:#f77729;"><b>controls</b></span> and <span style="color:#f77729;"><b>coordinates</b></span> the use of hardware and I/O devices among various user applications. Examples of I/O devices include mouse, keyboard, graphics card, disk, network cards, among many others.
@@ -210,24 +220,7 @@ A kernel can be reentrant but not preemptive: That is if each process voluntaril
 **Fun fact:** Linux Kernel is reentrant and preemptive.
 {:.info}
 
-# Other Info about Interrupts
-## Timed Interrupts {#timed-interrupts}
 
-We must ensure that the kernel, as a <span style="color:#f7007f;"><b>resource allocator</b></span> maintains <span style="color:#f77729;"><b>control</b></span> over the CPU. We cannot allow a user program to get stuck in an infinite loop and never return control to the OS. We also cannot trust a user program to voluntarily return control to the OS. To ensure that no user program can occupy a CPU for indefinitely, a computer system comes with a (<span style="color:#f77729;"><b>hardware</b></span>)-based timer. A timer can be set to invoke the hardware interrupt line so that a running user program may transfer control to the kernel after a specified period. Typically, a <span style="color:#f7007f;"><b>scheduler</b></span> will be invoked each time the timer interrupt occurs.
-
-In the hardware, a timer is generally implemented by a **fixed-rate clock** and a counter. The kernel may set the starting value of the counter, just like how you implement a custom clock in your 1D 50.002 project, for instance, here's one simple steps describing how timed interrupts work:
-
-1. Every time the sytem clock ticks, a counter with some starting value `N` is decremented.
-2. When the counter reaches a certain value, the timer can be hardware triggered to set the <span style="color:#f77729;"><b>interrupt request line</b></span>
-
-For instance, we can have a 10-bit counter with a 1-ms clock can be set to trigger interrupts at intervals anywhere from 1 ms to 1,024 ms, with precision of 1 ms. Let's say we decide that every 512 ms, timed interrupt will occur, then we can say that the size of a **quantum** (time slice) for each process is 512ms. We can give multiple quantums (quanta) for a user process.
-
-When timed interrupt happens, this transfers control over to the interrupt handler, and the following routine is triggered:
-
-- <span style="color:#f77729;"><b>Save</b></span> the current program's state
-- Then call the <span style="color:#f77729;"><b>scheduler</b></span> to perform context switching
-- The scheduler may then reset the counter before restoring the next process to be executed in the CPU. This ensures that a proper timed interrupt can occur in the future.
-- Note that a scheduler may allocate <span style="color:#f77729;"><b>arbitrary</b></span> amount of time for a process to run, e.g: a process may be allocated a longer time slot than the other. We will learn more about process management in Week 3.
 
 ## Exceptions {#exceptions}
 
@@ -490,6 +483,24 @@ There are two types of clustering:
 
 <hr>
 
+# Appendix 3: Other Info about Interrupts
+## Timed Interrupts {#timed-interrupts}
+
+We must ensure that the kernel, as a <span style="color:#f7007f;"><b>resource allocator</b></span> maintains <span style="color:#f77729;"><b>control</b></span> over the CPU. We cannot allow a user program to get stuck in an infinite loop and never return control to the OS. We also cannot trust a user program to voluntarily return control to the OS. To ensure that no user program can occupy a CPU for indefinitely, a computer system comes with a (<span style="color:#f77729;"><b>hardware</b></span>)-based timer. A timer can be set to invoke the hardware interrupt line so that a running user program may transfer control to the kernel after a specified period. Typically, a <span style="color:#f7007f;"><b>scheduler</b></span> will be invoked each time the timer interrupt occurs.
+
+In the hardware, a timer is generally implemented by a **fixed-rate clock** and a counter. The kernel may set the starting value of the counter, just like how you implement a custom clock in your 1D 50.002 project, for instance, here's one simple steps describing how timed interrupts work:
+
+1. Every time the sytem clock ticks, a counter with some starting value `N` is decremented.
+2. When the counter reaches a certain value, the timer can be hardware triggered to set the <span style="color:#f77729;"><b>interrupt request line</b></span>
+
+For instance, we can have a 10-bit counter with a 1-ms clock can be set to trigger interrupts at intervals anywhere from 1 ms to 1,024 ms, with precision of 1 ms. Let's say we decide that every 512 ms, timed interrupt will occur, then we can say that the size of a **quantum** (time slice) for each process is 512ms. We can give multiple quantums (quanta) for a user process.
+
+When timed interrupt happens, this transfers control over to the interrupt handler, and the following routine is triggered:
+
+- <span style="color:#f77729;"><b>Save</b></span> the current program's state
+- Then call the <span style="color:#f77729;"><b>scheduler</b></span> to perform context switching
+- The scheduler may then reset the counter before restoring the next process to be executed in the CPU. This ensures that a proper timed interrupt can occur in the future.
+- Note that a scheduler may allocate <span style="color:#f77729;"><b>arbitrary</b></span> amount of time for a process to run, e.g: a process may be allocated a longer time slot than the other. We will learn more about process management in Week 3.
 
 [^5]: Interrupt-driven I/O is fine for moving small amounts of data but can produce high overhead when used for bulk data movement such as disk I/O. To solve this problem, direct memory access (DMA) is used. After setting up buffers, pointers, and counters for the I/O device, the device controller transfers an entire block of data directly to or from its own buffer storage to memory, with no intervention by the CPU.
 [^6]: The CPU cache is a hardware cache: performing optimization that’s unrelated to the functionality of the software. It handles each and every access between CPU cache and main memory as well. They need to work fast, too fast to be under software control, and _are entirely built into the hardware._

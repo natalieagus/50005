@@ -22,6 +22,17 @@ Singapore University of Technology and Design
 # The Internet Hierarchy 
 {: .no_toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+> 
+> * Explain why **layering** is important in designing internet structure
+> * **Draw** the internet structure
+> * Define the levels of internet hierarchy and explain the roles of different types of Internet Service Providers (ISPs) such as access ISPs, regional/national ISPs, and tier-1/global ISPs.
+> * Understand the **function** and **importance** of Internet Exchange Points (**IXPs**) and how they facilitate cost-effective and direct traffic exchange between ISPs.
+> * Describe the structure and operational mechanism of Content Delivery Networks (**CDNs**) and their impact on internet speed and efficiency.
+> * Explore the concept of Point of Presence (**PoP**) and its role in connecting customer ISPs to provider ISPs, including its benefits such as reduced latency and improved bandwidth.
+> * Examine the **reasons** behind the establishment of an internet hierarchy, including scalability, competition, multi-homing, and the challenges of managing extensive network connections.
+  
 The internet hierarchy refers to the structured levels of Internet Service Providers (ISPs) that facilitate global internet connectivity, organized into tiers based on their size, reach, and the nature of their network agreements.
 
 It is the network of **networks**. The internet service providers (ISPs) are separated in terms of hierarchy: global ISP, national ISP / regional ISP, access ISP.

@@ -20,6 +20,17 @@ Singapore University of Technology and Design
 
 # Threads
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain the **concept of threads** and its difference with process
+> * Describe two **types** of threads: **user** and **kernels** and their models and their applications
+> * Understand how threads are **structured** within a process.
+> * Explore the **characteristics** of threads, including thread ID, program counter, register set, and stack.
+> * Understand the concept of **multithreading** and its advantages such as responsiveness, resource sharing, and efficiency.
+> * Learn about the **types of thread executions** and their impact on performance in multiprocessor architectures.
+> * Discuss the **differences** and **practical** uses of user-level and kernel-level threads.
+
 Threads is defined as a <span style="color:#f77729;"><b>segment</b></span> of a process. A process has <span style="color:#f7007f;"><b>at least</b></span> one thread.
 {:.note}
 

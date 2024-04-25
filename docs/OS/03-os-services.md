@@ -22,6 +22,17 @@ Singapore University of Technology and Design
 # Operating System as a Service
 {:.no-toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain a **variety** of OS services and their applications
+> * Describe ways on how to **access** OS services
+> * Explain the difference between making **direct system calls vs through API**
+> * Describe the possible ways to pass **parameters** using system calls
+> * Describe and explain different **types** of system calls and their purposes
+> * Explain the **difference** between user programs and system programs
+> * Describe and explain different **types** of system programs and their **purposes**
+> * **Familiarize** with both graphical and command-line interfaces of operating systems and how they facilitate user interaction through system calls and applications
 
 We learned about the overview of OS role in the past week. The kernel is just one part of an operating system. The entire operating system software itself is a much <span style="color:#f77729;"><b>bigger</b></span> one, and it provides various apps and functionalities to <span style="color:#f77729;"><b>help users use the computer system</b></span>.
 

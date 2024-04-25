@@ -20,6 +20,16 @@ Singapore University of Technology and Design
 
 # UNIX File System
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain **what** is a file system and the file system **namespace**
+> * Explain file **format**, **permission**, and **type** and how they are used in the file system
+> * Describe and explain possible **operations** on file
+> * Describe the concepts and the difference between file data and **metadata** (Attributes)
+> * Learn the concepts of **file descriptors** and file system data structure, i.e: how the OS stores files in the memory
+> * Explain **UNIX file system data structures** and mapping between table entries
+
 ## File
 A file is a <span style="color:#f77729;"><b>named</b></span> collection of related information that is stored on the secondary storage. It acts as a <span style="color:#f77729;"><b>logical</b></span> storage unit in the computer, defined by the operating system. In layman terms, they are a <span style="color:#f77729;"><b>group of data bytes</b></span> which are stored neatly in a known location with a unique name (<span style="color:#f77729;"><b>path</b></span>).
 {:.info}

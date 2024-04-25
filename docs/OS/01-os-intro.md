@@ -20,6 +20,17 @@ Singapore University of Technology and Design
 # Introduction to Operating System
 {: .no_toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Define the operating system and its function as an **intermediary** between users and computer hardware.
+> * Describe the main **components** of a computer system including hardware, the operating system, application programs, and users.
+> * Explain the concept of the operating system as a **resource allocator and coordinator, control program for execution, and enforcer of security**.
+> * Understand the roles of **different parts** of the operating system: the kernel, system programs, and user programs.
+> * Identify the processes involved in **booting** a computer, including the role of the BIOS and the loading of the operating system.
+> * Recognize the structure of the **memory hierarchy** in a computer system and its significance in the operation of the OS.
+> * **Describe the dual-mode operation** of the kernel and its implications for system security and program execution.
+
 An operating system (OS) is a program that **manages computer hardware**.
 {:.info}
 

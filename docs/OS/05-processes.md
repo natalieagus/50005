@@ -18,7 +18,19 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
 
-# Processes 
+# Processes
+
+{:.highlight-title}
+> Detailed Learning Objectives
+> 
+> * Define a process as a d**ynamic** execution instance of a program, which includes not just the program code but also a dedicated address space, register contents, and a variety of other execution contexts.
+> * **Distinguish** between a process and a program, emphasizing the static nature of a program as code and data on disk, and the dynamic, executing nature of a process.
+> * Understand the components of a process's **context**, including its text section, program counter, registers, stack, data, and heap.
+> * Explain how a single program can be executed multiple times **simultaneously**, each execution constituting a separate process.
+> * Describe how processes are **managed** and **scheduled** within an operating system, including their life cycle from creation to termination.
+> * Explore the **mechanisms** that **support** process concurrency and protection, ensuring that multiple processes can execute simultaneously without interfering with each other.
+> * Discuss how processes are** managed through the kernel's scheduler**, emphasizing that the scheduler is part of the kernel and operates in kernel mode, not as a separate process.
+
 ## Process vs Program {#the-concept-of-process-vs-program}
 
 A <span style="color:#f77729;"><b>process</b></span> is formally defined as a program in execution. Process is an active, <span style="color:#f7007f;"><b>dynamic</b></span> entity -- i.e: it changes state overtime during execution, while a program is a passive, <span style="color:#f7007f;"><b>static</b></span> entity. A program is the code and static data as they exist on the disk. A process is *so much more* than just a program code (text or instruction section)

@@ -9,7 +9,7 @@ nav_order: 3
 # Operating System
 {: .no_toc}
 
-This section contains the syllabus and materials for the first part of 50.005. You can find detailed Weekly learning objectives below. 
+This section contains the syllabus and materials for the first part of 50.005. You can find Weekly learning objectives below, and an even more comprehensive objectives in each of the notes. 
 
 {: .note-title}
 > Textbook

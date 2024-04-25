@@ -20,6 +20,18 @@ Singapore University of Technology and Design
 
 # Deadlock
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain the **problem of deadlock**
+> * Describe **necessary conditions** for deadlock
+> * Draw and explain **resource allocation graphs**
+> * Discuss ways to **handle** deadlocks through prevention, detection, and recovery
+> * Describe and explain deadlock avoidance algorithm: **Banker’s algorithm**
+> * Describe and explain deadlock **detection** algorithm
+> * Explain the **difference** between deadlock avoidance algorithm and deadlock detection algorithm
+
+
 ## Finite System Resources
 
 A system consists of a <span style="color:#f7007f;"><b>finite</b></span> number of resources to be distributed among a number of <span style="color:#f7007f;"><b>competing processes</b></span>. Each type of resource can have several finite instances. Some example include:

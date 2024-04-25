@@ -20,6 +20,16 @@ Singapore University of Technology and Design
 
 # Synchronization in Java 
 
+{:.highlight-title}
+> Detailed Learning Objectives
+> 
+> * Understand **Java's synchronization idioms**, including **synchronized** **methods** and statements, and how they are implemented using **intrinsic** locks associated with objects.
+> * Learn the concept of **mutex** locks in Java, how they're used to **control access** to object methods, and the differences between entry sets and wait sets.
+> * Explore **static** synchronization in Java using class-level locks and their implications for static methods.
+> * Discuss Java's c**ondition synchronization mechanisms**, including the use of wait(), notify(), and notifyAll() methods within synchronized blocks.
+> * Gain familiarity with Java's **reentrant** locks and how they ensure that locks are safely re-acquired after being released.
+> * **Analyze scenarios** involving condition synchronization and understand the importance of using loops with wait() calls to handle spurious and extraneous wake-ups.
+> * Review **practical examples** of using synchronization techniques to manage complex conditions and thread interactions in concurrent Java applications.
 
 ## Java Object Mutex Lock
 

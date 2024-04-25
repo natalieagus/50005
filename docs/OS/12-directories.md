@@ -18,7 +18,20 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2024)**
 
-# UNIX Directories 
+# UNIX Directories
+
+{:.highlight-title}
+> Detailed Learning Objectives
+> 
+> * Understand the basic concept of directories as a file system structure for organizing files within a structured namespace.
+> * Learn how directories are **implemented** in UNIX-like systems, including their role in mapping filenames to inode numbers.
+> * Comprehend the s**pecial permissions** associated with directories, particularly the significance of the execute (x) permission for accessing inodes within directories.
+> * Explore the **functions** of directories in managing file metadata, facilitating file searches, and maintaining a hierarchical file organization.
+> * Describe the **concepts** of various **directory structures** and how directory works: e.g tree structures (acyclic and cyclic)
+> * Grasp the **distinction** between different directory structures, such as single-level, two-level, tree-structured, and graph directory structures, and their respective benefits and limitations.
+> * Examine the **creation** and use of links within the file system, including hard links and symbolic links, and their impact on file management and system organization.
+> * **Analyze** advanced topics like acyclic and general graph directory structures, their traversal, and challenges associated with cyclic directory references.
+
 <span style="color:#f77729;"><b>Directories</b></span> are the file system cataloguing structure that contains metadata (references) to <span style="color:#f7007f;"><b>organize</b></span> files in a <span style="color:#f7007f;"><b>structured name space</b></span> (path). In computing, a namespace is a <span style="color:#f77729;"><b>set of symbols</b></span> that are used to organize objects of various kinds, so that these objects may be referred to by <span style="color:#f77729;"><b>name</b></span>.
 {:.info}
 

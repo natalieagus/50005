@@ -20,6 +20,16 @@ Singapore University of Technology and Design
 
 # Interprocess Communication 
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain how interprocess communication (**IPC**) works
+> * Understand the distinction between **independent** and **cooperating** processes in an operating system.
+> * Recognize the **reasons** for process cooperation, such as information sharing, speeding up computations, and modular programming.
+> * Learn about Interprocess Communication (IPC) **mechanisms** provided by the operating system to facilitate process cooperation.
+> * Explore the implementation and use of **shared** memory and message **passing** as key IPC techniques.
+
+
 Processes that are concurrently executing in the CPU may either be <span style="color:#ff4500;"><b><span class="orange-bold">independent</span></b></span> processes or <span style="color:#ff4500;"><b><span class="orange-bold">cooperating</span></b></span> processes:
 
 - By default, processes are independent and isolated from one another (runs on its own virtual machine)

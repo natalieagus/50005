@@ -22,6 +22,16 @@ Singapore University of Technology and Design
 # Network Performance 
 {: .no_toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+> 
+> * Describe and explain **sources** of packet delay through the network
+> * Explain the **difference** between **propagation** delay and **transmission** delay
+> * Describe the **causes** of processing delay
+> * Compute **total nodal delays**
+> * Compute **effective** throughput between two end systems
+> * Explain how **traceroute** and **ping** works, as well as their applications
+
 {:.info}
 Network performance refers to the **efficiency** and **reliability** of data transmission across a network. Packet delays, which can stem from factors such as network congestion, routing inefficiencies, and packet processing delays, **directly impact** the overall performance of a network by influencing latency and throughput. 
 

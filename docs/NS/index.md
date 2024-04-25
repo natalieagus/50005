@@ -9,7 +9,7 @@ nav_order: 4
 # Network Security 
 {: .no_toc}
 
-This section contains the syllabus and materials for the second part of 50.005. You can find detailed Weekly learning objectives below. 
+This section contains the syllabus and materials for the second part of 50.005. You can find Weekly learning objectives below, and an even more comprehensive objectives in each of the notes. 
 
 {: .note-title}
 > Textbook

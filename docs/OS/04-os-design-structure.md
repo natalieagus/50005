@@ -21,6 +21,15 @@ Singapore University of Technology and Design
 # Operating System Design Structure 
 {:.no-toc}
 
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> * Explain the basic principles behind **OS design**: simple, layered, microkernel using examples: macOS, JX, MSDos, and UNIX.
+> * Explore the **components** of modern operating systems, emphasizing the role of system and application programs.
+> * Understand the **interface and functionality of system programs** as primary user interactions, mediated by APIs rather than direct system calls.
+> * Identify the **types and roles** of system programs, including package managers, status tools, and programming-language supports within an OS.
+> * Distinguish between system and application programs, noting their **functions** and **integration** in the operating system architecture.
+
 Apart from the Kernel and the user interface (GUI and/or CLI), a modern operating system also comes with <span style="color:#f77729;"><b>system programs</b></span> and <span style="color:#f77729;"><b>application programs</b></span>.
 
 Most users’ view of an operating system is defined by the system programs, not the actual system calls because they are actually hidden from us (through API).
