@@ -25,36 +25,13 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Understand the Concept of Computer Networking**
->   - Grasp the basic definition and purpose of computer networks.
->   - Differentiate between the "nuts and bolts" and "service" views of networking.
-> - **Explore the "Nuts and Bolts" of Computer Networking**
->   - Identify the components that make up the internet including hosts, communication links, and packet switches.
->   - Describe the function and types of end systems, communication links, and packet switches.
->   - Recognize the various types of Internet Service Providers (ISPs) and their roles in providing network access.
-> - **Learn the "Service" View of the Internet**
->   - Understand the internet as an infrastructure that provides services to applications.
->   - Explain the role of APIs in enabling applications to access network services.
-> - **Delve into Network Challenges and Solutions**
->   - Understand the challenges such as operability, sharing, component interaction, and scalability in networking.
->   - Describe the methods used to overcome these challenges including internet protocols and APIs.
-> - **Master Network Layering and its Importance**
->   - Grasp the concept of network layering and its role in reducing complexity and managing network interactions.
->   - Learn about each layer in the network hierarchy from physical to application layer, and the respective roles and protocols associated with each.
-> - **Understand Data Transmission Methods**
->   - Compare and contrast packet switching and circuit switching, understanding their advantages and applications.
->   - Calculate the time required for data transfer under different network configurations.
-> - **Grasp the Concept of Multiplexing**
->   - Understand frequency division and time division multiplexing and their usage in network communications.
-> - **Learn about Protocols and Standards**
->   - Identify and understand the significance of different network protocols across various layers.
->   - Explore how protocols like TCP, UDP, IP, Ethernet, and others function within the network stack.
-> - **Analyze Practical Networking Examples**
->   - Apply theoretical knowledge to practical examples, including calculations for data transfer and understanding traffic patterns.
-> - **Explore Advanced Networking Concepts**
->   - Dive into more complex aspects of networking such as data encapsulation and the interaction between different network layers.
->
-> These learning objectives are intended to guide your understanding of the comprehensive notes on computer networking.
+> * Explain what is a **network** and the internet
+> * Discuss **challenges** for the internet
+> * Explain what **protocol** means
+> * Explain the **difference** and pros/cons between **time** domain multiplexing, **frequency** domain multiplexing, and **packet switching**
+> * Explain the concept of **priority inversion** and **emergent behavior**
+> * Explain the internet protocol stack and each of the **5-layer OSI model**
+
 
 Computer Networking is the practice of connecting computers together to enable communication and data exchange between them. There’s two ways to define what the network is, but there’s no authoritative formal answer. 
 

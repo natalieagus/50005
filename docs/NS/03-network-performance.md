@@ -24,29 +24,13 @@ Singapore University of Technology and Design
 
 {:.highlight-title}
 > Detailed Learning Objectives
->- **Understand Network Performance Metrics**
->  - Grasp the concept of network performance including efficiency and reliability in data transmission.
->  - Identify the factors that impact network performance such as latency and throughput.
->- **Learn about Sources of Packet Delay**
->  - Describe the four main types of packet delays: processing, queueing, transmission, and propagation.
->  - Understand how each type of delay affects the overall network performance.
->- **Explore Tools for Measuring Network Delays**
->  - Gain familiarity with network diagnostic tools like traceroute and their functionalities.
->  - Learn how traceroute uses ICMP to map the route data packets take across the network.
->- **Understand ICMP and its Role in Network Diagnostics**
->  - Comprehend how ICMP works and its significance in error messaging and network diagnostics.
->  - Analyze the practical application of ICMP in tools like traceroute and ping.
->- **Analyze Packet Loss and Its Implications**
->  - Identify the causes and consequences of packet loss within a network.
->  - Learn how to compute end-to-end loss rate probability based on per-link loss rates.
->- **Distinguish Between Throughput and Bandwidth**
->  - Define and differentiate between throughput and bandwidth in network contexts.
->  - Explore the calculations and factors affecting throughput, including network topology and link technologies.
->- **Visualize Network Performance**
->  - Understand the use of time-space diagrams in visualizing network data flow and performance.
->  - Analyze how changes in network parameters like bandwidth and packet size affect the data transmission represented in time-space diagrams.
->
-> These learning objectives are designed to provide a comprehensive understanding of network performance, including how to measure, analyze, and optimize the efficiency and reliability of data transmission across networks.
+> 
+> * Describe and explain **sources** of packet delay through the network
+> * Explain the **difference** between **propagation** delay and **transmission** delay
+> * Describe the **causes** of processing delay
+> * Compute **total nodal delays**
+> * Compute **effective** throughput between two end systems
+> * Explain how **traceroute** and **ping** works, as well as their applications
 
 {:.info}
 Network performance refers to the **efficiency** and **reliability** of data transmission across a network. Packet delays, which can stem from factors such as network congestion, routing inefficiencies, and packet processing delays, **directly impact** the overall performance of a network by influencing latency and throughput. 
