@@ -25,13 +25,23 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> * Explain why **layering** is important in designing internet structure
-> * **Draw** the internet structure
-> * Define the levels of internet hierarchy and explain the roles of different types of Internet Service Providers (ISPs) such as access ISPs, regional/national ISPs, and tier-1/global ISPs.
-> * Understand the **function** and **importance** of Internet Exchange Points (**IXPs**) and how they facilitate cost-effective and direct traffic exchange between ISPs.
-> * Describe the structure and operational mechanism of Content Delivery Networks (**CDNs**) and their impact on internet speed and efficiency.
-> * Explore the concept of Point of Presence (**PoP**) and its role in connecting customer ISPs to provider ISPs, including its benefits such as reduced latency and improved bandwidth.
-> * Examine the **reasons** behind the establishment of an internet hierarchy, including scalability, competition, multi-homing, and the challenges of managing extensive network connections.
+>- **Understand the Structure of Internet Hierarchies**
+>  - Comprehend the different levels of ISPs including access, regional/national, and global tiers.
+>  - Recognize the role of each ISP level in facilitating global internet connectivity.
+>- **Explore the Functions and Significance of Internet Exchange Points (IXPs)**
+>  - Describe the purpose of IXPs in internet architecture and how they facilitate peer connections among ISPs.
+>  - Understand the economic and operational benefits of using IXPs for internet traffic exchange.
+>- **Learn about Content Delivery Networks (CDNs)**
+>  - Identify major CDNs and their function in optimizing internet content delivery.
+>  - Explain how CDNs enhance user experience by reducing latency and improving content delivery speed.
+>- **Understand Points of Presence (PoPs)**
+>  - Define what a PoP is and its role in network access and connectivity.
+>  - Discuss the advantages of PoPs including reduced latency, improved bandwidth, and network redundancy.
+>- **Grasp the Need for Internet Hierarchy**
+>  - Understand why the hierarchical structure is essential for the scalable and efficient operation of the internet.
+>  - Explore concepts such as competition, multi-homing, and the challenges of interconnecting a vast number of devices.
+>
+> These learning objectives aim to guide your comprehension and exploration of the structured levels and roles within the internet hierarchy.
   
 The internet hierarchy refers to the structured levels of Internet Service Providers (ISPs) that facilitate global internet connectivity, organized into tiers based on their size, reach, and the nature of their network agreements.
 
