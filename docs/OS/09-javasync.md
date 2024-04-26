@@ -23,13 +23,33 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> * Understand **Java's synchronization idioms**, including **synchronized** **methods** and statements, and how they are implemented using **intrinsic** locks associated with objects.
-> * Learn the concept of **mutex** locks in Java, how they're used to **control access** to object methods, and the differences between entry sets and wait sets.
-> * Explore **static** synchronization in Java using class-level locks and their implications for static methods.
-> * Discuss Java's c**ondition synchronization mechanisms**, including the use of wait(), notify(), and notifyAll() methods within synchronized blocks.
-> * Gain familiarity with Java's **reentrant** locks and how they ensure that locks are safely re-acquired after being released.
-> * **Analyze scenarios** involving condition synchronization and understand the importance of using loops with wait() calls to handle spurious and extraneous wake-ups.
-> * Review **practical examples** of using synchronization techniques to manage complex conditions and thread interactions in concurrent Java applications.
+> - **Understand Java Synchronization Mechanisms**
+>   - Recognize the role of synchronized methods and statements in Java.
+>   - Identify the two basic synchronization idioms provided by Java: synchronized methods and synchronized statements.
+> - **Grasp the Concept of Mutex Locks in Java Objects**
+>   - Explain the purpose and function of mutex locks associated with Java objects.
+>   - Describe how mutex locks are acquired and released through synchronized methods and blocks.
+> - **Comprehend Thread Management and Locks**
+>   - Understand the distinction between the entry set and wait set of threads.
+>   - Analyze the conditions under which a thread can acquire an object lock and become runnable.
+> - **Learn about Synchronized Methods and Blocks**
+>   - Detail how to declare a synchronized method in Java and its implications.
+>   - Explore the use of synchronized statements with specific named objects versus the anonymous 'this' instance.
+> - **Explore Java Static and Reentrant Locks**
+>   - Discuss the concept and application of static synchronized methods and their association with class-level locks.
+>   - Explain the concept of reentrancy in locks and its practical application in Java programming.
+> - **Understand Condition Synchronization**
+>   - Examine Java's mechanisms for condition synchronization using `wait()` and `notify()` methods.
+>   - Discuss the importance of managing thread states and conditions to prevent issues such as deadlocks and spurious wakeups.
+> - **Differentiate Between Various Lock Types and Their Uses**
+>   - Describe the differences between reentrant locks and non-reentrant locks.
+>   - Analyze scenarios where reentrant locks are beneficial and situations where non-reentrant locks may cause problems.
+> - **Implement Fine-Grained Synchronization Using Condition Variables**
+>   - Illustrate the use of named conditional variables in conjunction with reentrant locks for more precise control over thread synchronization.
+>   - Apply these concepts to practical coding scenarios to ensure correct synchronization and thread management.
+> 
+> These learning objectives are designed to help understand and apply Java's synchronization mechanisms effectively in concurrent programming scenarios.
+
 
 ## Java Object Mutex Lock
 

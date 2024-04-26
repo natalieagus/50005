@@ -23,13 +23,22 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> * Define a process as a d**ynamic** execution instance of a program, which includes not just the program code but also a dedicated address space, register contents, and a variety of other execution contexts.
-> * **Distinguish** between a process and a program, emphasizing the static nature of a program as code and data on disk, and the dynamic, executing nature of a process.
-> * Understand the components of a process's **context**, including its text section, program counter, registers, stack, data, and heap.
-> * Explain how a single program can be executed multiple times **simultaneously**, each execution constituting a separate process.
-> * Describe how processes are **managed** and **scheduled** within an operating system, including their life cycle from creation to termination.
-> * Explore the **mechanisms** that **support** process concurrency and protection, ensuring that multiple processes can execute simultaneously without interfering with each other.
-> * Discuss how processes are** managed through the kernel's scheduler**, emphasizing that the scheduler is part of the kernel and operates in kernel mode, not as a separate process.
+> - **Understand the Difference Between Process and Program**
+>   - Recognize that a process is a dynamic execution instance of a static program.
+>   - Acknowledge that a program is a passive entity containing the code, whereas a process is an active entity with executing code and associated resources.
+> - **Explore Process Context**
+>   - Identify what constitutes a process' context including the program counter, processor's registers, address space, and more.
+>   - Understand how multiple instances of a program can run as separate processes.
+> - **Concurrency and Protection in Processes**
+>   - Grasp how processes allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
+> - **Introduction to Process Scheduling States**
+>   - Learn about different process states (New, Running, Waiting, Ready, Terminated) and the lifecycle of a process.
+>   - Understand the concept of a process table and a Process Control Block (PCB) which store process attributes.
+> - **Process Management and Scheduling**
+>   - Comprehend how processes are managed and scheduled by the operating system, including the role of the scheduler.
+>   - Familiarize with context switching and its impact on system performance.
+>
+> These objectives are structured to provide a comprehensive overview of the concepts related to processes versus programs, their management, and the system's handling of multiple processes.
 
 ## Process vs Program {#the-concept-of-process-vs-program}
 

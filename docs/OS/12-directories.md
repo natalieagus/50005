@@ -23,14 +23,26 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> * Understand the basic concept of directories as a file system structure for organizing files within a structured namespace.
-> * Learn how directories are **implemented** in UNIX-like systems, including their role in mapping filenames to inode numbers.
-> * Comprehend the s**pecial permissions** associated with directories, particularly the significance of the execute (x) permission for accessing inodes within directories.
-> * Explore the **functions** of directories in managing file metadata, facilitating file searches, and maintaining a hierarchical file organization.
-> * Describe the **concepts** of various **directory structures** and how directory works: e.g tree structures (acyclic and cyclic)
-> * Grasp the **distinction** between different directory structures, such as single-level, two-level, tree-structured, and graph directory structures, and their respective benefits and limitations.
-> * Examine the **creation** and use of links within the file system, including hard links and symbolic links, and their impact on file management and system organization.
-> * **Analyze** advanced topics like acyclic and general graph directory structures, their traversal, and challenges associated with cyclic directory references.
+> - **Understand Directories and Namespace Organization**
+>   - Define what a directory is in the context of file systems.
+>   - Explain how directories help organize files and subdirectories within a structured namespace.
+> - **Directory Permissions and Operations**
+>   - Understand the significance of `x`, `r`, and `w` permissions in directories.
+>   - Identify the effects of directory permissions on file access and operations within the directory.
+> - **Explore Directory Structures and Their Types**
+>   - Compare and contrast different directory structures such as single-level, two-level, tree-structured, and acyclic graph directories.
+>   - Discuss the benefits and limitations of each directory structure type.
+> - **Directory and File Linking Concepts**
+>   - Differentiate between hard links and symbolic links.
+>   - Discuss the use cases for each type of link and how they affect file management and system organization.
+> - **File Searching and Directory Traversal**
+>   - Explain the process of searching for files within directories.
+>   - Describe how directory traversal works and its importance in file system navigation.
+> - **Advanced Directory Concepts**
+>   - Explore graph directory structures and the implications of cycles within directories.
+>   - Understand how reference counting and garbage collection protocols are used in managing directory lifecycles.
+>
+> These learning objectives aim to provide a comprehensive understanding of how directories function as essential components of file systems, facilitating the organization, access, and management of files.
 
 <span style="color:#f77729;"><b>Directories</b></span> are the file system cataloguing structure that contains metadata (references) to <span style="color:#f7007f;"><b>organize</b></span> files in a <span style="color:#f7007f;"><b>structured name space</b></span> (path). In computing, a namespace is a <span style="color:#f77729;"><b>set of symbols</b></span> that are used to organize objects of various kinds, so that these objects may be referred to by <span style="color:#f77729;"><b>name</b></span>.
 {:.info}

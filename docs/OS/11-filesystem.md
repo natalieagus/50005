@@ -23,12 +23,26 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> * Explain **what** is a file system and the file system **namespace**
-> * Explain file **format**, **permission**, and **type** and how they are used in the file system
-> * Describe and explain possible **operations** on file
-> * Describe the concepts and the difference between file data and **metadata** (Attributes)
-> * Learn the concepts of **file descriptors** and file system data structure, i.e: how the OS stores files in the memory
-> * Explain **UNIX file system data structures** and mapping between table entries
+> - **Understand the Basics of Files and File Systems**
+>   - Define what a file is and describe its purpose in a computer system.
+>   - Differentiate between volatile and non-volatile storage.
+> - **Explore the UNIX File System**
+>   - Identify the types of files in the UNIX file system, including regular files and directories.
+>   - Discuss the importance and role of inodes in the UNIX file system.
+> - **File Attributes and Operations**
+>   - List the common attributes of a file, such as name, identifier, type, location, size, and permissions.
+>   - Understand and describe the basic operations performed on files, including creation, reading, writing, deletion, and repositioning.
+> - **File Access and Management**
+>   - Explain how files are accessed and managed in UNIX, including the role of file descriptors and system-wide open file tables.
+>   - Discuss how the operating system handles file operations using file descriptors and the implications for file sharing and process communication.
+> - **File System Structure and Functionality**
+>   - Describe how a file system organizes data on a disk.
+>   - Illustrate the mapping between file names, file descriptors, and physical data through system-wide structures like the inode table.
+> - **Interactions Between Files and Processes**
+>   - Explain how files are shared and accessed by multiple processes, including the implications of operations like `fork()` and `dup()`.
+>   - Analyze the behaviors and outcomes of file interactions within a multi-process environment.
+>
+> These learning objectives are designed to provide a detailed understanding of how files and file systems function within UNIX and other operating systems, including how files are accessed, managed, and utilized by different processes.
 
 ## File
 A file is a <span style="color:#f77729;"><b>named</b></span> collection of related information that is stored on the secondary storage. It acts as a <span style="color:#f77729;"><b>logical</b></span> storage unit in the computer, defined by the operating system. In layman terms, they are a <span style="color:#f77729;"><b>group of data bytes</b></span> which are stored neatly in a known location with a unique name (<span style="color:#f77729;"><b>path</b></span>).

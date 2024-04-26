@@ -25,14 +25,18 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> * Explain a **variety** of OS services and their applications
-> * Describe ways on how to **access** OS services
-> * Explain the difference between making **direct system calls vs through API**
-> * Describe the possible ways to pass **parameters** using system calls
-> * Describe and explain different **types** of system calls and their purposes
-> * Explain the **difference** between user programs and system programs
-> * Describe and explain different **types** of system programs and their **purposes**
-> * **Familiarize** with both graphical and command-line interfaces of operating systems and how they facilitate user interaction through system calls and applications
+> - **Understand the Role of Operating Systems**
+>   - Explain the overarching role of the operating system in providing a platform for user interaction with computer systems through system calls and user interfaces.
+> - **Examine Operating System Services**
+>   - Identify and describe the basic support services provided by the operating system, including program execution, I/O operations, file-system manipulation, process communication, and error detection.
+> - **Explore Resource Management**
+>   - Discuss the operating system's role in resource sharing, including diagnostics, resource allocation, and accounting for system usage.
+> - **Assess Network and Security Functions**
+>   - Understand the protective measures and security mechanisms the operating system implements to guard against external threats and manage network interactions.
+> - **Utilize Operating System Interfaces**
+>   - Differentiate between the graphical user interface (GUI) and command-line interface (CLI) in operating systems, and explain how these interfaces facilitate user interaction with underlying system services.
+>
+> These objectives aim to guide your understanding of how operating systems provide essential services and interfaces that enhance user experience and system efficiency.
 
 We learned about the overview of OS role in the past week. The kernel is just one part of an operating system. The entire operating system software itself is a much <span style="color:#f77729;"><b>bigger</b></span> one, and it provides various apps and functionalities to <span style="color:#f77729;"><b>help users use the computer system</b></span>.
 

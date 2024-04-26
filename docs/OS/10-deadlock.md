@@ -23,13 +23,36 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> * Explain the **problem of deadlock**
-> * Describe **necessary conditions** for deadlock
-> * Draw and explain **resource allocation graphs**
-> * Discuss ways to **handle** deadlocks through prevention, detection, and recovery
-> * Describe and explain deadlock avoidance algorithm: **Banker’s algorithm**
-> * Describe and explain deadlock **detection** algorithm
-> * Explain the **difference** between deadlock avoidance algorithm and deadlock detection algorithm
+> - **Understand Finite System Resources**
+>   - Describe the concept of finite resources within a computing system.
+>   - Identify different types of system resources and understand their management.
+> - **Resource Management**
+>   - Explain the process of requesting, using, and releasing resources.
+>   - Distinguish between kernel-managed and user-managed resources.
+>   - Understand the mechanisms like semaphores and mutexes used for managing user resources.
+> - **Recognize and Define Deadlock**
+>   - Define deadlock and understand its implications in systems with finite resources.
+>   - Identify the conditions that lead to deadlock.
+> - **Deadlock Characteristics and Examples**
+>   - Explain through examples how deadlocks can occur in systems.
+>   - Discuss the four necessary conditions for deadlock: Mutual Exclusion, Hold and Wait, No Preemption, and Circular Wait.
+> - **Deadlock Handling Techniques**
+>   - Understand different methods of handling deadlocks: prevention, avoidance, detection, and recovery.
+>   - Explore specific strategies within each method to manage deadlocks.
+> - **Deadlock Prevention Strategies**
+>   - Describe strategies to prevent deadlock by breaking one of the four necessary conditions.
+>   - Analyze the advantages and limitations of each prevention strategy.
+> - **Deadlock Avoidance Algorithms**
+>   - Understand the principle and application of the Banker's Algorithm for deadlock avoidance.
+>   - Discuss the Safety and Resource Allocation Algorithms as components of the Banker's Algorithm.
+> - **Deadlock Detection and Recovery**
+>   - Learn how to detect deadlocks using algorithms and system state analysis.
+>   - Explore options for recovering from deadlocks, including process termination and resource preemption.
+> - **Evaluate Deadlock Algorithms**
+>   - Critically assess the efficiency and practicality of algorithms used for deadlock handling.
+>   - Discuss the trade-offs involved in choosing different deadlock handling methods.
+>
+> These learning objectives are designed to provide a comprehensive understanding of how finite resources are managed in computing systems, the challenges posed by deadlocks, and the various strategies employed to prevent, avoid, detect, and recover from deadlocks.
 
 
 ## Finite System Resources

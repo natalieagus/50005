@@ -23,20 +23,33 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> * Define the operating system and its function as an **intermediary** between users and computer hardware.
-> * Describe the main **components** of a computer system including hardware, the operating system, application programs, and users.
-> * Explain the concept of the operating system as a **resource allocator and coordinator, control program for execution, and enforcer of security**.
-> * Understand the roles of **different parts** of the operating system: the kernel, system programs, and user programs.
-> * Identify the processes involved in **booting** a computer, including the role of the BIOS and the loading of the operating system.
-> * Recognize the structure of the **memory hierarchy** in a computer system and its significance in the operation of the OS.
-> * **Describe the dual-mode operation** of the kernel and its implications for system security and program execution.
+> - **Understand Operating Systems**
+>   - Define an operating system and its role as an intermediary between hardware and users.
+>   - Describe the structure of a general-purpose computer system including hardware, operating system, application programs, and users.
+> - **Examine the Functions of an Operating System**
+>   - Identify the operating system as a resource allocator, program execution controller, and security enforcer.
+>   - Understand the division of operating system components into the kernel, system programs, and user programs.
+> - **Explore the Kernel**
+>   - Explain the functions and privileges of the operating system kernel.
+>   - Discuss the kernel's role in managing the computer's hardware and memory hierarchy.
+> - **Analyze Computer System Architecture**
+>   - Describe the components and operations of the memory hierarchy including registers, caches, main memory, and secondary storage.
+>   - Understand the booting process and the role of firmware or BIOS in system startup.
+> - **Study Kernel Operations**
+>   - Recognize the unique operations and privileges of kernel mode.
+>   - Explain dual mode operation and hardware support for kernel and user modes.
+> - **Investigate I/O Operations and Device Management**
+>   - Outline the roles of device controllers and device drivers in managing I/O operations.
+>   - Explain how device drivers interface with hardware devices and the implications of running drivers in kernel or user mode.
+>
+> These learning objectives are designed to guide your study of operating systems, ensuring a comprehensive understanding of their structure, functions, and roles within computer systems.
 
 An operating system (OS) is a program that **manages computer hardware**.
 {:.info}
 
 The figure below shows the hardware components of a common general purpose computer. There are many user programs that are running in a computer, and the OS acts as an intermediary application that enables many user programs to share the same set of hardware, such as the mouse, printer, keyboard, display monitor, etc.
 
-<img src="/50005/assets/images/week1/1.png"  class="center_seventy no-invert"/>
+> <img src="/50005/assets/images/week1/1.png"  class="center_seventy no-invert"/>
 
 ## The Operating System {#the-operating-system}
 

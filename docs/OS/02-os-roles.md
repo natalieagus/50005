@@ -23,12 +23,31 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> * Explain the **roles** of an operating system as a resource allocator, controller of program execution, and a guarantee of system security.
-> * Describe the kernel's function in **controlling** and **coordinating** hardware and I/O device usage among applications.
-> * Understand **interrupt-driven I/O operations**, including the mechanisms of hardware and software interrupts.
-> * Differentiate between **vectored** and **polled** interrupt systems and their appropriate use cases.
-> * Explore how the kernel manages multiple **simultaneous** interrupts and prioritizes their handling.
-> * Discuss the i**mplications of system calls** and software interrupts for process execution and resource management.
+> - **Understand the Role of Operating Systems**
+>   - Explain the purposes of an operating system including resource allocation, program execution control, and security enforcement.
+> - **Describe Kernel Functions**
+>   - Discuss how the kernel controls and coordinates hardware and I/O device usage among applications.
+> - **Explore Interrupt-Driven I/O Operations**
+>   - Define the concept of interrupt-driven I/O and differentiate between hardware and software interrupts.
+>   - Explain the functions and benefits of vectored and polled interrupt systems.
+> - **Analyze Interrupt Management**
+>   - Describe the process of handling hardware interrupts, including the role of interrupt request lines and interrupt handlers.
+>   - Compare vectored and polled interrupt scenarios and their suitability for different system complexities.
+> - **Examine System Calls and Software Interrupts**
+>   - Understand the role of system calls in software interrupts and their impact on process execution.
+>   - Discuss how software interrupts (traps) facilitate interaction between user processes and the kernel.
+> - **Understand Process Management**
+>   - Explore how the kernel manages processes to support multiprogramming and timesharing.
+>   - Define the difference between a process and a program.
+> - **Investigate Kernel Modes**
+>   - Compare reentrant and preemptive kernel operations and their implications for process management.
+> - **Study Memory and Process Management Techniques**
+>   - Discuss the implementation of virtual memory and the configuration of memory management units (MMU).
+>   - Analyze cache performance and the role of the kernel in memory and process management.
+> - **Assess Security and Protection Mechanisms**
+>   - Explain the mechanisms operating systems use to provide security and protection, including user identification and access control.
+> 
+> These objectives aim to guide your exploration of operating system concepts, focusing on the interactions between the OS kernel and system hardware, the management of processes and memory, and the crucial role of security within computer systems.
 
 There are several purposes of an operating system: as a <span style="color:#f77729;"><b>resource</b></span> allocator, <span style="color:#f77729;"><b>controls</b></span> program execution, and guarantees <span style="color:#f77729;"><b>security</b></span> in the computer system.
 

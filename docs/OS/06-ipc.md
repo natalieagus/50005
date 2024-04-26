@@ -23,12 +23,22 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> * Explain how interprocess communication (**IPC**) works
-> * Understand the distinction between **independent** and **cooperating** processes in an operating system.
-> * Recognize the **reasons** for process cooperation, such as information sharing, speeding up computations, and modular programming.
-> * Learn about Interprocess Communication (IPC) **mechanisms** provided by the operating system to facilitate process cooperation.
-> * Explore the implementation and use of **shared** memory and message **passing** as key IPC techniques.
-
+> - **Understand Process Independence and Cooperation**
+>   - Recognize the default nature of processes as independent.
+>   - Understand that a cooperating process can affect or be affected by other processes.
+> - **Reasons for Process Cooperation**
+>   - Identify the reasons for process cooperation: information sharing, speeding up computations, and modularity for protection and convenience.
+> - **Interprocess Communication (IPC)**
+>   - Learn about the two main IPC mechanisms: Shared Memory and Message Passing.
+>   - Understand the kernel's role in supporting IPC mechanisms.
+> - **Shared Memory in IPC**
+>   - Comprehend how shared memory allows multiple processes to access the same memory segment.
+>   - Explore how shared memory is created, accessed, and managed without continuous kernel assistance.
+> - **Message Passing in IPC**
+>   - Learn how message passing allows processes to communicate and synchronize without sharing the same address space.
+>   - Understand the roles of sockets in message passing and the involvement of the kernel in this IPC method.
+>
+> These objectives are structured to provide a comprehensive overview of how processes may interact within a computer system through cooperation and communication, emphasizing the importance of IPC mechanisms.
 
 Processes that are concurrently executing in the CPU may either be <span style="color:#ff4500;"><b><span class="orange-bold">independent</span></b></span> processes or <span style="color:#ff4500;"><b><span class="orange-bold">cooperating</span></b></span> processes:
 
