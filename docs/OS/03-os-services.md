@@ -415,7 +415,7 @@ print('Hello, world!')
 
 Execution: `python hello_world.py`
 
-As you can see, the C program can be compiled for either OS, and so is the python program. The C system call <span style="color:#f77729;"><b>interface</b></span> then invokes the intended system call in the operating-system kernel by <span style="color:#f77729;"><b>trapping</b></span> itself and invoking the trap handler (runs in kernel mode from now onwards):
+The **same** C program can be compiled for either OS, and so is the python program. The C system call <span style="color:#f77729;"><b>interface</b></span> then invokes the intended system call in the operating-system kernel by <span style="color:#f77729;"><b>trapping</b></span> itself and invoking the trap handler (runs in kernel mode from now onwards):
 
 1. The trap handler first <span style="color:#f77729;"><b>saves</b></span> the states of the process[^8] and examines the system call index left in a certain register.
 2. It then refers to the standard system call table and <span style="color:#f77729;"><b>dispatches</b></span> the system service request accordingly, i.e: <span style="color:#f77729;"><b>branches</b></span> onto the address in the Kernel space that implements the system call service routine of the system call with that index and executes it.
@@ -527,11 +527,11 @@ For instance, [`select()`](https://linux.die.net/man/2/select) is non-blocking.
 - The `select()` system call can be used to <span style="color:#f77729;"><b>check</b></span> if there is new data or not, e.g: at `stdin` file descriptor.
 - Then a blocking system call like `read()` may be used afterwards knowing that they will complete immediately.
 
-## Process Control {#process-control}
+# Process Control {#process-control}
 
 In this section we choose to explain one particular type of system calls: <span style="color:#f7007f;"><b>process control</b></span> with a little bit more depth.
 
-### Process Abort
+## Process Abort
 
 A running process can either <span style="color:#f77729;"><b>terminate</b></span> <span style="color:#f7007f;"><b>normally</b></span> (end) or <span style="color:#f7007f;"><b>abruptly</b></span> (abort). In either case, system call to <span style="color:#f77729;"><b>abort</b></span> a process is made.
 
@@ -539,13 +539,13 @@ If a system call is made to terminate the currently running program <span style=
 
 It consists of the recorded state of the program memory at that specific time when the program <span style="color:#f77729;"><b>crashed</b></span>. The dump is written to disk and may be examined by a debugger; a type of system program. It is assumed that the user will issue an appropriate command to respond to any error.
 
-### Process Load and Execute
+## Process Load and Execute
 
 Loading and executing a new process in the system require system calls. It is possible for a process to call upon the execution of another process, such as creating background processes, etc.
 
 - For instance the <span style="color:#f77729;"><b>shell</b></span> creates a new process whenever it receives a new command, and requests to execute that command in the <span style="color:#f77729;"><b>new process</b></span> (next chapter)
 
-### Process Communication
+## Process Communication
 
 Having created new jobs or processes, we may need to <span style="color:#f77729;"><b>wait</b></span> for them to <span style="color:#f77729;"><b>finish</b></span> their execution, e.g: the shell only gives the next prompt after the previous command has completed its execution.
 
@@ -554,13 +554,13 @@ Having created new jobs or processes, we may need to <span style="color:#f77729;
 - Also, sometimes two or more processes <span style="color:#f77729;"><b>share</b></span> data and multiple processes need to <span style="color:#f77729;"><b>communicate</b></span> (e.g: a web server communicating with the database server).
 - All these features to `wait, signal event`, and other means of process <span style="color:#f77729;"><b>communication</b></span> are done by making system calls since each process is run in <span style="color:#f77729;"><b>isolation</b></span> by default, operating on <span style="color:#f77729;"><b>virtual addresses</b></span>.
 
-### Examples
+## Examples
 
 There are so many facets of and variations in process and job control that we need to clarify using examples: MS-DOS and FreeBSD.
 
 <img src="{{ site.baseurl }}/assets/images/week2/7.png"  class="center_seventy no-invert"/>
 
-#### Single-tasking System
+### Single-tasking System
 
 An example of a single-tasking system is MS-DOS, shown in the figure on the left.
 
@@ -577,7 +577,7 @@ Following this action, the <span style="color:#f77729;"><b>small</b></span> port
 - Then the command interpreter makes the previous error code available to the user or to the next program.
 - It stands by for more input command from the user.
 
-#### Multi-tasking system
+### Multi-tasking system
 
 An example of a multi-tasking system is FreeBSD. The FreeBSD operating system is a <span style="color:#f77729;"><b>multi-tasking</b></span> OS that is able to create and manage multiple processes at a time.
 

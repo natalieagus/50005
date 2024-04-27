@@ -775,11 +775,11 @@ When Process 1 has set the variable `cond_x` into `true`, it signals Process 2 t
 This is crucial because it will re-check the state of `cond_x` again before continuing to the CS. It is also crucial to re-check `cond_x` before continuing to the CS. <span style="color:#f77729;"><b>Why?</b></span>
 {:.error}
 
-## Final Note
+# Final Note
 
 A conditional variable is effectively a <span style="color:#f77729;"><b>signalling</b></span> mechanism under the context of a given mutex lock. With mutex lock alone, we cannot easily block a process out of its CS based on any <span style="color:#f77729;"><b>arbitrary condition</b></span> even when the mutex is <span style="color:#f77729;"><b>available</b></span>.
 
-By default, condition variables and mutexes cannot be shared across processes. However, you can use condition variables **across** processes if you make the condition variable **process-shared**, using condition variable attribute configured with the `pthread_condattr_setpshared` function and a value of `PTHREAD_PROCESS_SHARED`. You will also have to make the **associated** mutex process-shared, using a mutex attribute configured with `pthread_mutexattr_setpshared`.
+By default, conditional variables and mutexes cannot be shared across processes. However, you can use condition variables **across** processes if you make the condition variable **process-shared**, using condition variable attribute configured with the `pthread_condattr_setpshared` function and a value of `PTHREAD_PROCESS_SHARED`. You will also have to make the **associated** mutex process-shared, using a mutex attribute configured with `pthread_mutexattr_setpshared`.
 
 Here's an excerpt from the Linux `man` page:
 

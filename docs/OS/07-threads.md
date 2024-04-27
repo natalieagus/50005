@@ -468,6 +468,7 @@ The Linux startup process very much depends on the hardware architecture, but it
 6. The `init` either consists of scripts that can be executed by the shell (sysv, bsd, runit) or configuration files that are executed by the binary components (systemd, upstart).
    - The `init` process bascally invokes a specific set of services (daemons).
    - These provide various <span style="color:#f77729;"><b>background</b></span> system services and structures and form the user <span style="color:#f77729;"><b>environment</b></span>.
+7. Desktop environment is eventually launched
 
 ## Desktop environment
 
