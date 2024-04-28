@@ -49,7 +49,7 @@ An operating system (OS) is a program that **manages computer hardware**.
 
 The figure below shows the hardware components of a common general purpose computer. There are many user programs that are running in a computer, and the OS acts as an intermediary application that enables many user programs to share the same set of hardware, such as the mouse, printer, keyboard, display monitor, etc.
 
-> <img src="/50005/assets/images/week1/1.png"  class="center_seventy no-invert"/>
+<img src="/50005/assets/images/week1/1.png"  class="center_seventy no-invert"/>
 
 ## The Operating System {#the-operating-system}
 
