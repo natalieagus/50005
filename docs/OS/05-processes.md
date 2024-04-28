@@ -334,15 +334,18 @@ We can write just <span style="color:#f77729;"><b>one instruction</b></span> for
 
 `execlp` is a system call that loads a new program called `ls` onto the child process’ address space, effectively <span style="color:#f7007f;"><b>replacing</b></span> its text (code), data, and stack content.
 
+{:.note}
+`execlp` belongs to the `exec` system call family. Give this [appendix](#exec-system-call) a read to find out more. 
+
 ### `wait`
 
 Concurrently, the parent process executes `wait(NULL)`, which is a system call that <span style="color:#f7007f;"><b>suspends</b></span> the parents’ execution until this child process that is executing `ls `has returned.
 
 ### Another example
 
-Another simple example to understand how `fork` works is by running this program:
+Run this program to further understand how `fork` works: 
 
-```java
+```c
 #include <sys/wait.h>
 #include <sys/types.h>
 #include <stdio.h>
@@ -380,12 +383,17 @@ int main(int argc, char const *argv[])
 Carefully observe the output and do **not** confuse between variable `pid` to store the **return value** of `fork` vs **actual process id** returned by `getpid`.
 {:.warning}
 
+**Expected Output:**
+* You will see the `PID` returned by `fork()` stored in the **variable** `pid` printed by the parent process. It will be a positive number.
+* The child process will print its message first (or second, depending on the scheduler) showing that it is the child and its `PID`.
+* The parent process will print its message after the child process has exited because it waits for the child to terminate with wait(NULL);. It will show that it is the parent and its `PID`.
+
 ## Program: The fork tree {#code-the-fork-tree}
 
 <span style="color:#f77729;"><b>Compile</b></span> and <span style="color:#f77729;"><b>run</b></span> the C program below.
 
 {:.new-title}
-> Think!
+> Compute
 > 
 > How many processes are created in total? (excluding the parent process). Can you draw the process tree?
 
@@ -419,6 +427,10 @@ int main(int argc, char const *argv[])
 }
 ```
 
+The following shows the fork-tree resulted from running the above program: 
+
+<img src="{{ site.baseurl }}/docs/OS/images/cse2024.drawio.png"  class="center_fifty"/>
+
 ## Process Termination {#process-termination}
 
 A process needs certain resources (CPU time, memory, files, I/O devices) to run and accomplish its task. These resources are <span style="color:#f77729;"><b>limited</b></span>.
@@ -437,7 +449,7 @@ If a parent process with live children is terminated, the children processes bec
 
 #### About `init`
 
-In UNIX-like OS, `init` is the first process started by the kernel during booting of the computer system. `Init` is a <span style="color:#f7007f;"><b>daemon</b></span> process that continues running until the system is shut down (see Appendix). It is the direct or indirect <span style="color:#f7007f;"><b>ancestor</b></span> of all other processes, and automatically adopts all orphaned processes.
+In UNIX-like OS, `init` is the first process started by the kernel during booting of the computer system. `Init` is a <span style="color:#f7007f;"><b>daemon</b></span> process that continues running until the system is shut down. It is the direct or indirect <span style="color:#f7007f;"><b>ancestor</b></span> of all other processes, and automatically adopts all orphaned processes.
 
 `Init` is a <span style="color:#f7007f;"><b>user</b></span> process like any other processes, and hence it is using virtual memory. The only special thing about `init` is that it is one of the two processes that the kernel started initially. When `init` is started by the kernel, it goes into user mode. When `init` calls system call `fork(),` it traps into the kernel mode, and the kernel does certain things to _create the new process,_ and the new process _will be scheduled in the future._ When the `fork() `returns, the original process is back to user mode. The equivalent of `init` in macOS is [`launchd`](https://en.wikipedia.org/wiki/Launchd).
 
@@ -448,14 +460,15 @@ In UNIX-like OS, `init` is the first process started by the kernel during bootin
 
 A parent process <span style="color:#f7007f;"><b>must</b></span> call `wait` or `waitpid` to read their children’s exit status. A call to `wait` or `waitpid` <span style="color:#f7007f;"><b>blocks</b></span> the calling process until one of its child processes exits or a signal is received. <span style="color:#f7007f;"><b>Otherwise, their child process becomes a zombie process. </b></span>
 
-- Children processes can <span style="color:#f77729;"><b>terminate</b></span> themselves after they have finished executing their tasks using `exit(int status)` system call.
-- The kernel will <span style="color:#f77729;"><b>free</b></span> the memory and other resources from this process, <span style="color:#f7007f;"><b>but not the PCB entry</b></span>.
-- Parent processes are supposed to call `wait` or `waitpid` to obtain the exit status of a child.
-- Only after `wait` or `waitpid` in the parent process returns, the kernel can <span style="color:#f7007f;"><b>remove</b></span> the child PCB entry from the system wide process table.
-- If the parents didn’t call `wait` or `waitpid` and instead continue execution of other things, then children’s entry in the pcb remains; <span style="color:#f7007f;"><b>a zombie process remains</b></span>.
-  - A zombie process generally takes up very little memory space, but `pid` of the child remains
-  - Recall that pid is <span style="color:#f7007f;"><b>unique</b></span>, so for example in a 32-bit system, there're only 32768 available pids (thats what set by the OS). Well, actually it is 32767, because pid `0` and `1` are reserved, so user processes get 2 to 32767. On 64-bit systems, the maximum PID is `2^22`.
+Children processes can <span style="color:#f77729;"><b>terminate</b></span> themselves after they have finished executing their tasks using `exit(int status)` system call.
+1. The kernel will <span style="color:#f77729;"><b>free</b></span> the memory and other resources from this process, <span style="color:#f7007f;"><b>but not the PCB entry</b></span>.
+2. Parent processes are supposed to call `wait` or `waitpid` to obtain the exit status of a child.
+3. Only after `wait` or `waitpid` in the parent process returns, the kernel can <span style="color:#f7007f;"><b>remove</b></span> the child PCB entry from the system wide process table.
+4. If the parents didn’t call `wait` or `waitpid` and instead continue execution of other things, then children’s entry in the pcb remains; <span style="color:#f7007f;"><b>a zombie process remains</b></span>.
 
+**A zombie process generally takes up very little memory space**, but `pid` of the child remains. Recall that pid is <span style="color:#f7007f;"><b>unique</b></span>, so for example in a 32-bit system, there're only 32768 available pids (thats what set by the OS). Well, actually it is 32767, because pid `0` and `1` are reserved, so user processes get 2 to 32767. On 64-bit systems, the maximum PID is `2^22`.
+
+{:.info}
 You can find the maximum PID value for your system in Linux using `cat /proc/sys/kernel/pid_max`:
 
 <img src="{{ site.baseurl }}//assets/images/week3-2_operations/2023-06-04-15-02-06.png"  class="center_seventy no-invert"/>
@@ -517,6 +530,31 @@ We can enter the `ps aux | grep 'Z'` command to list all zombie processes in the
 <img src="{{ site.baseurl }}/assets/images/week3/12.png"  class="center_seventy no-invert"/>
 
 <hr>
+
+# Appendix
+
+## Exec System Call
+The `exec` family of functions in Unix-like operating systems is used to replace the current process image with a new process image. The functions `execlp`, `execvp`, and `execv` are variants of this family, each serving slightly different purposes based on how they handle arguments and the environment. Here's a breakdown of their differences:
+
+1. **`execlp`**:
+   - **Function Prototype**: `int execlp(const char *file, const char *arg, ..., NULL);`
+   - **Behavior**: Searches for the executable named `file` in the directories listed in the environment's PATH variable. It does not require the full path to the executable if it's located in one of these directories.
+   - **Arguments**: Takes the name of the program to execute as the first argument, followed by a NULL-terminated list of character strings that represent the arguments to the program. This list must be terminated by a `NULL` pointer.
+   - **Use Case**: Useful when the number of arguments is known at compile time and the program to execute is in the system's path.
+
+2. **`execvp`**:
+   - **Function Prototype**: `int execvp(const char *file, char *const argv[]);`
+   - **Behavior**: Similar to `execlp` in that it searches for the executable in the PATH. However, instead of taking a variable number of arguments, it accepts an array of pointers to null-terminated strings that represent the arguments to the program.
+   - **Arguments**: Takes the name of the program and an array of strings as arguments. The array of strings must be NULL-terminated.
+   - **Use Case**: Useful when the number of arguments is not known at compile time, and the program to execute is in the system's path.
+
+3. **`execv`**:
+   - **Function Prototype**: `int execv(const char *path, char *const argv[]);`
+   - **Behavior**: Executes the program pointed to by `path`. Unlike `execlp` and `execvp`, `execv` does not search the PATH. You need to specify the full path of the executable.
+   - **Arguments**: Takes the full path of the program and an array of strings as arguments. The array of strings must be NULL-terminated.
+   - **Use Case**: Useful when the program's location is known and fixed, and you have an array of arguments to pass to the executable.
+
+Each of these functions does not return to the calling process upon successful execution because the calling process's image is completely replaced by the new program. If there's an error (e.g., the executable is not found), the function returns -1.
 
 [^1]: Because each process is isolated from one another and runs in different address space (forming virtual machines)
 [^2]: Heap and stack grows in the opposite direction so that it maximises the space that both can have and minimises the chances of overlapping, since we do not know how much they can dynamically grow during runtime. If the heap / stack grows too much during runtime, we are faced with stack/heap overflow error. If there’s a heap overflow, `malloc` will return a `NULL` pointer.

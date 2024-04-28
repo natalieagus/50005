@@ -287,7 +287,7 @@ The architecture of the JX system is illustrated below (simplified representatio
 
 The figure below shows the summary of various OS structures.
 
-<img src="{{ site.baseurl }}/assets/images/week2/17.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week2/17.png"  class="center_full"/>
 
 For layered architecture, note that the only difference with hybrid and microkernel structure is that programs at level N relies <span style="color:#f7007f;"><b>ONLY</b></span> on services provided by programs at <span style="color:#f77729;"><b>one</b></span> level below it.
 <hr>

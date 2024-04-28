@@ -206,19 +206,8 @@ The virtual address space of a process is typically divided into two parts: <spa
 The kernel mapping part exists primarily for the<span style="color:#f77729;"><b> kernel-related purposes</b></span>, not user processes. Processes running in user mode don’t have access to the kernel’s address space (with different MSB), at all. In user mode, there is a <span style="color:#f77729;"><b>single</b></span> mapping for the kernel, shared across all processes, e.g: fixed address between `0xffffffff` to `0xC0000000` as illustrated above.
 
 {: .info}
-When a kernel-side page mapping changes, that change is reflected everywhere.
+When a kernel-side page mapping changes, that change is reflected everywhere. Read more about [Kernel Space in the appendix](#kernel-space) if you'd like to find out more. 
 
-### Kernel Space
-
-The kernel is divided into two spaces: <span style="color:#f77729;"><b>logical</b></span> and <span style="color:#f77729;"><b>virtual</b></span>, often called `lowmem` and `vmalloc` respectively.
-
-In `lowmem`, it often uses a <span style="color:#f77729;"><b>one-to-one</b></span> mapping between virtual and physical addresses (its called logical mapping). That means virtual address `X` is mapped to physical address `X+C` (where `C` is some constant if any). This mapping is built during <span style="color:#f77729;"><b>boot</b></span>, and is <span style="color:#f77729;"><b>never</b></span> changed.
-
-The kernel virtual address area (`vmalloc`) is used for <span style="color:#f77729;"><b>non-contiguous</b></span> physical memory location, so that it is <span style="color:#f77729;"><b>easier</b></span> to allocate them.
-
-- This allocation of process memory is <span style="color:#f77729;"><b>dynamic</b></span> and on demand.
-- On each allocation, a series of locations of physical pages are found for the corresponding kernel virtual address range, and the pagetable is <span style="color:#f77729;"><b>modified</b></span> to create the mapping.
-- If this is done, it might be <span style="color:#f77729;"><b>unsuitable</b></span> for DMA (Direct Memory Access).
 
 # System Calls via API {#system-calls-through-api}
 
@@ -251,7 +240,7 @@ Benefits of using an API to make system calls:
 Head to this [appendix](#system-call-via-api-examples) section if you'd like to see some examples. 
 
 
-## System Call Implementation {#system-call-implementation}
+## Usage and Implementation {#system-call-implementation}
 
 An API helps users make appropriate system calls by providing convenient wrapper functions. More often than not, we don't need to know its detailed implementation as the API already provides convenient <span style="color:#f77729;"><b>abstraction</b></span>.
 
@@ -263,7 +252,7 @@ The exact implementation differs from system to system, [head to this appendix s
 
 <img src="{{ site.baseurl }}//docs/OS/images/03-os-services/2024-04-24-16-12-25.png"  class="center_fifty no-invert"/>
 
-### A simple example in C
+## A simple example in C
 
 Here’s a simple example in C that demonstrates how to use a system call API in C. In this example, we'll use the `write()` system call API in C to write text to the console:
 
@@ -289,13 +278,13 @@ Here’s what’s happening in this example:
   - `strlen(message)` calculates the length of the string, telling `write()` how many bytes to write.
 
 
-### Parameter Passing {#system-call-parameter-passing}
+## Parameter Passing {#system-call-parameter-passing}
 
 System call service <span style="color:#f77729;"><b>routines</b></span> are just like common functions, implemented in the kernel space. <span style="color:#f77729;"><b>We will do a little exercise with BSim soon to understand better.</b></span> They require <span style="color:#f77729;"><b>parameters</b></span> to run. For example, if we request a `write`, one of the most obvious parameters required are the bytes to write.
 
 There are three general ways to pass the parameters required for system calls to the OS Kernel.
 
-#### Registers
+### Registers
 
 Pass parameters in <span style="color:#f77729;"><b>registers</b></span>:
 
@@ -303,14 +292,14 @@ Pass parameters in <span style="color:#f77729;"><b>registers</b></span>:
 - Pros: Simple and <span style="color:#f77729;"><b>fast</b></span> access
 - Cons: There might be <span style="color:#f77729;"><b>more</b></span> parameters than registers
 
-#### Stack
+### Stack
 
 Push parameters to the program <span style="color:#f77729;"><b>stack</b></span>:
 
 - Pushed to the stack by process running in user mode, then invoke `syscall`
 - In kernel mode, <span style="color:#f77729;"><b>pops</b></span> the arguments from the calling program’s stack
 
-#### Block or Table
+### Block or Table
 
 Pass parameters that are stored in a persistent contiguous location (<span style="color:#f77729;"><b>table</b></span> or <span style="color:#f77729;"><b>block</b></span>) in the RAM (this is a <span style="color:#f77729;"><b>different</b></span> location from stack!) and pass the <span style="color:#f77729;"><b>pointer</b></span> (address) through registers, to be read by the system call routine:
 
@@ -644,6 +633,20 @@ In summary, making system calls <span style="color:#f77729;"><b>directly</b></sp
 {:.warning}
 
 You can find out more about Linux[^6] system calls <span style="color:#f77729;"><b>API</b></span> (implemented in C) [here](http://man7.org/linux/man-pages/man2/syscalls.2.html)
+
+# Appendix
+
+## Kernel Space
+
+The kernel is divided into two spaces: <span style="color:#f77729;"><b>logical</b></span> and <span style="color:#f77729;"><b>virtual</b></span>, often called `lowmem` and `vmalloc` respectively.
+
+In `lowmem`, it often uses a <span style="color:#f77729;"><b>one-to-one</b></span> mapping between virtual and physical addresses (its called logical mapping). That means virtual address `X` is mapped to physical address `X+C` (where `C` is some constant if any). This mapping is built during <span style="color:#f77729;"><b>boot</b></span>, and is <span style="color:#f77729;"><b>never</b></span> changed.
+
+The kernel virtual address area (`vmalloc`) is used for <span style="color:#f77729;"><b>non-contiguous</b></span> physical memory location, so that it is <span style="color:#f77729;"><b>easier</b></span> to allocate them.
+
+- This allocation of process memory is <span style="color:#f77729;"><b>dynamic</b></span> and on demand.
+- On each allocation, a series of locations of physical pages are found for the corresponding kernel virtual address range, and the pagetable is <span style="color:#f77729;"><b>modified</b></span> to create the mapping.
+- If this is done, it might be <span style="color:#f77729;"><b>unsuitable</b></span> for DMA (Direct Memory Access).
 
 [^1]: The most generic sense of the term shell means any program that users employ to type commands. A shell hides the details of the underlying operating system and manages the technical details of the operating system kernel interface, which is the lowest-level, or "inner-most" component of most operating systems.
 [^2]: Image taken from [here](https://notes.shichao.io/tlpi/ch6/).

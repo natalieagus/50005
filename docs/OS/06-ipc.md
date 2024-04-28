@@ -267,7 +267,15 @@ For processes ran in the same machine (same computer), they communicate through 
 The diagram below illustrates how socket works in general:
 <img src="{{ site.baseurl }}/assets/images/week3/15.png"  class="center_fifty no-invert"/>
 
+And below illustrates the evolution of the physical memory content when two processes communicate via socket: 
+
 <img src="{{ site.baseurl }}/assets/images/week3/14.png"  class="center_full no-invert"/>
+
+1. P1 (server) makes a system call to create a socket 
+2. Kernel creates a **listening** socket and bind P1 to it  
+3. P2 (client) makes a system call to connect to an existing socket 
+4. Kernel creates a communication socket between P1 and P2 
+5. P1 and P2 can communicate via the established socket in step 4 using `write` and `read` system calls
 
 
 ## Program: IPC using Socket {#code-ipc-using-socket}
@@ -448,7 +456,7 @@ You can **exaggerate** this behavior by adding a `sleep(1);` instruction in the 
 The figure below illustrates the general idea of Message Queue. The queue data structure is maintain by the Kernel, and processes may write into the queue at any time. If there are more than 1 writer and 1 reader at any instant, careful planning has to be made to ensure that the <span style="color:#f77729;"><b>right</b></span> message is obtained by the right process.
 <img src="{{ site.baseurl }}/assets/images/week3/16.png"  class="center_full no-invert"/>
 
-<span style="color:#f77729;"><b>Writer</b></span> process program:
+<span style="color:#f77729;"><b>Writer</b></span> program:
 
 ```cpp
 // C Program for Message Queue (Writer Process)
@@ -495,7 +503,7 @@ int main()
 }
 ```
 
-<span style="color:#f77729;"><b>Reader</b></span> process program:
+<span style="color:#f77729;"><b>Reader</b></span>  program:
 
 ```cpp
 // C Program for Message Queue (Reader Process)
