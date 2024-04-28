@@ -180,7 +180,7 @@ Traps are **software generated interrupts**, that is some special instructions t
 
 The CPU is forced to go to a special handler that does a state save and then execute (may not be immediate!) on the proper interrupt service routine to handle the <span style="color:#f7007f;"><b>request</b></span> (e.g: fetch user input in the python example above) in kernel mode. Software interrupts generally have <span style="color:#f77729;"><b>low priority</b></span>, as they are not as urgent as devices with limited buffering space.
 
-<img src="{{ site.baseurl }}/assets/images/week1/11.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week1/11.png"  class="center_seventy no-invert"/>
 
 During the time between system call request until system call return, the program execution is <span style="color:#f7007f;"><b>paused</b></span>. Examples of system calls are: `chmod(), chdir(), print()`. More Linux system calls can be found [here](http://man7.org/linux/man-pages/man2/syscalls.2.html).
 
@@ -188,7 +188,7 @@ During the time between system call request until system call return, the progra
 
 Consider another scenario where you want to open a **very large file** from disk. It takes some time to <span style="color:#f7007f;"><b>load</b></span> (simply transfer your data from disk to the disk controller), and your CPU can proceed to do other tasks in the meantime. Here's a simplified timeline:
 
-<img src="{{ site.baseurl }}/assets/images/week1/12.png"  class="cenetr_full"/>
+<img src="{{ site.baseurl }}/assets/images/week1/12.png"  class="cenetr_full no-invert"/>
 
 Imagine that at first, the CPU is busy executing process instructions in user mode. At the same time, the device is idling.
 
@@ -247,28 +247,23 @@ Exceptions are <span style="color:#f77729;"><b>software interrupts</b></span> th
 
 ## Interrupt Vector Table (IVT)
 
+{:.info-title}
+> Definition
+>
+> The IVT is a table of pointers to interrupt service routines (ISRs) used to handle interrupts in computing systems.
+
+
+**Purpose**: Allows efficient handling of hardware and software interrupts by directing the processor to the appropriate ISR.<br>
+**Structure**: Comprises entries, each corresponding to a specific interrupt vector; each entry points to an ISR.<br>
+**Location**: Often found at a fixed memory address, particularly in systems like the Intel x86 in real mode.<br>
+**Function**: On an interrupt, the system uses the interrupt number to index into the IVT, fetch the ISR address, and execute the routine to address the event.
+
 Generally speaking, CPU must be configured to receive interrupts (IRQs) and invoke correct interrupt handler using the Interrupt Vector Table (IVT). Operating system kernel must provide Interrupt Service Routines (ISRs) to handle interrupts.
 
 Sometimes you might encounter the term IDT instead of IVT. The interrupt descriptor table (IDT) is a _data structure_ used by the x86 architecture to implement an interrupt vector table.
 {:.info}
 
-Below is an example of ARMv8-M interrupt vector table, which describe which RAM addresses should contain the **handler entry** (also called interrupt service routine, ISR) for all sorts of interrupts (both software and hardware). The table is typically implemented in the <span style="color:#f77729;"><b>lower</b></span> physical addresses in many architecture.
-
-<img src="{{ site.baseurl }}/assets/images/week1/13.png"  class="center_seventy" title="Image taken from https://developer.arm.com/documentation/100701/0200/Exception-properties"/>
-
-Each exception has an ID (associated number), a vector <span style="color:#f77729;"><b>address</b></span> that is the exception <span style="color:#f77729;"><b>entry</b></span> point in memory, and a <span style="color:#f77729;"><b>priority</b></span> level which determines the order in which multiple pending exceptions are handled. In ARMv8-M, the lower the priority number, the higher the priority level.
-
-Based on the instruction set spec of ARMv8, integer division by zero returns zero and not trapped.
-{:.info}
-
-In x86 architecture, exception handlers are normally found via so called Interrupt Descriptor Table or **IDT** for short. The IDT is typically located in memory at a specific base address, stored in Interrupt Descriptor Table Register (IDTR, a special register). The value of this base address **depends on the operating system**. In some older hardware like [Intel 8086](https://en.wikipedia.org/wiki/Intel_8086), the interrupt vector table is placed at a fixed location: always located in the first 1024 bytes of memory at addresses `0x000000–0x0003FF` and the more complex config of IDT + IDTR does not exist.
-
-The IDT contains up to **256** entries and each of those entries is 16 bytes in size in 64 bit mode. For instance, a **division by zero** exception exists in x86 (unlike in ARMv8), and can be triggered by the CPU automatically (e.g: hardware is built to check that a divisor is not 0). By convention, this directs the PC to exec RAM address containing that division-by-zero handler **entry** directly (e.g: address `0`, as it is customary to have division by zero as the first handler entry of IVT).
-
-<img src="{{ site.baseurl }}//assets/images/week1-3_resource/2023-05-16-16-17-06.png"  class="center_seventy"/>
-
-You <span class="orange-bold">don't</span> have to memorise these, don't worry.
-{:.error}
+Head to the [appendix](#ivt-in-various-architectures) to learn more about actual implementation of IVT in different architecture.
 
 # Memory and Process Management
 The Kernel has to <span style="color:#f77729;"><b>manage</b></span> all memory devices in the system (disk, physical memory, cache) so that they can be shared among many other running user programs. The hierarchical storage structure requires a concrete form of memory management since the same data may appear in different levels of storage system.
@@ -451,7 +446,8 @@ The <span style="color:#f77729;"><b>Kernel</b></span> is the heart of the OS, th
 
 <hr>
 
-# Appendix 1: Multiprocessor System {#multiprocessor-system}
+# Appendix
+## Multiprocessor System {#multiprocessor-system}
 
 Unlike single-processor systems that we have learned before, multiprocessor systems have two or more processors in close communication, sharing the computer bus and sometimes the clock, memory, and peripheral devices.
 
@@ -461,7 +457,7 @@ Multiprocessor systems have three main advantages:
 2. <span style="color:#f7007f;"><b>Economy of scale</b></span>: multiprocessor system is cheaper than multiple single processor system
 3. Increased <span style="color:#f7007f;"><b>reliability</b></span>: if one core fails, we still have the other cores to do the work
 
-## Symmetric Architecture
+### Symmetric Architecture
 
 There are different architectures for multiprocessor system, such as a <span style="color:#f77729;"><b>symmetric</b></span> architecture — we have multiple CPU chips in a computer system:
 
@@ -473,7 +469,7 @@ Notice that each processor has its own set of registers, as well as a private or
 2. Ensure load <span style="color:#f77729;"><b>balancing</b></span>: avoid the scenario where one processor may be sitting idle while another is overloaded, resulting in inefficiencies
 3. Ensure cache coherency: if a process supports multicore, makes sure that the data integrity spread among many cache is maintained.
 
-## Multi-Core Architecture
+### Multi-Core Architecture
 
 Another example of a symmetric architecture is to have **multiple cores on the <span style="color:#f77729;"><b>same</b></span> chip** as shown in the figure below:
 
@@ -481,14 +477,14 @@ Another example of a symmetric architecture is to have **multiple cores on the <
 
 This carries an advantage that on-chip communication is <span style="color:#f77729;"><b>faster</b></span> than across chip communication. However it requires a more delicate hardware design to place multiple cores on the same chip.
 
-## Asymmetric Multiprocessing
+### Asymmetric Multiprocessing
 
 In the past, it is not so easy to add a second CPU to a computer system when operating system had commonly been developed for single-CPU systems. Extending it to handle multiple CPUs <span style="color:#f77729;"><b>efficiently</b></span> and reliably took a long time. To fill this gap, operating systems intended for single CPUs were initially extended to provide <span style="color:#f77729;"><b>minimal</b></span> support for a second CPU.
 
 This is called <span style="color:#f77729;"><b>asymmetric</b></span> multiprocessing, in which each processor is assigned a <span style="color:#f77729;"><b>specific</b></span> task with the presence of a super processor that controls the system. This scheme defines a <span style="color:#f77729;"><b>master–slave</b></span> relationship. The master processor <span style="color:#f77729;"><b>schedules</b></span> and <span style="color:#f77729;"><b>allocates</b></span> work to the slave processors. The other processors either look to the master for instruction or have predefined tasks.
 
-# Appendix 2: Clustered System {#clustered-system}
 
+## Clustered System {#clustered-system}
 Clustered systems (e.g: AWS) are multiple systems that are working together. They are usually:
 
 1. Share <span style="color:#f77729;"><b>storage</b></span> via a storage-area-network
@@ -502,7 +498,7 @@ There are two types of clustering:
 
 <hr>
 
-# Appendix 3: Other Info about Interrupts
+
 ## Timed Interrupts {#timed-interrupts}
 
 We must ensure that the kernel, as a <span style="color:#f7007f;"><b>resource allocator</b></span> maintains <span style="color:#f77729;"><b>control</b></span> over the CPU. We cannot allow a user program to get stuck in an infinite loop and never return control to the OS. We also cannot trust a user program to voluntarily return control to the OS. To ensure that no user program can occupy a CPU for indefinitely, a computer system comes with a (<span style="color:#f77729;"><b>hardware</b></span>)-based timer. A timer can be set to invoke the hardware interrupt line so that a running user program may transfer control to the kernel after a specified period. Typically, a <span style="color:#f7007f;"><b>scheduler</b></span> will be invoked each time the timer interrupt occurs.
@@ -520,6 +516,26 @@ When timed interrupt happens, this transfers control over to the interrupt handl
 - Then call the <span style="color:#f77729;"><b>scheduler</b></span> to perform context switching
 - The scheduler may then reset the counter before restoring the next process to be executed in the CPU. This ensures that a proper timed interrupt can occur in the future.
 - Note that a scheduler may allocate <span style="color:#f77729;"><b>arbitrary</b></span> amount of time for a process to run, e.g: a process may be allocated a longer time slot than the other. We will learn more about process management in Week 3.
+
+## IVT in various Architectures
+
+
+Below is an example of ARMv8-M interrupt vector table, which describe which RAM addresses should contain the **handler entry** (also called interrupt service routine, ISR) for all sorts of interrupts (both software and hardware). The table is typically implemented in the <span style="color:#f77729;"><b>lower</b></span> physical addresses in many architecture.
+
+<img src="{{ site.baseurl }}/assets/images/week1/13.png"  class="center_seventy" title="Image taken from https://developer.arm.com/documentation/100701/0200/Exception-properties"/>
+
+Each exception has an ID (associated number), a vector <span style="color:#f77729;"><b>address</b></span> that is the exception <span style="color:#f77729;"><b>entry</b></span> point in memory, and a <span style="color:#f77729;"><b>priority</b></span> level which determines the order in which multiple pending exceptions are handled. In ARMv8-M, the lower the priority number, the higher the priority level.
+
+Based on the instruction set spec of ARMv8, integer division by zero returns zero and not trapped.
+{:.info}
+
+In x86 architecture, exception handlers are normally found via so called Interrupt Descriptor Table or **IDT** for short. The IDT is typically located in memory at a specific base address, stored in Interrupt Descriptor Table Register (IDTR, a special register). The value of this base address **depends on the operating system**. In some older hardware like [Intel 8086](https://en.wikipedia.org/wiki/Intel_8086), the interrupt vector table is placed at a fixed location: always located in the first 1024 bytes of memory at addresses `0x000000–0x0003FF` and the more complex config of IDT + IDTR does not exist.
+
+The IDT contains up to **256** entries and each of those entries is 16 bytes in size in 64 bit mode. For instance, a **division by zero** exception exists in x86 (unlike in ARMv8), and can be triggered by the CPU automatically (e.g: hardware is built to check that a divisor is not 0). By convention, this directs the PC to exec RAM address containing that division-by-zero handler **entry** directly (e.g: address `0`, as it is customary to have division by zero as the first handler entry of IVT).
+
+<img src="{{ site.baseurl }}//assets/images/week1-3_resource/2023-05-16-16-17-06.png"  class="center_seventy"/>
+
+
 
 [^5]: Interrupt-driven I/O is fine for moving small amounts of data but can produce high overhead when used for bulk data movement such as disk I/O. To solve this problem, direct memory access (DMA) is used. After setting up buffers, pointers, and counters for the I/O device, the device controller transfers an entire block of data directly to or from its own buffer storage to memory, with no intervention by the CPU.
 [^6]: The CPU cache is a hardware cache: performing optimization that’s unrelated to the functionality of the software. It handles each and every access between CPU cache and main memory as well. They need to work fast, too fast to be under software control, and _are entirely built into the hardware._

@@ -270,9 +270,9 @@ The architecture of the JX system is illustrated below (simplified representatio
   <img src="{{ site.baseurl }}/assets/images/week2/15.png"  class="center_seventy"/>
 
 - Each <span style="color:#f77729;"><b>domain</b></span> represents an independent <span style="color:#f7007f;"><b>JVM</b></span> (Java Virtual Machine):
-  _ JVM is an abstract virtual machine that can run on <span style="color:#f7007f;"><b>any</b></span> OS
-  _ There’s one instance of JVM per Java application
-  _ JVM provides portable execution environment for Java-based apps
+  - JVM is an abstract virtual machine that can run on <span style="color:#f7007f;"><b>any</b></span> OS
+  - There’s one instance of JVM per Java application
+  - JVM provides portable execution environment for Java-based apps
   _ It maintains a heap used for allocating memory during object creation and threads within itself, as well as for <span style="color:#f77729;"><b>garbage collection</b></span>.
 
   <img src="{{ site.baseurl }}/assets/images/week2/16.png"  class="center_fifty no-invert"/>

@@ -248,6 +248,191 @@ Benefits of using an API to make system calls:
 - It adds another layer of **abstraction** hence simplifies the process of application development[^4]
 - Supports program **portability**[^5]
 
+Head to this [appendix](#system-call-via-api-examples) section if you'd like to see some examples. 
+
+
+## System Call Implementation {#system-call-implementation}
+
+An API helps users make appropriate system calls by providing convenient wrapper functions. More often than not, we don't need to know its detailed implementation as the API already provides convenient <span style="color:#f77729;"><b>abstraction</b></span>.
+
+For most programming languages, the <span style="color:#f77729;"><b>run-time support system</b></span> (a set of functions built into libraries included with a compiler) provides a system call <span style="color:#f77729;"><b>interface</b></span> that serves as the link to system calls made available by the operating system. The system-call <span style="color:#f77729;"><b>interface</b></span> intercepts function calls in the API and invokes the necessary system calls within the operating system. 
+
+The exact implementation differs from system to system, [head to this appendix section](#system-call-detailed-implementation) if you're interested to find out more. 
+
+*Hopefully after understanding this part, you won't say stuffs like this at work:*
+
+<img src="{{ site.baseurl }}//docs/OS/images/03-os-services/2024-04-24-16-12-25.png"  class="center_fifty no-invert"/>
+
+### A simple example in C
+
+Here’s a simple example in C that demonstrates how to use a system call API in C. In this example, we'll use the `write()` system call API in C to write text to the console:
+
+```c
+#include <unistd.h>  // For the write() system call
+#include <string.h>  // For strlen()
+
+int main() {
+    const char *message = "Hello, system call!\n";
+    write(1, message, strlen(message));  // 1 is the file descriptor for stdout
+    return 0;
+}
+
+```
+
+
+Here’s what’s happening in this example:
+- **Header Files**: We include `unistd.h` for the `write()` system call and `string.h` for `strlen()` to calculate the length of the string.
+- **Message**: We define a message that we want to write to the console.
+- **write() System Call** API: We call `write()` with three arguments:
+  - `1` is the file descriptor for standard output (stdout). File descriptor `1` is universally used for stdout in Unix and Linux environments.
+  - `message` is the pointer to the buffer containing the string we want to output.
+  - `strlen(message)` calculates the length of the string, telling `write()` how many bytes to write.
+
+
+### Parameter Passing {#system-call-parameter-passing}
+
+System call service <span style="color:#f77729;"><b>routines</b></span> are just like common functions, implemented in the kernel space. <span style="color:#f77729;"><b>We will do a little exercise with BSim soon to understand better.</b></span> They require <span style="color:#f77729;"><b>parameters</b></span> to run. For example, if we request a `write`, one of the most obvious parameters required are the bytes to write.
+
+There are three general ways to pass the parameters required for system calls to the OS Kernel.
+
+#### Registers
+
+Pass parameters in <span style="color:#f77729;"><b>registers</b></span>:
+
+- For the example of `write` system call, Kernel examines certain special registers for bytes to print
+- Pros: Simple and <span style="color:#f77729;"><b>fast</b></span> access
+- Cons: There might be <span style="color:#f77729;"><b>more</b></span> parameters than registers
+
+#### Stack
+
+Push parameters to the program <span style="color:#f77729;"><b>stack</b></span>:
+
+- Pushed to the stack by process running in user mode, then invoke `syscall`
+- In kernel mode, <span style="color:#f77729;"><b>pops</b></span> the arguments from the calling program’s stack
+
+#### Block or Table
+
+Pass parameters that are stored in a persistent contiguous location (<span style="color:#f77729;"><b>table</b></span> or <span style="color:#f77729;"><b>block</b></span>) in the RAM (this is a <span style="color:#f77729;"><b>different</b></span> location from stack!) and pass the <span style="color:#f77729;"><b>pointer</b></span> (address) through registers, to be read by the system call routine:
+
+- As illustrated below, `x` represents the <span style="color:#f77729;"><b>address</b></span> of the parameters for the system call.
+- When system call `id` (e.g: `write`) is made, the kernel examines certain registers, in this example is `rsi` to obtain the address to the parameter (the bytes to write to `stdout`)
+- Given the <span style="color:#f77729;"><b>pointer</b></span>, Kernel can find the parameter for the system call in the RAM, as illustrated below:
+
+<img src="{{ site.baseurl }}/assets/images/week2/6.png"  class="center_seventy no-invert"/>
+
+# Types of System Calls {#types-of-system-calls}
+
+In general, each OS will provide a <span style="color:#f77729;"><b>list</b></span> of system calls that it supports. System calls can be grouped (but not limited to) roughly into six major categories:
+
+1. <span style="color:#f7007f;"><b>Process control</b></span>: end, abort, load, execute, create and terminate processes, get and set process attributes, wait for time, wait for event, signal event, allocate, and free memory
+2. <span style="color:#f7007f;"><b>File manipulation</b></span>: create, delete, rename, open, close, read, write, and reposition files, get, and set file attributes
+3. <span style="color:#f7007f;"><b>Device manipulation</b></span>: request and release device, read from, write to, and reposition device, get and set device attributes, logically attach or detach devices
+4. <span style="color:#f7007f;"><b>Information maintenance</b></span>: get or set time and date, get or set system data, get or set process, file, or device attributes
+5. <span style="color:#f7007f;"><b>Communication</b></span>: create and delete pipes, send or receive packets through network, transfer status information, attach or detach remote devices, etc
+6. <span style="color:#f7007f;"><b>Protection</b></span>: set network encryption, protocol
+
+If you are curious about Linux-specific system call types, you can find the list [here](http://asm.sourceforge.net/syscall.html).
+
+# Blocking vs Non-Blocking System Call
+
+A <span style="color:#f7007f;"><b>blocking</b></span> system call is one that must <span style="color:#f7007f;"><b>wait</b></span> until the action can be completed.
+
+For instance, `read()` is <span style="color:#f77729;"><b>blocking</b></span>:
+
+- If no input is ready, the calling process will be <span style="color:#f77729;"><b>suspended</b></span>
+  - `yield()` the remaining quanta, and schedule other processes first
+- It will only resume execution after some input is ready. Depending on the scheduler implementation it may either:
+  - Be scheduled again and <span style="color:#f77729;"><b>retry</b></span> (e.g: round robin)
+    - The process re-executes `read()` and may `yield()` again if there's no input.
+    - Repeat until successful.
+  - <span style="color:#f77729;"><b>Not</b></span> scheduled, use some `wait` flag/status to tell the scheduler to not schedule this again unless some input is received
+    - `wait` flag/status cleared by interrupt handler (more info in the next topic)
+
+On the other hand, a <span style="color:#f7007f;"><b>non blocking</b></span> system call can return almost immediately without waiting for the I/O to complete.
+
+For instance, [`select()`](https://linux.die.net/man/2/select) is non-blocking.
+
+- The `select()` system call can be used to <span style="color:#f77729;"><b>check</b></span> if there is new data or not, e.g: at `stdin` file descriptor.
+- Then a blocking system call like `read()` may be used afterwards knowing that they will complete immediately.
+
+# Process Control {#process-control}
+
+In this section we choose to explain one particular type of system calls: <span style="color:#f7007f;"><b>process control</b></span> with a little bit more depth.
+
+## Process Abort
+
+A running process can either <span style="color:#f77729;"><b>terminate</b></span> <span style="color:#f7007f;"><b>normally</b></span> (end) or <span style="color:#f7007f;"><b>abruptly</b></span> (abort). In either case, system call to <span style="color:#f77729;"><b>abort</b></span> a process is made.
+
+If a system call is made to terminate the currently running program <span style="color:#f77729;"><b>abnormally</b></span>, or if the program runs into a problem and causes an error <span style="color:#f77729;"><b>trap</b></span>, a dump of memory (called [`core dump`](https://en.wikipedia.org/wiki/Core_dump)) is sometimes taken and an error message generated.
+
+It consists of the recorded state of the program memory at that specific time when the program <span style="color:#f77729;"><b>crashed</b></span>. The dump is written to disk and may be examined by a debugger; a type of system program. It is assumed that the user will issue an appropriate command to respond to any error.
+
+## Process Load and Execute
+
+Loading and executing a new process in the system require system calls. It is possible for a process to call upon the execution of another process, such as creating background processes, etc.
+
+- For instance the <span style="color:#f77729;"><b>shell</b></span> creates a new process whenever it receives a new command, and requests to execute that command in the <span style="color:#f77729;"><b>new process</b></span> (next chapter)
+
+## Process Communication
+
+Having created new jobs or processes, we may need to <span style="color:#f77729;"><b>wait</b></span> for them to <span style="color:#f77729;"><b>finish</b></span> their execution, e.g: the shell only gives the next prompt after the previous command has completed its execution.
+
+- We may want to wait for a certain amount of time to pass `(wait time)`; more probably, we will want to wait for a specific event to occur` (wait event)`.
+- The jobs or processes should then signal when that event has occurred `(signal event)`.
+- Also, sometimes two or more processes <span style="color:#f77729;"><b>share</b></span> data and multiple processes need to <span style="color:#f77729;"><b>communicate</b></span> (e.g: a web server communicating with the database server).
+- All these features to `wait, signal event`, and other means of process <span style="color:#f77729;"><b>communication</b></span> are done by making system calls since each process is run in <span style="color:#f77729;"><b>isolation</b></span> by default, operating on <span style="color:#f77729;"><b>virtual addresses</b></span>.
+
+## Examples
+
+There are so many facets of and variations in process and job control that we need to clarify using examples: MS-DOS and FreeBSD.
+
+<img src="{{ site.baseurl }}/assets/images/week2/7.png"  class="center_seventy no-invert"/>
+
+### Single-tasking System
+
+An example of a single-tasking system is MS-DOS, shown in the figure on the left.
+
+It has a simple command <span style="color:#f77729;"><b>interpreter</b></span> (that is invoked when the computer is started as shown in the figure above, labeled as `(a)`). Upon opening a new program, it <span style="color:#f77729;"><b>loads</b></span> the program into memory, <span style="color:#f77729;"><b>writing over most of itself</b></span> (note the shrinking portion of command interpreter codebase) to give the program<span style="color:#f77729;"><b> as much memory as possible </b></span>as shown in `(b)` above.
+
+Next, it sets the <span style="color:#f77729;"><b>instruction pointer</b></span> to the first instruction of the program.
+
+- The program then runs, and either an <span style="color:#f77729;"><b>error</b></span> causes a <span style="color:#f77729;"><b>trap</b></span>, or the program executes a system call to <span style="color:#f77729;"><b>terminate</b></span>.
+- In either case, the error code is saved in the system memory for later use.
+
+Following this action, the <span style="color:#f77729;"><b>small</b></span> portion of the command interpreter that was not overwritten resumes execution:
+
+- Its first task is to reload the rest of the command interpreter from disk.
+- Then the command interpreter makes the previous error code available to the user or to the next program.
+- It stands by for more input command from the user.
+
+### Multi-tasking system
+
+An example of a multi-tasking system is FreeBSD. The FreeBSD operating system is a <span style="color:#f77729;"><b>multi-tasking</b></span> OS that is able to create and manage multiple processes at a time.
+
+When a user logs on to the system, the <span style="color:#f77729;"><b>shell</b></span> (command interpreter) of the user’s choice is run. This shell is similar to the MS-DOS shell in that it accepts commands and executes programs that the user requests.
+
+However, since FreeBSD is a multitasking system, the command interpreter may <span style="color:#f77729;"><b>continue running</b></span> while another program is executed:
+
+- The possible state of a RAM with FreeBSD OS is as shown in the figure above
+- To <span style="color:#f77729;"><b>start</b></span> a new process, the shell executes a `fork()` system call.
+- Then, the selected program is loaded into memory via an `exec()`[^9] system call, and the program is executed normally until it executes `exit() `system call to end normally or `abort` system call.
+
+Depending on the way the command was issued, the shell then either <span style="color:#f77729;"><b>waits</b></span> for the process to finish or runs the process “in the background”. In the latter case, the shell immediately requests another command.
+
+The kernel is responsible to ensure that <span style="color:#f77729;"><b>context switching</b></span> is properly done (and <span style="color:#f77729;"><b>timesharing</b></span> as well if enabled).
+
+To run a command in the background, add the ampersand symbol (`&`) at the end of the command:
+
+```bash
+command &
+```
+
+<br>
+<hr>
+
+# Appendix
+
+## System Call via API Examples
 ### Example: printf()
 
 We always conveniently call `printf()` whenever we want to display our output to the console in C. `printf` itself is a POSIX system call <span style="color:#f77729;"><b>API</b></span>.
@@ -273,16 +458,15 @@ The complete documentation can be found [here](https://docs.microsoft.com/en-us/
 
 The actual implementation details (source code) of OS functions like `CopyFile` are intentionally not documented and can be changed at any time. The API however is well documented and conformed to so others who rely on it will not have their programs broken due to internal OS updates.
 {:.warning}
+## System Call Detailed Implementation 
 
-## System Call Implementation {#system-call-implementation}
+System calls are interfaces through which user applications interact with the operating system's kernel to perform tasks that require higher privileges, such as I/O operations, process management, and file manipulations. Here’s a high-level overview of their implementation and the role of system call numbers:
 
-An API helps users make appropriate system calls by providing convenient wrapper functions. More often than not, we don't need to know its detailed implementation as the API already provides convenient <span style="color:#f77729;"><b>abstraction</b></span>.
+- **System Call Implementation**: System calls are implemented as part of the operating system kernel. When a user program invokes a system call, it executes a software interrupt or a special instruction that switches the processor from user mode to kernel mode. This transition is necessary because system calls often require accessing resources that are protected and can only be safely manipulated by the kernel.
 
-For most programming languages, the <span style="color:#f77729;"><b>run-time support system</b></span> (a set of functions built into libraries included with a compiler) provides a system call <span style="color:#f77729;"><b>interface</b></span> that serves as the link to system calls made available by the operating system. The system-call <span style="color:#f77729;"><b>interface</b></span> intercepts function calls in the API and invokes the necessary system calls within the operating system.
+- **System Call Number**: Each system call is associated with a unique identifier known as a system call number. This number is used to index into a system call table maintained by the kernel, which maps numbers to the corresponding system call handlers. When a system call is invoked, the kernel uses this number to find the appropriate function to execute.
 
-*Hopefully after understanding this part, you won't say stuffs like this at work:*
-
-<img src="{{ site.baseurl }}//docs/OS/images/03-os-services/2024-04-24-16-12-25.png"  class="center_fifty no-invert"/>
+The system call mechanism is a critical component of the operating system, allowing for safe and controlled interaction between user applications and hardware or kernel functions.
 
 ### System Call Number
 
@@ -460,147 +644,6 @@ In summary, making system calls <span style="color:#f77729;"><b>directly</b></sp
 {:.warning}
 
 You can find out more about Linux[^6] system calls <span style="color:#f77729;"><b>API</b></span> (implemented in C) [here](http://man7.org/linux/man-pages/man2/syscalls.2.html)
-
-### Parameter Passing {#system-call-parameter-passing}
-
-System call service <span style="color:#f77729;"><b>routines</b></span> are just like common functions, implemented in the kernel space. <span style="color:#f77729;"><b>We will do a little exercise with BSim soon to understand better.</b></span> They require <span style="color:#f77729;"><b>parameters</b></span> to run. For example, if we request a `write`, one of the most obvious parameters required are the bytes to write.
-
-There are three general ways to pass the parameters required for system calls to the OS Kernel.
-
-#### Registers
-
-Pass parameters in <span style="color:#f77729;"><b>registers</b></span>:
-
-- For the example of `write` system call, Kernel examines certain special registers for bytes to print
-- Pros: Simple and <span style="color:#f77729;"><b>fast</b></span> access
-- Cons: There might be <span style="color:#f77729;"><b>more</b></span> parameters than registers
-
-#### Stack
-
-Push parameters to the program <span style="color:#f77729;"><b>stack</b></span>:
-
-- Pushed to the stack by process running in user mode, then invoke `syscall`
-- In kernel mode, <span style="color:#f77729;"><b>pops</b></span> the arguments from the calling program’s stack
-
-#### Block or Table
-
-Pass parameters that are stored in a persistent contiguous location (<span style="color:#f77729;"><b>table</b></span> or <span style="color:#f77729;"><b>block</b></span>) in the RAM (this is a <span style="color:#f77729;"><b>different</b></span> location from stack!) and pass the <span style="color:#f77729;"><b>pointer</b></span> (address) through registers, to be read by the system call routine:
-
-- As illustrated below, `x` represents the <span style="color:#f77729;"><b>address</b></span> of the parameters for the system call.
-- When system call `id` (e.g: `write`) is made, the kernel examines certain registers, in this example is `rsi` to obtain the address to the parameter (the bytes to write to `stdout`)
-- Given the <span style="color:#f77729;"><b>pointer</b></span>, Kernel can find the parameter for the system call in the RAM, as illustrated below:
-
-<img src="{{ site.baseurl }}/assets/images/week2/6.png"  class="center_seventy no-invert"/>
-
-# Types of System Calls {#types-of-system-calls}
-
-In general, each OS will provide a <span style="color:#f77729;"><b>list</b></span> of system calls that it supports. System calls can be grouped (but not limited to) roughly into six major categories:
-
-1. <span style="color:#f7007f;"><b>Process control</b></span>: end, abort, load, execute, create and terminate processes, get and set process attributes, wait for time, wait for event, signal event, allocate, and free memory
-2. <span style="color:#f7007f;"><b>File manipulation</b></span>: create, delete, rename, open, close, read, write, and reposition files, get, and set file attributes
-3. <span style="color:#f7007f;"><b>Device manipulation</b></span>: request and release device, read from, write to, and reposition device, get and set device attributes, logically attach or detach devices
-4. <span style="color:#f7007f;"><b>Information maintenance</b></span>: get or set time and date, get or set system data, get or set process, file, or device attributes
-5. <span style="color:#f7007f;"><b>Communication</b></span>: create and delete pipes, send or receive packets through network, transfer status information, attach or detach remote devices, etc
-6. <span style="color:#f7007f;"><b>Protection</b></span>: set network encryption, protocol
-
-If you are curious about Linux-specific system call types, you can find the list [here](http://asm.sourceforge.net/syscall.html).
-
-# Blocking vs Non-Blocking System Call
-
-A <span style="color:#f7007f;"><b>blocking</b></span> system call is one that must <span style="color:#f7007f;"><b>wait</b></span> until the action can be completed.
-
-For instance, `read()` is <span style="color:#f77729;"><b>blocking</b></span>:
-
-- If no input is ready, the calling process will be <span style="color:#f77729;"><b>suspended</b></span>
-  - `yield()` the remaining quanta, and schedule other processes first
-- It will only resume execution after some input is ready. Depending on the scheduler implementation it may either:
-  - Be scheduled again and <span style="color:#f77729;"><b>retry</b></span> (e.g: round robin)
-    - The process re-executes `read()` and may `yield()` again if there's no input.
-    - Repeat until successful.
-  - <span style="color:#f77729;"><b>Not</b></span> scheduled, use some `wait` flag/status to tell the scheduler to not schedule this again unless some input is received
-    - `wait` flag/status cleared by interrupt handler (more info in the next topic)
-
-On the other hand, a <span style="color:#f7007f;"><b>non blocking</b></span> system call can return almost immediately without waiting for the I/O to complete.
-
-For instance, [`select()`](https://linux.die.net/man/2/select) is non-blocking.
-
-- The `select()` system call can be used to <span style="color:#f77729;"><b>check</b></span> if there is new data or not, e.g: at `stdin` file descriptor.
-- Then a blocking system call like `read()` may be used afterwards knowing that they will complete immediately.
-
-# Process Control {#process-control}
-
-In this section we choose to explain one particular type of system calls: <span style="color:#f7007f;"><b>process control</b></span> with a little bit more depth.
-
-## Process Abort
-
-A running process can either <span style="color:#f77729;"><b>terminate</b></span> <span style="color:#f7007f;"><b>normally</b></span> (end) or <span style="color:#f7007f;"><b>abruptly</b></span> (abort). In either case, system call to <span style="color:#f77729;"><b>abort</b></span> a process is made.
-
-If a system call is made to terminate the currently running program <span style="color:#f77729;"><b>abnormally</b></span>, or if the program runs into a problem and causes an error <span style="color:#f77729;"><b>trap</b></span>, a dump of memory (called [`core dump`](https://en.wikipedia.org/wiki/Core_dump)) is sometimes taken and an error message generated.
-
-It consists of the recorded state of the program memory at that specific time when the program <span style="color:#f77729;"><b>crashed</b></span>. The dump is written to disk and may be examined by a debugger; a type of system program. It is assumed that the user will issue an appropriate command to respond to any error.
-
-## Process Load and Execute
-
-Loading and executing a new process in the system require system calls. It is possible for a process to call upon the execution of another process, such as creating background processes, etc.
-
-- For instance the <span style="color:#f77729;"><b>shell</b></span> creates a new process whenever it receives a new command, and requests to execute that command in the <span style="color:#f77729;"><b>new process</b></span> (next chapter)
-
-## Process Communication
-
-Having created new jobs or processes, we may need to <span style="color:#f77729;"><b>wait</b></span> for them to <span style="color:#f77729;"><b>finish</b></span> their execution, e.g: the shell only gives the next prompt after the previous command has completed its execution.
-
-- We may want to wait for a certain amount of time to pass `(wait time)`; more probably, we will want to wait for a specific event to occur` (wait event)`.
-- The jobs or processes should then signal when that event has occurred `(signal event)`.
-- Also, sometimes two or more processes <span style="color:#f77729;"><b>share</b></span> data and multiple processes need to <span style="color:#f77729;"><b>communicate</b></span> (e.g: a web server communicating with the database server).
-- All these features to `wait, signal event`, and other means of process <span style="color:#f77729;"><b>communication</b></span> are done by making system calls since each process is run in <span style="color:#f77729;"><b>isolation</b></span> by default, operating on <span style="color:#f77729;"><b>virtual addresses</b></span>.
-
-## Examples
-
-There are so many facets of and variations in process and job control that we need to clarify using examples: MS-DOS and FreeBSD.
-
-<img src="{{ site.baseurl }}/assets/images/week2/7.png"  class="center_seventy no-invert"/>
-
-### Single-tasking System
-
-An example of a single-tasking system is MS-DOS, shown in the figure on the left.
-
-It has a simple command <span style="color:#f77729;"><b>interpreter</b></span> (that is invoked when the computer is started as shown in the figure above, labeled as `(a)`). Upon opening a new program, it <span style="color:#f77729;"><b>loads</b></span> the program into memory, <span style="color:#f77729;"><b>writing over most of itself</b></span> (note the shrinking portion of command interpreter codebase) to give the program<span style="color:#f77729;"><b> as much memory as possible </b></span>as shown in `(b)` above.
-
-Next, it sets the <span style="color:#f77729;"><b>instruction pointer</b></span> to the first instruction of the program.
-
-- The program then runs, and either an <span style="color:#f77729;"><b>error</b></span> causes a <span style="color:#f77729;"><b>trap</b></span>, or the program executes a system call to <span style="color:#f77729;"><b>terminate</b></span>.
-- In either case, the error code is saved in the system memory for later use.
-
-Following this action, the <span style="color:#f77729;"><b>small</b></span> portion of the command interpreter that was not overwritten resumes execution:
-
-- Its first task is to reload the rest of the command interpreter from disk.
-- Then the command interpreter makes the previous error code available to the user or to the next program.
-- It stands by for more input command from the user.
-
-### Multi-tasking system
-
-An example of a multi-tasking system is FreeBSD. The FreeBSD operating system is a <span style="color:#f77729;"><b>multi-tasking</b></span> OS that is able to create and manage multiple processes at a time.
-
-When a user logs on to the system, the <span style="color:#f77729;"><b>shell</b></span> (command interpreter) of the user’s choice is run. This shell is similar to the MS-DOS shell in that it accepts commands and executes programs that the user requests.
-
-However, since FreeBSD is a multitasking system, the command interpreter may <span style="color:#f77729;"><b>continue running</b></span> while another program is executed:
-
-- The possible state of a RAM with FreeBSD OS is as shown in the figure above
-- To <span style="color:#f77729;"><b>start</b></span> a new process, the shell executes a `fork()` system call.
-- Then, the selected program is loaded into memory via an `exec()`[^9] system call, and the program is executed normally until it executes `exit() `system call to end normally or `abort` system call.
-
-Depending on the way the command was issued, the shell then either <span style="color:#f77729;"><b>waits</b></span> for the process to finish or runs the process “in the background”. In the latter case, the shell immediately requests another command.
-
-The kernel is responsible to ensure that <span style="color:#f77729;"><b>context switching</b></span> is properly done (and <span style="color:#f77729;"><b>timesharing</b></span> as well if enabled).
-
-To run a command in the background, add the ampersand symbol (`&`) at the end of the command:
-
-```bash
-command &
-```
-
-<br>
-<hr>
 
 [^1]: The most generic sense of the term shell means any program that users employ to type commands. A shell hides the details of the underlying operating system and manages the technical details of the operating system kernel interface, which is the lowest-level, or "inner-most" component of most operating systems.
 [^2]: Image taken from [here](https://notes.shichao.io/tlpi/ch6/).
