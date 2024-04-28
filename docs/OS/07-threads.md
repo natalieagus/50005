@@ -437,8 +437,8 @@ $$\frac{1}{\alpha + \frac{1-\alpha}{N}}$$
 > 
 > What is the maximum speedup we can gain when $\alpha=30$% and $N$ is $\infty$?
 
-
-# Appendix: Daemon Processes {#appendix-daemon-processes}
+# Appendix
+## Daemon Processes {#appendix-daemon-processes}
 
 A <span style="color:#f77729;"><b>daemon</b></span> is a background process that performs a specific function or system task. It is created in user mode.
 {:.warning}
@@ -455,7 +455,7 @@ When we refer to a daemon process, we are referring to a process with these char
 - Generally has its own process group `id` and session `id` (daemon group)
 
 
-# Appendix: More on Linux Startup Process {#appendix-a-more-detailed-look-on-linux-startup-process}
+## More on Linux Startup Process {#appendix-a-more-detailed-look-on-linux-startup-process}
 
 The Linux startup process very much depends on the hardware architecture, but it can be simplified into the following steps:
 
