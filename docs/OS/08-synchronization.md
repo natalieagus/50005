@@ -826,9 +826,9 @@ pthread_mutexattr_destroy(&attrmutex);
 
 <hr>
 
-# Appendix: Sample C Code
-
-## Mutex
+# Appendix
+## Sample C Code
+### Mutex
 
 In the example below, we attempt to increase a shared variable `counter`, guarded by a `mutex` to prevent race conditions.
 
@@ -875,7 +875,7 @@ void *functionC()
 }
 ```
 
-## Condition Variables
+### Condition Variables
 
 Consider a main function with a shared variable `count`, two `mutexes` and one `condition`:
 
@@ -956,7 +956,7 @@ void *functionCount2()
 }
 ```
 
-## Producer-Consumer Problem
+### Producer-Consumer Problem
 
 In this sample, we try to tackle the single producer single consumer problem with counting semaphore. The shared resources will be an integer array named `buffer` in this example, of size `10`.
 
@@ -1072,7 +1072,7 @@ Paste the two functions above before `main()`. After you compile and run the cod
 
 <img src="{{ site.baseurl }}/assets/images/week4/2.png"  class="center_fifty no-invert"/>
 
-## Cleanup
+### Cleanup
 
 To remove unused semaphores, shared memory, and message queues in your system created by you, use the bash script:
 
