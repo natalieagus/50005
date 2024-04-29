@@ -394,3 +394,12 @@ Note that symbolic links <span style="color:#f77729;"><b>do not</b></span> incre
 As a result, the `delete` action <span style="color:#f7007f;"><b>does not reduce </b></span>the reference count of this directory to _zero_. We are left with three inaccessible directories as shown in the image below.
 
 <img src="{{ site.baseurl }}/assets/images/week6/24.png"  class="center_full no-invert"/>
+
+# Summary
+
+Directories, also known as folders, play a crucial role in organizing and managing files within an operating system. 
+
+This chapter delves into the **concept** of directories, explaining their **purpose**, structure, and **functionality**. It explores how directories are used to hierarchically organize files, providing a systematic way to navigate and access data stored on storage devices. We also discuss **various** directory operations, such as creating, renaming, moving, and deleting directories, elucidating their impact on file organization and system management. Additionally, we examine directory **structures**, including tree-based and graph-based representations, and elucidates their advantages and limitations. 
+
+Understanding directories is essential for effectively managing file systems and ensuring efficient data organization within an operating system.
+

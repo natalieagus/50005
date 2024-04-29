@@ -519,6 +519,13 @@ We see that at each layer, a packet has two types of fields:
 {:.important}
 With layering, header vs. payload **size** is now <span class="orange-bold">relative</span> to the layer; e.g., the transport layer’s data (header + payload) becomes the network layer’s payload. 
 
+# Summary
+
+We have learned about network basics in this chapter, both from its nuts and bolt view and service view. 
+
+There are many challenges in maintaining a huge network of devices, they include: operability, sharing, complex interacting component, and scalability. We carefully study each challenge and present you with various practical ways to **approach** the challenge: via protocols, TDM, FDM, packet switching, and network layering among many others. It is important to appreciate the scale of these challenges and the pros and cons of each proposed solution. 
+
+
 # Appendix
 ## Connecting Modem, Router, Switches, and End Hosts 
 

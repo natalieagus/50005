@@ -245,14 +245,20 @@ Device controllers are **<span style="color:#f7007f;"><b>electronic components</
 2. Local memory <span style="color:#f77729;"><b>buffer</b></span> — contains instructions and data that will be fetched by the CPU when executing the device driver program, and ultimately loaded onto the RAM.
 3. A <span style="color:#f77729;"><b>simple</b></span> program to _communicate_ with the device driver
 
+### I/O
 I/O operation happens when there’s transfer of data between the local memory buffer of the device controller and the device itself.
 {:.info}
 
-The I/O operation simply means:
+The I/O operation  means:
 
 1. Output: <span style="color:#f77729;"><b>Move</b></span> data from the device controller's buffer to the output device, or
 2. Input: <span style="color:#f77729;"><b>From</b></span> the input device to the device controller’s buffer.
 
 Since the device controller and our CPU are <span style="color:#f7007f;"><b>asynchronous</b></span> (can operate independently, in parallel), we need to devise a way to <span style="color:#f7007f;"><b>coordinate</b></span> between servicing I/O requests and executing other user programs. This <span style="color:#f77729;"><b>I/O handling</b></span> issue is handled by our OS Kernel (read along to understand _how_).
+
+# Summary
+
+Operating systems (OS) serve as a **crucial** intermediary between a computer's hardware and its users, facilitating the management of hardware resources, program execution, and system security. The OS's core component, the kernel, plays a pivotal role in handling hardware operations and memory management, ensuring efficient processing and resource allocation. This introduction also discusses the architecture of computer systems, the memory hierarchy, and the process of booting, providing a **foundational** understanding of how operating systems **integrate** and **manage** computing resources.
+<hr>
 
 [^1]: Firmware is not equivalent to BIOS, but unfortunately some resources and PC manufacturers might just use them interchangeably. Firmware generally refers to software stored on the motherboard (of any devices like computers, routers, switches, etc), containing basic settings of the device at startup. Some firmwares are upgradable, while some are Read-Only. BIOS is a term generally used specifically to refer to computer’s motherboard firmware in older computers. Modern computers use other Firmwares such as UEFI, also stored on chips on the motherboard. Note that UEFI / BIOS don’t form the entirety of a motherboard’s firmware.

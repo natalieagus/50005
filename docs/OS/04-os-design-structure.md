@@ -283,15 +283,15 @@ The architecture of the JX system is illustrated below (simplified representatio
 - Protection within and between domains relies on the type safety of the Java language.
   - However, since domain zero is not written in Java, it <span style="color:#f77729;"><b>must be considered trusted</b></span> (built by trusted sources)
 
-## Summary {#summary}
+# Summary {#summary}
+This section delves into the **architecture** of modern operating systems, exploring their **components** and the **critical** roles they play in system functionality. It highlights the distinction between system and application programs, with a focus on how system programs interact with the kernel through system calls. Various OS structures such as monolithic, layered, microkernel, and hybrid models are discussed to illustrate their design and implementation complexities. 
 
 The figure below shows the summary of various OS structures.
 
 <img src="{{ site.baseurl }}/assets/images/week2/17.png"  class="center_full"/>
 
 For layered architecture, note that the only difference with hybrid and microkernel structure is that programs at level N relies <span style="color:#f7007f;"><b>ONLY</b></span> on services provided by programs at <span style="color:#f77729;"><b>one</b></span> level below it.
-<hr>
-<br>
+
 # Appendix
 
 If you'd like to expand your knowledge beyond regular OS, you may have further read about <span style="color:#f77729;"><b>virtualization</b></span> and <span style="color:#f77729;"><b>containerization</b></span>.
@@ -319,7 +319,7 @@ Note: "Host OS" in the picture above assumes that it is UNIX-based POSIX complia
 {:.warning}
 
 Example of software applications that support containerisation: [Docker](https://www.freecodecamp.org/news/docker-quick-start-video-tutorials-1dfc575522a0).
-
+<br>
 [^10]: `tty` itself is a command in Unix and Unix-like operating systems to print the file name of the terminal connected to standard input. If you open multiple terminal windows in your UNIX-based system and type `tty` on each of them, you will be returned with different ids. You may use write to communicate across terminal windows
 [^11]: Early operating systems were written in assembly language. Now, although some operating systems are still written in assembly language, most are written in a higher-level language such as C or an even higher-level language such as C++. Actually, an operating system can be written in more than one language: (1) The lowest levels of the kernel might be assembly language, and then (2) higher-level routines might be in C, and finally (3) system programs might be in C or C++, in interpreted scripting languages like PERL or Python, or in shell scripts. In fact, a given Linux distribution probably includes programs written in all of those languages.
 [^13]: Figure taken from Wikipedia

@@ -546,6 +546,8 @@ int main()
 
 # Message Passing vs Shared Memory {#comparison-between-message-passing-and-shared-memory}
 
+Message Passing and Shared Memory both facilitate interprocess communication (IPC), but they do so in different ways with distinct advantages and challenges: 
+
 1. <span style="color:#f77729;"><b>Number of system calls made:</b></span>
 
    - Message Passing, e.g: via socket requires <span style="color:#f7007f;"><b>system calls</b></span> for each message passed through `send() `and `receive()`but it is much quicker compared to shared memory to use if only small messages are exchanged.
@@ -570,7 +572,15 @@ int main()
 
    - Shared memory requires <span style="color:#f7007f;"><b>additional synchronisation</b></span> to prevent <span style="color:#f7007f;"><b>race-condition</b></span> issues (burden on the developer). There’s no blocking support. It also has to be <span style="color:#f7007f;"><b>freed</b></span> after they are no longer needed, otherwise will persist in the system until its turned off (check for existing shared memories using `ipcs` in terminal)<br>
 
-# Application: Chrome Browser Multi-process Architecture {#application-example-chrome-browser-multi-process-architecture}
+{:.info}
+Choosing between them typically depends on the specific needs for efficiency, safety, and the system architecture in which the processes operate.
+
+# Summary 
+
+This chapter explores the vital role of Interprocess Communication (IPC) in allowing processes to coordinate and manage shared resources efficiently. It details **two** primary IPC mechanisms: Shared Memory and Message Passing. Shared Memory allows processes to access and manipulate the same memory segments, facilitating quick and efficient data exchange. Message Passing, including techniques like **sockets** and message queues, enables processes to communicate without direct memory sharing, ensuring data **encapsulation** and process **safety**. 
+
+# Appendix 
+## Application: Chrome Browser Multi-process Architecture {#application-example-chrome-browser-multi-process-architecture}
 
 Websites contain multiple <span style="color:#f77729;"><b>active</b></span> contents: Javascript, Flash, HTML etc to provide a rich and dynamic web browsing experience. You may <span style="color:#f77729;"><b>open</b></span> several tabs and <span style="color:#f77729;"><b>load</b></span> different websites at the same time. However, some web applications contain bugs, and may cause the entire browser to <span style="color:#f7007f;"><b>crash</b></span> if the entire Chrome browser is just <span style="color:#f7007f;"><b>one</b></span> single huge process.
 

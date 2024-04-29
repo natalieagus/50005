@@ -417,7 +417,11 @@ command &
 ```
 
 <br>
-<hr>
+
+# Summary
+
+Operating systems provide essential **services** that enhance user interaction and system efficiency through various interfaces and functionalities. They manage resource allocation, execute programs, facilitate I/O operations, and maintain file systems. Additionally, OS services include **process communication** and error detection to ensure stable and secure operations. The OS interfaces, such as the graphical user interface (GUI) and command-line interface (CLI), enable users to interact with these services effectively. 
+
 
 # Appendix
 
@@ -647,6 +651,7 @@ The kernel virtual address area (`vmalloc`) is used for <span style="color:#f777
 - This allocation of process memory is <span style="color:#f77729;"><b>dynamic</b></span> and on demand.
 - On each allocation, a series of locations of physical pages are found for the corresponding kernel virtual address range, and the pagetable is <span style="color:#f77729;"><b>modified</b></span> to create the mapping.
 - If this is done, it might be <span style="color:#f77729;"><b>unsuitable</b></span> for DMA (Direct Memory Access).
+<hr>
 
 [^1]: The most generic sense of the term shell means any program that users employ to type commands. A shell hides the details of the underlying operating system and manages the technical details of the operating system kernel interface, which is the lowest-level, or "inner-most" component of most operating systems.
 [^2]: Image taken from [here](https://notes.shichao.io/tlpi/ch6/).

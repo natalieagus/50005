@@ -270,5 +270,7 @@ Ask yourself: will the <span class="orange-bold">slope</span> of the transmissio
 {:.highlight}
 Please head to Class Activities for more practice. 
 
+# Summary
 
+In this chapter on network performance, we explore the critical aspects that influence the efficiency and reliability of data transmission across networks. We present you with different types of packet delays: processing, queueing, transmission, and propagation; and their impact on **overall** network performance. The chapter also covers essential diagnostic tools like traceroute and ping, which help map network paths and measure connectivity and speed. Furthermore, we explain concepts like throughput versus bandwidth and the implications of packet loss, providing a thorough understanding of how to **analyze** and **optimize** network performance.
 

@@ -444,7 +444,6 @@ It is a huge piece of software, and usually are divided into separate subsystems
 
 The <span style="color:#f77729;"><b>Kernel</b></span> is the heart of the OS, the central part of it that holds important pieces of instructions that support the roles stated above in the bare minimum. In the next chapter, we will learn how to <span style="color:#f77729;"><b>access</b></span> crucial OS Kernel services.
 
-<hr>
 
 # Appendix
 ## Multiprocessor System {#multiprocessor-system}
@@ -496,7 +495,6 @@ There are two types of clustering:
 1. <span style="color:#f77729;"><b>Asymmetric</b></span>: has one machine in hot-standby mode. There’s a master machine that runs the system, while the others are configured as slaves that receive tasks from the master. The master system does the basic input and output requests.
 2. <span style="color:#f77729;"><b>Symmetric</b></span>: multiple machines (nodes) running applications, they are monitoring one another, requires complex algorithms to maintain data integrity.
 
-<hr>
 
 
 ## Timed Interrupts {#timed-interrupts}
@@ -534,7 +532,7 @@ In x86 architecture, exception handlers are normally found via so called Interru
 The IDT contains up to **256** entries and each of those entries is 16 bytes in size in 64 bit mode. For instance, a **division by zero** exception exists in x86 (unlike in ARMv8), and can be triggered by the CPU automatically (e.g: hardware is built to check that a divisor is not 0). By convention, this directs the PC to exec RAM address containing that division-by-zero handler **entry** directly (e.g: address `0`, as it is customary to have division by zero as the first handler entry of IVT).
 
 <img src="{{ site.baseurl }}//assets/images/week1-3_resource/2023-05-16-16-17-06.png"  class="center_seventy"/>
-
+<hr>
 
 
 [^5]: Interrupt-driven I/O is fine for moving small amounts of data but can produce high overhead when used for bulk data movement such as disk I/O. To solve this problem, direct memory access (DMA) is used. After setting up buffers, pointers, and counters for the I/O device, the device controller transfers an entire block of data directly to or from its own buffer storage to memory, with no intervention by the CPU.

@@ -449,6 +449,12 @@ The second method results in an <span style="color:#f7007f;"><b>overhead</b></sp
 Deadlock Recovery remains an open ended issue. Dealing with deadlock is also a <span class="orange-bold">difficult</span> problem. Most operating systems do <span class="orange-bold">not</span> prevent or resolve deadlock completely and users will deal with it when the need arises.
 {:.warning}
 
+# Summary
+
+This chapter explores the concept of deadlock in operating systems, a **critical** issue that arises in concurrent programming when two or more processes are unable to proceed because each is waiting for the other to release a resource. It delves into the **necessary** conditions for deadlock to occur, including mutual exclusion, hold and wait, no preemption, and circular wait. The guide discusses strategies for preventing and handling deadlock, such as resource allocation graphs, deadlock detection, and recovery mechanisms. 
+
+By understanding the causes and solutions to deadlock, programmers can design more robust and efficient concurrent systems.
+
 <hr>
 
 

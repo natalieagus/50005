@@ -824,7 +824,10 @@ pthread_mutex_destroy(pmutex);
 pthread_mutexattr_destroy(&attrmutex);
 ```
 
-<hr>
+# Summary
+
+This chapter discusses the essentials of synchronization between processes and threads, a critical aspect of operating systems. It covers various synchronization mechanisms including mutexes, semaphores, and condition variables to manage access to **shared** resources and **prevent** race conditions. The text also explores **practical** scenarios like the **producer-consumer problem**, illustrating how synchronization prevents data inconsistencies and ensures orderly execution. 
+
 
 # Appendix
 ## Sample C Code

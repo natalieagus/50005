@@ -119,6 +119,11 @@ Hence by making the internet hierarchy, we:
 1. <span class="orange-bold">Support scalability and sustained growth</span>. There’s really a lot of end hosts that are connected to the internet, and this number is growing, explosively. 
 2. <span class="orange-bold">Tackle the problem of incommensurate scaling:</span> Different aspects of the network grow at a different rate. 
 
+# Summary 
+This chapter delves into the structured hierarchy of Internet Service Providers (ISPs) which is **vital** for global internet connectivity. We categorize ISPs into three levels—access, regional/national, and global. I also explain the role of Internet Exchange Points (IXPs) in enabling direct peering between ISPs, thus enhancing efficiency and reducing costs. Additionally, I discuss the significance of Content Delivery Networks (CDNs) and Points of Presence (PoPs), which are crucial for **optimizing** content delivery and improving network performance. 
+
+This hierarchical structure is foundational for scalable and efficient connectivity across the internet.
+
 # Appendix 
 ## IPv4 Addressing 
 The IPv4 is a set of 32-bit numbers, divided into **four** parts (1 byte each). It allows for 4.29 billion unique addresses.

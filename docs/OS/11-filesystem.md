@@ -578,7 +578,12 @@ The printout from `kcmp` confirms that `fd_b` (fd 4) in both processes point to 
 We have provided you with enough examples above, please try them out and do your own investigation.
 {: .highlight}
 
-<hr>
+# Summary
+
+This chapter explores filesystems, an essential component of operating systems responsible for managing how data is stored and retrieved on storage devices. It covers various aspects of filesystems, including their structure, organization, and key functionalities. It discuss different **types** of filesystems, such as FAT, NTFS, ext4, and more, highlighting their features, advantages, and limitations. It also examines the **hierarchy** of filesystems, from directories to files, and explains how data is organized and accessed within a filesystem. 
+
+Additionally, we proceed by exploring **advanced** filesystem concepts like symbolic links, and permissions, providing insights into their significance and implementation. By understanding filesystems, developers can make informed decisions when selecting and configuring filesystems for their applications and systems.
+
 
 # Appendix
 

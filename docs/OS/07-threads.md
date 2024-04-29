@@ -437,6 +437,11 @@ $$\frac{1}{\alpha + \frac{1-\alpha}{N}}$$
 > 
 > What is the maximum speedup we can gain when $\alpha=30$% and $N$ is $\infty$?
 
+# Summary
+
+This chapter covers the essentials of threads in operating systems, explaining that threads are lighter, more efficient segments of processes designed to execute tasks. It differentiates between user-level and kernel-level threads, discusses their advantages, and outlines their management. The text also explores the benefits of multithreading, such as increased responsiveness and efficient resource sharing, alongside practical implementation in Java and C. 
+
+
 # Appendix
 ## Daemon Processes {#appendix-daemon-processes}
 

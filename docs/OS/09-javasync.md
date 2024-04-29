@@ -341,7 +341,9 @@ public void doWork(int id)
 
 # Summary
 
-There are a few <span style="color:#f77729;"><b>solutions</b></span> to the CS problem. The CS problem can be divided into two types:
+This chapter delves into synchronization techniques in Java, essential for managing concurrent processes in programming. It explores mechanisms such as synchronized methods and blocks, static and reentrant locks, and condition synchronization using `wait()` and `notify()` methods. The guide covers practical aspects like mutex locks, thread management, and avoiding deadlocks, providing a comprehensive understanding of how Java handles synchronization to ensure thread safety and efficiency. 
+
+Recall that there are a few <span style="color:#f77729;"><b>solutions</b></span> to the CS problem. The CS problem can be divided into two types:
 
 - <span style="color:#f7007f;"><b>Mutual exclusion </b></span>
 - <span style="color:#f7007f;"><b>Condition synchronization</b></span>
