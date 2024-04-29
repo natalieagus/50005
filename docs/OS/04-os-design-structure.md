@@ -300,9 +300,16 @@ If you'd like to expand your knowledge beyond regular OS, you may have further r
 
 ## Virtualisation
 
-We can run any arm or intel-based OS on arm or intel-based hardware, e.g: Dual boot. An extension to that is <span style="color:#f77729;"><b>virtualization</b></span>, where you can run any OS on any OS (typically the same architecture).
 
-A <span style="color:#f77729;"><b>hypervisor</b></span> is essentially an <span style="color:#f77729;"><b>emulator</b></span> computer software applications, firmware, and hardware that runs virtual machines. Examples of hypervisors: VMWare, VMWorkstation, VirtualBox, Parallel Desktop for Mac, etc
+**OS Virtualization** refers to the creation of a virtual environment where an operating system can run on top of another through the use of software. This allows multiple operating systems to run on a single physical machine, each isolated from the others, enabling efficient resource utilization and flexibility in deploying different software or operating system environments.
+
+A **Hypervisor** is the software that makes OS virtualization possible. It sits between the hardware and the operating systems and manages the distribution of hardware resources to the various virtual environments (often called virtual machines or VMs). There are two main types of hypervisors:
+
+1. **Type 1 Hypervisors**: Also known as bare-metal hypervisors, these run directly on the host's hardware to control the hardware and to manage guest operating systems. For example, VMware ESXi, Microsoft Hyper-V, and Xen are Type 1 hypervisors.
+
+2. **Type 2 Hypervisors**: Also known as hosted hypervisors, these run on a conventional operating system just as other computer programs do. The host operating system provides device support and manages the physical hardware. Examples include VMware Workstation and Oracle VirtualBox.
+
+Both types of hypervisors help in providing the virtualization capabilities that allow multiple OS instances to run simultaneously on the same machine, each thinking it has its own set of hardware resources.
 
 ## Containerization
 

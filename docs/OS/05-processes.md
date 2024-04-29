@@ -228,11 +228,9 @@ A new process is initially put in the <span style="color:#f77729;"><b>ready</b><
 - If the process `forks` (<span style="color:#f77729;"><b>create</b></span> new process), it may queue (wait) until the child process finishes (terminated)
 - The process could be forcily removed from the CPU (e.g: because of an interrupt), and be put back in the <span style="color:#f77729;"><b>ready</b></span> queue.
 
-### Long and Short Term Scheduler
+{:.info}
+Process scheduler is typically divided into two parts: long term and short term. Refer to the [appendix](#long-and-short-term-scheduler) section if you're interested to find out more. 
 
-Scheduler is typically divided into two parts: long term and short term. They manage each queue accordingly as shown:
-
-<img src="{{ site.baseurl }}/assets/images/week3/7.png"  class="center_seventy"/>
 
 # Operations on Processes
 We can perform various <span style="color:#f77729;"><b>operations</b></span> on a process: spawning child processes, terminate the process, set up inter-process communication channels, change the process priority, and many more. All of these operations require a system call (switching to Kernel Mode). In this example, we use the <span style="color:#f77729;"><b>C API</b></span> to make the system call.
@@ -530,6 +528,41 @@ We can enter the `ps aux | grep 'Z'` command to list all zombie processes in the
 <img src="{{ site.baseurl }}/assets/images/week3/12.png"  class="center_seventy no-invert"/>
 
 <hr>
+# Appendix
+
+## Long and Short Term Scheduler
+
+In operating systems, the management of processes and their execution by the CPU is handled by various types of schedulers. Among these, there exist the Long-term and Short-term schedulers. They manage each process scheduling queue accordingly as shown:
+
+<img src="{{ site.baseurl }}/assets/images/week3/7.png"  class="center_seventy"/>
+
+### Long-term Scheduler (or Job Scheduler)
+
+The long-term scheduler is responsible for controlling the degree of multiprogramming, which is the number of processes in memory. This scheduler selects processes from the pool of submitted jobs and loads them into memory for execution. Its main objectives are:
+
+- **Load Balancing:** Ensuring that enough processes are active in the system to make efficient use of CPU and I/O resources without overloading the system.
+- **Process Mix:** Managing a good mix of CPU-bound and I/O-bound processes. This diversity helps in optimal utilization of system resources.
+
+The long-term scheduler can decide to limit the number of jobs admitted to the system to avoid excessive competition for resources, which might lead to inefficiency.
+
+### Short-term Scheduler (or CPU Scheduler)
+
+The short-term scheduler, on the other hand, is much more frequent in its operations. It decides which of the processes in the ready queue will be executed next by the CPU. The main attributes of the short-term scheduler are:
+
+- **Speed:** It operates very frequently and must make decisions rapidly to ensure efficient CPU utilization.
+- **Decision Making:** It uses algorithms like Round Robin, First-Come-First-Serve, Priority Scheduling, and others to decide the order of process execution.
+
+The short-term scheduler is crucial for achieving efficient time-sharing and is involved in the fundamental operation of the CPU.
+
+### Differences
+
+The primary difference between the long-term and short-term schedulers lies in their frequency of execution and their impact on system performance. The long-term scheduler has a significant impact on the overall degree of multiprogramming but runs less frequently, whereas the short-term scheduler makes rapid decisions and directly affects the performance of individual processes.
+
+### Medium-term Scheduler
+
+Additionally, some systems use a medium-term scheduler to enhance performance. This scheduler temporarily removes processes from active contention for the CPU (usually by swapping them out) and reduces the degree of multiprogramming. When conditions are deemed favorable, the medium-term scheduler can bring these processes back into main memory. This helps in balancing the load and managing the system resources more effectively.
+
+Together, these schedulers manage system resources dynamically to optimize the performance of the operating system and the applications running on it.
 
 # Appendix
 
