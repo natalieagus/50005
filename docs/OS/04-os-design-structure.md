@@ -286,6 +286,14 @@ The architecture of the JX system is illustrated below (simplified representatio
 # Summary {#summary}
 This section delves into the **architecture** of modern operating systems, exploring their **components** and the **critical** roles they play in system functionality. It highlights the distinction between system and application programs, with a focus on how system programs interact with the kernel through system calls. Various OS structures such as monolithic, layered, microkernel, and hybrid models are discussed to illustrate their design and implementation complexities. 
 
+
+Key learning points include:
+- **Design Approaches**: Comparison of monolithic, layered, microkernel, and hybrid OS structures, each with unique benefits and trade-offs in terms of efficiency, flexibility, and complexity.
+- **System Programs and User Programs**: Exploration of their roles, differences, and interactions within the OS.
+- **Policy and Mechanism Separation**: The importance of distinguishing and separating the 'what' (policy) from the 'how' (mechanism) to ensure system flexibility and ease of maintenance.
+
+For a comprehensive understanding, further details can be explored in the original notes [here](https://natalieagus.github.io/50005/os/4-os-design-structure).
+
 The figure below shows the summary of various OS structures.
 
 <img src="{{ site.baseurl }}/assets/images/week2/17.png"  class="center_full"/>

@@ -579,6 +579,11 @@ Choosing between them typically depends on the specific needs for efficiency, sa
 
 This chapter explores the vital role of Interprocess Communication (IPC) in allowing processes to coordinate and manage shared resources efficiently. It details **two** primary IPC mechanisms: Shared Memory and Message Passing. Shared Memory allows processes to access and manipulate the same memory segments, facilitating quick and efficient data exchange. Message Passing, including techniques like **sockets** and message queues, enables processes to communicate without direct memory sharing, ensuring data **encapsulation** and process **safety**. 
 
+Key learning points include:
+- **Shared Memory and Message Passing**: Outlines the two main IPC mechanisms, explaining how shared memory allows direct access to a common memory space, whereas message passing involves sending messages through a system-managed channel.
+- **Synchronization and Race Conditions**: Discusses the need for synchronization to avoid race conditions, particularly when using shared memory.
+- **Practical Applications**: Provides examples of IPC in real-world applications, such as how browsers like Google Chrome use separate processes for different tabs to enhance stability and security.
+
 # Appendix 
 ## Application: Chrome Browser Multi-process Architecture {#application-example-chrome-browser-multi-process-architecture}
 

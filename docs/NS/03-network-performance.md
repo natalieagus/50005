@@ -274,3 +274,9 @@ Please head to Class Activities for more practice.
 
 In this chapter on network performance, we explore the critical aspects that influence the efficiency and reliability of data transmission across networks. We present you with different types of packet delays: processing, queueing, transmission, and propagation; and their impact on **overall** network performance. The chapter also covers essential diagnostic tools like traceroute and ping, which help map network paths and measure connectivity and speed. Furthermore, we explain concepts like throughput versus bandwidth and the implications of packet loss, providing a thorough understanding of how to **analyze** and **optimize** network performance.
 
+Key learning points include:
+- **Types of Network Delays**: Breaks down the key contributors to network latency: processing, queueing, transmission, and propagation delays.
+- **Diagnostic Tools**: Highlights the use of tools like traceroute and ping to measure these delays and diagnose network performance issues.
+- **Performance Metrics**: Discusses critical metrics such as packet loss, throughput, and bandwidth that affect and reflect the performance of network systems.
+
+For a more detailed examination, you can view the complete note [here](https://natalieagus.github.io/50005/ns/03-network-performance).

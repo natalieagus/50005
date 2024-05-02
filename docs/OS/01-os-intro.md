@@ -258,7 +258,16 @@ Since the device controller and our CPU are <span style="color:#f7007f;"><b>asyn
 
 # Summary
 
-Operating systems (OS) serve as a **crucial** intermediary between a computer's hardware and its users, facilitating the management of hardware resources, program execution, and system security. The OS's core component, the kernel, plays a pivotal role in handling hardware operations and memory management, ensuring efficient processing and resource allocation. This introduction also discusses the architecture of computer systems, the memory hierarchy, and the process of booting, providing a **foundational** understanding of how operating systems **integrate** and **manage** computing resources.
+This notes provide foundational knowledge for understanding how operating systems function as critical components in computing. It details the role of operating systems in managing hardware resources, executing user programs, and ensuring system security. Operating systems (OS) serve as a **crucial** intermediary between a computer's hardware and its users, facilitating the management of hardware resources, program execution, and system security. The OS's core component, the kernel, plays a pivotal role in handling hardware operations and memory management, ensuring efficient processing and resource allocation. This introduction also discusses the architecture of computer systems, the memory hierarchy, and the process of booting, providing a **foundational** understanding of how operating systems **integrate** and **manage** computing resources.
+
+
+Key learning points include:
+- **Role and Functions**: Operating systems act as intermediaries between computer applications and the hardware, optimizing resource use and user interaction.
+- **System Structure**: Emphasis on how different components like the kernel, user space, and system calls interact within a computing system.
+- **Process Management**: Explains how operating systems manage multiple processes, ensuring efficient execution and resource sharing.
+- **I/O and Device Management**: Discusses methods for handling input/output operations and managing various hardware devices connected to the system.
+
+
 <hr>
 
 [^1]: Firmware is not equivalent to BIOS, but unfortunately some resources and PC manufacturers might just use them interchangeably. Firmware generally refers to software stored on the motherboard (of any devices like computers, routers, switches, etc), containing basic settings of the device at startup. Some firmwares are upgradable, while some are Read-Only. BIOS is a term generally used specifically to refer to computer’s motherboard firmware in older computers. Modern computers use other Firmwares such as UEFI, also stored on chips on the motherboard. Note that UEFI / BIOS don’t form the entirety of a motherboard’s firmware.

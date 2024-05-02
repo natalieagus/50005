@@ -453,6 +453,13 @@ Deadlock Recovery remains an open ended issue. Dealing with deadlock is also a <
 
 This chapter explores the concept of deadlock in operating systems, a **critical** issue that arises in concurrent programming when two or more processes are unable to proceed because each is waiting for the other to release a resource. It delves into the **necessary** conditions for deadlock to occur, including mutual exclusion, hold and wait, no preemption, and circular wait. The guide discusses strategies for preventing and handling deadlock, such as resource allocation graphs, deadlock detection, and recovery mechanisms. 
 
+
+Key learning points include:
+- **Conditions for Deadlock**: Understanding the specific conditions that must all be present for a deadlock to occur.
+- **Deadlock Prevention and Avoidance**: Techniques to prevent deadlock by structurally eliminating the possibility of its conditions, and using algorithms like the Banker’s Algorithm to avoid deadlocks dynamically.
+- **Deadlock Detection and Recovery**: Methods to detect deadlocks and strategies to recover from them, such as process termination or resource preemption.
+
+
 By understanding the causes and solutions to deadlock, programmers can design more robust and efficient concurrent systems.
 
 <hr>

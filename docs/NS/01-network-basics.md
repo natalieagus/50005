@@ -525,6 +525,11 @@ We have learned about network basics in this chapter, both from its nuts and bol
 
 There are many challenges in maintaining a huge network of devices, they include: operability, sharing, complex interacting component, and scalability. We carefully study each challenge and present you with various practical ways to **approach** the challenge: via protocols, TDM, FDM, packet switching, and network layering among many others. It is important to appreciate the scale of these challenges and the pros and cons of each proposed solution. 
 
+Key learning points from the "Network Basics" note include:
+- **Components of Networks**: Introduction to the core elements of networks such as hosts, routers, and packet switches.
+- **Network Layering**: Explanation of the layered architecture, which organizes communication systems into hierarchical layers, each with specific functions.
+- **Data Transmission Methods**: Detailed look at packet switching and circuit switching, highlighting the differences and applications of each method in data communication.
+
 
 # Appendix
 ## Connecting Modem, Router, Switches, and End Hosts 

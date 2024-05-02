@@ -531,6 +531,12 @@ We can enter the `ps aux | grep 'Z'` command to list all zombie processes in the
 
 This chapter explores the **concept** of processes within operating systems, **defining** a process as a dynamic execution instance of a static program. It discusses the **lifecycle** of processes, from creation to termination, and explains key concepts such as process context, which includes the program counter, registers, and memory allocation. Additionally, it covers process **scheduling** and **states** (New, Running, Waiting, Ready, Terminated), illustrating how the OS manages multiple processes efficiently.
 
+Key learning points include:
+- **Process vs. Program**: A process is an active entity with executing code and resources, while a program is a static set of instructions on disk.
+- **Process Lifecycle and States**: Detailed descriptions of process states—new, running, waiting, ready, and terminated—and their transitions.
+- **Process Management and Scheduling**: Discusses how the operating system manages and schedules processes, including the use of the Process Control Block (PCB) and context switching to handle multiple processes efficiently.
+- **Process Creation and Termination**: Explores mechanisms for process creation using `fork()` and process termination, including handling orphaned and zombie processes.
+
 
 # Appendix
 

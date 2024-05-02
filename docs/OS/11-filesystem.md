@@ -582,6 +582,12 @@ We have provided you with enough examples above, please try them out and do your
 
 This chapter explores filesystems, an essential component of operating systems responsible for managing how data is stored and retrieved on storage devices. It covers various aspects of filesystems, including their structure, organization, and key functionalities. It discuss different **types** of filesystems, such as FAT, NTFS, ext4, and more, highlighting their features, advantages, and limitations. It also examines the **hierarchy** of filesystems, from directories to files, and explains how data is organized and accessed within a filesystem. 
 
+Key learning points include:
+- **File Types and Attributes**: Differentiation between regular files and directories, and a comprehensive list of file attributes like name, type, and permissions.
+- **File Operations**: Detailed explanation of operations such as file creation, reading, writing, deletion, and repositioning.
+- **System-Wide Structures**: Discussion on the use of file descriptor tables, inodes, and the system-wide open file table to manage file operations efficiently.
+
+
 Additionally, we proceed by exploring **advanced** filesystem concepts like symbolic links, and permissions, providing insights into their significance and implementation. By understanding filesystems, developers can make informed decisions when selecting and configuring filesystems for their applications and systems.
 
 

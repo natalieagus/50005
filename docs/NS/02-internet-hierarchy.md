@@ -122,7 +122,14 @@ Hence by making the internet hierarchy, we:
 # Summary 
 This chapter delves into the structured hierarchy of Internet Service Providers (ISPs) which is **vital** for global internet connectivity. We categorize ISPs into three levels—access, regional/national, and global. I also explain the role of Internet Exchange Points (IXPs) in enabling direct peering between ISPs, thus enhancing efficiency and reducing costs. Additionally, I discuss the significance of Content Delivery Networks (CDNs) and Points of Presence (PoPs), which are crucial for **optimizing** content delivery and improving network performance. 
 
+Key learning points include:
+- **Structure of Internet Service Providers (ISPs)**: Explanation of the hierarchical arrangement of ISPs into global, national/regional, and access levels.
+- **Internet Exchange Points (IXPs)**: Discusses the role of IXPs in facilitating efficient traffic exchange between ISPs at similar levels without intermediaries.
+- **Content Delivery Networks (CDNs)**: Outlines how CDNs optimize internet content delivery by reducing latency and increasing speed through strategically located servers.
+- **Point of Presence (PoPs)**: Describes PoPs as access points that enhance network service quality by improving latency, bandwidth, and reliability.
+
 This hierarchical structure is foundational for scalable and efficient connectivity across the internet.
+
 
 # Appendix 
 ## IPv4 Addressing 

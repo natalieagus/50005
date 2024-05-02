@@ -1,6 +1,6 @@
 ---
 layout: default
-permalink: /os/1-os-roles
+permalink: /os/2-os-roles
 title: Roles of OS Kernel
 description: Various Roles of OS Kernel
 parent: Operating System
@@ -443,6 +443,13 @@ It is a huge piece of software, and usually are divided into separate subsystems
 ... and many others. There's too many to count since modern OSes kept getting expanded to improve user experience.
 
 The <span style="color:#f77729;"><b>Kernel</b></span> is the heart of the OS, the central part of it that holds important pieces of instructions that support the roles stated above in the bare minimum. In the next chapter, we will learn how to <span style="color:#f77729;"><b>access</b></span> crucial OS Kernel services.
+
+This chapter elaborates on the critical functionalities and management roles of the OS kernel. It provides a thorough understanding of how the kernel orchestrates interaction between software and hardware, manages processes and memory, and ensures system security and efficiency.
+
+Key learning points include:
+- **Interrupt-Driven I/O Operations**: Differentiating between hardware and software interrupts, and explaining vectored versus polled interrupt systems.
+- **Process and Memory Management**: How the kernel manages virtual memory, handles multiple processes, and optimizes cache performance.
+- **Kernel Modes**: Differences between reentrant and preemptive kernels, and their implications for multitasking.
 
 
 # Appendix

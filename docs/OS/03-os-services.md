@@ -419,8 +419,15 @@ command &
 <br>
 
 # Summary
+This chapter offers an in-depth examination of the services provided by operating systems to facilitate user interactions and efficient system management. It explores various aspects of system calls and user interfaces, detailing how these elements work together to enhance the functionality and user-friendliness of computing systems.
 
-Operating systems provide essential **services** that enhance user interaction and system efficiency through various interfaces and functionalities. They manage resource allocation, execute programs, facilitate I/O operations, and maintain file systems. Additionally, OS services include **process communication** and error detection to ensure stable and secure operations. The OS interfaces, such as the graphical user interface (GUI) and command-line interface (CLI), enable users to interact with these services effectively. 
+Key learning points include:
+- **System Calls and API**: Discusses how system calls serve as interfaces for programs to request services from the OS kernel, including process control, file manipulation, and device management.
+- **User Interfaces**: Explores the roles of graphical (GUI) and command-line interfaces (CLI) in providing access to system services, emphasizing the ease of use and functionality they offer to users.
+- **Process and Resource Management**: Detailed explanation of how operating systems handle processes, manage resources, and ensure security through careful control and monitoring.
+
+
+In summary, operating systems provide <span class="orange-bold">essential</span> **services** that enhance user interaction and system efficiency through various interfaces and functionalities. They manage resource allocation, execute programs, facilitate I/O operations, and maintain file systems. Additionally, OS services include **process communication** and error detection to ensure stable and secure operations. The OS interfaces, such as the graphical user interface (GUI) and command-line interface (CLI), enable users to interact with these services effectively. 
 
 
 # Appendix
@@ -638,7 +645,6 @@ In summary, making system calls <span style="color:#f77729;"><b>directly</b></sp
 
 You can find out more about Linux[^6] system calls <span style="color:#f77729;"><b>API</b></span> (implemented in C) [here](http://man7.org/linux/man-pages/man2/syscalls.2.html)
 
-# Appendix
 
 ## Kernel Space
 
