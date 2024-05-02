@@ -66,7 +66,7 @@ In yet another attempt to prove A's identity, suppose A and B both share a secre
 > This attack involves eavesdropping the messages exchanged between A and B and <span class="orange-bold">use the information for malicious intent</span>. 
 
 
-<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case4.drawio-4.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case3.png"  class="center_seventy"/>
 
 T can echo back A’s IP + A’s “secret” password to B, but with a new message that does not come from A. Similarly, B cannot differentiate whether the message comes from A or T. Hence still without any form of encryption:
 * Authentication is compromised
@@ -85,7 +85,7 @@ In this scenario, Symmetric Key Cryptography is used since it's faster than Asym
 
 Now suppose both the message and "secret message" between A and B are now encrypted using symmetric key cryptography, such as 3DES. Even though now T cannot tell what the "secret message" between A and B is, nor can it read the content of the message. However, they can just **record** and **replay** or **playback** the cipher to B. This is called the <span class="orange-bold">replay/playback attack</span>.
 
-<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case4.drawio-3.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case4.drawio-4.png"  class="center_seventy"/>
 
 B is still not able tell if the incoming message + encrypted secret message comes from A or the intruder T. In this particular example, T does not get an extra $5000, but they damage B by incurring financial loss. The unauthorized duplicate transaction can disrupt legitimate financial transactions, cause financial losses for customers, and erode trust in the banking system and institutions involved. 
 
