@@ -22,11 +22,42 @@ Singapore University of Technology and Design
 # Network Security and Cryptography
 {: .no_toc}
 
-Throughout this chapter, we are going to focus on these security properties pertaining to exchanging messages through the internet that we care about:
-* <span class="orange-bold">Confidentiality</span>: only sender and receiver should understand the message contents
-* <span class="orange-bold">Integrity</span>: sender, and receiver want to confirm that the message is not altered without detection during transit
-* <span class="orange-bold">Authentication</span>: sender, and receiver both can confirm the identity of one another
-* <span class="orange-bold">Access and Availability</span>: internet services must be accessible and available to users
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> - **Understand Security Properties:**
+>   - Describe the concepts of confidentiality, integrity, authentication, and access/availability in network security.
+> - **Comprehend Cryptography Fundamentals:**
+>   - Explain the purpose and scope of cryptography in ensuring secure communication over the internet.
+> - **Explore Symmetric Key Cryptography:**
+>   - Describe the principles of symmetric key cryptography.
+>   - Compare and contrast DES and AES algorithms.
+>   - Discuss the advantages and disadvantages of symmetric key encryption.
+> - **Examine Asymmetric Key Cryptography:**
+>   - Define asymmetric key cryptography and its role in secure communication.
+>   - Analyze the RSA algorithm and its components.
+>   - Evaluate the strengths and weaknesses of RSA in different contexts.
+> - **Understand RSA Algorithm:**
+>   - Explain the key generation process in RSA.
+>   - Demonstrate encryption and decryption using RSA.
+>   - Illustrate the process of digital signing and verification with RSA.
+> - **Discuss Practical Considerations:**
+>   - Evaluate the computational efficiency of RSA compared to symmetric key algorithms.
+>   - Apply the concept of session keys in improving efficiency in message exchanges.
+> - **Synthesize Security Measures:**
+>   - Integrate knowledge of network security and cryptography to design robust security measures.
+>   - Evaluate the effectiveness of cryptographic solutions in mitigating specific security threats.
+> - **Analyze Current and Future Challenges:**
+>   - Identify emerging technologies and trends impacting network security.
+>   - Discuss potential challenges and solutions in adapting security measures to evolving threats and technologies.
+>
+> The learning objectives encompass understanding security properties, identifying various security attacks, comprehending cryptography fundamentals including symmetric and asymmetric key cryptography, exploring the RSA algorithm, discussing practical considerations such as computational efficiency and session keys, synthesizing security measures, and analyzing current and future challenges in network security.
+
+Throughout this chapter, we are going to focus on these four security properties pertaining to exchanging messages through the internet that we care about:
+1. <span class="orange-bold">Confidentiality</span>: only sender and receiver should understand the message contents
+2. <span class="orange-bold">Integrity</span>: sender, and receiver want to confirm that the message is not altered without detection during transit
+3. <span class="orange-bold">Authentication</span>: sender, and receiver both can confirm the identity of one another
+4. <span class="orange-bold">Access and Availability</span>: internet services must be accessible and available to users
 
 We will discuss how these properties are threatened, and ways to ensure that these properties hold. In real life, sender + receiver are:
 * Web browser/server for e-transactions + clients, 
@@ -276,10 +307,44 @@ One solution is to use session key.
 > 
 > We use public-key cryptography to establish a secure connection, meaning that we authenticate (the identity of) our host.  Then, one party will generate **symmetric session key** and exchange between sender and receiver using public-key cryptography. 
 > 
-> We then use this symmetric session key (instead of the public key) for the subsequent message exchanges throughout the session. See this [section](#secure-email) for further details. 
+> We then use this symmetric session key (instead of the public key) for the subsequent message exchanges throughout the session. See the next chapter for further details. 
 
+# Summary 
+**Summary:**
 
+In this chapter on Network Security and Cryptography, we delve into the crucial properties essential for secure communication over the internet: Confidentiality, Integrity, Authentication, and Access/Availability. We explore various threats to these properties and strategies to mitigate them. Here's a breakdown of key concepts covered:
 
+- **Security Properties**: 
+  - Confidentiality ensures only authorized parties can access message contents.
+  - Integrity ensures messages remain unaltered during transit.
+  - Authentication verifies the identities of communicating parties.
+  - Access and Availability ensure internet services are accessible and operational.
+
+- **Possible Security Attacks**: 
+  - Eavesdrop, Message Alteration, Impersonation, Hijacking, and Denial of Service attacks compromise specific security properties.
+
+- **Cryptography**: 
+  - Cryptography encompasses techniques for secure communication, focusing on confidentiality, integrity, authenticity, and non-repudiation of data.
+  - Encryption plays a fundamental role in achieving these goals.
+
+- **Symmetric Key Cryptography**: 
+  - Utilizes the same key for both encryption and decryption.
+  - Algorithms like DES and AES are prominent examples, with AES being more secure and efficient.
+
+- **Asymmetric Key Cryptography**: 
+  - Uses a pair of keys (public and private) for secure communication.
+  - RSA is a widely used asymmetric key algorithm, facilitating secure data transmission, digital signatures, and key exchanges.
+
+- **RSA Algorithm**: 
+  - Involves key generation, encryption, decryption, signing, and verification.
+  - Security relies on the practical difficulty of factoring large prime numbers.
+  - RSA's robustness stands against various attacks, although quantum computing poses potential threats.
+
+- **Practical Considerations**: 
+  - RSA's computational intensity compared to symmetric key algorithms like DES.
+  - Session keys offer a solution for improving efficiency in message exchanges.
+
+In conclusion, understanding network security and cryptography principles is imperative for maintaining secure communication channels, ensuring data confidentiality, integrity, and authenticity in an interconnected world. While RSA remains a stalwart in cryptographic practices, ongoing advancements and emerging technologies necessitate continuous evolution in security measures.
 
 # Appendix 
 
