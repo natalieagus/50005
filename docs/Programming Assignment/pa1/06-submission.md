@@ -55,6 +55,13 @@ No <span class="orange-bold">late submission</span> will be entertained. You wil
 
 
 ## Demo 
+You should be able to demo the workings of your `cseshell` as follows: (note that you're free to implement other system programs, in this example we implement some simple `ps`):
+
+<video controls width="100%" class="center_ninety" autoplay>
+    <source src="{{ site.baseurl }}docs/Programming Assignment/pa1/images/pa1-demo.mp4" type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+
 
 You and your team should appear in class during your own cohort's lab session (check exact schedule in class calendar) where you shall `clone` the code you submitted and demonstrate it in your computer. We will ask several implementation-related questions, and even ask you to <span class="orange-bold">modify</span> some features on the spot. We will also test your shell by modifying `.cseshellrc`, checking all the builtin commands, check the 4 system programs implemented, and also your additional feature(s). All members must be present and must be able to answer questions. <span class="orange-bold">We will pick who should answer the question</span>. Hence it is important that everyone knows what's going on, at least in theory.
 
