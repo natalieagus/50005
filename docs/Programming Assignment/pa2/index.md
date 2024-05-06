@@ -91,16 +91,31 @@ pa2/
 You should see exactly the above file structure afterwards. `./cleanup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
 
 
-
 # Test the Starter Code
+
+### Install required modules
+
+Run the following command to ensure you install the required modules for this assignment:
+```
+python3 -m pip install -r requirements.txt
+```
+
+{:.note}
+You can use `pipenv` if you don't want to clutter your machine. Refer to the repository readme for details. 
+
 
 ### Using the same machine
 The starter code provided to you implements a <span style="color:#f77729;"><b>simple</b></span>, non-secure file transfer protocol. We will explain in detail what the protocol is. For now, let's just ensure that everything runs normally.
 
 Change your current working directory to `[PROJECT_DIR]/source/`. This is where we assume your working directory is <span style="color:#f77729;"><b>unless otherwise stated.</b></span>
 
-Run `python3 ServerWithoutSecurity.py`, then run `python3 ClientWithoutSecurity.py` in two separate shell sessions.
-{:.highlight}
+Run each of these commands in two separate shell sessions:
+
+```
+python3 source/ServerWithoutSecurity.py
+python3 source/ClientWithoutSecurity.py
+```
+
 
 You can type in the filename you want to send, e.g `files/image.ppm` from the Client's window, and the server will receive it and store it under `source/recv_files` directory.
 
