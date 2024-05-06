@@ -32,8 +32,8 @@ Please read this section very very carefully and watch the given demo with your 
 
 You are expected to <span style="color:#f77729;"><b>save</b></span> <span class="orange-bold">two</span> additional files each time a client sends a file to the server:
 
-1. Client to save encrypted files to `source/send_files_enc` before sending, with the name: `enc_[filename]`, e.g: `enc_image.ppm` if it is sending `image.ppm` to the server.
-2. Server to save received encrypted file to client to `source/recv_files_enc` before decrypting, with the name `enc_recv_[filename]`, e.g: `enc_recv_image.ppm`.
+1. Client to save encrypted files to `[PROJ_ROOT_DIR]/send_files_enc` before sending, with the name: `enc_[filename]`, e.g: `enc_image.ppm` if it is sending `image.ppm` to the server.
+2. Server to save received encrypted file to client to `[PROJ_ROOT_DIR]/recv_files_enc` before decrypting, with the name `enc_recv_[filename]`, e.g: `enc_recv_image.ppm`.
 
 You should have the following files now:
 <img src="{{ site.baseurl }}/assets/images/pa2/2.png"  class="center_fifty no-invert" />
@@ -43,9 +43,9 @@ The new files are mainly (<span class="orange-bold">names must be exactly these!
 1. `server_signed.crt`, and `server_private_key.pem` under `source/auth`
 2. `ClientWithSecurityAP/CP1/CP2.py` and `ServerWithSecurityAP/CP1/CP2.py`.
 
-All other files inside `source/files` directory must remain as per the original files.
+All other files inside `[PROJ_ROOT_DIR]/files` directory must **remain** as per the original files from the previous sections.
 
-You can now run the <span class="orange-bold">autograder</span> yourself, assuming your current working directory is at the same level as `source/`. The second argument can be 1 or 2 depending on whether you want to test CP1 or CP2.
+<!-- You can now run the <span class="orange-bold">autograder</span> yourself, assuming your current working directory is at the same level as `source/`. The second argument can be 1 or 2 depending on whether you want to test CP1 or CP2.
 
 ```
 python3 autograde.py 1
@@ -54,7 +54,7 @@ python3 autograde.py 2
 
 You should have the following message if everything goes well (`8` marks for CP1, and `14` marks for CP2).
 
-<img src="{{ site.baseurl }}/assets/images/pa2/3.png"  class="center_fifty no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/pa2/3.png"  class="center_fifty no-invert"/> -->
 
 You should then make the final commit of all tracked files so far:
 
@@ -62,12 +62,12 @@ You should then make the final commit of all tracked files so far:
 git commit -a -m "feat: save to recv_files_enc and send_files_enc before encrypting and before sending"
 ```
 
-You can also put your own large files at `source/files` (>100MB) to <span style="color:#f77729;"><b>test</b></span> internally, but <span style="color:#f77729;"><b>remove</b></span> it before pushing to Github since it doesn't allow you to push any single file >100MB. Please <span class="orange-bold">do not use<span class="orange-bold"></span></span> `git-lfs`.  
+You can also put your own large files at `[PROJ_ROOT_DIR]/files` (>100MB) to <span style="color:#f77729;"><b>test</b></span> internally, but <span style="color:#f77729;"><b>remove</b></span> it before pushing to Github since it doesn't allow you to push any single file >100MB. Please <span class="orange-bold">do not use<span class="orange-bold"></span></span> `git-lfs`.  
 {:.note}
 
 ## Print Statements
 
-The autograder does not check your program's `stdout`, so you're <span style="color:#f77729;"><b>free to print</b></span> whatever you need or want during the development of the assignment.
+We will not check your program's `stdout` during the demo, so you're <span style="color:#f77729;"><b>free to print</b></span> whatever you need or want during the development of the assignment.
 
 ## Following Protocols Closely (1%)
 
@@ -85,18 +85,13 @@ Not to worry, our server and client scripts that will be used to test your clien
 The following video shows the expected interaction between Server and Client processes.
 
 <video controls width="100%" class="center_ninety" autoplay>
-    <source src="https://www.dropbox.com/s/iq6zoo3cu6ml0gl/pa2.mp4?raw=1" type="video/mp4">
+    <source src="{{ site.baseurl }}/docs/Programming Assignment/pa2/images/index/assets/images/pa2/pa2-demo.mp4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
 </video>
 
 ## Submission
 
-Go to our bot and type `/start`. Follow the instructions there. You're only required to submit the github remote repo link.
-
-We will clone your repo for grading. Make sure you check that it runs with the given autograder before submitting. The bot will report your marks out of 8 points (8%, which is the total marks for PA2). We will manually check for plagiarism cases.
-
-And it goes without saying that submitting any unrunnable code grants you <span style="color:#f7007f;"><b>0</b></span>. This <span style="color:#f7007f;"><b>includes</b></span> using other modules that's not already been stated in the starter code. Please <span style="color:#f7007f;"><b>do NOT</b></span> import anything else. Our VM will not have any other modules installed to run your script.
-{:.error}
+Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>.
 
 ## Live Demo 
 

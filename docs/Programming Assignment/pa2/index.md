@@ -50,43 +50,45 @@ You should have joined the GitHub Classroom and obtain the starter code for this
 
 ### PA2 Files
 
-This will result in a directory called `pa2`. Anything under `source/` is where you will work for this assignment. All files in the same level as `source/` are for <span style="color:#f77729;"><b>autograding purposes</b></span>. Do <span class="orange-bold">not</span> modify these.
+This will result in a directory called `pa2`. Anything under `source/` is where you will work for this assignment. All files in the same level as `source/` are for <span style="color:#f77729;"><b>admin purposes</b></span>. Do <span class="orange-bold">not</span> modify these.
 
 ```
-pa2/
-  |-source/
-    |-auth/
-        |-cacsertificate.crt
-        |-generate_keys.py
-    |-files/
-        |-cbc.bmp
-        |-file.txt
-        |-image.ppm
-        |-jsim.jar
-        |-player.psd
-        |-squeak.wav
-        |-vscodejsim.mp4
-        |-week9.html
-    |-recv_files/
-    |-recv_files_enc/
-    |-send_files_enc/
-    |-ClientWithoutSecurity.py
-    |-ServerWithoutSecurity.py
-  |-autograde.py
-  |-cleanup.sh
-  |-input1
-  |-input2
-  |-output_client
-  |-output_server
-  |-result
-  |-result_enc
-  |-result_plain
+.
+├── README.md
+├── autograde.py
+├── cleanup.sh
+├── files
+│   ├── cbc.bmp
+│   ├── file.txt
+│   ├── image.ppm
+│   ├── jsim.jar
+│   ├── player.psd
+│   ├── squeak.wav
+│   ├── vscodejsim.mp4
+│   └── week9.html
+├── input1
+├── input2
+├── output_client
+├── output_server
+├── recv_files
+├── recv_files_enc
+├── requirements.txt
+├── result
+├── result_enc
+├── result_plain
+├── send_files_enc
+└── source
+    ├── ClientWithoutSecurity.py
+    ├── ServerWithoutSecurity.py
+    └── auth
+        ├── cacsertificate.crt
+        └── generate_keys.py
 ```
 
 
 ### Run `./cleanup.sh`
 
-`source/recv_files`, `source/recv_files_enc`, and `source/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./cleanup.sh` in `pa2` as your current working directory. 
+`[PROJ_ROOT_DIR]/recv_files`, `[PROJ_ROOT_DIR]/recv_files_enc`, and `[PROJ_ROOT_DIR]/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./cleanup.sh` in the **project root**. 
 
 You should see exactly the above file structure afterwards. `./cleanup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
 
@@ -107,8 +109,6 @@ You can use `pipenv` if you don't want to clutter your machine. Refer to the rep
 ### Using the same machine
 The starter code provided to you implements a <span style="color:#f77729;"><b>simple</b></span>, non-secure file transfer protocol. We will explain in detail what the protocol is. For now, let's just ensure that everything runs normally.
 
-Change your current working directory to `[PROJECT_DIR]/source/`. This is where we assume your working directory is <span style="color:#f77729;"><b>unless otherwise stated.</b></span>
-
 Run each of these commands in two separate shell sessions:
 
 ```
@@ -119,13 +119,12 @@ python3 source/ClientWithoutSecurity.py
 
 You can type in the filename you want to send, e.g `files/image.ppm` from the Client's window, and the server will receive it and store it under `source/recv_files` directory.
 
-> Remember that the current working directory of the Client is `source/`
 
 You can repeat the above steps multiple times for each file you want to send to the server. If the client would like to close connection to the server, key in `-1`.
 
 The screenshot below shows how client process can send files to the server process, when both are hosted in the same computer:
 
-<img src="{{ site.baseurl }}/assets/images/pa2/4.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}/docs/Programming%20Assignment/pa2/images/index/assets/images/pa2/4.png.png"  class="center_full no-invert"/>
 
 ### Using different machines
 You can also host the Server file in another computer:

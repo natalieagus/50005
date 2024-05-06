@@ -223,7 +223,7 @@ session_key = Fernet(session_key_bytes) # instantiate a Fernet instance with key
 Unlike RSA encryption, you can `encrypt` any byte datatype without separating them into chunks: 
 ```python
 long_message = b""
-with open("source/files/image.ppm", "rb") as f:
+with open("[PROJ_ROOT_DIR]/files/image.ppm", "rb") as f:
   long_message = f.read()
 encrypted_long_message = session_key.encrypt(long_message)
 decrypted_long_message = session_key.decrypt(encrypted_long_message)

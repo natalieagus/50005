@@ -64,14 +64,14 @@ _Just kidding_. Did you forget your Lab 1 materials? What does that error mean?
 
 That's right you just dont have the system program like `truncate` or `diff`. Simply install it for your own OS (`sudo apt install [program]` for Ubuntu, `brew install [program]` for macOS, etc).
 
-### Autograder Complains File Output/Y Not Found
+<!-- ### Autograder Complains File Output/Y Not Found
 
 If the autograder complains that your programs did not produce the output files at the designated location under `source/output` but it did create these when ran manually, it's due to <span style="color:#f77729;"><b>trailing</b></span> whitespaces `\n\r` (invisible to the eye) that's present when it is reading `input1` or `input2`. 
 
 For instance, your client program is trying to find `files/file.txt\r\n` instead of just `files/file.txt` because of the way the `input` files are loaded in your system.
 
 {:.highlight}
-Simply add a `strip()` function inside your `Client[version].py` scripts when getting `filename` from the <span style="color:#f77729;"><b>user</b></span> to eliminate these trailing whitespaces.
+Simply add a `strip()` function inside your `Client[version].py` scripts when getting `filename` from the <span style="color:#f77729;"><b>user</b></span> to eliminate these trailing whitespaces. -->
 
 ### No Such File or Directory: recv_files/EXPECTED_FILE
 
@@ -118,7 +118,7 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.backends import default_backend
 ```
 
-### Bot: Autograder Fails to Run
+<!-- ### Bot: Autograder Fails to Run
 
 If the bot complains that the autograder **fails to run**, then check if you have modified the `./cleanup.sh` to be **executable**. We did not explicitly tell you to `chmod +x ./cleanup.sh` , but we _did_ ask you to run it. 
 
@@ -133,8 +133,8 @@ Check that your local autograder did printout **exactly** the following:
 
 That means: **no error messages** like "file A not found". We only give `autograde.py` to you so that you can have some kind of checker beforehand, but we can't guarantee 100% that it will not give false positives because you might not be using the same exact Python >3.10 version, have different system programs or different Linux distros altogether. 
 
-If you're not sure what went wrong, **just OPEN** `autograde.py` and figure it out. It's in Python! How hard can it be?
-
+If you're not sure what went wrong, **just OPEN** `autograde.py` and figure it out. It's in Python! How hard can it be? -->
+## Why not give Docker Image?
 {:.info-title}
 > Docker?
 > 
