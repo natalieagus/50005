@@ -94,6 +94,11 @@ B is still not able tell if the incoming message + encrypted secret message come
 >
 > Both replay attacks and eavesdropping attacks involve <span class="orange-bold">intercepting</span> network communication. Replay attacks involve intercepting and later re-transmitting captured network data to impersonate a legitimate user, while eavesdropping attacks involve passive interception of communication to extract sensitive information without altering it. Replay attacks aim to deceive the target system by replaying captured data, whereas eavesdropping attacks focus on listening in on communication to <span class="orange-bold">extract confidential</span> information.
 
+Therefore in Case 4:
+* Authentication is **not present** (due to replay/playback attack)
+* Integrity is **present**: we know that A wrote the message at some point in time because only A has the symmetric key, just that it might **not*** be right now (not live)
+* Confidentiality is **present**: T cannot decipher the message, only replay it
+
 # Case 5: Signed message + Signed Nonce
 
 {:.important}
@@ -119,7 +124,6 @@ The scenario goes as follows:
 * B decrypts the signed message and acts upon it.  
 * B may send **confidential** message to A encrypting the reply message m with A's public key. This way, only A can decipher the message.
 
-
 There's still one issue with this: there's <span class="orange-bold">no way</span> that B can tell that the public key belongs to A. This is susceptible to the <span class="orange-bold">man-in-the-middle attack</span> (MITM). In other words, T  is able to **hijack** the conversation between A and B:
 <img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case5.drawio-8.png"  class="center_seventy"/>
 
@@ -130,6 +134,11 @@ B's intended "confidential" message to A is also susceptible to MITM:
 > Man in the middle attack
 >
 > In a Man-in-the-Middle (MITM) attack, an adversary intercepts communication between two parties, allowing them to **eavesdrop** on or **manipulate** the exchanged data. By impersonating one or both parties, the attacker can capture sensitive information and potentially alter the communication without detection.
+
+Therefore in current Case 5:
+* Authentication is **not present**: B does not know that A's public key belong to A
+* Integrity is **not present**: MITM attack allows T to pose as A to B and as B to A and tamper with the message exchanged
+* Confidentiality is **present**: same reason as above
 
 There are **two solutions** to avoid the MITM attack: to utilise symmmetric key cryptography or to rely on Certificate Authority. 
 
@@ -179,13 +188,168 @@ Let's now review Case 5 again with the addition of CA:
 
 <img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case5c.drawio-4.png"  class="center_seventy"/>
 
-The addition of a CA enables B to be sure that A’s public key indeed belongs to A. However it is *still* forcing A or B to encrypt messages with asymmetric key cryptography. Case 5 + CA nonetheless provides:
+The addition of a CA enables B to be sure that A’s public key indeed belongs to A. However it is *still* forcing A or B to encrypt messages with asymmetric key cryptography which is <span class="orange-bold">slow</span> and takes up <span class="orange-bold">resources</span> because it is computationally expensive. This improved Case 5 with a presence of a trusted CA nonetheless provides:
 * **Authentication**: The Nonce ensures the message signed and sent by A is fresh. In other words, B <span class="orange-bold">authenticates</span> A and ensures the <span class="orange-bold">liveliness</span> of A. The messages B received from A comes from A *right now*.
-* **Confidentiality**: From B to A only. Asymmetric Key Cryptography ensures that only A can read the message.
+* **Confidentiality**: From B to A only, not the other way around. 
+  * This is because only A has CA-signed certificate. By encrypting messages using A's verified public key, B ensures that only A can read the message.
+  * If A would like to send a confidential message to B, then B needs to obtain CA-signed certificate too. A can then encrypt the message using B's verified public key.
 * **Integrity**: A has a CA **signed** certificate, hence B can verify that the signed message was authorized by A without alteration.
 
 <img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case5d.drawio-2.png"  class="center_seventy"/>
 
+
+
+# Case 6: Plain Message + Message Digest 
+
+In Case 5, we signed the *whole* message using A's private key to prove **integrity**, and we utilise Nonce (sent by B to A) so that B can **authenticate** A when A sign the Nonce. However recall that public-key encryption is <span class="orange-bold">costly</span>, especially if the message is very large.
+
+## Message Digest 
+
+{:.info-title}
+> Message digest 
+> 
+> A message digest, also known as a hash value or hash code, is a <span class="orange-bold">fixed</span>-size alphanumeric string generated by applying a mathematical function (hash **function**) to an arbitrary amount of data. The purpose of a message digest is to uniquely represent the input data. Even a **tiny** change in the input data should result in a significantly different digest.
+
+Message digests are commonly used in various security applications such as data integrity verification, digital signatures, and password storage. Popular hash functions include MD5, SHA-1, SHA-256, and SHA-3. However, due to vulnerabilities found in some older hash functions like MD5 and SHA-1, it's recommended to use stronger algorithms like SHA-256 for security-sensitive applications.
+
+These hash functions are of course publicly known, but it is a convenient and efficient way to transform long messages into **fixed**-length messages: small enough such that we can encrypt them using A’s private key without taking too much time. 
+
+<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case6.drawio.png"  class="center_seventy"/>
+
+We assume that Nonce and A’s CA-issued certificate verification were done beforehand (to establish authentication, where B authenticates A). Also, note that both A and B must use the **same** hash function. This can either be agreed a-priori, or specified in A's CA issued certificate. Read this [appendix](#chosen-hash-function) section to find out more. 
+
+To clarify, A sends the following after authentication is completed:
+* Hashed message, encrypted with A’s private key 
+* Plain message (if confidentiality is not an issue) 
+
+B then confirms the **integrity** of the message:
+* Hash the plaintext message
+* Decrypt the encrypted hash sends by A using A’s public key 
+* Compare between (1) and (2) to ensure that A indeed sends the message
+
+
+Therefore in Case 6:
+* Authentication is **present**: We assume that nonce exchange as per Case 5 is already done and that A has CA-signed certificate
+* Integrity is **present**: The signed message digest by A provides non-repudiation that the message was indeed written by A and not altered by any other party 
+* Confidentiality is **not required**: Since A sends the message to B in plain text, T can freely read the message. 
+
+{:.note}
+Confidentiality is <span class="orange-bold">not</span> always a security requirement, as it depends on the nature of the information being transmitted and the specific needs of the system or application. In some cases, confidentiality may not be a priority or may even be unnecessary, but **integrity** is necessary. 
+
+## Real-life scenario: Installer Download
+
+A scenario where integrity is critical but *not* confidentiality could be when downloading software updates from a trusted source, such as Microsoft official site. Imagine you're downloading an update for your operating system directly from Microsoft's official website. In this scenario:
+
+1. **Integrity**: Ensuring the integrity of the downloaded file is <span class="orange-bold">crucial</span>. You want to be certain that the file hasn't been tampered with or altered in any way during transit. If the file's integrity is compromised, it could potentially contain malware, viruses, or other harmful code that could compromise the security and stability of your system.
+
+2. **Confidentiality**: Confidentiality is not important in this scenario as the installer is meant to be downloaded by any Windows user. This is unlike sensitive personal or financial information that you would like to download from a Banking site. In the Microsoft installer case, a long as the update process is transparent and the integrity of the update is guaranteed, the confidentiality of the update contents is <span class="orange-bold">not</span> a primary concern.
+
+By verifying the integrity of the file, you can trust that it hasn't been tampered with and that it comes directly from the trusted source (e.g., Microsoft). This ensures the <span class="orange-bold">security</span> and <span class="orange-bold">reliability</span> of the update process without needing to protect the confidentiality of the update contents.
+
+
+## Non Repudiation
+The technique in Case 5 and 6 also supports non-repudiation: signing either the entire message *or* the message digest with one's private key. 
+
+{: .note-title}
+> Non repudiation
+>
+> Non-repudiation is a <span class="orange-bold">property</span> of cryptographic systems that ensures that a party <span class="orange-bold">cannot deny the authenticity</span> of a digital signature or the integrity of a message that they have signed. In other words, if a party signs a message or document using their private key, they *cannot later claim that they did not sign it* or that the message was *altered* after they signed it.
+>
+> B can then prove to the court  that A wrote the message and no one else did. 
+
+{:.error}
+If A and B were to exchange messages using **symmetric key** cryptography only (assume that they have exchanged keys in person beforehand), will that support **non repudiation**? 
+
+## Hash Function  Requirements
+The hash function used to produce message digest **must** fulfil a certain criteria: 
+1. **Deterministic**: For a given input, the hash function always produces the same output. This property is crucial for ensuring consistency and predictability.
+8. **Non-reversibility** (very important!): Hash functions are designed to be <span class="orange-bold">one-way functions</span>, meaning it should be computationally infeasible to reverse the process and obtain the original input from the hash value. This property is crucial for maintaining the integrity and confidentiality of hashed data. This encompasses two properties: 
+   1. **Pre-image Resistance**: Given a hash value, it should be computationally infeasible to determine the original input data. This property ensures that the hash function protects the confidentiality of the input data.
+   2. **Second Pre-image Resistance**: Given an input and its corresponding hash value, it should be computationally infeasible to find another input that produces the same hash value. This property ensures that the hash function maintains the integrity of the input data.
+9.  **Fixed Output Size**: The hash function generates a fixed-size output regardless of the size of the input. This property makes it easier to work with in various applications.
+
+10. **Fast Computation**: Hash functions are designed to be computationally efficient, allowing them to process large amounts of data quickly. This efficiency is essential for real-time applications and systems with performance constraints.
+11. **Collision Resistance**: It should be computationally infeasible to find two different inputs that produce the same hash value. This property ensures that the hash function can reliably distinguish between different inputs.
+
+12. **Avalanche Effect**: A small change in the input data should result in a significantly different hash value. This property ensures that even minor alterations to the input data produce vastly different hash values, enhancing the security of the hash function.
+
+
+These characteristics collectively make cryptographic hash functions like SHA-256 essential building blocks in various security protocols and cryptographic applications.
+
+# Case 7: Secure Email 
+
+Both Case 5 and 6 ignores **confidentiality** as one of its security properties (simply not required). However, if communication between A and B **must** be secure, we need to find another way without fully utilising public key cryptography for the entire message exchanges.  Recall that it is <span class="orange-bold">not realistic</span> to encrypt lengthy messages using public-key cryptography. We can therefore use the public-key cryptography (+ digitally signed certificate by a trusted CA) to share a symmetric session key. 
+
+## Session Key 
+
+{:.info-title}
+> Session Key
+>
+> A session key is a **temporary** encryption key used for securing communication between two parties during a single communication session or transaction. It's typically generated dynamically for each session and discarded after the session ends, reducing the risk associated with long-term key exposure. This session key is typically <span class="orange-bold">symmetric</span>.
+
+Any party can initiate to share the session key first, **as long as the recipient you’re sending to has a public key (certified by CA)**. Here's the general steps: 
+1. B has to obtain A’s public key from its CA-issued certicicate
+2. B Generate a session key (e.g: using symmetric key cryptography)
+3. B encrypts the session key to be sent back to A  
+By encrypting the session key with A’s public key, B is certain that only A can decrypt the session key (since A’s private key is owned by only A). Then, <span class="orange-bold">subsequent messages are encrypted using the session key</span>.
+
+
+
+This technique therefore provides for the following security features. Assume that **Nonce** verification (to authenticate that B and A are both live) is already done prior to the session: 
+* **Confidentiality**: message is encrypted by shared session key, that is typically valid only for one session. No intruder can decrypt the messages in realistic time.
+* **Integrity**: not exactly, [depends on the type or format of data you’re sending, among other things](https://www.youtube.com/watch?v=tAdD5jp8knU). You might think that since the entire message is confidential (encrypted by session key), and can only be decrypted by the same session key, B or A should be certain that an intruder won’t be able to alter the message’s content on the fly. The hard part is knowing what’s the *true* content. 
+  * Suppose B and A are just exchanging integers (bad protocol, yes but just using it as example), then if a malicious attacker randomly alters the bits, decryption by the symmetric key might result in an entirely new integer (not what the sender sent), and there’s no way for the receiver to know that that integer was sent by the sender. 
+  * Hence extra care must be taken to ensure integrity, one way is to utilise [Message Authentication Code](https://en.m.wikipedia.org/wiki/Message_authentication_code) or any protocol utilising one-way-functions. 
+* **Authentication**: A’s certificate is digitally signed by a trusted CA. This proves that A’s public key indeed belongs to A and therefore the session key shared by B can only be decrypted by A and no one else. 
+
+{:.error}
+This technique alone does **not** support non repudiation: B cannot prove to the court that no one else but A wrote the message, because the symmetric key are owned by *both* A and B. It is possible that B wrote a message posing as A and later "claim" that this message is written by A. 
+
+# Case 8: Secure email + non repudiation 
+
+If A needs to communicate securely with B and non-repudiation must be supported (e.g: prove that A's messages are written by A), then A must provide a signed digest and encrypt both the message + encrypted hash together with the symmetric key: 
+
+Once B receives and decrypt the content: message + signed digest with the session key, B can: 
+1. Hash the received message 
+2. Decrypt the signed digest with CA-verified A's public key 
+3. Compare the two hashes to confirm message integrity, i.e: the message is sent and written by A
+4. If yes, this provides non-repudiation: the message is indeed sent by A (provable in court)
+
+Three keys in total are utised to provide secure communication with non repudation: A's public key, A's private key, and Session Key. 
+
+<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case8.drawio-2.png"  class="center_full"/>
+
+
+{:.important}
+Non-repudiation in asymmetric cryptography relies on the <span class="orange-bold">sender</span>'s private key, which is kept secret and known only to the sender. This prevents the sender from denying their involvement in signing the message. If  non-repudiation is needed for both A and B, then both A and B must have a set of CA-verified public-private key pair. 
+
+# Summary 
+
+
+The essential security properties for secure network communication include confidentiality, integrity, authentication, and access/availability. Cryptography plays a pivotal role in fulfilling the first three properties, but ensuring access and availability requires additional measures like DNS caching to defend against DDoS attacks. Here, we delve into practical applications that illustrate cryptographic mechanisms and their impact.
+
+**Plain Message Vulnerability**
+In unencrypted communication, an attacker can easily impersonate a sender or modify messages, thereby breaching all three core security properties. Adding an IP header offers little protection, as attackers can still spoof the address to send deceptive messages.
+
+**Symmetric Encryption and Replay Attacks**
+Introducing a shared secret password improves authentication and integrity, but without encryption, the secret can be exposed through eavesdropping. Even with symmetric encryption, attackers can replay messages, resulting in financial losses or fraudulent actions.
+
+**Nonce and Asymmetric Encryption**
+Using asymmetric encryption with nonces ensures that each message is unique and fresh. By signing the nonce with a private key, the sender can authenticate themselves. However, without a trusted Certificate Authority (CA), there's a risk of man-in-the-middle attacks that can compromise both authentication and integrity.
+
+**Role of Certificate Authorities**
+CAs issue signed certificates, binding public keys to verified entities. When both parties rely on a trusted CA, they can securely verify each other’s identities and prevent MITM attacks. This approach is essential in digital communication for maintaining confidentiality and authenticity.
+
+**Message Digests and Non-Repudiation**
+Cryptographic hash functions, such as SHA-256, generate fixed-length message digests to verify integrity efficiently. When paired with digital signatures, these digests ensure data hasn't been altered and attribute the message to the original sender.
+
+**Session Keys for Efficient Secure Communication**
+Using public-key cryptography to share symmetric session keys allows parties to encrypt subsequent messages efficiently. The session key ensures confidentiality during the exchange, though integrity verification requires careful implementation.
+
+**Secure Communication with Non-Repudiation**
+Combining symmetric encryption with signed message digests provides non-repudiation. The recipient can verify the signature against the hash, confirming the message's origin and integrity. However, both parties require a CA-verified key pair to provide mutual non-repudiation.
+
+It is important that you take the time to appreciate the subtlety of each cases provided in this notes, e.g: how confidentiality, integrity, and authentication are *or* are not guaranteed. Do <span class="orange-bold">not</span> rush into conclusions. 
 
 # Appendix
 
@@ -271,3 +435,24 @@ A certificate contains several pieces of information, including:
 10. **Certificate Chain**: For SSL/TLS certificates, the certificate may also include the intermediate certificates that link the entity's certificate to the root certificate of the CA.
 
 Overall, a certificate serves as a digital identity card, providing information about the entity it represents and enabling secure communication through cryptographic mechanisms.
+
+## Chosen Hash Function
+When you send a signed message digest, typically as part of a digital signature, the other side needs to know which hash function you used in order to compute the hash value of the original message and verify the signature. There are a few common methods for communicating the hash function used:
+
+1. **Protocol Specification**: In many cases, the protocol or standard you're following will specify which hash function to use. For example, if you're using a protocol like TLS (Transport Layer Security) or a digital signature standard like PKCS#1 (Public Key Cryptography Standard #1), it will specify the hash function to use (e.g., SHA-256).
+
+2. **Metadata**: You can include metadata along with the signed message digest that explicitly states which hash function was used. This metadata can be part of the message format or included in a separate header.
+
+3. **Default or Negotiated Algorithm**: In some cases, there may be default hash functions agreed upon by both parties. If not explicitly specified, the receiver might assume a default hash function agreed upon beforehand or negotiate the hash function to use during the communication.
+
+4. **Out-of-Band Communication**: Before exchanging signed messages, the parties involved can communicate out-of-band (e.g., through a separate channel like email or a conversation) to agree on the hash function to be used.
+
+5. **Digital Certificates Specification**:  CA-issued certificates can include information about the hash function used for generating digital signatures. In the context of digital certificates, this information is typically found within the certificate's metadata, specifically within the signature algorithm field.
+
+When a digital certificate is issued, it is signed by a certificate authority (CA) using a specific signature algorithm, which includes a hash function. The signature algorithm field in the certificate indicates both the cryptographic algorithm used for the signature and the hash function used as part of that algorithm.
+
+For example, in an X.509 certificate, which is the standard format for public key certificates, the signature algorithm field might specify something like "SHA256withRSA" or "SHA384withECDSA." This indicates that the SHA-256 or SHA-384 hash function was used along with the RSA or ECDSA algorithm, respectively, for generating the digital signature on the certificate.
+
+By examining the signature algorithm field in the digital certificate, the recipient can determine which hash function was used for signing the certificate and, by extension, for any signed data associated with that certificate. This information is crucial for verifying the integrity and authenticity of digital signatures.
+
+Regardless of the method used, it's essential for both parties involved in the communication to agree on the hash function to ensure that the signature verification process is successful.
