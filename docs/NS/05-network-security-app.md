@@ -23,6 +23,33 @@ Singapore University of Technology and Design
 
 # Application Scenarios of Cryptography
 
+{:.highlight-title}
+> Detailed learning objectives
+>
+> - **Understand Key Security Properties**
+>   - Learn the essential principles of confidentiality, integrity, and authentication in network communication.
+>   - Recognize the limitations of cryptography alone in providing access and availability.
+> - **Explore Security Risks in Plain Message Communication**
+>   - Identify how unauthenticated communication leaves systems vulnerable to spoofing and impersonation.
+>   - Understand the impact of compromised confidentiality, integrity, and authentication.
+> - **Evaluate the Effectiveness of Cryptography Applications**
+>   - Explore the benefits and limitations of symmetric encryption for confidentiality.
+>   - Recognize how asymmetric encryption with nonce exchange helps prevent replay attacks.
+> - **Examine the Role of Certificate Authorities (CA)**
+>   - Understand how CAs ensure secure communication through digital certificates.
+>   - Learn to distinguish legitimate public keys using CA-issued certificates.
+> - **Implement Message Digests and Non-Repudiation Techniques**
+>   - Identify how hash functions ensure data integrity in secure communications.
+>   - Explore how digital signatures guarantee non-repudiation.
+> - **Utilize Efficient Secure Communication Techniques**
+>   - Learn how session keys facilitate secure communication without compromising efficiency.
+>   - Understand the conditions needed to achieve non-repudiation with session keys.
+> - **Apply Concepts to Real-World Scenarios**
+>   - Assess potential vulnerabilities in secure email communication.
+>   - Recognize the importance of verifying data integrity over confidentiality in software downloads.
+>
+>These learning objectives are designed to deepen your understanding of the nuances involved in network security application scenarios, particularly focusing on how cryptography impacts confidentiality, integrity, and authentication.
+
 Previously, we list out four security properties that are essential for secure communication over the network:
 1. Confidentiality
 2. Integrity
