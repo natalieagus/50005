@@ -80,7 +80,16 @@ You may easily ensure this by checking your server against another pair's client
 Not to worry, our server and client scripts that will be used to test your client and server script will handle these cases.
 {:.note}
 
-## Sample Demo
+## Submission
+
+Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>.
+
+## Live Demo 
+
+{:.highlight}
+You will be asked to clone your project from the github classroom repo (<span class="orange-bold">fresh clone</span>). 
+
+### Sample Demo
 
 The following video shows the expected interaction between Server and Client processes.
 
@@ -89,13 +98,14 @@ The following video shows the expected interaction between Server and Client pro
     Sorry, your browser doesn't support embedded videos.
 </video>
 
-## Submission
 
-Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>.
-
-## Live Demo 
+### Checkoff Procedure
 
 Please be present at your designated slots (refer to course handout) for your PA2 demo. Even though you have submitted your code, we still want to witness your PA2 **in person**. You will <span class="orange-bold">clone</span> your submitted code (fresh) and run it <span class="orange-bold">on a different machine</span>. If you're doing the project alone, our TA/Instructor will be your client. 
 
-{:.important}
-ALL group members must be present. Failure to turn up during demo grants 0 marks. You must also be able to answer any questions pertaining to your own code, failure to do so grants us the right to <span class="orange-bold">revoke</span> the grades for any task even though the demo was *successful*. We will ask any group members in random, so ensure that everyone's on the same page before turning up for the demo. <span class="orange-bold">Don't worry, we will ask basic, reasonable questions</span>.
+{:.important-title}
+> Prepare everyone
+>
+> ALL group members must be present. Failure to turn up during demo grants 0 marks for that person missing the checkoff (unless LOA is granted). You must also be able to answer any questions pertaining to your own code, failure to do so grants us the right to <span class="orange-bold">revoke</span> the grades for any task even though the demo was *successful*. We will ask any group members in random, so ensure that everyone's on the same page before turning up for the demo. <span class="orange-bold">Don't worry, we will ask basic, reasonable questions</span>.
+>
+> We reserve the right to revoke any marks given for any features even though the demo is working if you <span class="orange-bold">fail</span> to answer some <span class="orange-bold">basic</span> query about it. Ensure that you have submitted your own work. We also reserve the right to give you 0 marks for PA1 and report you for further disciplinary action should we find sufficient evidence of <span class="orange-bold">plagiarism</span> and report you to OSA for further disciplinary action. 

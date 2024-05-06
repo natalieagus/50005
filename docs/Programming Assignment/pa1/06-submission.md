@@ -54,16 +54,21 @@ You should commit and push your work to your Github Classroom repository for PA1
 No <span class="orange-bold">late submission</span> will be entertained. You will obtain zero marks if you fail to submit before the due date. 
 
 
-## Demo 
-You should be able to demo the workings of your `cseshell` as follows: (note that you're free to implement other system programs, in this example we implement some simple `ps`):
+## Live Demo
+
+{:.highlight}
+You will be asked to clone your project from the github classroom repo (<span class="orange-bold">fresh clone</span>). 
+
+### Sample Demo 
+You have to be able to demo the workings of your `cseshell` as follows: (note that you're free to implement other system programs, in this example we implement some simple `ps`):
 
 <video controls width="100%" class="center_ninety" autoplay>
     <source src="{{ site.baseurl }}docs/Programming Assignment/pa1/images/pa1-demo.mp4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
 </video>
 
-
-You and your team should appear in class during your own cohort's lab session (check exact schedule in class calendar) where you shall `clone` the code you submitted and demonstrate it in your computer. We will ask several implementation-related questions, and even ask you to <span class="orange-bold">modify</span> some features on the spot. We will also test your shell by modifying `.cseshellrc`, checking all the builtin commands, check the 4 system programs implemented, and also your additional feature(s). All members must be present and must be able to answer questions. <span class="orange-bold">We will pick who should answer the question</span>. Hence it is important that everyone knows what's going on, at least in theory.
+### Checkoff Procedure
+You and your entire team should appear in class during your own cohort's lab session (check exact schedule in class calendar) where you shall `clone` the code you submitted and demonstrate it in your computer. We will ask several implementation-related questions, and even ask you to <span class="orange-bold">modify</span> some features on the spot. We will also test your shell by modifying `.cseshellrc`, checking all the builtin commands, check the 4 system programs implemented, and also your additional feature(s). All members must be present and must be able to answer questions. <span class="orange-bold">We will pick who should answer the question</span>. Hence it is important that everyone knows what's going on, at least in theory.
 
 
 {:.highlight}
@@ -78,5 +83,9 @@ Here's the breakdown of PA1 assessment, based on each feature:
 
 **Total PA1 grades: 10%**.
 
-{:.important}
-We reserve the right to revoke any marks given for any features even though the demo is working if you <span class="orange-bold">fail</span> to answer some <span class="orange-bold">basic</span> query about it. Ensure that you have submitted your own work. We also reserve the right to give you 0 marks for PA1 and report you for further disciplinary action should we find sufficient evidence of <span class="orange-bold">plagiarism</span>.
+{:.important-title}
+> Prepare everyone
+> 
+> ALL group members must be present. Failure to turn up during demo grants 0 marks for that person missing the checkoff (unless LOA is granted). You must also be able to answer any questions pertaining to your own code, failure to do so grants us the right to <span class="orange-bold">revoke</span> the grades for any task even though the demo was *successful*. We will ask any group members in random, so ensure that everyone's on the same page before turning up for the demo. <span class="orange-bold">Don't worry, we will ask basic, reasonable questions</span>.
+> 
+> We reserve the right to revoke any marks given for any features even though the demo is working if you <span class="orange-bold">fail</span> to answer some <span class="orange-bold">basic</span> query about it. Ensure that you have submitted your own work. We also reserve the right to give you 0 marks for PA1 and report you for further disciplinary action should we find sufficient evidence of <span class="orange-bold">plagiarism</span> and report you to OSA for further disciplinary action. 
