@@ -52,7 +52,7 @@ You should have joined the GitHub Classroom and obtain the starter code for this
 
 This will result in a directory called `pa2`. Anything under `source/` is where you will work for this assignment. All files in the same level as `source/` are for <span style="color:#f77729;"><b>admin purposes</b></span>. Do <span class="orange-bold">not</span> modify these.
 
-```
+```sh
 .
 ├── README.md
 ├── autograde.py
@@ -98,7 +98,8 @@ You should see exactly the above file structure afterwards. `./cleanup.sh` is a 
 ### Install required modules
 
 Run the following command to ensure you install the required modules for this assignment:
-```
+
+```sh
 python3 -m pip install -r requirements.txt
 ```
 
@@ -111,7 +112,7 @@ The starter code provided to you implements a <span style="color:#f77729;"><b>si
 
 Run each of these commands in two separate shell sessions:
 
-```
+```sh
 python3 source/ServerWithoutSecurity.py
 python3 source/ClientWithoutSecurity.py
 ```
@@ -143,3 +144,24 @@ python3 ClientWithoutSecurity.py [port] [server-ip-address]
 To get this to work, you most probably need to use <span style="color:#f77729;"><b>private</b></span> ip address instead of public one, unless you have set a static public IP. You might need to enable <span class="orange-bold">port forwarding</span> if you use a public IP, but if you aren't sure what you're doing then _dont_, you might expose yourself to a security vulnerability. If this is all to complicated for you, _skip_. You can totally just do the assignment in the same computer
 
 Consult the [Debug Notes](https://natalieagus.github.io/50005/pa2/debug-notes) page should you find any difficulties running the starter code. 
+
+# Do NOT Import Other Python Modules
+
+You are <span style="color:#f7007f;"><b>NOT</b></span> allowed to import any other python modules other than what's given:
+
+```python
+import pathlib
+import socket
+import sys
+import time
+from datetime import datetime
+import secrets
+import traceback
+from signal import signal, SIGINT
+from cryptography import x509
+from cryptography.exceptions import InvalidSignature
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes, serialization
+from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.backends import default_backend
+```

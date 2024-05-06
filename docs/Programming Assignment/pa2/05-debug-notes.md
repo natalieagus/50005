@@ -23,6 +23,20 @@ Singapore University of Technology and Design
 
 # Debug Notes
 
+### Pip Install Error
+
+If you use Python >3.12, you might see the following error when trying to run `pip install -m requirements.txt`:
+
+```sh
+AttributeError: module 'pkgutil' has no attribute 'ImpImporter'. Did you mean: 'zipimporter'?
+```
+
+Simply upgrade pip:
+
+```sh
+python -m ensurepip --upgrade
+```
+
 ### Invalid Syntax
 
 Some of you might encounter the error when running `python3 ServerWithoutSecurity.py`
@@ -97,26 +111,7 @@ It is possible that you might not have `truncate` system program installed by de
 
 To install, simply type `sudo apt -y install coreutils` (Ubuntu), or `brew install coreutils` (macOS).
 
-## Do NOT Import Other Python Modules
 
-You are <span style="color:#f7007f;"><b>NOT</b></span> allowed to import any other python modules other than what's given:
-
-```python
-import pathlib
-import socket
-import sys
-import time
-from datetime import datetime
-import secrets
-import traceback
-
-from cryptography import x509
-from cryptography.exceptions import InvalidSignature
-from cryptography.fernet import Fernet
-from cryptography.hazmat.primitives import hashes, serialization
-from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.backends import default_backend
-```
 
 <!-- ### Bot: Autograder Fails to Run
 
@@ -134,7 +129,10 @@ Check that your local autograder did printout **exactly** the following:
 That means: **no error messages** like "file A not found". We only give `autograde.py` to you so that you can have some kind of checker beforehand, but we can't guarantee 100% that it will not give false positives because you might not be using the same exact Python >3.10 version, have different system programs or different Linux distros altogether. 
 
 If you're not sure what went wrong, **just OPEN** `autograde.py` and figure it out. It's in Python! How hard can it be? -->
+
+
 ## Why not give Docker Image?
+
 {:.info-title}
 > Docker?
 > 
