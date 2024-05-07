@@ -72,7 +72,7 @@ The CLI accepts **commands** (the **first** word, e.g. ps, that you type into th
 `TASK 2:` Try the following basic commands in sequence `date`, `cal`, `pwd`, `who`, `clear`:
 {:.task}
 
-1. E.g: date and press enter. You should see today’s date given to you, for example:
+E.g: type `date` and press enter. You should see today’s date given to you, for example:
 
 ```java
 bash-3.2$ date
@@ -80,9 +80,9 @@ Thu May  5 14:08:51 +08 2022
 bash-3.2$
 ```
 
-2. Do the same thing with `cal, pwd, who, clear`.
-   - Figure out what each command does using `man`
-   - You can use `man <command>` and press `q` to quit anytime.
+Do the same thing with `cal, pwd, who, clear`.
+- Figure out what each command does using `man`
+- You can use `man <command>` and press `q` to quit anytime.
 
 ## With Options
 
