@@ -395,9 +395,85 @@ This time round there's no answer provided, meaning that this record was <span c
 > 
 > Even though you manage your own DNS zone, it is still part of a larger DNS hierarchy. 
 
-# DNS Attacks
+Suppose you want your website to be accessible via the internet using your own domain name. You can **insert** (or register) DNS records to ensure that they are recognized Internet-wide, allowing other hosts to find your website. The steps are as follows:
+1. Find a DNS Registrar to register the domain name of your site 
+2. Find authoritative nameservers to responsible for solving your domain name 
+3. Insert DNS records (A type) into the authoritative nameservers 
+4. Insert DNS records (NS types) of your authoritative nameservers to the TLD 
+
+## DNS Registrar 
+
+{:.info}
+A DNS registrar, also known simply as a domain registrar, is a company or organization accredited to manage the reservation of domain names on the internet.
+
+Example registrar: Amazon Domain Registrar, GoDaddy. GoDaddy and AWS Route 53 allows you to register new domain names. You can search for and purchase domain names directly through GoDaddy website or the AWS Route 53 console.'
+
+Note that a registrar is <span class="orange-bold">not</span> a registry (see [appendix](#registry) for definition of registry). A Registrar interfaces with the general public regarding the registration of their domain names. **In short, they sell domain names**. See more examples of registrars [here](https://www.icann.org/en/accredited-registrars?filter-letter=a&sort-direction=desc&sort-param=name&page=1). 
+
+Therefore, suppose  for you want your website to be reachable at `examplesite.com`. You then need to **buy** this particular domain name (if it is still available) for any of the registrars above.   
+
+## Authoritative Name Servers
+
+You will then **need** to provide the **names** and **IP addresses** of the authoritative name server (primary and secondary server as backup) responsible for resolving this domain name `examplesite.com`. 
+
+{:.info}
+Authoritative name servers can be maintained by you (if you know how to manage a DNS server), or an ISP or other related companies (DNS hosting providers). For example, SUTD has 3 Authoritative nameservers hosted by starhub, and also SUTD herself. 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-17-31-46.png"  class="center_seventy"/>
+
+You can engage services like [AWS Route 53](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring.html) to *be* your domain's authoritative nameservers. You will need at least <span class="orange-bold">two</span> authoritative name servers. For instance, suppose AWS Route 53 assign you the following authoritative nameservers: 
+* ns-1312.awsdns-36.org: 20.50.23.12
+* ns-788.awsdns-34.net: 53.25.22.11
+
+This means that you shall insert the A record of your domain `examplesite.com` into **both** of these authoritative nameservers. Suppose your website is hosted at IP address: 111.222.111.222, then:
+1. Insert A record: `examplesite.com, 111.222.111.222, A, TTL` into ns-1312.awsdns-36.org DNS server
+2. Insert the same A record into ns-788.awsdns-34.net DNS Server 
+
+{:.note}
+You can also insert MX record type to both authoritative name server if your organization also has a mail server, e.g: suppose you rely on Microsoft's email services, you shall insert MX record: `examplesite.com, examplesitemailserver.mail.protection.outlook.com, MX, TTL`.
+
+## TLD Update 
+
+Since you rely on AWS Route 53 for your authoritative nameservers, then Amazon is responsible for inserting the NS records for `examplesite.com` into the appropriate TLD server (.com TLD server in this example). These NS records are useful to indicate the Authoritative Name Server responsible for your domain:
+* `examplesite.com, ns-1312.awsdns-36.org, NS, TTL`
+* `examplesite.com, ns-788.awsdns-34.net, NS, TTL` 
+
+The A record for these two nameservers must also be present and reachable from the internet. For instance, The IP addresses of `ns-1312.awsdns-36.org` and `ns-788.awsdns-34.net` are registered within the respective TLDs (.org and .net). This means that the .org and .net registries contain the `A` records for these nameservers. For example:
+* `ns-1312.awsdns-36.org,  20.50.23.12, A, TTL`
+* `ns-788.awsdns-34.net,  53.25.22.11, A, TTL`
+
+{:.note}
+If the authoritative nameserver happen to be in the `.com` domain, then the `.com` TLD should contain glue records to avoid circular dependency. Head to [appendix](#glue-records) if you'd like to find out more. 
+
+
+# DNS Attack
+
+Since DNS is a crucial part of the internet, it is prone to various attacks. Example of some DNS attacks are as follows:
+* **DDoS attack** (Denial of Service): done either by bombarding root servers with traffic or bombarding TLD servers with traffic. The latter is potentially more dangerous since they are cached by local DNS servers.
+  * Root server bombarding is not successful to date due to traffic filtering	and that local DNS servers cache IPs of TLD servers, hence we typically bypass the root servers
+* **Redirect attack** (Man in the Middle): done via **DNS Cache Poisoning**, which is to send bogus replies to local DNS server, which caches the replies
+  * Intercept DNS queries, direct it to a bogus server (not the actual server)
+  * Client wont't be able to reach the actual server
+* **Exploit DNS for DDoS**: 
+  * Send queries with spoofed source address (that’s our target victim IP)
+  * Amplify these queries
+  * DNS servers that receive queries will answer to our target victim IP and flood it, causing its domain to be inaccessible
+
 
 # Summary
+
+DNS is a **distributed** database that provides name-IP translation. Distributed system of servers provide <span class="orange-bold">scalability</span>. 
+
+The presence of DNS **protects** domains. The same name can point to a different physical machines hence allows for:
+* Strong modularity, 
+* Strong fault isolation
+
+
+DNS also provides <span class="orange-bold">indirection</span> (name to IP address) as design principle has many virtues:
+* **Late binding at runtime**, e.g: physical server can move around with different IP and keeping the same name
+* **Many-to-one mapping**: aliasing. Some people use multiple domains aliased to a single site as part of their search engine strategy.
+* **One-to-many mapping**: e.g: like google.com example above, for load balancing.
+
 
 # Appendix
 
@@ -544,3 +620,74 @@ When you enter `sutd.edu.sg` in a web browser:
 - Technically, the hostname can have prefixes like `www`, so `www.sutd.edu.sg` might also point to the same server or to different services as needed.
 
 Thus, while a domain is part of the DNS hierarchy and serves as a human-readable address for a section of the internet, a hostname is a specific address for a network node (often a server). A domain like `sutd.edu.sg` can serve as <span class="orange-bold">both</span>, fulfilling the roles of domain and hostname, especially if it directly points to a specific server hosting services under that domain.
+
+## Registry
+
+A **Registry** only interfaces with the Registrar and is responsible for **delegating** IP addresses and the DNS infrastructure. A registry manages top-level domain (TLD)  names, meaning it maintains an authoritative database regarding top level domains including zone files. They create domain name extensions (see [here](https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains), there’s many domain name extensions out there, not just .com), set the rules for that domain name, and work with registrars to sell domain names to the public. 
+
+Example: Verisign, Comcast, etc. They are all accredited by ICANN. See more examples [here](https://www.icann.org/resources/pages/listing-2012-02-25-en). 
+
+## Glue Records
+
+A glue record is an A (IPv4) or AAAA (IPv6) record that provides the IP address of a nameserver. Glue records are used to prevent circular dependencies and ensure that DNS resolvers can find the nameserver's IP address. They are necessary when the nameserver's domain is the same as, or a subdomain of, the domain it serves.
+
+### Example of a Glue Record
+
+Consider the domain `examplesite.com` with nameservers `ns1.examplesite.com` and `ns2.examplesite.com`. Without glue records, there would be a circular dependency:
+
+1. To resolve `examplesite.com`, the DNS resolver needs to contact `ns1.examplesite.com`.
+2. To resolve `ns1.examplesite.com`, the DNS resolver needs to contact `examplesite.com`.
+
+This creates a situation where the resolver cannot find the IP address of the nameserver without already knowing the IP address.
+
+### How Glue Records Work
+
+Glue records are provided by the parent zone (in this case, the `.com` TLD) to break this circular dependency. Here’s how it works:
+
+1. **Domain Registration**: When you register `examplesite.com`, you specify `ns1.examplesite.com` and `ns2.examplesite.com` as nameservers.
+2. **Registrar Submission**: Your registrar submits the NS records and the corresponding glue records to the `.com` TLD.
+
+### NS Records:
+
+```text
+examplesite.com.  NS  ns1.examplesite.com.
+examplesite.com.  NS  ns2.examplesite.com.
+```
+
+### Glue Records (A records for the nameservers):
+
+```text
+ns1.examplesite.com.  A  192.0.2.1
+ns2.examplesite.com.  A  198.51.100.1
+```
+
+These glue records are stored in the `.com` TLD zone file. When a resolver queries the `.com` TLD for `examplesite.com`, it receives the NS records along with the glue records:
+
+### Response from the `.com` TLD:
+
+```text
+examplesite.com.  NS  ns1.examplesite.com.
+examplesite.com.  NS  ns2.examplesite.com.
+ns1.examplesite.com.  A  192.0.2.1
+ns2.examplesite.com.  A  198.51.100.1
+```
+
+The resolver now knows the IP addresses of the nameservers and can contact them directly to resolve `examplesite.com`.
+
+### Conclusion
+
+Glue records are essential for breaking circular dependencies when a nameserver’s domain is within the same zone it serves. They are provided by the parent zone to ensure that DNS resolvers can find the IP addresses of the nameservers.
+
+### Visual Representation
+
+Here’s a step-by-step visual of the process:
+
+1. **Querying for `examplesite.com`**:
+   - Resolver queries `.com` TLD for `examplesite.com`.
+   - `.com` TLD responds with NS records and glue records.
+
+2. **Contacting Nameservers**:
+   - Resolver now has IP addresses for `ns1.examplesite.com` and `ns2.examplesite.com` from the glue records.
+   - Resolver contacts `ns1.examplesite.com` or `ns2.examplesite.com` directly to resolve `examplesite.com`.
+
+This ensures that the nameservers are reachable, and the DNS resolution process can proceed smoothly.
