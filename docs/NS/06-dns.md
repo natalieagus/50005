@@ -102,13 +102,13 @@ DNS is a **distributed** and **hierarchical** database.
 
 ## Root Server
 
-**Root Server** (highest in the hierarchy): contacted by local name servers (end hosts) that cannot resolve names. End hosts get mapping, and return to the local name server. There are 13 root servers in the world. Find the list at http://root-servers.org/.
+**Root Server** (highest in the hierarchy): contacted by local name servers (end hosts) that cannot resolve names. End hosts get mapping, and return to the local name server. There are 13 root servers in the world. Find the list at [<http://root-servers.org/>](http://root-servers.org/).
 
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-14-52.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-14-52.png"  class="center_seventy no-invert"/>
 
 You can look for its individual IP, e.g: a.root-servers.net IP:
 
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-15-32.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-15-32.png"  class="center_seventy no-invert"/>
 
 The root servers are basically a <span class="orange-bold">fixed</span> set of name servers that maintain a list of the authoritative (master/slave) name servers for every registered top level domain (e.g: edu., gov., com., etc). They may be located at:
 1. Companies contracted to provide the service by ICANN (The Internet Corporation for Assigned Names and Numbers) or 
@@ -184,6 +184,165 @@ Name | Value | Type | TTL
 {:.note}
 Note that sutd.edu.sg are both domain and hostname. However this is just a specific example. Not all domains are hostnames, and not all hostnames are domains. See this [appendix](#domain-vs-hostname) section to understand more. 
 
+**Types:**
+* **A**: Address, it contains the IP address of the hostname in question.
+* **NS**: Name Server, it tells which nameservers are authoritative for a that domain in question. You can have multiple NS records for load distribution (increasing availability)
+* **CNAME**: Canonical Name, maps an alias name to a true or canonical domain name. Requires more probing (queries) to resolve to an IP eventually. It is like the same website with two or more URLs. 
+* **MX**: Mail server, points you to the mail server name responsible for the domain in question. 
+
+{:.note}
+Notice that out of all the 4 types that we learn, only the **A record** has an IP address in its “value” field. 
+
+## DNS Query Solving Mock Example
+
+### Find your local nameserver
+Suppose you want to know the IP of `b.example.com`. You ask your local DNS server (A local DNS nameserver whose IP you know, usually a public knowledge or setup by your ISP, or by yourself if you have a DNS server at home). You can find your local DNS server using the command `scutil --dns`:
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-21-19.png"  class="center_seventy no-invert"/>
+
+### Sample local nameserver records 
+Now suppose your local DNS server has the following records:
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-22-57.png"  class="center_seventy no-invert"/>
+
+This means that your local DNS server does <span class="orange-bold">not</span> know what `b.example.com`'s IP address is, since it contains only its NS record. We should then ask `NS2.server.com` regarding `b.example.com`’s IP address. 
+
+{:.note}
+Since `b.example.com` NS record points to `NS2.server.com`, it means that `NS2.server.com` is the **authoritative** nameserver for `b.example.com`.
+
+### Further probe to `b.example.com` authoritative nameserver 
+The local DNS server can then do the job of translating  `NS2.server.com` into its IP address: `111.222.125.124` since it already has the A record of `NS2.server.com`. Otherwise, we have to find the IP for NS2.server.com first by querying either the root server or the .com TLD server.
+
+Afterwhich, we (or the local DNS server, depending on whether the query is iterative or recurisve) shall ask `111.222.125.124` (`NS2.server.com`)  if it has the A record of `b.example.com`. 
+
+### Sample authoritative nameserver records
+Now suppose NS2.server.com has the following record: 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-24-02.png"  class="center_seventy no-invert"/>
+
+The first query to `NS2.server.com` will show that  `b.example.com` is a `CNAME` record, so it is simply an **alias** of another hostname called `a.example.com`.
+
+### Resolving `b.example.com`
+The local DNS server *or* the NS server (depending on whether it is an iterative or recursive query) has to continue the probe and send another DNS query to resolve the IP address for `a.example.com`, and finally `NS2.server.com` returns `a.example.com`'s A record with IP of `10.12.14.145`. 
+
+Now that hostname-IP translation for `b.example.com` is resolved, we can start sending requests to `10.12.14.145` (our intended `b.example.com` host). 
+
+# DNS Query and Reply Protocol
+
+DNS queries and replies follow a **specific** message format outlined in [RFC 1035](https://datatracker.ietf.org/doc/html/rfc1035), which structures the data to be transmitted over the network.
+
+The format is as follows. Below we explain certain parts of the message: 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-04-07.png"  class="center_fourty"/>
+
+
+**Identification**: 16 bit number for query, reply uses the same number
+
+**Flags**:
+* Query or Reply?
+* Recursion desired or available?
+* Reply is authoritative?
+
+**Size**: Varies, depending on number of RRs in each section. Generally, replies are larger than queries.
+
+
+Components of the variable lengths of DNS query / reply:
+* **Questions**: name, type fields for a query
+* **Answers**:  RRs in response to the query
+* **Authority**: Records for authoritative servers
+* **Additional information**: possibly helpful information 
+
+{:.note}
+Tools like `dig` and `nslookup` are designed to craft DNS query messagse and query DNS servers, then *render* out the information contained in DNS reply messages. They provide different levels of detail and formats, helping users and administrators understand DNS responses and diagnose network issues.
+
+## Example of DNS query via nslookup
+
+Let’s say we want to resolve the name google.com. We can do so using system programs such as `dig` or `nslookup`:
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-29-36.png"  class="center_seventy no-invert"/>
+
+There are 6 different IP addresses for the same domain name: `google.com`. This is probably done by Google to ensure <span class="orange-bold">load balancing</span> if there’s a surge of query made to access `google.com` website. We can ping one of them to check if they are alive:
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-30-24.png"  class="center_seventy no-invert"/>
+
+
+The answer we obtain is <span class="orange-bold">non-authoritative</span> because these records are obtained from the local name server instead: 192.168.2.22 (cached).
+
+### Obtaining authoritative answer
+
+Hdo we find the IP translation from google.com’s authoritative name server? First, we need to find the NS-type record of `google.com` using nslookup:
+
+```sh
+nslookup -type=ns google.com
+```
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-31-55.png"  class="center_seventy no-invert"/>
+
+There are **four** NS-type records, which means that all these servers are the authoritative name servers for `google.com`. What we have to do know is to query *one of them* instead about the IP address of `google.com`:
+
+```sh
+nslookup google.com ns1.google.com
+```
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-33-32.png"  class="center_seventy no-invert"/>
+
+
+{:.note}
+Notice that we have two names as arguments to nslookup. `nslookup` has to **resolve** `ns1.google.com` first (obtain its IP address), and then resolve `google.com` by sending a DNS query to `ns1.google.com`.
+
+You can also do this manually:
+1. Resolve IP address of `ns1.google.com` 
+2. Use that IP address to query about `google.com`
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-35-16.png"  class="center_seventy no-invert"/>
+
+You can also obtain the MX record type to obtain the names of the mail servers in google.com domain:
+
+```sh
+nslookup google.com 216.239.32.10 -type=MX
+```
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-35-41.png"  class="center_seventy no-invert"/>
+
+{:.important}
+In `nslookup`, the absence of the "Non-authoritative answer" message typically indicates that the response is authoritative.
+
+## Example of DNS query via dig 
+
+We can also use another tool: `dig` (Domain information groper) to query the IP address for `google.com`: 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-07-49.png"  class="center_seventy no-invert"/>
+
+The output is a little different because dig decodes the dns response and presents it in another format to us, but there’s some things we can relate to, and compare with the simplified DNS query and reply protocol we learned above. 
+1. Look at the **header**: we have id (transaction id) 22259.
+
+2. The **flags** section gives us more information about the response. 
+   * `qr` (query response): indicates that the message was a **response**, not a query. dig always renders out the DNS response, not queries, so `qr` flat will always be present. 
+   * `rd` (recursion desired): Most of the time `rd` flag is set in the query so that we don't have to iteratively resolve our query and avoid the manual work
+   * `aa` (authoritative answer): if present, the response is obtained from an authoritative nameserver. In this example, there's no `aa` flag so our answer is *not* obtained from the authoritative nameserver of `google.com`
+   * `ra` (recursion available): this flag indicates that recursion was available from the remote name server. 
+
+3. Next we have **numbers** of queries, answers, authority and additional section. 
+   * The **authority** section typically indicates the server(s) that are authoritative for answering DNS queries about that domain. In this example, we don’t have any answer in the authority section.
+   * The other sections are self explanatory 
+
+4. Next is the **answer** section, we have 6 A records for `google.com`. 
+   * In `dig`, we know that this is non-authoritative because otherwise there’s supposed to be an `aa` flag set (indicating authoritative answer). * Therefore, this answer comes from the local nameserver's cache. 
+   * Each column in the ANSWER section indicates: TTL, CLASS, TYPE, and VALUE.
+   * 48 means TTL in seconds, and IN stands for INTERNET.
+
+{:.info}
+At the bottom of the screenshot, the SERVER means our local DNS server making the query for us. Our local DNS server has an IP of 192.168.2.22. The transport layer protocol utilised by DNS is UDP and the port used is #53. We will learn more about UDP and TCL in the next chapter. 
+
+### Obtaining authoritative answer 
+
+Suppose we want to obtain an authoriative answer to resolve `google.com` using dig, we can query one of its authoritative nameservers like before  instead: 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-16-14.png"  class="center_seventy no-invert"/>
+
+* This response contains an <span class="orange-bold">authoritative</span> answer, with the `aa` flag set. 
+* There’s no `ra` flag because this nameserver has **recursion disabled**, probably for security reasons. 
+
+
 # DNS Caching
 
 The Local Name Servers will <span class="orange-bold">cache</span> hostname-ip mapping once a query is made for a certain TTL (time to live). Due to this caching mechanism, TLD servers are typically cached in DNS local name servers, allowing for faster resolution. On the other hand, <span class="orange-bold">Root servers are often not visited</span>.
@@ -194,6 +353,51 @@ Cached entries may be out of date, e.g: if a host changes IP address, it may not
 * The local nameserver re-queries when TTL expires
 * The update or notify mechanisms of these caches are proposed by IETF standard, in particular, [RFC 2136 -- Dynamic Updates in the Domain Name System](https://datatracker.ietf.org/doc/html/rfc2136) (DNS UPDATE)
 
+## Inspecting cached queries 
+
+Try running `dig [SOME-DOMAIN]` twice or thrice, and see if the subsequent query is **faster**. That means your subsequent query (not the first one) is cached, while the first one is not. 
+
+```sh
+# run this twice, consecutively
+dig nus.edu.sg 
+```
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-18-25.png"  class="center_seventy no-invert"/>
+
+In the example above, the second query about `nus.edu.sg` is **faster** (just 1ms) compared to the first query. 
+
+Alternatively, you may **disable** recursion, for instance:
+
+```sh
+dig google.com +norecurs
+```
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-19-40.png"  class="center_seventy no-invert"/>
+
+If you still have an answer like the above, then the answer was from **cache**. 
+
+Try some website you rarely visited, e.g:
+
+```sh
+dig selfridges.com +norecurs
+```
+
+This time round there's no answer provided, meaning that this record was <span class="orange-bold">*not* cached</span>: 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-20-34.png"  class="center_seventy no-invert"/>
+
+# DNS Record Insertion 
+
+{:.info-title}
+> DNS Record Insertion 
+> 
+> DNS record insertion refers to the process of <span class="orange-bold">adding</span> new records to a DNS zone to manage the resolution of domain names into IP addresses or other information. For example, if you manage your own DNS server at home (authoritative to sites you host at home), then you will need to insert some record (information about your authoritative DNS server at home) to the TLD.  
+> 
+> Even though you manage your own DNS zone, it is still part of a larger DNS hierarchy. 
+
+# DNS Attacks
+
+# Summary
 
 # Appendix
 
