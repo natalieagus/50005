@@ -22,6 +22,7 @@ Singapore University of Technology and Design
 
 
 # Application Scenarios of Cryptography
+{: .no_toc}
 
 {:.highlight-title}
 > Detailed learning objectives

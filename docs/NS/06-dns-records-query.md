@@ -1,10 +1,10 @@
 ---
 layout: default
-permalink: /ns/06-internet-naming-and-addressing
-title: Internet Naming and Addressing
+permalink: /ns/07-dns-records-query
+title: DNS Records and Protocol
 description: Basics about DNS
 parent: Network Security
-nav_order: 6
+nav_order: 7
 ---
 
 
@@ -21,143 +21,39 @@ Singapore University of Technology and Design
 
 
 
-# Domain Name System
+# DNS Records and Protocol
+{: .no_toc}
 
-{:.info-title}
-> Domain Name System
->
-> The Domain Name System (DNS) is a naming system for computers, services, or other resources connected to the Internet or a network of computers. 
->
-> It is a **hierarchical** and **decentralized** naming system that allows computers, services, or resources connected to the Internet or a private network to be identified and accessed. It translates human-friendly domain names, like example.com, into the numerical IP addresses needed by computers to communicate with each other. This system makes browsing the internet and accessing network resources **easier** for users while handling the technical mapping in the background.
->
-> DNS is **both** a naming system and a protocol, read along to find out more.
-
-## Motivation
-
-Imagine you're in your university library, working on a research project, and you type in a website like `example.com` into your browser. The site loads almost instantly. This quick response is thanks to the Domain Name System (DNS), which works like the internet's phone book, converting user-friendly names to the numerical IP addresses computers use to communicate.
-
-Here's what happens when you access a website through the campus network:
-
-1. **Enter a Domain Name**: You type `example.com` into your browser.
-
-2. **University DNS Server**: Your computer queries the local DNS server maintained by the university, which could be located in a data center on campus and maintained by the school's IT team. If the server has recently looked up `example.com`, it knows the IP address and sends it back to your computer. 
-
-3. **Further Lookups**: If the university server doesn't know the IP address, it starts asking other DNS servers on the internet:
-   - It first contacts a global root server that directs it to the top-level domain (TLD) servers for `.com`.
-   - The TLD servers then point to authoritative servers responsible for `example.com`.
-
-4. **Authoritative DNS Server**: The authoritative DNS server provides the final answer with the correct IP address for `example.com`.
-
-5. **Access the Website**: With the IP address provided, your computer can now connect directly to `example.com`.
-
-In summary, the university's DNS server in the data center acts as an **intermediary** to quickly find the correct IP address for any website you access, enabling seamless browsing on campus.
-
-{:.note-title}
-> IP Addresses
+{.highlight-title}
+> Detailed Learning Objectives
 > 
-> IP addresses (32 bits or 64 bits) are used to address datagram by routers:
-> * For instance, IPv4 (32 bits) `172.217.194.99` (dotted notation a.b.c.d in groups of unsigned bytes -- octet)
-> * This is convenient for hierarchical routing: facilitates routing (remote router uses short prefix of destination IP address only to decide next hop – much smaller routing table)
+> - **Understand DNS Records**
+>   - Identify different types of DNS records: A, MX, NS, CNAME, and SOA.
+>   - Explain the purpose and structure of each DNS record type.
+>   - Understand the data fields in a DNS resource record (name, value, type, TTL).
+> - **Analyze DNS Query Process**
+>   - Understand how DNS queries are resolved, including the roles of local and authoritative nameservers.
+>   - Explain iterative and recursive DNS queries.
+>   - Understand the process of resolving CNAME records to their canonical names.
+> - **Utilize DNS Query Tools**
+>   - Learn how to use tools like `dig` and `nslookup` to query DNS records.
+>   - Interpret the results provided by these tools, including understanding query flags and responses.
+> - **Comprehend DNS Caching Mechanisms**
+>   - Explain how DNS caching works and its importance in speeding up DNS resolution.
+>   - Understand how TTL (Time to Live) impacts DNS caching and record updates.
+>   - Analyze the performance impact of DNS caching by observing query response times.
+> - **DNS Record Insertion and Management**
+>   - Understand the steps involved in registering a domain and setting up DNS records.
+>   - Identify the roles of DNS registrars and authoritative nameservers.
+>   - Explain the process of updating TLD (Top-Level Domain) records with NS records.
+> - **Recognize DNS Attacks and Mitigations**
+>   - Identify common types of DNS attacks, such as DDoS, DNS cache poisoning, and DNS amplification attacks.
+>   - Understand the impact of these attacks on DNS infrastructure.
+>   - Discuss strategies to mitigate these DNS attacks.
+>
+> These learning objectives aim to provide a comprehensive understanding of DNS records, query processes, tools, caching mechanisms, record management, and security aspects of DNS.
 
-
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-06-17-57-08.png"  class="center_seventy"/>
-
-
-DNS is a system that acts as a phonebook. We will remember our friends by their names, and not their contact number. When we want to actually contact them, we need to translate their names into their contact numbers using our phonebook. The DNS is much like our phonebook, where it translates between domain name and IP addresses. 
-
-{:.info}
-Head to this [appendix](#finding-dns-server) section if you'd like to find the IP address of the DNS server your smart devices is currently using. 
-
-# Characteristics 
-
-## Distributed Database
-
-The DNS is **implemented** in hierarchy of name servers. We do not centralise DNS because:
-* Need to avoid single point of failure, 
-* Avoid creating a bottleneck traffic volume
-* Avoid distant centralized databases, causing long delays for lookups (remember DNS lookup is only name-IP translation! We haven't even looked up the website yet) 
-* Need to support ease of maintenance (add/delete/change translation). We do not want to keep going to one place to do this.
-
-Furthermore, a centralised DNS does not scale.
-
-## Application Layer Protocol 
-The Domain Name System (DNS) is vital as one of the core functions of the internet. It enables hosts and name servers to communicate, resolving user-friendly names into numerical IP addresses so computers can locate each other and exchange data. As an application-layer protocol, DNS operates at the top of the Internet Protocol Suite, handling requests from other applications and services to ensure seamless access to network resources.
-
-DNS is implemented at the **network's edge**, managing complexity through a hierarchical and decentralized system. Key features of this structure include:
-- **Hierarchical Organization**: The hierarchical arrangement of root servers, top-level domains, and authoritative name servers ensures efficient and organized domain name resolution.
-- **Edge Complexity**: By placing complexity at the network's edge, DNS remains scalable and effective in handling the growing demands of the internet.
-
-# DNS Services
-Apart from providing hostname to IP address translation, DNS also provides the following services:
-* **Host aliasing**: map alias names to canonical name
-* **Mail server aliasing**
-* **Load distribution**: replicated web servers such that many IP addresses correspond to one name
-
-# DNS Structure
-
-{:.info}
-DNS is a **distributed** and **hierarchical** database.
-
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-13-04.png"  class="center_seventy"/>
-
-## Root Server
-
-**Root Server** (highest in the hierarchy): contacted by local name servers (end hosts) that cannot resolve names. End hosts get mapping, and return to the local name server. There are 13 root servers in the world. Find the list at [<http://root-servers.org/>](http://root-servers.org/).
-
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-14-52.png"  class="center_seventy no-invert"/>
-
-You can look for its individual IP, e.g: a.root-servers.net IP:
-
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-15-32.png"  class="center_seventy no-invert"/>
-
-The root servers are basically a <span class="orange-bold">fixed</span> set of name servers that maintain a list of the authoritative (master/slave) name servers for every registered top level domain (e.g: edu., gov., com., etc). They may be located at:
-1. Companies contracted to provide the service by ICANN (The Internet Corporation for Assigned Names and Numbers) or 
-2. Government institutions. 
-
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-16-03.png"  class="center_seventy"/>
-
-## Top Level Domain (TLD)
-
-**TLD Server**: responsible for anything after the last dot, such as `.com`, `.edu`, `.sg` etc. They are maintained by **large** organizations or countries. For example, Verisign global registry services is responsible for `.com`  domain.  
-
-## Authoritative Name Servers 
-**Authoritative Name Servers**: organization’s own DNS server, providing authoritative (<span class="orange-bold">final</span>, no need further query) hostname to IP mappings for organization’s named hosts. They're maintained by the organization itself or by internet provider / cloud service management system like AWS.
-
-## Local Domain Name Servers 
-**Local DNS**: also called DNS resolvers are used by DNS clients (our computers or smart devices) to resolve domain names to IP addresses. They serve as proxy for hosts to make DNS queries, and forward queries to the hierarchy:
-* Local DNS Name Servers have local cache of recent name-to-address translation pairs 
-* Need to maintain and update these caches from time to time
-
-Common DNS resolvers include
-* ISP-given DNS resolver
-* Google DNS resolver: 8.8.8.8
-* Cloudflare DNS resolver: 1.1.1.1
-
-# DNS Name Resolution
-
-There are two ways to resolve the hostname-IP translation: iterative and recursive. 
-
-## Iterative Query 
-
-{:.info}
-In an iterative DNS query, the DNS client allows the DNS server to return the best answer it can. If the queried server does not have the answer, instead of asking other servers itself, it returns a referral to other more authoritative DNS servers. 
-
-The resolution order is as drawn: 
-
-<img src="{{ site.baseurl }}/docs/NS/images/06-dns/cse2024-iterative-query.drawio.png"  class="center_seventy"/>
-
-{:.highlight}
-Majority of the "work" is done by the DNS client.
-
-## Recursive Query 
-
-In **recursive** query, we put the burden of name resolution on the contacted name server. This puts a heavy load at the <span class="orange-bold">upper hierarchy</span>. 
-
-The resolution order is as drawn:
-
-<img src="{{ site.baseurl }}/docs/NS/images/06-dns/cse2024-recursive-query.drawio.png"  class="center_seventy"/>
-
-# DNS Records
+## DNS Records
 
 In this section we are going to analyse how some types of DNS records that are stored in DNS servers look like, in particular, these record types: A, MX, and NS. 
 
@@ -185,13 +81,27 @@ Name | Value | Type | TTL
 Note that sutd.edu.sg are both domain and hostname. However this is just a specific example. Not all domains are hostnames, and not all hostnames are domains. See this [appendix](#domain-vs-hostname) section to understand more. 
 
 **Types:**
-* **A**: Address, it contains the IP address of the hostname in question.
+* **A**: Address, it contains the IPv4 address of the hostname in question. You might sometimes see type **AAAA** which value contains IPv6 instead of IPv4. 
 * **NS**: Name Server, it tells which nameservers are authoritative for a that domain in question. You can have multiple NS records for load distribution (increasing availability)
 * **CNAME**: Canonical Name, maps an alias name to a true or canonical domain name. Requires more probing (queries) to resolve to an IP eventually. It is like the same website with two or more URLs. 
 * **MX**: Mail server, points you to the mail server name responsible for the domain in question. 
 
 {:.note}
 Notice that out of all the 4 types that we learn, only the **A record** has an IP address in its “value” field. 
+
+### CNAME Record
+
+The **CNAME** records allow for <span class="orange-bold">many-to-one</span> mapping, where multiple domain name points to the same canonical name. For instance, www.twitch.tv and player.twitch.tv both point to twitch.map.fastly.net.
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns-records-query/2024-05-08-20-37-42.png"  class="center_seventy no-invert"/>
+
+### SOA Record
+
+Sometimes you might see an **SOA** record type as follows: 
+
+<img src="{{ site.baseurl }}//docs/NS/images/06-dns-records-query/2024-05-08-20-29-43.png"  class="center_seventy no-invert"/>
+
+This type is not covered as part of our syllabus, but you can head to the [appendix](#start-of-authority) section to find out more. 
 
 ## DNS Query Solving Mock Example
 
@@ -261,7 +171,7 @@ Let’s say we want to resolve the name google.com. We can do so using system pr
 
 <img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-29-36.png"  class="center_seventy no-invert"/>
 
-There are 6 different IP addresses for the same domain name: `google.com`. This is probably done by Google to ensure <span class="orange-bold">load balancing</span> if there’s a surge of query made to access `google.com` website. We can ping one of them to check if they are alive:
+There are 6 different IP addresses for the same domain name: `google.com`. This <span class="orange-bold">one-to-many</span> probably done by Google to ensure <span class="orange-bold">load balancing</span> if there’s a surge of query made to access `google.com` website. We can ping one of them to check if they are alive:
 
 <img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-30-24.png"  class="center_seventy no-invert"/>
 
@@ -462,98 +372,18 @@ Since DNS is a crucial part of the internet, it is prone to various attacks. Exa
 
 # Summary
 
-DNS is a **distributed** database that provides name-IP translation. Distributed system of servers provide <span class="orange-bold">scalability</span>. 
+DNS resource records (RRs) are crucial for translating domain names into IP addresses and providing essential information about domains. Key types include **A** (maps hostnames to IP addresses), **NS** (specifies authoritative nameservers), **CNAME** (maps aliases to canonical hostnames), and **MX** (points to mail servers). 
 
-The presence of DNS **protects** domains. The same name can point to a different physical machines hence allows for:
-* Strong modularity, 
-* Strong fault isolation
+The DNS query process starts with the local nameserver and may involve querying authoritative nameservers if the local server *lacks* the information. DNS <span class="orange-bold">caching</span> enhances query speed by storing records for a set TTL, though it can lead to outdated information. DNS record insertion involves registering a domain, designating authoritative nameservers, and updating records in these servers and the TLD. DNS protocols are susceptible to attacks such as DDoS, DNS cache poisoning, and amplification attacks, which can disrupt or exploit the DNS infrastructure. 
 
+Tools like `dig` and `nslookup` aid in crafting and interpreting DNS queries and responses.
 
-DNS also provides <span class="orange-bold">indirection</span> (name to IP address) as design principle has many virtues:
-* **Late binding at runtime**, e.g: physical server can move around with different IP and keeping the same name
-* **Many-to-one mapping**: aliasing. Some people use multiple domains aliased to a single site as part of their search engine strategy.
-* **One-to-many mapping**: e.g: like google.com example above, for load balancing.
 
 
 # Appendix
 
-## Finding DNS Server
 
-Finding the DNS server your computer is using can be helpful for troubleshooting network issues or simply for informational purposes. Here’s how to do it on different operating systems:
-
-### Windows
-1. **Open Command Prompt**: Press `Win + R`, type `cmd`, and hit `Enter`.
-2. **Run the `ipconfig /all` Command**: Type `ipconfig /all` in the Command Prompt and press `Enter`. Scroll through the information until you find the "DNS Servers" entry. The IP addresses listed are your DNS servers.
-
-### macOS
-1. **Open Terminal**: You can find Terminal in Applications under Utilities, or you can search for it using Spotlight.
-2. **Run the `scutil --dns` Command**: Type `scutil --dns` in the Terminal and press `Enter`. Look for "nameserver" entries under the DNS configuration section. These are your DNS servers.
-
-### Linux
-1. **Open a Terminal**: Use a shortcut or find it in your applications menu.
-2. **Check the resolv.conf File**: Type `cat /etc/resolv.conf` in the Terminal and press `Enter`. This file contains a list of DNS servers; look for lines starting with `nameserver`. The IP addresses following `nameserver` are your DNS servers.
-
-### On a Smartphone
-- **Android**:
-  - Go to `Settings` > `Network & Internet` > `Wi-Fi`.
-  - Tap on the Wi-Fi network you are connected to.
-  - Look for DNS settings, which might be under `Advanced options`.
-- **iOS**:
-  - Go to `Settings` > `Wi-Fi`.
-  - Tap the information (`i`) icon next to the network you are connected to.
-  - Scroll to the DNS section to see the DNS servers.
-
-These steps will help you identify the DNS server addresses your device is currently using.
-
-## Common Terminologies
-Below are some terminologies that are related to the topic and might be useful to fully appreciate the chapter: 
-**DNS Namespace**: represent the entire DNS structure tree (all nodes)
-
-**Domain**:
-* Logical division of DNS namespace
-* Represents a the entire set of names / machines that are contained under an organizational domain name (subtree), eg:
-  * “.com” websites are part of the “com” domain, 
-  * en.wikipedia.com and id.wikipedia.com websites are part of the “wikipedia.com" domain.
-
-**Zone**: **physical** division of DNS namespace 
-* DNS namespace can be **broken** into zones for which individual DNS servers are responsible. Each zone has its own zone file. 
-{:.info}
-A zone file is a plain text file stored in a DNS server that contains an actual representation of the zone and contains all the records for every domain within the zone. Zone files must always start with a Start of Authority (SOA) record, which contains important information including contact information for the zone administrator.
-* Unlike “domain” that’s a <span class="orange-bold">subtree</span>, a zone can just be a bunch of sibling nodes. 
-* A DNS zone is not necessarily associated with one server, so two servers or more can store the same copy of the zone. 
-* A DNS server can also contain multiple zones.
-* If a domain is not subdivided to subdomains, then domain is equivalent to the zone
-
-### Example about DNS Zone
-
-Imagine you own a domain `example.com`. This domain can have various subdomains, such as `www.example.com`, `mail.example.com`, or `shop.example.com`. Each of these can technically be part of a different DNS zone, but they might also all be in one zone, depending on how you choose to organize your DNS records.
-
-#### Example 1: Single DNS Zone for All Records
-- **Domain**: `example.com`
-- **DNS Zone**: In this scenario, you might have a single DNS zone for `example.com` that includes all the DNS records for the domain and its subdomains. The zone file could include:
-  - `A` record for `example.com` pointing to `192.168.1.1`
-  - `CNAME` record for `www.example.com` pointing to `example.com`
-  - `MX` record for `example.com` to manage email services
-  - `A` record for `shop.example.com` pointing to `192.168.1.2`
-
-#### Example 2: Multiple DNS Zones for Different Purposes
-- **Domain**: `example.com`
-- **DNS Zone 1**: Main zone for `example.com`
-  - `A` record for `example.com` pointing to `192.168.1.1`
-  - `MX` record for `example.com`
-- **DNS Zone 2**: Separate zone for the subdomain `shop.example.com`
-  - `A` record for `shop.example.com` pointing to `192.168.1.2`
-  - Separate administrative settings specific to the e-commerce platform
-
-#### How DNS Zones Work
-The key point about DNS zones is that they are <span class="orange-bold">administrative</span> blocks that allow you to manage how different parts of your domain's namespace are handled. Each zone can be hosted on the same or different DNS servers. If you delegate a subdomain like `shop.example.com` to a different DNS zone, you can specify different DNS servers for it, which might be managed by a different team or a third-party service, helping distribute the load and administrative responsibilities.
-
-#### Practical Application
-In practice, if you manage a large organization, you might want DNS zones for different departments or functions to separate administrative control or enhance security. For example, IT might manage the main domain's DNS records, while marketing manages a subdomain for promotional sites in a different DNS zone.
-
-Understanding DNS zones as these distinct entities that contain DNS records for specific namespaces under your domain can help you manage and delegate DNS more effectively.
-
-## SOA 
+## Start of Authority
 
 {:.info}
 The SOA (Start of Authority) record is a type of DNS (Domain Name System) record that contains administrative information about a DNS zone. It is one of the essential records in a DNS zone file, acting as a blueprint that provides details about the zone and how it should be managed. The SOA record is mandatory in every DNS zone and is used to convey properties about the zone to the DNS infrastructure.
@@ -595,6 +425,7 @@ dig SOA google.com
 <img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-29-02.png"  class="center_seventy"/>
 
 This command will provide you with the SOA record for `google.com`, listing the details as explained above. If this wasn't the intended result and you were expecting other types of DNS records, you might want to specify the record type directly in your `dig` query, such as `A`, `MX`, `CNAME`, etc., or check if the domain or subdomain queried is correctly configured in the DNS.
+
 
 ## Domain vs Hostname
 
