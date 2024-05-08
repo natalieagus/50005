@@ -24,7 +24,7 @@ Singapore University of Technology and Design
 # DNS Records and Protocol
 {: .no_toc}
 
-{.highlight-title}
+{: .highlight-title}
 > Detailed Learning Objectives
 > 
 > - **Understand DNS Records**
