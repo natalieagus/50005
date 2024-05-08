@@ -47,11 +47,7 @@ Singapore University of Technology and Design
 >   - Identify additional services provided by DNS, such as host aliasing, mail server aliasing, and load distribution.
 >   - Understand the concept of DNS caching and its impact on query speed and efficiency.
 >   - Recognize the significance of DNS in maintaining strong modularity, fault isolation, and scalability.
-> - **Understand DNS Security and Protection**
->   - Learn about common DNS attacks, such as DDoS, DNS cache poisoning, and amplification attacks.
->   - Understand strategies to mitigate DNS attacks and protect the DNS infrastructure.
->   - Recognize the role of DNS in providing indirection and the benefits of name-to-IP address mapping.
->
+> 
 > These learning objectives aim to provide a comprehensive understanding of the Domain Name System (DNS), including its operations, structure, query types, services, and security aspects.
 
 {:.info-title}
