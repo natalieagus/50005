@@ -107,47 +107,47 @@ Here's a concrete example, linking it up with previous chapters (DNS and Socket)
 4. **HTTP Request:**
    - Once the connection is established, the browser sends an HTTP GET request to the server for the base HTML file.
 
-   ```
-   GET / HTTP/1.1
-   Host: example.org
-   User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
-   Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-   Accept-Language: en-US,en;q=0.5
-   Accept-Encoding: gzip, deflate
-   Connection: keep-alive
-   Upgrade-Insecure-Requests: 1
-   ```
+```
+GET / HTTP/1.1
+Host: example.org
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+```
 
-5. **HTTP Response:**
-   - The server responds with the requested HTML file.
+**HTTP Response:**
+- The server responds with the requested HTML file.
 
-   ```
-   HTTP/1.1 200 OK
-   Date: Thu, 09 May 2024 12:34:56 GMT
-   Content-Type: text/html; charset=UTF-8
-   Content-Length: 1256
-   Connection: keep-alive
-   Server: ECS (dca/24DD)
+```
+HTTP/1.1 200 OK
+Date: Thu, 09 May 2024 12:34:56 GMT
+Content-Type: text/html; charset=UTF-8
+Content-Length: 1256
+Connection: keep-alive
+Server: ECS (dca/24DD)
 
-   <!DOCTYPE html>
-   <html>
-   <head>
-       <title>Example Domain</title>
-   </head>
-   <body>
-       <div>
-           <h1>Example Domain</h1>
-           <p>This domain is established to be used for illustrative examples in documents. You may use this
-           domain in literature without prior coordination or asking for permission.</p>
-           <p><a href="https://www.iana.org/domains/example">More information...</a></p>
-       </div>
-   </body>
-   </html>
-   ```
+<!DOCTYPE html>
+<html>
+<head>
+      <title>Example Domain</title>
+</head>
+<body>
+      <div>
+         <h1>Example Domain</h1>
+         <p>This domain is established to be used for illustrative examples in documents. You may use this
+         domain in literature without prior coordination or asking for permission.</p>
+         <p><a href="https://www.iana.org/domains/example">More information...</a></p>
+      </div>
+</body>
+</html>
+```
 
-6. **Rendering the Page:**
-   - The browser receives the HTML content and starts rendering the web page.
-   - If the HTML references additional resources (e.g., CSS, JavaScript, images), the browser will make subsequent HTTP requests to fetch those resources.
+**Rendering the Page:**
+ - The browser receives the HTML content and starts rendering the web page.
+ - If the HTML references additional resources (e.g., CSS, JavaScript, images), the browser will make subsequent HTTP requests to fetch those resources.
 
 **Breakdown of the Steps**:
 
@@ -159,6 +159,7 @@ Here's a concrete example, linking it up with previous chapters (DNS and Socket)
 6. **Rendering:** The browser renders the web page and requests additional resources as needed.
 
 This example illustrates the process of accessing a web page from entering a URL to rendering the content in a web browser using HTTP. Typical web access these days relies on HTTPs (secure HTTP) with added encryption so that a malicious third party may not steal your information or collect data regarding your browsing habit. If you're interested to read more about it, head to [this appendix section](#web-browsing-with-https). 
+
 
 # HTTP Connection Types
 There are two types of HTTP connection, <span class="orange-bold">persistent</span> and <span class="orange-bold">non persistent</span>. 
@@ -407,120 +408,97 @@ Sure, here's a concrete example of how HTTPS works, including details about the 
 
 **Example: Accessing `https://example.org`**
 
-1. **Entering the URL:**
-   - The user types `https://example.org` into the web browser's address bar and presses Enter.
+**Entering the URL:**
+- The user types `https://example.org` into the web browser's address bar and presses Enter.
 
-2. **DNS Resolution:**
-   - The browser contacts a DNS server to resolve `example.org` to its corresponding IP address, e.g., `93.184.216.34`.
+**DNS Resolution:**
+- The browser contacts a DNS server to resolve `example.org` to its corresponding IP address, e.g., `93.184.216.34`.
 
-3. **Establishing a TCP Connection:**
-   - The browser initiates a TCP connection to the server at `93.184.216.34` on port 443 (default port for HTTPS).
+**Establishing a TCP Connection:**
+- The browser initiates a TCP connection to the server at `93.184.216.34` on port 443 (default port for HTTPS).
 
-4. **TLS Handshake:**
-   - The browser and server perform a TLS handshake to establish a secure connection.
+**TLS Handshake:**
+- The browser and server perform a TLS handshake to establish a secure connection.
 
-   **Steps in the TLS Handshake:**
+**Steps in the TLS Handshake:**
+1. **Client Hello:**
+  - The browser sends a `Client Hello` message to the server. This message includes information such as:
+    - Supported TLS versions
+    - Cipher suites (encryption algorithms) supported by the browser
+    - A randomly generated number (client random)
 
-   1. **Client Hello:**
-      - The browser sends a `Client Hello` message to the server. This message includes information such as:
-        - Supported TLS versions
-        - Cipher suites (encryption algorithms) supported by the browser
-        - A randomly generated number (client random)
+2. **Server Hello:**
+  - The server responds with a `Server Hello` message. This message includes:
+    - The selected TLS version
+    - The chosen cipher suite
+    - A randomly generated number (server random)
 
-      ```
-      Client -> Server: Client Hello
-      ```
 
-   2. **Server Hello:**
-      - The server responds with a `Server Hello` message. This message includes:
-        - The selected TLS version
-        - The chosen cipher suite
-        - A randomly generated number (server random)
+3. **Server Certificate:**
+  - The server sends its digital certificate to the browser. The certificate contains the server's public key and is signed by a trusted Certificate Authority (CA).
 
-      ```
-      Server -> Client: Server Hello
-      ```
 
-   3. **Server Certificate:**
-      - The server sends its digital certificate to the browser. The certificate contains the server's public key and is signed by a trusted Certificate Authority (CA).
+4. **Server Hello Done:**
+  - The server sends a `Server Hello Done` message to indicate it has finished its part of the handshake.
 
-      ```
-      Server -> Client: Certificate
-      ```
 
-   4. **Server Hello Done:**
-      - The server sends a `Server Hello Done` message to indicate it has finished its part of the handshake.
+5. **Client Key Exchange:**
+  - The browser verifies the server's certificate using the CA's public key.
+  - The browser generates a pre-master secret (a random value) and encrypts it using the server's public key from the certificate.
+  - The encrypted pre-master secret is sent to the server.
 
-      ```
-      Server -> Client: Server Hello Done
-      ```
 
-   5. **Client Key Exchange:**
-      - The browser verifies the server's certificate using the CA's public key.
-      - The browser generates a pre-master secret (a random value) and encrypts it using the server's public key from the certificate.
-      - The encrypted pre-master secret is sent to the server.
+6. **Session Keys:**
+  - Both the browser and server use the pre-master secret, along with the client random and server random, to generate the session keys (symmetric keys) for encrypting the session's data.
 
-      ```
-      Client -> Server: Client Key Exchange
-      ```
+7. **Client Finished:**
+  - The browser sends a `Finished` message, encrypted with the session key, to indicate that the client part of the handshake is complete.
 
-   6. **Session Keys:**
-      - Both the browser and server use the pre-master secret, along with the client random and server random, to generate the session keys (symmetric keys) for encrypting the session's data.
 
-   7. **Client Finished:**
-      - The browser sends a `Finished` message, encrypted with the session key, to indicate that the client part of the handshake is complete.
+8. **Server Finished:**
+  - The server sends a `Finished` message, encrypted with the session key, to indicate that the server part of the handshake is complete.
 
-      ```
-      Client -> Server: Finished
-      ```
 
-   8. **Server Finished:**
-      - The server sends a `Finished` message, encrypted with the session key, to indicate that the server part of the handshake is complete.
+**Secure HTTP Request:**
+- With the secure connection established, the browser sends an HTTP GET request to the server for the base HTML file, encrypted with the session key.
 
-      ```
-      Server -> Client: Finished
-      ```
+```
+GET / HTTP/1.1
+Host: example.org
+(encrypted with session key)
+```
 
-5. **Secure HTTP Request:**
-   - With the secure connection established, the browser sends an HTTP GET request to the server for the base HTML file, encrypted with the session key.
+**HTTP Response:**
+- The server responds with the requested HTML file, encrypted with the session key.
 
-   ```
-   GET / HTTP/1.1
-   Host: example.org
-   (encrypted with session key)
-   ```
+```
+HTTP/1.1 200 OK
+Date: Thu, 09 May 2024 12:34:56 GMT
+Content-Type: text/html; charset=UTF-8
+Content-Length: 1256
+Connection: keep-alive
+Server: ECS (dca/24DD)
+(encrypted with session key)
 
-6. **HTTP Response:**
-   - The server responds with the requested HTML file, encrypted with the session key.
+<!DOCTYPE html>
+<html>
+<head>
+      <title>Example Domain</title>
+</head>
+<body>
+      <div>
+         <h1>Example Domain</h1>
+         <p>This domain is established to be used for illustrative examples in documents. You may use this
+         domain in literature without prior coordination or asking for permission.</p>
+         <p><a href="https://www.iana.org/domains/example">More information...</a></p>
+      </div>
+</body>
+</html>
+```
 
-   ```
-   HTTP/1.1 200 OK
-   Date: Thu, 09 May 2024 12:34:56 GMT
-   Content-Type: text/html; charset=UTF-8
-   Content-Length: 1256
-   Connection: keep-alive
-   Server: ECS (dca/24DD)
-   (encrypted with session key)
-
-   <!DOCTYPE html>
-   <html>
-   <head>
-       <title>Example Domain</title>
-   </head>
-   <body>
-       <div>
-           <h1>Example Domain</h1>
-           <p>This domain is established to be used for illustrative examples in documents. You may use this
-           domain in literature without prior coordination or asking for permission.</p>
-           <p><a href="https://www.iana.org/domains/example">More information...</a></p>
-       </div>
-   </body>
-   </html>
-   ```
-
-7. **Rendering the Page:**
-   - The browser decrypts the received HTML content using the session key and starts rendering the web page.
-   - If the HTML references additional resources (e.g., CSS, JavaScript, images), the browser will make subsequent HTTPS requests to fetch those resources, reusing the established secure connection.
+**Rendering the Page:**
+ - The browser decrypts the received HTML content using the session key and starts rendering the web page.
+ - If the HTML references additional resources (e.g., CSS, JavaScript, images), the browser will make subsequent HTTPS requests to fetch those resources, reusing the established secure connection.
 
 ### Breakdown of the Steps:
 
@@ -572,96 +550,96 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
 
 ### Example to Illustrate Statelessness:
 
-1. **Initial Request:**
-   - The user visits `http://example.org/login`.
-   - The browser sends an HTTP GET request to the server.
+**Initial Request:**
+ - The user visits `http://example.org/login`.
+ - The browser sends an HTTP GET request to the server.
    
-   ```
-   GET /login HTTP/1.1
-   Host: example.org
-   ```
+```
+GET /login HTTP/1.1
+Host: example.org
+```
 
-2. **Server Response:**
-   - The server responds with the login page HTML.
+**Server Response:**
+- The server responds with the login page HTML.
    
-   ```
-   HTTP/1.1 200 OK
-   Content-Type: text/html
+```
+HTTP/1.1 200 OK
+Content-Type: text/html
 
-   <!DOCTYPE html>
-   <html>
-   <head>
-       <title>Login</title>
-   </head>
-   <body>
-       <form action="/login" method="post">
-           <input type="text" name="username" placeholder="Username">
-           <input type="password" name="password" placeholder="Password">
-           <button type="submit">Login</button>
-       </form>
-   </body>
-   </html>
-   ```
+<!DOCTYPE html>
+<html>
+<head>
+      <title>Login</title>
+</head>
+<body>
+      <form action="/login" method="post">
+         <input type="text" name="username" placeholder="Username">
+         <input type="password" name="password" placeholder="Password">
+         <button type="submit">Login</button>
+      </form>
+</body>
+</html>
+```
 
-3. **Login Request:**
-   - The user enters their credentials and submits the form.
-   - The browser sends an HTTP POST request with the form data.
+**Login Request:**
+- The user enters their credentials and submits the form.
+- The browser sends an HTTP POST request with the form data.
    
-   ```
-   POST /login HTTP/1.1
-   Host: example.org
-   Content-Type: application/x-www-form-urlencoded
-   Content-Length: 38
+```
+POST /login HTTP/1.1
+Host: example.org
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 38
 
-   username=johndoe&password=secret
-   ```
+username=johndoe&password=secret
+```
 
-4. **Server Response:**
-   - The server processes the login request, creates a session, and responds with a Set-Cookie header to store the session ID in the client's browser.
+**Server Response:**
+- The server processes the login request, creates a session, and responds with a Set-Cookie header to store the session ID in the client's browser.
    
-   ```
-   HTTP/1.1 200 OK
-   Set-Cookie: session_id=abc123; Path=/
-   Content-Type: text/html
+```
+HTTP/1.1 200 OK
+Set-Cookie: session_id=abc123; Path=/
+Content-Type: text/html
 
-   <!DOCTYPE html>
-   <html>
-   <head>
-       <title>Welcome</title>
-   </head>
-   <body>
-       <h1>Welcome, John Doe!</h1>
-   </body>
-   </html>
-   ```
+<!DOCTYPE html>
+<html>
+<head>
+      <title>Welcome</title>
+</head>
+<body>
+      <h1>Welcome, John Doe!</h1>
+</body>
+</html>
+```
 
-5. **Subsequent Request:**
-   - The user navigates to another page.
-   - The browser sends an HTTP GET request with the session ID cookie.
+**Subsequent Request:**
+ - The user navigates to another page.
+ - The browser sends an HTTP GET request with the session ID cookie.
    
-   ```
-   GET /dashboard HTTP/1.1
-   Host: example.org
-   Cookie: session_id=abc123
-   ```
+```
+GET /dashboard HTTP/1.1
+Host: example.org
+Cookie: session_id=abc123
+```
 
-6. **Server Response:**
-   - The server uses the session ID from the cookie to retrieve the user's session state and respond appropriately.
+**Server Response:**
+ - The server uses the session ID from the cookie to retrieve the user's session state and respond appropriately.
    
-   ```
-   HTTP/1.1 200 OK
-   Content-Type: text/html
+```
+HTTP/1.1 200 OK
+Content-Type: text/html
 
-   <!DOCTYPE html>
-   <html>
-   <head>
-       <title>Dashboard</title>
-   </head>
-   <body>
-       <h1>Dashboard for John Doe</h1>
-   </body>
-   </html>
-   ```
+<!DOCTYPE html>
+<html>
+<head>
+      <title>Dashboard</title>
+</head>
+<body>
+      <h1>Dashboard for John Doe</h1>
+</body>
+</html>
+```
 
 In summary, HTTP being stateless means that each request is independent, and the server does not retain any state information between requests. State management must be handled using mechanisms like cookies, URL parameters, hidden form fields, or web storage.
 
