@@ -345,12 +345,12 @@ You can also insert MX record type to both authoritative name server if your org
 ## TLD Update 
 
 Since you rely on AWS Route 53 for your authoritative nameservers, then Amazon is responsible for inserting the NS records for `examplesite.com` into the appropriate TLD server (.com TLD server in this example). These NS records are useful to indicate the Authoritative Name Server responsible for your domain:
-* `examplesite.com, ns-1312.awsdns-36.org, NS, TTL`
-* `examplesite.com, ns-788.awsdns-34.net, NS, TTL` 
+* `examplesite.com,` `ns-1312.awsdns-36.org, NS, TTL`
+* `examplesite.com,` `ns-788.awsdns-34.net, NS, TTL` 
 
 The A record for these two nameservers must also be present and reachable from the internet. For instance, The IP addresses of `ns-1312.awsdns-36.org` and `ns-788.awsdns-34.net` are registered within the respective TLDs (.org and .net). This means that the .org and .net registries contain the `A` records for these nameservers. For example:
-* `ns-1312.awsdns-36.org,  20.50.23.12, A, TTL`
-* `ns-788.awsdns-34.net,  53.25.22.11, A, TTL`
+* `ns-1312.awsdns-36.org,` `20.50.23.12, A, TTL`
+* `ns-788.awsdns-34.net,` `53.25.22.11, A, TTL`
 
 {:.note}
 If the authoritative nameserver happen to be in the `.com` domain, then the `.com` TLD should contain glue records to avoid circular dependency. Head to [appendix](#glue-records) if you'd like to find out more. 
