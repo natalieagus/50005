@@ -246,11 +246,11 @@ Socket is one of message passing <span style="color:#f7007f;"><b>interfaces</b><
 
 A socket is one endpoint of a <span style="color:#f77729;"><b>two-way communication link</b></span> between two programs running on the network with the help of the **kernel**:
 
-- It is a <span style="color:#f77729;"><b>concatenation</b></span> of an IP address, e.g: 127.0.0.1 for localhost
-- And <span style="color:#f77729;"><b>TCP</b></span> (connection-oriented) or <span style="color:#f77729;"><b>UDP</b></span> (connectionless) <span style="color:#f77729;"><b>port</b></span>, e.g: 8080.
+- Its identifier is a <span style="color:#f77729;"><b>concatenation</b></span> between an IP address, e.g: 127.0.0.1 for localhost and <span style="color:#f77729;"><b>TCP</b></span> (connection-oriented) or <span style="color:#f77729;"><b>UDP</b></span> (connectionless) <span style="color:#f77729;"><b>port</b></span>, e.g: 8080.
   - We will learn more about UDP and TCP as network communication protocols in the later part of the semester.
-- When concatenated together, they form a <span style="color:#f77729;"><b>socket</b></span>, e.g: 127.0.0.1:8080
+- When concatenated together, they form a <span style="color:#f77729;"><b>socket</b></span> (more accurately, *internet* socket), e.g: 127.0.0.1:8080
 - All socket connection between two communicating processes must be <span style="color:#f77729;"><b>unique</b></span>.
+  - Note: it is possible to "share" sockets through techniques called socket sharing. The details is out of the syllabus. You can view this [appendix](#socket-sharing) section if you're interested. 
 
 **TCP** and **UDP** are different transport protocols. You will learn more about it in the next half of the semester, so don't fret about it now. For now, this image sums it up.
 {:.info}
@@ -601,6 +601,108 @@ All processes created by Chrome have to <span style="color:#f77729;"><b>communic
 - Renderer will also be unable to access the disk and network I/O directly (runs in sandbox: limited access) thus reducing the possibility of security <span style="color:#f7007f;"><b>exploits</b></span>.
 - Each process can be scheduled <span style="color:#f77729;"><b>independently</b></span>, providing <span style="color:#f7007f;"><b>concurency</b></span> and responsiveness.
 
+## Socket Sharing
+
+While a single socket connection typically facilitates communication between two processes, it is possible to use sockets to enable communication among multiple processes through techniques such as socket sharing, multiple connections, and broadcasting. Let's delve into these concepts and see how they can be used effectively for inter-process communication (IPC).
+
+### Communication Between Two Processes
+
+A typical socket communication scenario involves two processes:
+
+1. **Client-Server Model**:
+   - **Server Process**: Creates a socket, binds it to an address (IP and port), listens for incoming connections, and accepts a connection from a client.
+   - **Client Process**: Creates a socket and connects to the server's address.
+
+### Communication Among Multiple Processes
+
+To facilitate communication among multiple processes, we can use several strategies:
+
+1. **Multiple Connections**:
+   - A server can handle multiple clients by accepting multiple connections. Each client communicates with the server through its own socket connection.
+   - The server can use techniques like multi-threading or asynchronous I/O to handle multiple connections simultaneously.
+
+2. **Socket Sharing**:
+   - A socket can be shared among multiple processes using techniques like `fork()` in UNIX-based systems, where a parent process creates a socket and then forks child processes that inherit the socket.
+   - This allows child processes to communicate with the same socket, enabling communication among them.
+
+3. **Broadcast and Multicast**:
+   - For scenarios where messages need to be sent to multiple recipients, broadcasting (sending to all clients) or multicasting (sending to a group of clients) can be used.
+   - This is more common in networked environments rather than local IPC with UNIX domain sockets.
+
+### Example: Multiple Client Connections to a Server
+
+Here’s an example illustrating how a server can handle multiple client connections using UNIX domain sockets. The server will accept connections from multiple clients and echo back any message it receives.
+
+#### Server Code (Python):
+
+```python
+import socket
+import os
+import threading
+
+SOCKET_PATH = "/tmp/my_socket"
+
+def handle_client(client_socket):
+    while True:
+        data = client_socket.recv(1024)
+        if not data:
+            break
+        print(f"Received: {data.decode()}")
+        client_socket.sendall(data)
+    client_socket.close()
+
+def main():
+    if os.path.exists(SOCKET_PATH):
+        os.remove(SOCKET_PATH)
+
+    server_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    server_socket.bind(SOCKET_PATH)
+    server_socket.listen(5)
+
+    print("Server listening...")
+
+    try:
+        while True:
+            client_socket, addr = server_socket.accept()
+            print("Accepted connection")
+            client_handler = threading.Thread(target=handle_client, args=(client_socket,))
+            client_handler.start()
+    finally:
+        server_socket.close()
+        os.remove(SOCKET_PATH)
+
+if __name__ == "__main__":
+    main()
+```
+
+#### Client Code (Python):
+
+```python
+import socket
+
+SOCKET_PATH = "/tmp/my_socket"
+message = "Hello, server!"
+
+client_socket = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+client_socket.connect(SOCKET_PATH)
+client_socket.sendall(message.encode())
+
+data = client_socket.recv(1024)
+print(f"Echoed: {data.decode()}")
+
+client_socket.close()
+```
+
+### Conclusion
+
+- **Single Socket Connection**: Generally used for communication between two processes.
+- **Multiple Connections**: A server can handle multiple clients, each communicating via its own socket connection.
+- **Socket Sharing**: Sockets can be inherited by child processes, allowing shared communication.
+- **Broadcast/Multicast**: Useful for sending messages to multiple recipients in networked environments.
+
+By using these techniques, you can extend the basic socket communication model to support IPC among multiple processes, enabling more complex and robust communication patterns.
+
 <hr> 
 
 [^6]: Suppose process 1 and process 2 have successfully attached the shared memory segment.This attachment process causes this shared memory segment will be part of their address space, although the actual address could be different (_i.e._, the starting address of this shared memory segment in the address space of process 1 may be different from the starting address in the address space of process 2).
+
