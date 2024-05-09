@@ -340,7 +340,7 @@ This means that you shall insert the A record of your domain `examplesite.com` i
 2. Insert the same A record into ns-788.awsdns-34.net DNS Server 
 
 {:.note}
-You can also insert MX record type to both authoritative name server if your organization also has a mail server, e.g: suppose you rely on Microsoft's email services, you shall insert MX record: `examplesite.com, examplesitemailserver.mail.protection.outlook.com, MX, TTL`.
+You can also insert MX record type to both authoritative name server if your organization also has a mail server, e.g: suppose you rely on Microsoft's email services, you shall insert MX record: `examplesite.com,` `examplesitemailserver.mail.``protection.outlook.com, MX, TTL`.
 
 ## TLD Update 
 
