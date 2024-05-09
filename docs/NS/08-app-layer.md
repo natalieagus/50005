@@ -183,7 +183,7 @@ Here’s a detailed explanation of the three-way handshake, including the `SYN`,
 - **Description**: The client initiates the connection by sending a TCP segment with the SYN flag set. This packet includes an initial sequence number (ISN), which is a random value chosen by the client.
 - **Purpose**: To inform the server that the client wants to establish a connection and to synchronize sequence numbers.
 
-```plaintext
+```
 Client -> Server: SYN, Seq = X
 ```
 
@@ -193,7 +193,7 @@ Client -> Server: SYN, Seq = X
 - **Description**: Upon receiving the SYN packet from the client, the server responds with a TCP segment that has both the SYN and ACK flags set. The server's packet includes its own initial sequence number and acknowledges the client's sequence number by incrementing it by one.
 - **Purpose**: To acknowledge the client's SYN packet and provide the server's initial sequence number.
 
-```plaintext
+```
 Server -> Client: SYN, ACK, Seq = Y, Ack = X + 1
 ```
 
@@ -203,13 +203,13 @@ Server -> Client: SYN, ACK, Seq = Y, Ack = X + 1
 - **Description**: The client sends a final TCP segment with the ACK flag set. This packet acknowledges the server's SYN-ACK packet by incrementing the server's sequence number by one.
 - **Purpose**: To acknowledge the server's SYN-ACK packet and finalize the connection establishment.
 
-```plaintext
+```
 Client -> Server: ACK, Seq = X + 1, Ack = Y + 1
 ```
 
 #### Visualization of the Three-Way Handshake
 
-```plaintext
+```
 Client                    Server
   |       SYN, Seq=X       |
   |----------------------->|

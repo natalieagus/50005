@@ -107,7 +107,7 @@ Here's a concrete example, linking it up with previous chapters (DNS and Socket)
 4. **HTTP Request:**
    - Once the connection is established, the browser sends an HTTP GET request to the server for the base HTML file.
 
-   ```plaintext
+   ```
    GET / HTTP/1.1
    Host: example.org
    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36
@@ -121,7 +121,7 @@ Here's a concrete example, linking it up with previous chapters (DNS and Socket)
 5. **HTTP Response:**
    - The server responds with the requested HTML file.
 
-   ```plaintext
+   ```
    HTTP/1.1 200 OK
    Date: Thu, 09 May 2024 12:34:56 GMT
    Content-Type: text/html; charset=UTF-8
@@ -427,7 +427,7 @@ Sure, here's a concrete example of how HTTPS works, including details about the 
         - Cipher suites (encryption algorithms) supported by the browser
         - A randomly generated number (client random)
 
-      ```plaintext
+      ```
       Client -> Server: Client Hello
       ```
 
@@ -437,21 +437,21 @@ Sure, here's a concrete example of how HTTPS works, including details about the 
         - The chosen cipher suite
         - A randomly generated number (server random)
 
-      ```plaintext
+      ```
       Server -> Client: Server Hello
       ```
 
    3. **Server Certificate:**
       - The server sends its digital certificate to the browser. The certificate contains the server's public key and is signed by a trusted Certificate Authority (CA).
 
-      ```plaintext
+      ```
       Server -> Client: Certificate
       ```
 
    4. **Server Hello Done:**
       - The server sends a `Server Hello Done` message to indicate it has finished its part of the handshake.
 
-      ```plaintext
+      ```
       Server -> Client: Server Hello Done
       ```
 
@@ -460,7 +460,7 @@ Sure, here's a concrete example of how HTTPS works, including details about the 
       - The browser generates a pre-master secret (a random value) and encrypts it using the server's public key from the certificate.
       - The encrypted pre-master secret is sent to the server.
 
-      ```plaintext
+      ```
       Client -> Server: Client Key Exchange
       ```
 
@@ -470,21 +470,21 @@ Sure, here's a concrete example of how HTTPS works, including details about the 
    7. **Client Finished:**
       - The browser sends a `Finished` message, encrypted with the session key, to indicate that the client part of the handshake is complete.
 
-      ```plaintext
+      ```
       Client -> Server: Finished
       ```
 
    8. **Server Finished:**
       - The server sends a `Finished` message, encrypted with the session key, to indicate that the server part of the handshake is complete.
 
-      ```plaintext
+      ```
       Server -> Client: Finished
       ```
 
 5. **Secure HTTP Request:**
    - With the secure connection established, the browser sends an HTTP GET request to the server for the base HTML file, encrypted with the session key.
 
-   ```plaintext
+   ```
    GET / HTTP/1.1
    Host: example.org
    (encrypted with session key)
@@ -493,7 +493,7 @@ Sure, here's a concrete example of how HTTPS works, including details about the 
 6. **HTTP Response:**
    - The server responds with the requested HTML file, encrypted with the session key.
 
-   ```plaintext
+   ```
    HTTP/1.1 200 OK
    Date: Thu, 09 May 2024 12:34:56 GMT
    Content-Type: text/html; charset=UTF-8
@@ -576,7 +576,7 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
    - The user visits `http://example.org/login`.
    - The browser sends an HTTP GET request to the server.
    
-   ```plaintext
+   ```
    GET /login HTTP/1.1
    Host: example.org
    ```
@@ -584,7 +584,7 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
 2. **Server Response:**
    - The server responds with the login page HTML.
    
-   ```plaintext
+   ```
    HTTP/1.1 200 OK
    Content-Type: text/html
 
@@ -607,7 +607,7 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
    - The user enters their credentials and submits the form.
    - The browser sends an HTTP POST request with the form data.
    
-   ```plaintext
+   ```
    POST /login HTTP/1.1
    Host: example.org
    Content-Type: application/x-www-form-urlencoded
@@ -619,7 +619,7 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
 4. **Server Response:**
    - The server processes the login request, creates a session, and responds with a Set-Cookie header to store the session ID in the client's browser.
    
-   ```plaintext
+   ```
    HTTP/1.1 200 OK
    Set-Cookie: session_id=abc123; Path=/
    Content-Type: text/html
@@ -639,7 +639,7 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
    - The user navigates to another page.
    - The browser sends an HTTP GET request with the session ID cookie.
    
-   ```plaintext
+   ```
    GET /dashboard HTTP/1.1
    Host: example.org
    Cookie: session_id=abc123
@@ -648,7 +648,7 @@ When we say that HTTP is stateless, it means that each HTTP request from a clien
 6. **Server Response:**
    - The server uses the session ID from the cookie to retrieve the user's session state and respond appropriately.
    
-   ```plaintext
+   ```
    HTTP/1.1 200 OK
    Content-Type: text/html
 
