@@ -480,14 +480,14 @@ Glue records are provided by the parent zone (in this case, the `.com` TLD) to b
 
 ### NS Records:
 
-```text
+```
 examplesite.com.  NS  ns1.examplesite.com.
 examplesite.com.  NS  ns2.examplesite.com.
 ```
 
 ### Glue Records (A records for the nameservers):
 
-```text
+```
 ns1.examplesite.com.  A  192.0.2.1
 ns2.examplesite.com.  A  198.51.100.1
 ```
@@ -496,7 +496,7 @@ These glue records are stored in the `.com` TLD zone file. When a resolver queri
 
 ### Response from the `.com` TLD:
 
-```text
+```
 examplesite.com.  NS  ns1.examplesite.com.
 examplesite.com.  NS  ns2.examplesite.com.
 ns1.examplesite.com.  A  192.0.2.1
