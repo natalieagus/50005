@@ -24,6 +24,33 @@ Singapore University of Technology and Design
 # Application Layer 
 {: .no_toc}
 
+
+{:.highlight-title}
+> Detailed Learning Objectives
+>
+> - **Understand the Application Layer:**
+>   - Define the role and functions of the application layer in the OSI model.
+>   - Explain how the application layer interacts with the transport layer.
+> - **Comprehend Sockets:**
+>   - Define what a socket is and its purpose in network communication.
+>   - Distinguish between stream sockets (TCP) and datagram sockets (UDP).
+>   - Understand how sockets are used as endpoints for communication.
+> - **Learn Socket Characteristics and Usage:**
+>   - Identify the unique identifier of a socket (IP address + Port number).
+>   - Understand the concept of socket binding and its importance.
+>   - Recognize that sockets are special file descriptors in UNIX systems.
+> - **Explore the Socket API:**
+>   - Understand the key functions provided by the Socket API for network communication.
+>   - Differentiate between internet sockets and UNIX domain sockets.
+> - **Grasp Multiplexing and Demultiplexing:**
+>   - Define multiplexing and demultiplexing in the context of the transport layer.
+>   - Explain how transport layer protocols handle data from multiple sockets.
+> - **Understand Transport Layer Protocols:**
+>   - Explain the role of TCP (Transmission Control Protocol) in providing reliable, in-order byte-stream transfer.
+>   - Describe the characteristics of UDP (User Datagram Protocol) and its use for connectionless communication.
+>
+> These learning objectives are designed to provide a comprehensive understanding of the application layer, sockets, socket API, and their interactions with transport layer protocols in network communication.
+
 {:.info}
 The application layer is the <span class="orange-bold">topmost</span> layer in the 5-layer OSI Model of computer networking. It is responsible for **providing** network services **directly to end-users or applications**. The application layer serves as the <span class="orange-bold">interface</span> between the user (or user applications) and the network, ensuring that communication between software applications on different devices is possible.
 
@@ -105,9 +132,9 @@ The transport layer protocols that we will discuss are:
 {:.note}
 Socket programming in the application layer relies on TCP and UDP services in the transport layer.
 
-The diagram below might help you recap on the purpose on each network layer protocols:
+The diagram below might help you recap on the purpose of each network layer protocols:
 
-<img src="{{ site.baseurl }}//docs/NS/images/08-app-layer/2024-05-09-12-11-31.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/docs/NS/images/08-app-layer/cse2024-network-stack.drawio.png"  class="center_seventy"/>
 
 ## TCP 
 
@@ -248,11 +275,344 @@ Further information like IP addresses, MAC addresses, network topology informati
 
 The table below summarises common port numbers associated with specific application layer services. They're typically **reserved** and you shouldn't use these port numbers apart from supporting these services:
 
-<img src="{{ site.baseurl }}//docs/NS/images/08-app-layer/2024-05-09-12-34-37.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}//docs/NS/images/08-app-layer/2024-05-09-12-34-37.png"  class="center_full"/>
 
-## Sample Socket Programs
+## Sample TCP and UDP Socket Programming in C 
+
+You should run these sample code to enhance your understanding about socket programming (both TCP and UDP oriented) in C. We use C Socket API for this example. Simply ask ChatGPT to translate it to other socket API if you wish, e.g: Python socket API. 
+
+### TCP
+#### Server Code
+The server is meant to be run first, before the client.
+
+```cpp
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <netinet/in.h> //contains constants and structures needed for internet domain addresses.
+#include <string.h>
+#define PORT 8080
 
 
+int main(int argc, char const *argv[])
+{
+   /**
+    * server_fd and new_socket are file descriptors, i.e. array subscripts into the file descriptor table. These two variables store the values returned by the socket system call and the accept system call. 
+    * valread is the return value for the read() and write() calls; i.e. it contains the number of characters read or written.
+    **/
+   int server_fd, new_socket, valread;
+   /**
+    * A sockaddr_in is a structure containing an internet address. This structure is defined in <netinet/in.h>. Here is the definition:
+       struct sockaddr_in {
+       short   sin_family;
+       u_short sin_port;
+       struct  in_addr sin_addr;
+       char    sin_zero[8];
+       };
+   */
+   struct sockaddr_in address;
+   int addrlen = sizeof(address);
+
+
+   char buffer[1024] = {0};  //buffer used to read data from socket
+   char *hello = "Hello from server";
+     
+   // Creating socket file descriptor, using socket system call
+   if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0)
+   {
+       perror("socket failed");
+       exit(EXIT_FAILURE);
+   }
+```
+
+In the server’s code, we use PORT 8080 (some unused port). We then prepare some local variables, and creating socket file descriptor `server_fd`.
+
+The arguments that can be used for the socket is `AF_INET` (meaning connection through the internet) and `SOCK_STREAM` that represents **TCP oriented connection**. You can read the [manual](https://www.ibm.com/docs/en/aix/7.1?topic=protocols-socket-types) about `SOCK_STREAM`, but in essence `SOCK_STREAM` provides sequenced, reliable, two-way, connection-based byte streams.  An out-of-band data transmission mechanism may be supported.
+
+
+
+```cpp
+   address.sin_family = AF_INET;
+   address.sin_addr.s_addr = INADDR_ANY;
+   address.sin_port = htons( PORT );
+     
+   // Forcefully attaching socket to the port 8080
+   if (bind(server_fd, (struct sockaddr *)&address, 
+                                sizeof(address))<0)
+   {
+       perror("bind failed");
+       exit(EXIT_FAILURE);
+   }
+
+    
+  
+   if (listen(server_fd, 3) < 0)
+   {
+       perror("listen");
+       exit(EXIT_FAILURE);
+   }
+
+```
+And then we `accept()` new connections. This <span class="orange-bold">blocks</span> until a client connects to it. Note how `new_socket` is created upon connection with a client. The 3-way TCP handshake: SYN, SYN_ACK, and ACK handshake is handled by the transport layer during `accept()` (triggers system call). 
+
+{:.note}
+During the **execution** of `accept()`, the transport layer handles this handshake process. The system call accept() essentially waits for this handshake to complete before returning the new socket descriptor. This ensures that the connection is fully established and ready for data transmission. 
+ 
+
+```cpp
+   if ((new_socket = accept(server_fd, (struct sockaddr *)&address, 
+                      (socklen_t*)&addrlen))<0)
+   {
+       perror("accept");
+       exit(EXIT_FAILURE);
+   }
+
+   valread = read( new_socket , buffer, 1024);
+   printf("%s\n",buffer );
+   send(new_socket , hello , strlen(hello) , 0 );
+   printf("Hello message sent\n");
+   return 0;
+}
+```
+
+
+Afterwards, server and client  with can communicate using `read()` and `send()` API.
+
+#### Keep-Alive 
+
+What if you want to create a **new** process to serve this client, so as to keep the server active to accept new connections? You can use `fork()` instead (or create threads, up to you) after accepting `new_socket` and ask the parent process to loop back up to accept new connection:
+
+```cpp
+// multiple clients accepted
+   for (;;)
+   {
+       printf("Accepting new client\n");
+       if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
+       {
+           perror("accept");
+           exit(EXIT_FAILURE);
+       }
+
+
+       int pid;
+       if ((pid = fork()) == -1) // fork fails
+       {
+           close(new_socket);
+           continue;
+       }
+
+
+       else if (pid > 0) //parent process
+       {
+           close(new_socket);
+           continue;
+       }
+       else if (pid == 0) //child process
+       {
+           valread = read(new_socket, buffer, 1024);
+           printf("%s\n", buffer);
+           send(new_socket, hello, strlen(hello), 0);
+           printf("Hello message sent\n");
+           return 0;
+       }
+   }
+```
+
+#### Client Code 
+The client code for TCP is symmetrical: 
+
+```c
+#include <stdio.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <string.h>
+#define PORT 8080
+ 
+int main(int argc, char const *argv[])
+{
+   int sock = 0, valread;
+   struct sockaddr_in serv_addr;
+   char *hello = "Hello from client";
+   char buffer[1024] = {0};
+   if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+   {
+       printf("\n Socket creation error \n");
+       return -1;
+   }
+ 
+   serv_addr.sin_family = AF_INET;
+   serv_addr.sin_port = htons(PORT);
+     
+   // Convert IPv4 and IPv6 addresses from text to binary form
+   if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0) //localhost
+   {
+       printf("\nInvalid address/ Address not supported \n");
+       return -1;
+   }
+ 
+   if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+   {
+       printf("\nConnection Failed \n");
+       return -1;
+   }
+   send(sock , hello , strlen(hello) , 0 );
+   printf("Hello message sent\n");
+   valread = read( sock , buffer, 1024);
+   printf("%s\n",buffer );
+   return 0;
+}
+```
+
+### UDP 
+#### Server Code
+The server is meant to be run first, before the client.
+
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+ #define PORT 8080
+#define MAXLINE 1024
+ // Driver code
+int main() {
+   int sockfd;
+   char buffer[MAXLINE];
+   char *hello = "Hello from server";
+   struct sockaddr_in servaddr, cliaddr;
+    
+   // Creating socket file descriptor
+   if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
+       perror("socket creation failed");
+       exit(EXIT_FAILURE);
+   }
+    
+
+```
+
+Note how we create a socket with `SOCK_DGRAM` option instead. This option means we are expecting to rely on UDP. 
+
+{:.highlight}
+`SOCK_DGRAM` supports datagrams (connectionless, unreliable messages of a fixed maximum length).
+
+Similarly we need some setup with the socket, and then bind to it: 
+
+```c  
+   memset(&servaddr, 0, sizeof(servaddr));
+   memset(&cliaddr, 0, sizeof(cliaddr));
+    
+   // Filling server information
+   servaddr.sin_family    = AF_INET; // IPv4
+   servaddr.sin_addr.s_addr = INADDR_ANY;
+   servaddr.sin_port = htons(PORT);
+    
+   // Bind the socket with the server address
+   if ( bind(sockfd, (const struct sockaddr *)&servaddr, 
+           sizeof(servaddr)) < 0 )
+   {
+       perror("bind failed");
+       exit(EXIT_FAILURE);
+   }
+
+   // This section is unique to UDP 
+   int len, n;
+   len = sizeof(cliaddr);  //len is value/resuslt
+   n = recvfrom(sockfd, (char *)buffer, MAXLINE,  MSG_WAITALL, ( struct sockaddr *) &cliaddr, &len);
+   buffer[n] = '\0';
+   printf("Client : %s\n", buffer);
+   sendto(sockfd, (const char *)hello, strlen(hello), 
+       0, (const struct sockaddr *) &cliaddr,
+           len);
+   printf("Hello message sent.\n"); 
+    
+   return 0;
+}
+```
+
+Notice how there’s no need to `accept` and establish connection with a particular client. The server simply receive messages from any client that wants to send to this socket.
+
+#### Client Code 
+The client code for UDP is also symmetrical:
+
+```cpp 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+#include <netinet/in.h>
+
+
+#define PORT     8080
+#define MAXLINE 1024
+
+
+int main() {
+   int sockfd;
+   char buffer[MAXLINE];
+   char *hello = "Hello from client";
+   struct sockaddr_in   servaddr;
+
+
+   // Creating socket file descriptor
+   if ( (sockfd = socket(AF_INET, SOCK_DGRAM, 0)) < 0 ) {
+       perror("socket creation failed");
+       exit(EXIT_FAILURE);
+   }
+
+
+   memset(&servaddr, 0, sizeof(servaddr));
+  
+   // Filling server information
+   servaddr.sin_family = AF_INET;
+   servaddr.sin_port = htons(PORT);
+   servaddr.sin_addr.s_addr = inet_addr("127.0.0.1"); // localhost
+   int n, len;
+  
+   sendto(sockfd, (const char *)hello, strlen(hello), 0, (const struct sockaddr *) &servaddr, sizeof(servaddr));
+   printf("Hello message sent.\n");
+      
+   n = recvfrom(sockfd, (char *)buffer, MAXLINE, MSG_WAITALL, (struct sockaddr *) &servaddr, &len);
+   buffer[n] = '\0';
+   printf("Server : %s\n", buffer);
+
+
+   close(sockfd);
+   return 0;
+}
+
+```
+
+The **difference** with the TCP client is that there’s no `connect`. You simply `sendto` and `recvfrom` the `sockfd` (identifying the server IP and port#) that you have defined.  
+
+# Summary
+The application layer, the topmost layer in the OSI model, provides network services directly to end-users or applications, serving as the interface between user applications and the network. While relying on the transport layer for data transmission, it ensures seamless network interactions.
+
+Sockets, which combine an IP address and port number to identify a specific process on a machine, are crucial for network communication. They act as the programming interface between the application and transport layers, enabling applications to use transport layer services. 
+
+Two main types of sockets exist:
+- **Stream Sockets (TCP):** For connection-oriented, reliable, ordered, and error-checked data delivery.
+- **Datagram Sockets (UDP):** For connectionless, faster, but less reliable data transfer without order or error-checking.
+
+Sockets support interprocess communication, with each having a unique identifier (IP address + Port number). Applications bind and listen to these sockets to communicate. In UNIX systems, sockets are special file descriptors similar to file I/O operations.
+
+The Socket API provides functions for network communication, allowing developers to create and manage connections between processes on different or the same machines.
+
+Transport layer protocols handle multiplexing and demultiplexing of data:
+- **Multiplexing:** Handles data from multiple sockets, adding transport headers.
+- **Demultiplexing:** Uses headers to deliver segments to the correct socket.
+
+TCP (Transmission Control Protocol) ensures reliable, in-order byte-stream transfer, while UDP (User Datagram Protocol) provides faster, connectionless communication with less reliability.
+
+<hr>
 
 # Appendix
 
@@ -424,16 +784,14 @@ int main() {
 
 ## Practical Examples of Port Usage
 
-### 1. Web Browsing (HTTP/HTTPS)
-
+**1. Web Browsing (HTTP/HTTPS)**
 - **Protocol**: TCP
 - **Port Number**: 80 (HTTP), 443 (HTTPS)
 - **Explanation**: 
   - When you type a URL in your web browser and hit enter, the browser initiates a TCP connection to the web server's IP address on port 80 (for HTTP) or port 443 (for HTTPS).
   - This connection ensures reliable data transfer, ensuring the web pages load correctly and securely.
 
-### 2. Email (SMTP, IMAP, POP3)
-
+**2. Email (SMTP, IMAP, POP3)**
 - **Protocol**: TCP
 - **Port Numbers**: 
   - SMTP: 25, 587 (sending email)
@@ -443,24 +801,21 @@ int main() {
   - SMTP (Simple Mail Transfer Protocol) is used for sending emails. Email clients and servers use TCP port 25 or 587 to send emails reliably.
   - IMAP (Internet Message Access Protocol) and POP3 (Post Office Protocol) are used to retrieve emails. They use ports 143 and 110 respectively for unencrypted access, and ports 993 and 995 for encrypted access to ensure emails are downloaded and managed reliably.
 
-### 3. DNS (Domain Name System)
-
+**3. DNS (Domain Name System)**
 - **Protocol**: UDP and TCP
 - **Port Number**: 53
 - **Explanation**: 
   - DNS queries are typically made over UDP port 53 because they are small and the connectionless nature of UDP allows for quick query resolution.
   - For larger responses, such as DNS zone transfers, TCP port 53 is used to ensure the complete transfer of data.
 
-### 4. File Transfer (FTP)
-
+**4. File Transfer (FTP**)
 - **Protocol**: TCP
 - **Port Numbers**: 21 (control), 20 (data)
 - **Explanation**: 
   - FTP (File Transfer Protocol) uses TCP port 21 to establish a control connection between the client and server.
   - The actual file data is transferred over a separate connection using TCP port 20.
 
-### 5. Streaming Media (RTSP, RTP)
-
+**5. Streaming Media (RTSP, RTP)**
 - **Protocol**: UDP and TCP
 - **Port Numbers**: 
   - RTSP (Real-Time Streaming Protocol): 554 (TCP)
@@ -469,21 +824,20 @@ int main() {
   - RTSP uses TCP port 554 for establishing and controlling media sessions.
   - RTP streams the actual media content over dynamic UDP ports for low latency and fast delivery.
 
-### 6. Secure Shell (SSH)
-
+**6. Secure Shell (SSH)**
 - **Protocol**: TCP
 - **Port Number**: 22
 - **Explanation**: 
   - SSH (Secure Shell) uses TCP port 22 to provide secure, encrypted communication for remote login and other secure network services.
 
-### 7. Remote Desktop (RDP)
+**7. Remote Desktop (RDP)**
 
 - **Protocol**: TCP
 - **Port Number**: 3389
 - **Explanation**: 
   - RDP (Remote Desktop Protocol) uses TCP port 3389 to allow users to connect to and control another computer remotely with a graphical interface.
 
-### 8. Voice over IP (VoIP)
+**8. Voice over IP (VoIP)**
 
 - **Protocol**: UDP and TCP
 - **Port Numbers**: 
@@ -493,7 +847,7 @@ int main() {
   - SIP uses TCP or UDP ports 5060 and 5061 to establish and manage VoIP calls.
   - RTP uses dynamic UDP ports to transmit the actual voice data with minimal latency.
 
-### 9. Game Servers
+**9. Game Servers**
 
 - **Protocol**: UDP and TCP
 - **Port Numbers**: Varies by game
@@ -501,7 +855,7 @@ int main() {
   - Online multiplayer games often use specific ports for game data transmission. For example, Minecraft uses TCP/UDP port 25565.
   - These games often use UDP for fast-paced data transmission where occasional packet loss is acceptable.
 
-### 10. Network Time Protocol (NTP)
+**10. Network Time Protocol (NTP)**
 
 - **Protocol**: UDP
 - **Port Number**: 123
@@ -525,7 +879,8 @@ The Socket API provides a set of functions for network communication in programm
 
 ### Socket API Functions
 
-#### 1. Creating a Socket
+#### C Example
+**1. Creating a Socket**
 
 **C Example**:
 ```c
@@ -539,7 +894,7 @@ int socket(int domain, int type, int protocol);
 - `type`: Specifies the communication semantics (e.g., `SOCK_STREAM` for TCP, `SOCK_DGRAM` for UDP).
 - `protocol`: Specifies a particular protocol to be used with the socket (usually set to 0 to select the default protocol).
 
-#### 2. Binding a Socket
+**2. Binding a Socket**
 
 **C Example**:
 ```c
@@ -554,7 +909,7 @@ int bind(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 - `addr`: A pointer to a `sockaddr` structure containing the address to bind to.
 - `addrlen`: The size of the address structure.
 
-#### 3. Listening for Connections
+**3. Listening for Connections**
 
 **C Example**:
 ```c
@@ -567,7 +922,7 @@ int listen(int sockfd, int backlog);
 - `sockfd`: The file descriptor of the socket.
 - `backlog`: The maximum number of pending connections that can be queued.
 
-#### 4. Accepting a Connection
+**4. Accepting a Connection**
 
 **C Example**:
 ```c
@@ -581,7 +936,7 @@ int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
 - `addr`: A pointer to a `sockaddr` structure to receive the address of the connecting entity.
 - `addrlen`: A pointer to a variable that specifies the size of the address structure.
 
-#### 5. Connecting to a Server
+**5. Connecting to a Server**
 
 **C Example**:
 ```c
@@ -595,7 +950,7 @@ int connect(int sockfd, const struct sockaddr *addr, socklen_t addrlen);
 - `addr`: A pointer to a `sockaddr` structure containing the address of the server.
 - `addrlen`: The size of the address structure.
 
-#### 6. Sending and Receiving Data
+**6. Sending and Receiving Data**
 
 **C Example**:
 ```c
@@ -611,7 +966,7 @@ ssize_t recv(int sockfd, void *buf, size_t len, int flags);
 - `len`: The length of the buffer.
 - `flags`: Flags to modify the behavior of the function (usually set to 0).
 
-#### 7. Closing a Socket
+**7. Closing a Socket**
 
 **C Example**:
 ```c
@@ -622,7 +977,7 @@ int close(int fd);
 
 - `fd`: The file descriptor of the socket.
 
-### Python Example
+#### Python Example
 
 Here’s how you can use the Socket API in Python to create a simple client-server application:
 
@@ -685,7 +1040,7 @@ The Socket API provides a comprehensive set of functions for network communicati
 
 Socket binding is the process of associating a socket with a specific IP address and port number on a host. This is an essential step for server applications, as it prepares the socket to listen for incoming connections on a particular network interface and port. Binding allows the operating system to forward incoming network packets to the correct socket based on the specified IP address and port number.
 
-### Why Binding is Important
+##### Why Binding is Important
 
 1. **Listening for Connections**: Binding is necessary for a server to listen for incoming connections or datagrams on a specific port.
 2. **Address Specification**: It allows the server to specify which network interface (IP address) and port it should use. This is important for multi-homed hosts (hosts with multiple network interfaces).
@@ -694,7 +1049,7 @@ Socket binding is the process of associating a socket with a specific IP address
 
 When you bind a socket, you tell the operating system that you want to use a specific port and optionally a specific IP address for communication. This involves providing a `sockaddr` structure that contains the IP address and port number.
 
-### Example: Binding a Socket in C
+##### Example: Binding a Socket in C
 
 Here’s a simple example of how to bind a socket in C using the socket API:
 
@@ -755,7 +1110,7 @@ int main() {
 }
 ```
 
-### Explanation
+**Explanation**
 
 1. **Socket Creation**: `socket(AF_INET, SOCK_STREAM, 0)` creates a new socket using the IPv4 address family and TCP (SOCK_STREAM).
 2. **Set Socket Options**: `setsockopt()` allows the socket to be reused quickly after the application is closed and restarted.
@@ -766,7 +1121,7 @@ int main() {
 4. **Binding**: `bind(server_fd, (struct sockaddr *)&address, sizeof(address))` binds the socket to the specified IP address and port.
 5. **Listening**: `listen(server_fd, 3)` puts the socket into listening mode, ready to accept incoming connections.
 
-### Example: Binding a Socket in Python
+##### Example: Binding a Socket in Python
 
 Here’s how you can bind a socket in Python using the `socket` module:
 
