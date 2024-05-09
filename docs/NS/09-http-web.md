@@ -95,17 +95,17 @@ The standard steps for HTTP protocol is as follows:
 ## Example: Accessing `http://example.org`
 
 Here's a concrete example, linking it up with previous chapters (DNS and Socket): 
-1. **Entering the URL:**
-   - The user types `http://example.org` into the web browser's address bar and presses Enter.
+**Entering the URL:**
+- The user types `http://example.org` into the web browser's address bar and presses Enter.
 
-2. **DNS Resolution:**
-   - The browser contacts a DNS server to resolve `example.org` to its corresponding IP address, e.g., `93.184.216.34`.
+**DNS Resolution:**
+- The browser contacts a DNS server to resolve `example.org` to its corresponding IP address, e.g., `93.184.216.34`.
 
-3. **Establishing a Connection:**
-   - The browser initiates a TCP connection to the server at `93.184.216.34` on port 80 (default port for HTTP).
+**Establishing a Connection:**
+- The browser initiates a TCP connection to the server at `93.184.216.34` on port 80 (default port for HTTP).
 
-4. **HTTP Request:**
-   - Once the connection is established, the browser sends an HTTP GET request to the server for the base HTML file.
+**HTTP Request:**
+- Once the connection is established, the browser sends an HTTP GET request to the server for the base HTML file.
 
 ```
 GET / HTTP/1.1
