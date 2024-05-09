@@ -28,24 +28,24 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - Understand the basics of HTTP (HyperText Transfer Protocol)
+> - **Understand the basics of HTTP (HyperText Transfer Protocol)**
 >   - Define HTTP and its role in web data exchange
 >   - Explain the difference between HTTP and HTTPS
 >   - Identify the components of an HTTP request and response
-> - Describe the client/server model in HTTP
+> - **Describe the client/server model in HTTP**
 >   - Define the roles of the client and server in HTTP communication
 >   - Illustrate the process of a client initiating a connection and requesting web resources
-> - Differentiate between non-persistent and persistent HTTP connections
+> - **Differentiate between non-persistent and persistent HTTP connections**
 >   - Explain the characteristics and limitations of non-persistent HTTP (HTTP 1.0)
 >   - Describe the benefits and functioning of persistent HTTP (HTTP 1.1)
-> - Explore the concept of URLs and their structure
+> - **Explore the concept of URLs and their structure**
 >   - Define what a URL is and its components
 >   - Explain how URLs are used to access web resources
-> - Understand the significance of cookies in maintaining state
+> - **Understand the significance of cookies in maintaining state**
 >   - Define cookies and their purpose in HTTP communication
 >   - Explain the structure and components of cookies
 >   - Discuss the potential security and privacy risks associated with cookies
-> - Learn about web caching and its benefits
+> - **Learn about web caching and its benefits**
 >   - Define web caching and its purpose
 >   - Describe the role of conditional GET requests in web caching
 >   - Differentiate between browser cache and cookies
