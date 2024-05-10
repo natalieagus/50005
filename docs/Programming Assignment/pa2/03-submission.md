@@ -65,11 +65,11 @@ git commit -a -m "feat: save to recv_files_enc and send_files_enc before encrypt
 You can also put your own large files at `[PROJ_ROOT_DIR]/files` (>100MB) to <span style="color:#f77729;"><b>test</b></span> internally, but <span style="color:#f77729;"><b>remove</b></span> it before pushing to Github since it doesn't allow you to push any single file >100MB. Please <span class="orange-bold">do not use<span class="orange-bold"></span></span> `git-lfs`.  
 {:.note}
 
-## Print Statements
+# Print Statements
 
 We will not check your program's `stdout` during the demo, so you're <span style="color:#f77729;"><b>free to print</b></span> whatever you need or want during the development of the assignment.
 
-## Following Protocols Closely (1%)
+# Following Protocols Closely (1%)
 
 As stated throughout the handout, you need to stick to the protocol <span style="color:#f77729;"><b>strictly</b></span>, that is to implement each `MODE` as specified (`send` or `read` exactly as specified in the `MODE`) so that we can run your server scripts against our <span style="color:#f77729;"><b>answer key</b></span> client scripts and vice versa. <span class="orange-bold">This is where the last 1% of your grade come from.</span>
 
@@ -80,16 +80,72 @@ You may easily ensure this by checking your server against another pair's client
 Not to worry, our server and client scripts that will be used to test your client and server script will handle these cases.
 {:.note}
 
-## Submission
+# Sustainability and Inclusivity 
 
-Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>.
+As mentioned in Programming Assignment 1, there have been some ongoing initiatives from SUTD as well as the Engineering Accreditation Board to include more elements of Sustainability, Diversity and Inclusivity. As such, we encourage you to consider the impact of your project on sustainability, as well as any consideration for diversity and inclusion (e.g., different cultures, demographic groups, etc). 
 
-## Live Demo 
+Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it as *any* part of your assignment, as long as you're still following the protocols requested closely. It does **not** have to be part of your code: e.g if you decide to conduct user testing. <span class="orange-bold">Simply highlight your attempts clearly in the README file</span> and write future suggestions. 
+ 
+{:.error}
+Failure to show attempts to incorporate initiatives to support sustainability and inclusivity results in <span class="orange-bold">-3% (penalty)</span> of your overall grades. 
+
+### Sustainability Ideas
+
+1. **Optimized File Transfer**:
+   - **Description**: Design the protocol to transfer files efficiently, minimizing energy consumption and network usage.
+   - **Task**: Implement features such as file compression before transfer and efficient chunking of data to reduce the amount of data sent over the network while still following the protocols closely
+
+2. **Efficient Encryption Practices**:
+   - **Description**: Use energy-efficient practices within the constraints of the Python cryptography modules.
+   - **Task**: Choose the most efficient algorithms provided by the Python cryptography library for encryption and decryption to ensure minimal resource usage while maintaining security.
+
+3. **Logging and Monitoring**:
+   - **Description**: Include logging and monitoring to track resource usage during file transfers.
+   - **Task**: Implement logging of CPU, memory, and network usage during file transfers, and analyze these logs to identify and optimize inefficient parts of the protocol.
+
+4. **Documentation of Efficient Practices**:
+   - Description: Document best practices for writing efficient and sustainable code.
+   - Task: Include a section in the README detailing efficient coding practices and optimizations used in the project, encouraging the use of these practices in future development.
+
+### Inclusivity Ideas
+
+1. **Accessible User Interface**:
+   - **Description**: Design the client interface to be accessible to users with disabilities.
+   - **Task**: Ensure the client application supports accessibility features such as keyboard navigation, screen reader compatibility, and customizable text size and color schemes.
+
+2. **Multilingual Support**:
+   - **Description**: Provide support for multiple languages in the client and server applications.
+   - **Task**: Implement localization features allowing users to choose their preferred language for interaction with the client and server.
+
+3. **Clear and Inclusive Documentation**:
+   - **Description**: Write clear, detailed documentation that is easy to understand for users of all backgrounds.
+   - **Task**: Create comprehensive documentation that includes step-by-step instructions, clear explanations of technical terms, and helpful examples, avoiding jargon.
+
+4. **User-Friendly Error Messages**:
+   - **Description**: Provide informative and user-friendly error messages.
+   - **Task**: Implement error messages that are clear, descriptive, and offer actionable steps to resolve issues, ensuring they are easily understandable for all users.
+
+5. **Inclusivity in Testing**:
+   - Description: Ensure that the system is tested with a diverse range of users.
+   - Task: Conduct user testing with individuals from various backgrounds and with different abilities, gathering feedback to improve the inclusivity and usability of the system.
+
+# Submission
+
+Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>## README 
+
+### README 
+
+You are expected to write a <span class="orange-bold">clear</span> and <span class="orange-bold">succint</span> README file as part of your project submission, detailing the following:
+1. How to compile and run your programs (server and client)
+2. How client can upload multiple files (if you modify the current starter code)
+3. How you have considered sustainability and/or inclusivity in your assignment
+
+# Live Demo 
 
 {:.highlight}
 You will be asked to clone your project from the github classroom repo (<span class="orange-bold">fresh clone</span>). 
 
-### Sample Demo
+## Sample Demo
 
 The following video shows the expected interaction between Server and Client processes.
 
@@ -99,7 +155,7 @@ The following video shows the expected interaction between Server and Client pro
 </video>
 
 
-### Checkoff Procedure
+## Checkoff Procedure
 
 Please be present at your designated slots (refer to course handout) for your PA2 demo. Even though you have submitted your code, we still want to witness your PA2 **in person**. You will <span class="orange-bold">clone</span> your submitted code (fresh) and run it <span class="orange-bold">on a different machine</span>. If you're doing the project alone, our TA/Instructor will be your client. 
 

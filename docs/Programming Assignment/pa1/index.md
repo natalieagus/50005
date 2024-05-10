@@ -35,7 +35,7 @@ You should have joined the GitHub Classroom and obtain the starter code for this
 
 ## Submission 
 
-Simply push your completed shell code to the github classroom repository by the stipulated due date in the course handout. You will then meet our TAs/instructors for a live demo (checkoff, schedule in course handout). You are to expand the shell to implement various **additional functionalities** that will be elaborated throughout this assignment's handout. 
+Simply push your completed shell code to the github classroom repository by the stipulated due date in the course handout. You will then meet our TAs/instructors for a live demo (checkoff, schedule in course handout). You are to expand the shell to implement various **additional functionalities** that will be elaborated throughout this assignment's handout. Read along to find out more. 
 
 Your shell should <span style="color:#f7007f;"><b>NOT</b></span> crash due to any input from the user or any <span style="color:#f7007f;"><b>ABSENCE</b></span> of input from the user after the given command.
 {:.error}
