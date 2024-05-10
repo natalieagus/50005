@@ -49,6 +49,10 @@ Singapore University of Technology and Design
 >   - Define web caching and its purpose
 >   - Describe the role of conditional GET requests in web caching
 >   - Differentiate between browser cache and cookies
+> - **Explain the fundamentals of Modern HTTP and analyse their web performance**
+>   - Compare and contrast HTTP/2 vs HTTP/1.1
+>   - Compare and contrast HTTP/2 vs HTTP/3 
+>   - Analyse web performance of hypothetical scenario with HTTP version 1.0, 1.1, 2, and 3.
 >
 > These learning objectives aim to provide a comprehensive understanding of HTTP, including its fundamental concepts, communication models, connection types, URL structures, state management through cookies, and the role of web caching in enhancing web performance.
 
@@ -363,6 +367,203 @@ On the other hand, browser caches need to be manually cleared by us:
 > Practice
 > 
 > To thoroughly check your understanding regarding TCP, HTTP, the web and web caching, try to draw the space-time diagram for a client, a webserver, and a web cache, where the client requests 5 objects + HTML Base file via HTTP 1.1 (pipelining enabled) for all connections. You should draw the 3-way TCP Handshake between client and web cache, and web cache to the web server. You may assume that the 5 objects are of significant size (some latency is expected) as opposed to HTTP GET or TCP handshake. 
+
+# Modern HTTP 
+
+Over time, HTTP has evolved into various versions. In this section, we briefly look into HTTP version 2 and 3, and analyse how they affect web performance. 
+
+## HTTP/1.1 Recap
+
+HTTP/1.1 introduced **multiple**, **pipelined** GETs over single TCP connection/ 
+
+The server responds in-order (FCFS: first-come-first-served scheduling) to multiple `GET` requests with FCFS. A a result, small object may have to wait for transmission  behind large object(s). This is called head-of-line (HOL) blocking.
+
+{:.info-title}
+> HOL Blocking
+>
+> Head-of-line (HOL) blocking is a performance-limiting phenomenon that occurs when a line of packets is held up by the first packet, preventing others from proceeding. You may read this [appendix](#hol-blocking) section to find out more. 
+
+Furthermore, <span class="orange-bold">loss recovery</span> measures (e.g: retransmitting lost TCP segments) **stalls** object transmission. 
+
+## HTTP/2
+
+HTTP/2, defined by [RFC 7540, 2015](https://datatracker.ietf.org/doc/rfc7540/), introduces increased flexibility for servers in sending objects to clients. Key features include:
+
+- **Unchanged Core Elements**: Methods, status codes, and most header fields remain consistent with HTTP/1.1, ensuring compatibility and ease of transition.
+- **Client-Specified Object Priority**: The server can transmit objects based on priorities specified by the client, rather than strictly following a First-Come, First-Served (FCFS) order. This allows for more efficient resource delivery.
+- **Server Push**: The server can proactively push unrequested objects to the client, anticipating future requests and reducing latency.
+- **Frame Division and Scheduling**: HTTP/2 divides objects into smaller frames, which are then interleaved and scheduled to mitigate Head-of-Line (HOL) blocking. This division and multiplexing improve the efficiency of data transfer over a single connection.
+
+These features collectively enhance the performance and flexibility of HTTP/2 compared to HTTP/1.1, allowing for more efficient management of multiple objects and reducing delays in web communication.
+
+## HTTP/3
+
+HTTP/3, defined by [RFC 9114, 2022], builds on the improvements of HTTP/2 while introducing several key differences and advantages:
+
+1. **Underlying Protocol**: HTTP/3 is built on top of QUIC instead of TCP. QUIC, a transport layer protocol, combines the features of TCP, TLS, and HTTP/2 into a single protocol, providing faster connection establishment and improved performance.
+
+2. **Elimination of Head-of-Line (HOL) Blocking**: QUIC uses UDP as its transport layer, enabling multiplexed streams to be independently managed. This eliminates the HOL blocking issue inherent in TCP-based HTTP/2, where packet loss in one stream affects all streams over the same connection.
+
+3. **Improved Connection Setup**: QUIC reduces the connection setup time through 0-RTT (Zero Round Trip Time) and 1-RTT handshakes, allowing data to be sent immediately upon connection establishment. This leads to faster initial page loads compared to HTTP/2.
+
+4. **Better Loss Recovery and Congestion Control**: QUIC implements more sophisticated loss recovery and congestion control mechanisms than TCP, leading to improved performance over unreliable networks.
+
+5. **Enhanced Security**: QUIC integrates TLS 1.3 by default, providing robust security with reduced latency. HTTP/2 requires a separate TLS handshake over TCP.
+
+Overall, HTTP/3 enhances performance, especially in high-latency and lossy network environments, by leveraging QUIC's features. These improvements offer faster and more reliable web communication compared to HTTP/2.
+
+## Worked Example
+
+In this section, we discuss in detail how HTTP/1.1 with pipelining, HTTP/2, and HTTP/3 handle **sending multiple objects**, focusing on Head-of-Line (HOL) blocking and how each protocol manages it, as well as its impact on web performance.
+
+Suppose a server sends 5 objects under these conditions: 
+- Object 1: 1 MB (note: this is BYTE)
+- Object 2: 100 KB
+- Object 3: 100 KB
+- Object 4: 100 KB
+- Frame size: 100 KB (round robin manner)
+- Network latency: 50 ms RTT
+- Bandwidth: 10 Mbps (note: this is bit per second)
+
+First, calculate the time to transmit a single frame (a 100 KB frame):
+
+$$
+\begin{align*}
+\frac{100 \text{ KB}}{10 \text{ Mbps}} &= \frac{100 \times 8 \text{ bits}}{10 \times 10^6 \text{ bits/second}} \\ 
+& = 0.08 \text{ s} = 80 \text{ ms}
+\end{align*}
+$$
+
+
+### HTTP/1.1 with Pipelining
+
+<img src="{{ site.baseurl }}//docs/NS/images/09-http-web/2024-05-10-18-57-43.png"  class="center_seventy"/>
+
+
+**Pipelining**:
+- Allows multiple `GET` requests to be sent over a single TCP connection without waiting for responses.
+- The server responds in order (FCFS: First-Come-First-Served).
+
+**HOL Blocking**:
+- Small objects may have to wait for large objects to be transmitted first.
+- Example: If Object 1 (1 MB) is being sent, Objects 2-5 (100 KB each) **must wait** until Object 1 is fully transmitted.
+- Loss recovery requires retransmitting lost TCP segments, stalling the transmission of other objects in the pipeline.
+
+**Time to transmit the objects**: 
+1. **Establishing a single TCP connection**:
+   - 1 RTT for the TCP handshake: 50 ms
+
+2. **Sending requests**:
+   - Negligible time for sending requests.
+
+3. **Sequential responses due to FCFS**:
+   - Object 1: 800 ms (1000 KB / 10 Mbps)
+   - Each smaller object (2-4): 80 ms each
+
+Total time:
+- Handshake: 50 ms
+- Object 1: 800 ms
+- Object 2: 80 ms
+- Object 3: 80 ms
+- Object 4: 80 ms
+
+**Total time for HTTP/1.1**: 50 ms + 800 ms + 3 × 80 ms = 50 ms + 800 ms + 240 ms = 1090 ms
+
+### HTTP/2
+
+<img src="{{ site.baseurl }}//docs/NS/images/09-http-web/2024-05-10-18-57-56.png"  class="center_seventy"/>
+**Multiplexing via Frame Division Schediling**:
+- Allows multiple requests and responses to be sent concurrently over a single TCP connection.
+- Uses streams to interleave data, mitigating application-level HOL blocking.
+
+**Improved Handling**:
+- Objects are **divided** into smaller frames, allowing interleaved transmission.
+- Example: While Object 1 is being transmitted, parts of Objects 2-5 can be sent concurrently.
+- However, TCP still introduces HOL blocking at the transport layer if packet loss occurs, as all streams share the same TCP connection.
+
+**Time to transmit the objects**:
+1. **Establishing a single TCP connection**:
+   - 1 RTT for the TCP handshake: 50 ms
+
+2. **Concurrent transmission**:
+   - Frames are interleaved using round-robin scheduling.
+
+3. Each frame is 100 KB, taking 80 ms to transmit.
+   - Total frames for each object:
+     - Object 1: 10 frames (1000 KB / 100 KB)
+     - Object 2: 1 frame (100 KB)
+     - Object 3: 1 frame (100 KB)
+     - Object 4: 1 frame (100 KB)
+
+4. **Round-Robin Schedule**:
+- Round 1: Frames from Object 1, Object 2, Object 3, Object 4 (4 frames)
+- Round 2: Frames from Object 1 (6 frames remain)
+
+**Detailed Timeline**:
+1. Handshake: 50 ms
+2. First round of frames (4 frames, 100 KB each): 4 × 80 ms = 320 ms
+   * Frame 1 from Object 1: 80 ms
+   * Frame 1 from Object 2: 80 ms
+   * Frame 1 from Object 3: 80 ms
+   * Frame 1 from Object 4: 80 ms
+3. Remaining frames for Object 1 (9 frames, 100 KB each): 9 × 80 ms = 540 ms
+
+- Objects 2-4 are received fully in the first round:
+  - Object 2: 50 ms (handshake) + 80 ms (object 1 frame 1) + 80 ms (object 2 frame) = 210 ms
+  - Object 3: 210 ms + 80 ms = 290 ms
+  - Object 4: 290 ms + 80 = 370 ms
+- Since there's no more other objects to send, we can focus on sending just Object 1 until completion. We have 9 frames remaining for Object 1:
+  - 370 ms + 9*80 ms = 1090 ms
+
+**Total time for HTTP/2**:
+- Object 1: received after 1090 ms
+- Objects 2-4: received after 210 ms, 290 ms, and 370 ms respectively
+
+Total time taken: 1090 ms, same as HTTP/1.1 due to bandwidth constraint. 
+
+### HTTP/3
+
+**Built on QUIC**:
+- Uses UDP instead of TCP, eliminating TCP’s HOL blocking.
+- Each stream is **independently** managed, so packet loss in one stream does <span class="orange-bold">not</span> block others.
+
+**Enhanced Performance**:
+- No transport-level HOL blocking due to QUIC.
+- Allows more efficient and reliable transmission, especially in high-latency or lossy networks.
+
+**Time to transmit the objects**:
+1. **Establishing a QUIC connection**:
+   - 0-RTT handshake: 0 ms
+
+2. **Concurrent transmission**:
+   - Frames are transmitted concurrently without HOL blocking.
+   - Total data to send: 1.3 MB
+   - Time taken to transmit all data: 
+
+$$ \frac{1.3 \text{ MB}}{10 \text{ Mbps}} = 1.04 \text{ s} = 1040 \text{ ms} $$
+
+**Total time for HTTP/3**:
+- All objects: 1040 ms
+
+### Summary of Differences
+- **HTTP/1.1 with Pipelining**: 1090 ms
+- **HTTP/2**:
+  - Object 1: 1090 ms
+  - Objects 2-4: received after 210 ms, 290 ms, and 370 ms respectively
+- **HTTP/3**: 1040 ms
+
+**Differences**:
+- **HTTP/1.1 vs. HTTP/2**: HTTP/2 allows smaller objects to be received much faster (370 ms vs. waiting for the full 1090 ms in HTTP/1.1).
+- **HTTP/2 vs. HTTP/3**: HTTP/3 is slightly slower for smaller objects compared to HTTP/2, but it eliminates the TCP handshake and transport-level HOL blocking, making it more robust in lossy or high-latency networks.
+
+**Conclusion**:
+- **HTTP/1.1 with Pipelining** suffers from HOL blocking, making smaller objects wait for larger ones to finish.
+- **HTTP/2** uses frame division and round-robin scheduling to allow smaller objects to be received faster while still completing the transfer of the larger object efficiently.
+- **HTTP/3** further improves performance by eliminating transport-level HOL blocking, providing faster and more reliable data transfer overall.
+
+{:.highlight}
+HTTP/2 reduces delay by allowing interleaved transmission, but still suffers from TCP-level HOL blocking. HTTP/3 eliminates HOL blocking entirely, leading to the fastest performance.
+
 
 # Summary
 
@@ -701,3 +902,40 @@ While cookies are essential for web functionality, they also pose certain risks 
 - **Cookie Policy and Consent:**
   - Websites should implement transparent cookie policies and obtain user consent before setting cookies, in compliance with privacy regulations.
 
+## HOL Blocking 
+
+Head-of-line (HOL) blocking is a performance-limiting phenomenon that occurs when a line of packets is held up by the first packet, preventing others from proceeding. It can manifest in different layers of networking:
+
+1. **TCP Layer**:
+   - In TCP, packets are delivered in order. If a packet is lost, all subsequent packets must wait until the lost packet is retransmitted and received, blocking the flow of data.
+
+2. **Application Layer**:
+   - In HTTP/1.1, especially without pipelining, multiple requests and responses are handled sequentially. Even with pipelining, responses must be processed in order. If an earlier request takes longer to process, subsequent requests are delayed.
+   
+### HOL Blocking in Different HTTP Versions
+
+**HTTP/1.1**:
+- Without pipelining, each request waits for the previous response to complete.
+- With pipelining, multiple requests can be sent at once, but responses are processed in order. If one response is delayed, subsequent responses are also delayed.
+
+**HTTP/2**:
+- Uses multiplexing to send multiple streams over a single TCP connection. However, TCP itself can still experience HOL blocking at the transport layer. If a packet is lost, it blocks the entire TCP stream until the packet is retransmitted and received.
+- While HTTP/2 mitigates HOL blocking at the application layer, it cannot eliminate TCP-level HOL blocking.
+
+**HTTP/3**:
+- Built on top of QUIC, which uses UDP instead of TCP.
+- QUIC manages multiple streams independently. If a packet in one stream is lost, it does not block packets in other streams.
+- This eliminates HOL blocking at both the application and transport layers, allowing more efficient and faster data transfer.
+
+### Impact on Performance
+
+**HTTP/1.1**:
+- Significant HOL blocking, leading to delays if any request or packet encounters issues.
+
+**HTTP/2**:
+- Reduced HOL blocking due to multiplexing, but still subject to TCP-level HOL blocking.
+
+**HTTP/3**:
+- Eliminates HOL blocking by using QUIC, providing faster and more reliable data transfer, especially in environments with packet loss.
+
+By removing HOL blocking, HTTP/3 significantly improves performance, especially in high-latency or lossy network conditions.
