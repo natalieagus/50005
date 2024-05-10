@@ -84,7 +84,7 @@ Not to worry, our server and client scripts that will be used to test your clien
 
 As mentioned in Programming Assignment 1, there have been some ongoing initiatives from SUTD as well as the Engineering Accreditation Board to include more elements of Sustainability, Diversity and Inclusivity. As such, we encourage you to consider the impact of your project on sustainability, as well as any consideration for diversity and inclusion (e.g., different cultures, demographic groups, etc). 
 
-Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it as *any* part of your assignment, as long as you're still following the protocols requested closely. It does **not** have to be part of your code: e.g if you decide to conduct user testing. <span class="orange-bold">Simply highlight your attempts clearly in the README file</span> and write future suggestions. 
+Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it as *any* part of your assignment, as long as you're still following the protocols requested closely. It does **not** have to be part of your code: e.g if you decide to conduct user testing. Simply highlight your attempts clearly in the README file and write future suggestions (if any).
  
 {:.error}
 Failure to show attempts to incorporate initiatives to support sustainability and inclusivity results in <span class="orange-bold">-3% (penalty)</span> of your overall grades. 
@@ -128,6 +128,12 @@ Failure to show attempts to incorporate initiatives to support sustainability an
 5. **Inclusivity in Testing**:
    - Description: Ensure that the system is tested with a diverse range of users.
    - Task: Conduct user testing with individuals from various backgrounds and with different abilities, gathering feedback to improve the inclusivity and usability of the system.
+
+
+{:.important-title}
+> Don't forget!
+> 
+> Write a README explaining how your implementation considers both sustainability and inclusivity, detailing the specific features and design choices made to address these aspects as part of your submission. Push it to your project repo. 
 
 # Submission
 

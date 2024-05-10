@@ -50,7 +50,7 @@ You are then free to implement <span class="orange-bold">any additional feature(
 
 There have been some ongoing initiatives from SUTD as well as the Engineering Accreditation Board to include more elements of Sustainability, Diversity and Inclusivity. As such, we encourage you to consider the impact of your project on sustainability, as well as any consideration for diversity and inclusion (e.g., different cultures, demographic groups, etc). 
 
-Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it in *any* part of your assignemnt, be it your additional shell feature, enhancing the system programs, or the overall look of your shell. It does **not** have to be part of your code: e.g if you decide to conduct user testing. <span class="orange-bold">Simply highlight your attempts clearly in the README file and write future suggestions</span>. 
+Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it in *any* part of your assignemnt, be it your additional shell feature, enhancing the system programs, or the overall look of your shell. It does **not** have to be part of your code: e.g if you decide to conduct user testing. Simply highlight your attempts clearly in the README file and write future suggestions (if any).
 
 {:.error}
 Failure to show attempts to incorporate initiatives to support sustainability and inclusivity results in <span class="orange-bold">-3% (penalty)</span> of your overall grades. 
@@ -99,8 +99,10 @@ Failure to show attempts to incorporate initiatives to support sustainability an
    - **Description**: Allow users to create profiles that save their preferences and settings.
    - **Task**: Develop a system where users can save their interface customizations, preferred languages, and frequently used commands, ensuring a personalized and inclusive experience every time they use the shell.
 
-{:.important}
-Write a README explaining how your implementation considers both sustainability and inclusivity, detailing the specific features and design choices made to address these aspects as part of your submission.
+{:.important-title}
+> Don't forget!
+> 
+> Write a README explaining how your implementation considers both sustainability and inclusivity, detailing the specific features and design choices made to address these aspects as part of your submission. Push it to your project repo. 
 
 
 # Submission 
