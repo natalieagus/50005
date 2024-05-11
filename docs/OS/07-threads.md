@@ -304,6 +304,7 @@ They each have a specific task, for instance `[migration/0]` handles distributes
 
 ## Use case
 
+### System Monitoring
 Many device drivers utilize the services of kernel threads to implement **assistant** or **helper** tasks. Suppose you would like the Kernel to asynchronously invoke a **user** mode program to send you an email alert whenever it senses that the health of certain key kernel data structures is deteriorating. For instance, free space in network receive buffers has dipped below a certain healthy threshold, risking losing incoming packets.
 
 This need warrants a creation of Kernel Thread because:
@@ -313,6 +314,49 @@ This need warrants a creation of Kernel Thread because:
 - It has to invoke a user mode helper program (time consuming, requires resources to complete).
 
 This Kernel thread will _sleep_ until it gets woken up by parts of the Kernel responsible for monitoring the network receive buffers. When awake, it invokes a user mode helper program and passes appropriate identity codes in its environment.
+
+### Paged Memory Management
+
+This task involves managing the system's memory by swapping pages of memory in and out of disk storage (swap space) to ensure efficient use of the available physical memory. This is essential for systems that support virtual memory, where the total memory required by all running processes might exceed the physical memory available.
+
+#### Why a Kernel Thread is Needed for Page Swapping
+
+**Background Task**: Page Swapping
+- **Description**: When physical memory is full, the operating system needs to free up space by swapping out less frequently used pages to disk (swap space) and swapping in needed pages from the disk to physical memory. This process needs to be handled efficiently and transparently to maintain system performance and stability.
+
+#### Role of Kernel Threads in Page Swapping
+
+1. **Continuous Monitoring**: Kernel threads continuously monitor the memory usage of the system. They check if the system is running low on physical memory and decide when to initiate page swapping.
+  
+2. **Asynchronous Operation**: Swapping pages can be a time-consuming I/O operation. Kernel threads perform these operations asynchronously, allowing the system to continue running other tasks without blocking. This is crucial for maintaining system responsiveness.
+
+3. **Prioritization and Scheduling**: Kernel threads allow the kernel to prioritize and schedule the page swapping operations based on system policies. They can ensure that critical pages are swapped in quickly, and less critical pages are swapped out as needed.
+
+4. **Efficiency and Performance**: Kernel threads can optimize the performance of the paging system by handling multiple page swap operations concurrently. This parallelism can significantly reduce the time required to manage memory.
+
+#### Practical Example: Page Swapping in Action
+
+1. **Memory Pressure Detection**: A kernel thread continuously monitors the system's memory usage. When it detects that free physical memory falls below a certain threshold, it triggers the page swapping process.
+
+2. **Page Selection**: The kernel thread selects the pages to be swapped out based on a page replacement algorithm (e.g., Least Recently Used - LRU). It determines which pages are the best candidates for swapping out to disk.
+
+3. **Swapping Out**: The kernel thread initiates the I/O operations required to write the selected pages to the swap space on disk. This operation is performed asynchronously to avoid blocking the system's execution.
+
+4. **Swapping In**: When a process needs a page that is not in physical memory, a page fault occurs. The kernel thread is responsible for handling the page fault by reading the required page from the swap space back into physical memory.
+
+5. **Context Management**: The kernel thread ensures that the contexts of the affected processes are updated correctly, so when a swapped-out page is brought back into memory, the process can continue execution seamlessly.
+
+#### Why Kernel Threads, Not Just Kernel Code
+
+- **Concurrency**: Kernel threads allow the paging operations to be performed concurrently with other kernel and user-space operations. This concurrency is vital for maintaining overall system performance.
+
+- **Non-Blocking Operations**: By using kernel threads, the system can perform potentially long I/O operations without blocking the execution of other critical tasks, thus ensuring smooth system performance.
+
+- **Independent Execution**: Kernel threads can execute independently of user-space processes, enabling the kernel to manage system resources effectively even when no user-space process explicitly triggers a system call related to memory management.
+
+Kernel threads are essential for performing background tasks like page swapping in a virtual memory system. They enable the kernel to manage memory efficiently, handle asynchronous I/O operations, and ensure the system remains responsive and stable. This background task demonstrates why kernel threads are necessary for tasks that the kernel must manage independently of direct user-space process interactions.
+
+
 
 ## Kernel vs User Level Threads
 
