@@ -329,13 +329,19 @@ Multiprogramming involves running multiple programs (or processes) on a single p
 A kernel that supports multiprogramming increases <span style="color:#f77729;"><b>CPU utilization</b></span> by organizing jobs (code and data) so that the CPU always has one to execute. When one job waits for I/O operations to complete, the CPU can execute another job instead of *idling*.
 {:.info}
 
+
+
 **Simplified implementation**:
 - The OS maintains a pool of jobs in the job queue.
 - Jobs are selected and loaded into memory.
 - The CPU switches between jobs when they are waiting for I/O, ensuring that it is always busy executing some job.
 - Jobs are executed until they are complete or require I/O operations, at which point another job is scheduled.
+- For example in diagram below, CPU will continue to run Job 3 **as long as** Job 3 does not `wait` for anything else. 
+  - When Job 3 waits for some I/O operation in the future, CPU will switch to READY jobs, e.g: either Job 1 or Job 2 (assuming Job 4 is still waiting then)
 
+<img src="{{ site.baseurl }}/docs/OS/images/cse2024-Multiprogramming.drawio.png"  class="center_seventy"/>
 
+### Practical Consideration
 Since the clock cycles of a general purpose CPU is very fast (in Ghz), we don't actually need 100% CPU power in most case. It is often _too fast_ to be dedicated for just one program for the entire 100% of the time. Hence, if multiprogramming is not supported and each process has a fixed quantum (time allocated to execute), then the CPU might spend most of its time <span style="color:#f7007f;"><b>idling</b></span>.
 
 **The kernel must organise jobs (code and data) <span style="color:#f77729;"><b>efficiently</b></span> so CPU always has one to execute.** A <span style="color:#f77729;"><b>subset</b></span> of total jobs in the system is kept in memory and swap space of the disk.
@@ -343,11 +349,16 @@ Since the clock cycles of a general purpose CPU is very fast (in Ghz), we don't 
 Remember: **Virtual memory** allows execution of processes not completely in memory. One job is selected per CPU and run by the scheduler.
 {: .info}
 
-When a particular job has to wait (for I/O for example), context switch is performed.
+When a particular job has to wait (for I/O for example), **context switch** is performed.
 
 - For instance, Process A asked for user `input()`, enters Kernel Mode via supervisor call
 - If there's no input, Process A is <span style="color:#f77729;"><b>suspended</b></span> and <span style="color:#f77729;"><b>context switch</b></span> is performed (instead of returning back to Process A)
 - If we return to Process A, since Process A cannot progress without the given input, it will invoke another `input()` request again -- again and again until the input is present. This will waste so much resources
+
+{:.note}
+Context switch is the routine of <span style="color:#f77729;"><b>saving</b></span> the state of a process, so that it can be <span style="color:#f77729;"><b>restored</b></span> and <span style="color:#f77729;"><b>resumed</b></span> at a later point in time. For more details on what this `state` comprised of, see Week 2 notes.
+
+**User Experience:** Users might experience delays as the system prioritizes CPU utilization over interactive performance. The system is not designed to provide immediate feedback.
 
 ## Timesharing
 
@@ -364,10 +375,13 @@ Timesharing: context switch that’s performed so <span style="color:#f77729;"><
 - The CPU scheduler allocates a fixed time slice to each process in a round-robin fashion.
 - If a process's time slice expires, the CPU switches to the next process in the queue.
 - Processes that need I/O or user input can be interrupted and put into a waiting state, allowing other processes to use the CPU.
+- For example in the diagram below, the CPU will run each job for a fixed quanta `t` and switch to another (ready) job once that time slice ends 
 
-### Context switch
+<img src="{{ site.baseurl }}/docs/OS/images/cse2024-Timesharing.drawio.png"  class="center_seventy"/>
 
-Context switch is the routine of <span style="color:#f77729;"><b>saving</b></span> the state of a process, so that it can be <span style="color:#f77729;"><b>restored</b></span> and <span style="color:#f77729;"><b>resumed</b></span> at a later point in time. For more details on what this `state` comprised of, see Week 2 notes.
+**User Experience:** Users experience a responsive system as the OS ensures that each user program gets regular CPU time. Interactive tasks, such as typing or browsing, feel immediate because the OS switches between tasks quickly.
+
+
 
 ## Further Consideration
 
