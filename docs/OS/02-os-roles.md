@@ -318,21 +318,27 @@ In this case, $\epsilon = 20 + 100 = 120ms$ (cache _miss_ time). Cache miss time
 
 The Kernel is also responsible for managing all processes in the system and support <span style="color:#f7007f;"><b>multiprogramming</b></span> and <span style="color:#f7007f;"><b>timesharing</b></span> feature.
 
+Multiprogramming and time-sharing are both concepts in operating systems that aim to improve the efficiency and responsiveness of computer systems by managing how processes are executed. However, they differ in their goals, implementation, and user experience.
+
 ## Multiprogramming
 
-Multiprogramming is a concept that is needed for <span style="color:#f77729;"><b>efficiency</b></span>. Part of the kernel code is responsible to schedule processes in a computer system.
+**Goal**: Increase CPU utilization and system throughput.
 
-A kernel that supports multiprogramming increases <span style="color:#f77729;"><b>CPU utilization</b></span> by organizing jobs (code and data) so that the CPU always has one to execute.
+Multiprogramming involves running multiple programs (or processes) on a single processor system, a concept that is needed for <span style="color:#f77729;"><b>efficiency</b></span>. The operating system keeps several jobs in memory simultaneously. When one job waits for I/O operations to complete, the CPU can execute another job. This approach maximizes CPU usage by reducing idle time.
+
+A kernel that supports multiprogramming increases <span style="color:#f77729;"><b>CPU utilization</b></span> by organizing jobs (code and data) so that the CPU always has one to execute. When one job waits for I/O operations to complete, the CPU can execute another job instead of *idling*.
 {:.info}
 
-The reason for the need of multiprogramming are as follows:
+**Simplified implementation**:
+- The OS maintains a pool of jobs in the job queue.
+- Jobs are selected and loaded into memory.
+- The CPU switches between jobs when they are waiting for I/O, ensuring that it is always busy executing some job.
+- Jobs are executed until they are complete or require I/O operations, at which point another job is scheduled.
 
-**Single user must be prevented from keeping CPU and I/O devices busy at all times.**
 
 Since the clock cycles of a general purpose CPU is very fast (in Ghz), we don't actually need 100% CPU power in most case. It is often _too fast_ to be dedicated for just one program for the entire 100% of the time. Hence, if multiprogramming is not supported and each process has a fixed quantum (time allocated to execute), then the CPU might spend most of its time <span style="color:#f7007f;"><b>idling</b></span>.
 
-**The kernel must organise jobs (code and data) <span style="color:#f77729;"><b>efficiently</b></span> so CPU always has one to execute.**
-A <span style="color:#f77729;"><b>subset</b></span> of total jobs in the system is kept in memory and swap space of the disk.
+**The kernel must organise jobs (code and data) <span style="color:#f77729;"><b>efficiently</b></span> so CPU always has one to execute.** A <span style="color:#f77729;"><b>subset</b></span> of total jobs in the system is kept in memory and swap space of the disk.
 
 Remember: **Virtual memory** allows execution of processes not completely in memory. One job is selected per CPU and run by the scheduler.
 {: .info}
@@ -345,10 +351,19 @@ When a particular job has to wait (for I/O for example), context switch is perfo
 
 ## Timesharing
 
-Multiprogramming allows for <span style="color:#f7007f;"><b>timesharing</b></span>.
+**Goal**: Provide interactive user experience and fast response times.
 
-Definition of timesharing: context switch that’s performed so <span style="color:#f77729;"><b>rapidly</b></span> that users still see the system as interactive and seemingly capable to run multiple processes despite having limited number of CPUs.
+Naturally, multiprogramming allows for <span style="color:#f7007f;"><b>timesharing</b></span>. Time-sharing **extends** the concept of multiprogramming by allowing multiple users to interact with the system simultaneously. The CPU time is divided into small time slices (or quanta), and each user program is given a slice of time. The OS rapidly switches between user programs, giving the illusion that each user has their own dedicated machine.
+
 {:.info}
+Timesharing: context switch that’s performed so <span style="color:#f77729;"><b>rapidly</b></span> that users still see the system as interactive and seemingly capable to run multiple processes despite having limited number of CPUs.
+
+
+**Simplified implementation**:
+- The OS maintains a list of active user processes.
+- The CPU scheduler allocates a fixed time slice to each process in a round-robin fashion.
+- If a process's time slice expires, the CPU switches to the next process in the queue.
+- Processes that need I/O or user input can be interrupted and put into a waiting state, allowing other processes to use the CPU.
 
 ### Context switch
 
@@ -360,6 +375,20 @@ Multiprogramming alone <span style="color:#f7007f;"><b>does not</b></span> neces
 
 Timesharing is the <span style="color:#f77729;"><b>logical extension of multiprogramming</b></span>. It results in an <span style="color:#f77729;"><b>interactive</b></span> computer system, which provides <span style="color:#f77729;"><b>direct</b></span> communication between the user and the system.
 {:.info}
+
+## Key Differences
+
+| Feature                  | Multiprogramming                                | Time-Sharing                                      |
+|--------------------------|-------------------------------------------------|---------------------------------------------------|
+| **Primary Goal**         | Maximize CPU utilization and throughput         | Provide responsive, interactive user experience    |
+| **User Interaction**     | Minimal, often non-interactive (batch processing)| High, interactive user experience                 |
+| **CPU Scheduling**       | Job-based, switches when I/O is needed          | Time-based, fixed time slices (quanta)            |
+| **Response Time**        | Can be longer, not optimized for interactivity  | Short, optimized for user interaction             |
+| **Implementation**       | Multiple jobs loaded in memory, CPU switches on I/O | Multiple user processes, rapid context switching   |
+| **Examples**             | Early mainframe systems, batch processing       | Modern operating systems, interactive applications|
+
+
+While both multiprogramming and time-sharing aim to improve the efficiency of CPU utilization, they serve different purposes. Multiprogramming focuses on maximizing CPU usage by running multiple jobs simultaneously, often in a batch processing environment. Time-sharing, on the other hand, aims to provide a responsive, interactive experience for multiple users by rapidly switching between processes, giving the illusion of concurrent execution.
 
 ## Process vs Program {#process-vs-program}
 
