@@ -468,36 +468,7 @@ You will learn more about this in Week 6 and Lab 3. During Lab 3, you will learn
 
 Finally, the Kernel also provides <span style="color:#f7007f;"><b>defensive security measures</b></span> for the computer system: protecting itself against internal and external attacks via firewalls, encryption, etc. There’s a huge range of security issues when a computer is connected in a network, some of them include denial-of-service, worms, viruses, identity theft, theft of service. You will learn more about this in Week 10.
 
-# Summary
-
-We have learned that the Operating System is a software that acts as an <span style="color:#f77729;"><b>intermediary</b></span> between a user of a computer and the computer hardware. It is comprised of the Kernel, system programs, and user programs. Each OS is shipped with different flavours of these programs, depending on its design.
-
-In general, an operating system is made with the following goals in mind:
-
-- <span style="color:#f77729;"><b>Execute</b></span> user programs and make solving user problems easier
-- Make the computer system <span style="color:#f77729;"><b>convenient</b></span> to use
-- Use the computer hardware in an <span style="color:#f77729;"><b>efficient</b></span> manner
-
-It is a huge piece of software, and usually are divided into separate subsystems based on their roles:
-
-1. Process Management
-2. Resource Allocator and Coordinator
-3. Memory and Storage Management
-4. I/O Management,
-
-... and many others. There's too many to count since modern OSes kept getting expanded to improve user experience.
-
-The <span style="color:#f77729;"><b>Kernel</b></span> is the heart of the OS, the central part of it that holds important pieces of instructions that support the roles stated above in the bare minimum. In the next chapter, we will learn how to <span style="color:#f77729;"><b>access</b></span> crucial OS Kernel services.
-
-This chapter elaborates on the critical functionalities and management roles of the OS kernel. It provides a thorough understanding of how the kernel orchestrates interaction between software and hardware, manages processes and memory, and ensures system security and efficiency.
-
-Key learning points include:
-- **Interrupt-Driven I/O Operations**: Differentiating between hardware and software interrupts, and explaining vectored versus polled interrupt systems.
-- **Process and Memory Management**: How the kernel manages virtual memory, handles multiple processes, and optimizes cache performance.
-- **Kernel Modes**: Differences between reentrant and preemptive kernels, and their implications for multitasking.
-
-
-# Appendix
+# System Structure
 ## Multiprocessor System {#multiprocessor-system}
 
 Unlike single-processor systems that we have learned before, multiprocessor systems have two or more processors in close communication, sharing the computer bus and sometimes the clock, memory, and peripheral devices.
@@ -546,6 +517,38 @@ There are two types of clustering:
 
 1. <span style="color:#f77729;"><b>Asymmetric</b></span>: has one machine in hot-standby mode. There’s a master machine that runs the system, while the others are configured as slaves that receive tasks from the master. The master system does the basic input and output requests.
 2. <span style="color:#f77729;"><b>Symmetric</b></span>: multiple machines (nodes) running applications, they are monitoring one another, requires complex algorithms to maintain data integrity.
+
+
+# Summary
+
+We have learned that the Operating System is a software that acts as an <span style="color:#f77729;"><b>intermediary</b></span> between a user of a computer and the computer hardware. It is comprised of the Kernel, system programs, and user programs. Each OS is shipped with different flavours of these programs, depending on its design.
+
+In general, an operating system is made with the following goals in mind:
+
+- <span style="color:#f77729;"><b>Execute</b></span> user programs and make solving user problems easier
+- Make the computer system <span style="color:#f77729;"><b>convenient</b></span> to use
+- Use the computer hardware in an <span style="color:#f77729;"><b>efficient</b></span> manner
+
+It is a huge piece of software, and usually are divided into separate subsystems based on their roles:
+
+1. Process Management
+2. Resource Allocator and Coordinator
+3. Memory and Storage Management
+4. I/O Management,
+
+... and many others. There's too many to count since modern OSes kept getting expanded to improve user experience.
+
+The <span style="color:#f77729;"><b>Kernel</b></span> is the heart of the OS, the central part of it that holds important pieces of instructions that support the roles stated above in the bare minimum. In the next chapter, we will learn how to <span style="color:#f77729;"><b>access</b></span> crucial OS Kernel services.
+
+This chapter elaborates on the critical functionalities and management roles of the OS kernel. It provides a thorough understanding of how the kernel orchestrates interaction between software and hardware, manages processes and memory, and ensures system security and efficiency.
+
+Key learning points include:
+- **Interrupt-Driven I/O Operations**: Differentiating between hardware and software interrupts, and explaining vectored versus polled interrupt systems.
+- **Process and Memory Management**: How the kernel manages virtual memory, handles multiple processes, and optimizes cache performance.
+- **Kernel Modes**: Differences between reentrant and preemptive kernels, and their implications for multitasking.
+
+
+# Appendix
 
 
 
