@@ -136,12 +136,49 @@ Start by defining <span style="color:#f77729;"><b>goals</b></span>:
 
 ## Policy and Mechanism Separation
 
-Know the <span style="color:#f77729;"><b>difference</b></span> between <span style="color:#f7007f;"><b>policy</b></span> and <span style="color:#f7007f;"><b>mechanism</b></span> and separate them:
+One of the learning objectives of this chapter is to recognise the <span style="color:#f77729;"><b>difference</b></span> between <span style="color:#f7007f;"><b>policy</b></span> and <span style="color:#f7007f;"><b>mechanism</b></span> and separate them:
 
 1. <span style="color:#f7007f;"><b>Policy</b></span>: determines what will be done
 2. <span style="color:#f7007f;"><b>Mechanism</b></span>: determines how to do something
 
-The separation of policy and mechanism is important for <span style="color:#f77729;"><b>flexibility</b></span>:
+{:.info}
+Policy vs. mechanism separation is a <span class="orange-bold">fundamental</span> principle in operating system (OS) design. It aims to improve flexibility, maintainability, and adaptability of the system by decoupling the high-level decisions (policies) from the low-level implementations (mechanisms). 
+
+The <span class="orange-bold">separation</span> of policy and mechanism is important for <span style="color:#f77729;"><b>flexibility</b></span>:
+
+### Mechanism
+Mechanisms are the low-level operations or functions provided by the OS that enable the performance of basic tasks. They are the building blocks used to implement various policies. Mechanisms define **how** something is done, such as:
+
+- **Context Switching**: How the OS switches between different processes or threads.
+- **Memory Management**: How memory is allocated, accessed, and deallocated.
+- **File System Operations**: How files are created, read, written, and deleted.
+- **Synchronization Primitives**: How locks, semaphores, and other synchronization tools are implemented.
+
+### Policy
+Policies are the high-level strategies or rules that govern the behavior of the system. They define **what** should be done under certain conditions and can be modified without changing the underlying mechanisms. Examples include:
+
+- **Scheduling Policy**: Which process or thread should be executed next (e.g., round-robin, priority-based, fair scheduling).
+- **Memory Allocation Policy**: How memory is allocated to different processes (e.g., first-fit, best-fit, worst-fit).
+- **Access Control Policy**: Who is allowed to access specific resources and in what manner (e.g., user permissions, role-based access control).
+- **Page Replacement Policy**: Which page should be swapped out when memory is full (e.g., LRU, FIFO).
+
+### Benefits of Separation
+1. **Flexibility**: Different policies can be implemented without altering the underlying mechanisms. This allows the OS to adapt to various requirements and workloads.
+2. **Modularity**: By separating policies from mechanisms, the system becomes more modular. This enhances code readability and maintainability.
+3. **Reusability**: Mechanisms can be reused across different policies, reducing redundancy and improving consistency.
+4. **Ease of Updates**: Policies can be updated or replaced to improve performance or add new features without changing the core mechanisms.
+
+### Example
+Consider a process scheduling system in an OS:
+
+- **Mechanism**: The OS provides mechanisms to maintain a ready queue of processes, context switch between processes, and track process states.
+- **Policy**: The OS decides which process from the ready queue should be executed next. This could be based on a round-robin policy, priority-based scheduling, shortest job first, etc.
+
+If a new scheduling policy needs to be implemented (e.g., a new priority-based algorithm), only the policy module needs to be updated or replaced. The underlying mechanisms for managing the ready queue and performing context switches remain unchanged.
+
+### Why separation between policy and mechanism is important
+
+The separation of policy and mechanism in OS design is a key principle that enhances the system's adaptability, maintainability, and flexibility. By keeping the high-level decision-making (policies) separate from the low-level implementations (mechanisms), operating systems can efficiently cater to diverse and changing requirements.
 
 - Policies are likely to <span style="color:#f77729;"><b>change</b></span> across <span style="color:#f77729;"><b>places</b></span> or over <span style="color:#f77729;"><b>time</b></span>.
 - In the worst case, each change in policy would require a change in the underlying mechanism.
@@ -149,12 +186,13 @@ The separation of policy and mechanism is important for <span style="color:#f777
 A general mechanism insensitive to changes in policy would be more desirable. A change in policy would then require redefinition of only certain <span style="color:#f77729;"><b>parameters</b></span> of the system.
 {:.warning}
 
-Take for example: a <span style="color:#f77729;"><b>mechanism</b></span> for giving <span style="color:#f77729;"><b>priority</b></span> to certain types of programs over others. If the <span style="color:#f77729;"><b>mechanism</b></span> is properly <span style="color:#f77729;"><b>separated</b></span> from policy, it can be easily tweaked based on user requirements:
+Take another example: a <span style="color:#f77729;"><b>mechanism</b></span> for giving <span style="color:#f77729;"><b>priority</b></span> to certain types of programs over others. If the <span style="color:#f77729;"><b>mechanism</b></span> is properly <span style="color:#f77729;"><b>separated</b></span> from policy, it can be easily tweaked based on user requirements:
 
 - <span style="color:#f77729;"><b>Support</b></span> a policy decision that I/O-intensive programs should have priority over CPU-intensive ones
 - Or <span style="color:#f77729;"><b>support</b></span> the opposite policy whenever appropriate.
 
 Either way, **no** change in the instructions need to be made.
+
 
 # OS Structures
 
