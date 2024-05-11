@@ -46,7 +46,9 @@ Singapore University of Technology and Design
 >   - Analyze cache performance and the role of the kernel in memory and process management.
 > - **Assess Security and Protection Mechanisms**
 >   - Explain the mechanisms operating systems use to provide security and protection, including user identification and access control.
-> 
+> - **Describe computer system organisation (basic architecture)**
+>   - Recognise the differences between symmetric, asymmetric, and clustered system 
+>  
 > These objectives aim to guide your exploration of operating system concepts, focusing on the interactions between the OS kernel and system hardware, the management of processes and memory, and the crucial role of security within computer systems.
 
 There are several purposes of an operating system: as a <span style="color:#f77729;"><b>resource</b></span> allocator, <span style="color:#f77729;"><b>controls</b></span> program execution, and guarantees <span style="color:#f77729;"><b>security</b></span> in the computer system.
