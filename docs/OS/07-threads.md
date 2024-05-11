@@ -274,6 +274,7 @@ User level threads (sometimes known as green threads) are threads that are:
 
 {:.info-title}
 > Background
+> 
 > The kernel is the core part of the operating system. It manages system resources, hardware, and provides essential services such as process management, memory management, and I/O operations. The kernel itself does not have a context because it is not an executable entity; rather, it is a collection of code and data structures that manage the system.
 > 
 > A kernel thread is an individual execution unit within the kernel. It is schedulable and can perform tasks on behalf of the kernel, such as handling system calls, managing hardware interrupts, and executing kernel-level functions. Kernel threads do have contexts because they need to maintain their own execution states.
