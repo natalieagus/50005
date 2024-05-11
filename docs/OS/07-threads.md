@@ -143,48 +143,46 @@ Java threads are managed by the JVM. You can create Java threads in two ways.
 
 ### Runnable Interface
 
-The first way is by implementing a <span style="color:#f77729;"><b>runnable interface</b></span> and call it using a thread:
+The first way is by implementing a <span style="color:#f77729;"><b>runnable interface</b></span> and call it using a thread.
 
-1. Implement a runnable interface and its `run()` function:
+**Step 1**: Implement a runnable interface and its `run()` function:
 
-   ```cpp
-   public class MyRunnable implements Runnable {
-       public void run(){
-          System.out.println("MyRunnable running");
-       }
-     }
-   ```
+```cpp
+public class MyRunnable implements Runnable {
+   public void run(){
+      System.out.println("MyRunnable running");
+   }
+}
+```
 
-2. Create a new Thread instance and pass the runnable onto its constructor. Call the `start() `function to begin the execution of the thread:
+**Step 2**: Create a new Thread instance and pass the runnable onto its constructor. Call the `start() `function to begin the execution of the thread:
 
-   ```cpp
-   Runnable runnable = new MyRunnable();
-   Thread thread = new Thread(runnable);
-   thread.start();
+```cpp
+Runnable runnable = new MyRunnable();
+Thread thread = new Thread(runnable);
+thread.start();
 
-   ```
+```
 
 ### Thread subclass
 
-The second way is to create a <span style="color:#f77729;"><b>subclass</b></span> of `Thread` and override the method `run():`
+The second way is to create a <span style="color:#f77729;"><b>subclass</b></span> of `Thread` and override the method `run()`. For example,
 
-1. For example,
-
-   ```cpp
-   public class CustomThread extends Thread {
-     public void run(){
-        System.out.println("CustomThread running");
-     }
+```cpp
+public class CustomThread extends Thread {
+   public void run(){
+      System.out.println("CustomThread running");
    }
-   ```
+}
+```
 
-2. Create and start CustomThread instance to start the thread:
+Then, create and start CustomThread instance to start the thread:
 
-   ```cpp
-   CustomThread ct = new CustomThread();
-   ct.start();
+```cpp
+CustomThread ct = new CustomThread();
+ct.start();
 
-   ```
+```
 
 ## C Thread {#c-thread}
 
