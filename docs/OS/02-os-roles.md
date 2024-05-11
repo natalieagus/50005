@@ -208,6 +208,31 @@ When I/O transfer is <span style="color:#f7007f;"><b>complete</b></span>, the de
 1. SVC <span style="color:#f77729;"><b>delay</b></span> and IRQ <span style="color:#f77729;"><b>delay</b></span>: time elapsed between when the request is invoked until when the request is first executed by the CPU.
 2. Before the user program is resumed, its state must be <span style="color:#f77729;"><b>restored</b></span>. Saving of state during the switch between User to Kernel mode is implied although it is not drawn.
 
+## Exceptions {#exceptions}
+
+Exceptions are <span style="color:#f77729;"><b>software interrupts</b></span> that occur due to <span style="color:#f7007f;"><b>errors</b></span> in the instruction: such as division by zero, invalid memory accesses, or attempts to access kernel space illegally. This means that the CPU's hardware may be designed such that it checks for the presence of these <span style="color:#f7007f;"><b>serious</b></span> errors, and immediately invokes the appropriate handler via a pre-built <span style="color:#f7007f;"><b>event-vector table</b></span>.
+
+## Interrupt Vector Table (IVT)
+
+{:.info-title}
+> Definition
+>
+> The IVT is a table of pointers to interrupt service routines (ISRs) used to handle interrupts in computing systems.
+
+
+**Purpose**: Allows efficient handling of hardware and software interrupts by directing the processor to the appropriate ISR.<br>
+**Structure**: Comprises entries, each corresponding to a specific interrupt vector; each entry points to an ISR.<br>
+**Location**: Often found at a fixed memory address, particularly in systems like the Intel x86 in real mode.<br>
+**Function**: On an interrupt, the system uses the interrupt number to index into the IVT, fetch the ISR address, and execute the routine to address the event.
+
+Generally speaking, CPU must be configured to receive interrupts (IRQs) and invoke correct interrupt handler using the Interrupt Vector Table (IVT). Operating system kernel must provide Interrupt Service Routines (ISRs) to handle interrupts.
+
+Sometimes you might encounter the term IDT instead of IVT. The interrupt descriptor table (IDT) is a _data structure_ used by the x86 architecture to implement an interrupt vector table.
+{:.info}
+
+Head to the [appendix](#ivt-in-various-architectures) to learn more about actual implementation of IVT in different architecture.
+
+
 # Reentrant vs Preemptive Kernel
 ## Reentrancy
 
@@ -241,29 +266,6 @@ A kernel can be reentrant but not preemptive: That is if each process voluntaril
 
 
 
-## Exceptions {#exceptions}
-
-Exceptions are <span style="color:#f77729;"><b>software interrupts</b></span> that occur due to <span style="color:#f7007f;"><b>errors</b></span> in the instruction: such as division by zero, invalid memory accesses, or attempts to access kernel space illegally. This means that the CPU's hardware may be designed such that it checks for the presence of these <span style="color:#f7007f;"><b>serious</b></span> errors, and immediately invokes the appropriate handler via a pre-built <span style="color:#f7007f;"><b>event-vector table</b></span>.
-
-## Interrupt Vector Table (IVT)
-
-{:.info-title}
-> Definition
->
-> The IVT is a table of pointers to interrupt service routines (ISRs) used to handle interrupts in computing systems.
-
-
-**Purpose**: Allows efficient handling of hardware and software interrupts by directing the processor to the appropriate ISR.<br>
-**Structure**: Comprises entries, each corresponding to a specific interrupt vector; each entry points to an ISR.<br>
-**Location**: Often found at a fixed memory address, particularly in systems like the Intel x86 in real mode.<br>
-**Function**: On an interrupt, the system uses the interrupt number to index into the IVT, fetch the ISR address, and execute the routine to address the event.
-
-Generally speaking, CPU must be configured to receive interrupts (IRQs) and invoke correct interrupt handler using the Interrupt Vector Table (IVT). Operating system kernel must provide Interrupt Service Routines (ISRs) to handle interrupts.
-
-Sometimes you might encounter the term IDT instead of IVT. The interrupt descriptor table (IDT) is a _data structure_ used by the x86 architecture to implement an interrupt vector table.
-{:.info}
-
-Head to the [appendix](#ivt-in-various-architectures) to learn more about actual implementation of IVT in different architecture.
 
 # Memory and Process Management
 The Kernel has to <span style="color:#f77729;"><b>manage</b></span> all memory devices in the system (disk, physical memory, cache) so that they can be shared among many other running user programs. The hierarchical storage structure requires a concrete form of memory management since the same data may appear in different levels of storage system.
