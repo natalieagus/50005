@@ -538,7 +538,7 @@ It is a huge piece of software, and usually are divided into separate subsystems
 3. Memory and Storage Management
 4. I/O Management,
 
-... and many others. There's too many to count since modern OSes kept getting expanded to improve user experience.
+... and many others. There's too many to go into detail since modern Operating Systems kept getting expanded to improve user experience.
 
 The <span style="color:#f77729;"><b>Kernel</b></span> is the heart of the OS, the central part of it that holds important pieces of instructions that support the roles stated above in the bare minimum. In the next chapter, we will learn how to <span style="color:#f77729;"><b>access</b></span> crucial OS Kernel services.
 
