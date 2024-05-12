@@ -547,5 +547,5 @@ A session is a set of programs such as UI elements (panels, desktops, applets, e
 <hr> 
 
 [^7]: Notice the distinction between <strong><em>parallelism </em></strong>and <strong><em>concurrency </em></strong>mentioned in this table. A system is <strong>parallel</strong> if it can perform more than one task simultaneously (in time). In contrast, a concurrent system supports more than one task by allowing all the tasks to make progress. Thus, it is possible to have concurrency without parallelism.
-[^8]: A virtual processor (VP) is a library entity that is usually implicit. For a user thread, the VP behaves like a CPU. In the library, the VP is a kernel thread or a structure bound to a kernel thread. (taken from https://www.ibm.com/support/knowledgecenter/en/ssw_aix_72/generalprogramming/thread_models_virtual.html)
-[^9]: cron is a Linux utility which schedules a command or script on your server to run automatically at a specified time and date. A cron job is the scheduled task itself.
+[^8]: A virtual processor (VP) is a library entity that is usually implicit. For a user thread, the VP behaves like a CPU. In the library, the VP is a kernel thread or a structure bound to a kernel thread. (taken from [here](https://www.ibm.com/support/knowledgecenter/en/ssw_aix_72/generalprogramming/thread_models_virtual.html))
+ee9]: cron is a Linux utility which schedules a command or script on your server to run automatically at a specified time and date. A cron job is the scheduled task itself.
