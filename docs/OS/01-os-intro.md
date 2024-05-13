@@ -199,6 +199,7 @@ After the firmware is loaded onto the main memory through hardwired procedures, 
 4. When the system boots, the hardware starts in the **kernel mode**. After being loaded, the Kernel will perform the majority of system setups (driver init, memory management, interrupts, etc). Afterwards, the rest of the OS is loaded and then user processes are started in _<span style="color:#f77729;"><b>user mode</b></span>_.
 
 The figure below summarises the booting process:
+
 <img src="/50005/assets/images/week1/5.png"  class="center_seventy"/>
 
 Note that the figure is heavily simplified for illustration purposes only.

@@ -248,7 +248,7 @@ We can illustrate multiple process creation as a <span style="color:#f77729;"><b
 
 <img src="{{ site.baseurl }}/assets/images/week3/8.png"  class="center_thirty"/>
 
-In the example above, there are 5 processes in total. Process 2, 3, and 4 are direct <span style="color:#f77729;"><b>children</b></span> of Process 1. Process 5 is created by Process 2.
+In the example above, there are 5 processes in total. Process 1, 2, and 3 are direct <span style="color:#f77729;"><b>children</b></span> of Process 0. Process 4 is created by Process 2.
 
 ### Process id
 
@@ -425,7 +425,7 @@ int main(int argc, char const *argv[])
 }
 ```
 
-The following shows the fork-tree resulted from running the above program: 
+The following shows the process tree resulted from running the above program: 
 
 <img src="{{ site.baseurl }}/docs/OS/images/cse2024.drawio.png"  class="center_fifty"/>
 

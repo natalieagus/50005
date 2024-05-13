@@ -54,7 +54,7 @@ Consider the basic producer-consumer problem, where two <span style="color:#f777
 **Asynchronous** and **concurrent** means that both processes or threads make progress, but we cannot assume anything about their relative speed of execution.
 {:.important}
 
-<img src="{{ site.baseurl }}/assets/images/week4/1.png"  class="center_fourty"/>
+<img src="{{ site.baseurl }}/assets/images/week4/1.png"  class="center_fifty"/>
 
 Confused about the term **asynchronous** or **concurrent** or **parallel**? Read [this burger ordering analogy](https://fastapi.tiangolo.com/async/) that was found by one of your CSD seniors.
 {:.new}
@@ -329,130 +329,8 @@ You might want to <span style="color:#f77729;"><b>interleave</b></span> the exec
 
 ## Will Peterson's work in modern CPUs out of the box?
 
-This section is not required in our syllabus. It's written to satisfy some curiosity that may arise due to the specific requirements of Peterson's solution: atomic LD/ST, and used in single-core CPU. Only proceed to read these sections if you are prepared to feel 🤯. Otherwise, skip to Synchronisation Hardware.
-{:.error}
+The short answer is <span class="orange-bold">not really</span>. This is not part of the syllabus, so head to the [appendix](#petersons-in-modern-cpus) to find out more. 
 
-Try compiling Peterson's in plain C, and it will <span style="color:#f77729;"><b>NOT</b></span> work in modern architecture without:
-
-1. Ensuring atomic LD/ST
-2. Ensuring cache coherency in multicore systems
-3. Applying memory barriers to enforce <span style="color:#f77729;"><b>sequential consistency</b></span> (not mentioned above to not overcomplicate the syllabus)
-
-First of all, let's begin with a definition of <span style="color:#f77729;"><b>atomicity</b></span>:
-
-When an atomic store is performed on a shared variable, _no other thread_ can observe the modification half-complete. _“Atomic” in this context means “all or nothing”_. When an atomic load is performed on a shared variable, it reads the entire value as it appeared at a single moment in time. Non-atomic loads and stores do not make those guarantees. You can read more about it [here](https://preshing.com/20130618/atomic-vs-non-atomic-operations/).
-{:.info}
-
-Note that atomicity does not guarantee you to get the value _most recently written_ by any thread. If you always want to read the most recently written value, then that means you want [<span class="orange-bold">strict consistency</span>](https://en.wikipedia.org/wiki/Consistency_model#Strict_consistency), and strict consistency is a more _strict_ version of sequential consistency (not relevant here).
-
-### Non-atomic example
-
-Not all `LD`/`ST` instructions are guaranteed to be atomic, we take this for granted. To understand this better, let's use an analogy. Consider a scenario of a non-atomic database containing student grades that were initialised to `null` and these two actions performed:
-
-1. Professor A is keying in the grade of student `I`. Total grade is 75, but he did it via multiple steps: key in `5` (LSB), then key in `7` (MSB). This storing of student grade is non-atomic (requires two steps that can be preempted)
-2. Professor B realised that the student's grade is not 75 but 91, so he would like to update the grade of student `I`. He did it via multiple steps as well: key in `1` (LSB) then `9` (MSB)
-
-By right, the grade of student `I` should be 91. However, since the database is not atomic, Professor B action might preempt the intermediary value stored by Professor A (which means the update done by Professor A is not complete yet):
-
-1. Professor A update the LSB: `5`, grade of the student is `05` now.
-2. Professor A second update is preempted, Professor B update the LSB: `1`, grade of the student is `01` now
-3. Professor B update the MSB `9`, grade of the student is `91` now.
-4. Professor A update the MSB: `7`, grade of the student is `71` now.
-
-Student `I` end up having a grade of 71 instead of 91 (got a C instead of an A!). This grade 9` _does not belong to anybody_, it's just a catastrophe resulted from non-atomic store made by Professor A.
-
-### Torn Write
-
-What happened?
-{:.highlight}
-
-The `STORE` done by Professor A is not `ATOMIC`. Professor B indeed executed his action _after_ Professor A, but didn't realise that Professor A has not finished. Therefore the end state of the student grade is <span style="color:#f77729;"><b>neither</b></span> the grades that are meant to be set by either professor (neither `75` nor `91`). This is known as <span style="color:#f77729;"><b>torn write</b></span>.
-
-In Peterson's solution, both processes might attempt to `STORE` the value of `turn` in an interleaved fashion (set `turn=i`, and `turn=j`). With atomic `STORE`, we need to be entirely sure that the value stored in `turn` is ENTIRELY `j`, or ENTIRELY `i`, and not some undefined behavior, especially when `turn=j` and `turn=i` in both Process i and j are executed near each other, concurrently. If `turn` is set to be neither `i` or `j` due to non-atomic store, mutex guarantee is lost.
-
-### Torn Read
-
-The same must happen with the `LOAD`. Let's go back to our grade analogy.
-
-Suppose we have Professor C reading the value of student `I` grade: read `LSB` then read `MSB` (non atomic). It is posssible that Professor C reads the student's grade as `95`.
-
-1. Professor A update the LSB: `5`, grade of the student is `05` now.
-2. <span style="color:#f77729;"><b>Meanwhile, Professor C read the `LSB`</b></span> grade of the student: `5`
-3. Professor A second update is preempted, Professor B update the LSB: `1`, grade of the student is `01` now
-4. Professor B update the MSB `9`, grade of the student is `91` now.
-5. <span style="color:#f77729;"><b>Meanwhile, Professor C read the `MSB`</b></span> grade of the student: `9`
-6. Professor A update the MSB: `7`, grade of the student is `71` now.
-
-Professor C read <span class="orange-bold">neither</span> the old value of the student grade: `75` or the new value of student grade: `91`. `95` is the result of a <span style="color:#f77729;"><b>torn read</b></span>.
-
-In Peterson's, two instructions: `turn==j` (`LOAD`) and `turn=i` (`STORE`) must complete atomically. We do not want to read some "neither `i` nor `j`" value in `turn`because as we were _loading_ the value of `turn`, the other process modifies it.
-
-In the past, we have an 8-bit or even 16-bit architecture. Any `LOAD` or `STORE` involving more than supported bits will result in non-atomic operations by default. We don't have to worry about this anymore nowadays in our 64-bit architecture, unless our values [are not boundary aligned](https://rigtorp.se/isatomic/).
-{:.note}
-
-## Sequential Consistency
-
-This is actually another requirement for Peterson's Solution to work, but omitted in the section above to simplify our syllabus. <span style="color:#f77729;"><b>Sequential consistency</b></span> means (simplified):
-
-The operations of each individual processor appear in a specific sequence in the order specified by its program, and will not be re-ordered by the compiler or executed out-of-order by the CPU.
-{:.info}
-
-The Peterson's Algorithm <span style="color:#f77729;"><b>also required</b></span> that the <span style="color:#f77729;"><b>order</b></span> of the instructions executed is <span style="color:#f77729;"><b>consistent</b></span>,
-
-1. Setting of `flag[i] = True` must happen <span style="color:#f77729;"><b>before</b></span> for `turn = j` for Process i
-2. Setting of `flag[j] = True` must happen <span style="color:#f77729;"><b>before</b></span> for `turn = i` for Process j
-3. Step (1) and (2) must precede the `LOAD` access in the `while` line.
-
-Not all instructions are executed _in order_. A compiler may try to be _smart_ and recompile the Peterson's solution for Process i as follows, reordering the instructions completely since they involve access to different memory location:
-
-```cpp
-turn = j 
-while(flag[j] == True and turn == j); // LOAD from flag[j]
-flag[i] = True  // STORE from flag[i]
-// CS...
-// ...
-flag[i] = False
-```
-
-On <span style="color:#f77729;"><b>modern</b></span> operating system where you have multiple processors, the <span style="color:#f77729;"><b>order</b></span> of `LOAD` and `STORE` instructions can change if these instructions are not dealing with same memory addresses. You can obviously find out why the above is disastrous.
-{: .info}
-
-In order to prevent this, you must implement [memory barrier](https://en.wikipedia.org/wiki/Memory_barrier). You can look at [this post](https://bartoszmilewski.com/2008/12/01/c-atomics-and-memory-ordering/) to learn how this is done in C++ as an example.
-
-### Optimising local variables (e.g: caching in Register)
-
-Also, a compiler may decide that it is unnecessary to read the same variable more than once, especially if they don't change during the entire lifetime of the program. It may create a snapshot copy of `flag[j]` in the register local to Process i, because how could it possibly change if there are no _store_ operations in between?
-
-The store to `flag[j]` is done in Process j (unknown to Process i). As a result, `flag[j]` in Process i may always be `False`.
-
-For instance, assume that Process i is initially scheduled (initialised), and immediately suspended. Then, Process j is scheduled until it reached its CS before preempted. When Process i is scheduled and check `flag[j]`, this will return `False` because its compiler decided to optimise the instructions and make a copy in Process i's register on the value of the old `flag[j]` upon initialisation. As a result, Process i also enter the CS and mutex is violated.
-
-In other words, there are _three_ copies of `flag[j]` --> one in Process i's register, one in Process j's register, and another in the RAM. The value of `flag[j]` is therefore <span style="color:#f77729;"><b>not consistent</b></span>.
-{:.note}
-
-You can use the `volatile` keyword in C to let the compiler know that it is possible for a variable's value to be <span style="color:#f77729;"><b>changed</b></span> by instructions in _another_ program, or by another Thread executing the same set of instructions, and therefore disable the above optimisations because it is no longer safe to do so.
-
-Objects that are declared as <span class="orange-bold">volatile</span> are <span class="orange-bold">not</span> used in certain optimizations because their values can change at any time. The system always reads the <span style="color:#f77729;"><b>current</b></span> value of a volatile object when it is requested, even if a previous instruction asked for a value from the same object. Also, the value of the object is <span style="color:#f77729;"><b>written</b></span> immediately on assignment.
-
-For example:
-
-```cpp
-volatile int turn;
-volatile int flag[2] = {0,0}
-```
-
-## Cache Coherency
-
-Attempting to run Peterson's in multiple core requires <span style="color:#f77729;"><b>cache coherency</b></span>. Cores have individual caches, and for performance efficiency, each process might cache `turn` and `flag` value in its individual caches. This violates <span style="color:#f77729;"><b>sequential consistency</b></span> requirement explained above -- there are multiple copies of `turn` and `flag` with different values. We can try to synchronise between the caches but it comes at a <span style="color:#f77729;"><b>huge</b></span> performance cost (impractical).
-
-## Final Caveats for Peterson's Solution
-
-In summary, Peterson’s solution rests on the assumption that the instructions are executed in a <span style="color:#f77729;"><b>particular</b></span> order (sequential consistency) and memory accesses can be achieved atomically. Both of these assumptions can <span style="color:#f77729;"><b>fail</b></span> with modern hardware. Due to complexities in the design of <span style="color:#f77729;"><b>pipelined</b></span> CPUs, the instructions may be executed in a _different_ order (called [out-of-order](https://en.wikipedia.org/wiki/Out-of-order_execution) execution). Additionally, if the threads are running on different cores that do not guarantee immediate <span style="color:#f77729;"><b>cache coherency</b></span>, the threads may be using <span style="color:#f77729;"><b>different</b></span> memory values.
-
-In fact, Peterson's algorithm cannot be implemented correctly in C99, as explained in [this article](http://bartoszmilewski.com/2008/11/05/who-ordered-memory-fences-on-an-x86/). We need to make sure that we use a sequentially consistent memory order and compilers do not perform additional optimisation hoisting[^2] or sinking[^3][^4] load and stores. Also, we need to make sure that the CPU hardware itself does <span style="color:#f7007f;"><b>not perform out-of-order execution</b></span>.
-
-End of brain-tearing sections.
-{:.info}
 
 # Synchronization Hardware
 
@@ -837,6 +715,135 @@ Key learning points include:
 
 
 # Appendix
+
+## Peterson's in Modern CPUs 
+
+
+This section is not required in our syllabus. It's written to satisfy some curiosity that may arise due to the specific requirements of Peterson's solution: atomic LD/ST, and used in single-core CPU. Only proceed to read these sections if you are prepared to feel 🤯. Otherwise, skip to Synchronisation Hardware.
+{:.error}
+
+Try compiling Peterson's in plain C, and it will <span style="color:#f77729;"><b>NOT</b></span> work in modern architecture without:
+
+1. Ensuring atomic LD/ST
+2. Ensuring cache coherency in multicore systems
+3. Applying memory barriers to enforce <span style="color:#f77729;"><b>sequential consistency</b></span> (not mentioned above to not overcomplicate the syllabus)
+
+First of all, let's begin with a definition of <span style="color:#f77729;"><b>atomicity</b></span>:
+
+When an atomic store is performed on a shared variable, _no other thread_ can observe the modification half-complete. _“Atomic” in this context means “all or nothing”_. When an atomic load is performed on a shared variable, it reads the entire value as it appeared at a single moment in time. Non-atomic loads and stores do not make those guarantees. You can read more about it [here](https://preshing.com/20130618/atomic-vs-non-atomic-operations/).
+{:.info}
+
+Note that atomicity does not guarantee you to get the value _most recently written_ by any thread. If you always want to read the most recently written value, then that means you want [<span class="orange-bold">strict consistency</span>](https://en.wikipedia.org/wiki/Consistency_model#Strict_consistency), and strict consistency is a more _strict_ version of sequential consistency (not relevant here).
+
+### Non-atomic example
+
+Not all `LD`/`ST` instructions are guaranteed to be atomic, we take this for granted. To understand this better, let's use an analogy. Consider a scenario of a non-atomic database containing student grades that were initialised to `null` and these two actions performed:
+
+1. Professor A is keying in the grade of student `I`. Total grade is 75, but he did it via multiple steps: key in `5` (LSB), then key in `7` (MSB). This storing of student grade is non-atomic (requires two steps that can be preempted)
+2. Professor B realised that the student's grade is not 75 but 91, so he would like to update the grade of student `I`. He did it via multiple steps as well: key in `1` (LSB) then `9` (MSB)
+
+By right, the grade of student `I` should be 91. However, since the database is not atomic, Professor B action might preempt the intermediary value stored by Professor A (which means the update done by Professor A is not complete yet):
+
+1. Professor A update the LSB: `5`, grade of the student is `05` now.
+2. Professor A second update is preempted, Professor B update the LSB: `1`, grade of the student is `01` now
+3. Professor B update the MSB `9`, grade of the student is `91` now.
+4. Professor A update the MSB: `7`, grade of the student is `71` now.
+
+Student `I` end up having a grade of 71 instead of 91 (got a C instead of an A!). This grade 9` _does not belong to anybody_, it's just a catastrophe resulted from non-atomic store made by Professor A.
+
+### Torn Write
+
+What happened?
+{:.highlight}
+
+The `STORE` done by Professor A is not `ATOMIC`. Professor B indeed executed his action _after_ Professor A, but didn't realise that Professor A has not finished. Therefore the end state of the student grade is <span style="color:#f77729;"><b>neither</b></span> the grades that are meant to be set by either professor (neither `75` nor `91`). This is known as <span style="color:#f77729;"><b>torn write</b></span>.
+
+In Peterson's solution, both processes might attempt to `STORE` the value of `turn` in an interleaved fashion (set `turn=i`, and `turn=j`). With atomic `STORE`, we need to be entirely sure that the value stored in `turn` is ENTIRELY `j`, or ENTIRELY `i`, and not some undefined behavior, especially when `turn=j` and `turn=i` in both Process i and j are executed near each other, concurrently. If `turn` is set to be neither `i` or `j` due to non-atomic store, mutex guarantee is lost.
+
+### Torn Read
+
+The same must happen with the `LOAD`. Let's go back to our grade analogy.
+
+Suppose we have Professor C reading the value of student `I` grade: read `LSB` then read `MSB` (non atomic). It is posssible that Professor C reads the student's grade as `95`.
+
+1. Professor A update the LSB: `5`, grade of the student is `05` now.
+2. <span style="color:#f77729;"><b>Meanwhile, Professor C read the `LSB`</b></span> grade of the student: `5`
+3. Professor A second update is preempted, Professor B update the LSB: `1`, grade of the student is `01` now
+4. Professor B update the MSB `9`, grade of the student is `91` now.
+5. <span style="color:#f77729;"><b>Meanwhile, Professor C read the `MSB`</b></span> grade of the student: `9`
+6. Professor A update the MSB: `7`, grade of the student is `71` now.
+
+Professor C read <span class="orange-bold">neither</span> the old value of the student grade: `75` or the new value of student grade: `91`. `95` is the result of a <span style="color:#f77729;"><b>torn read</b></span>.
+
+In Peterson's, two instructions: `turn==j` (`LOAD`) and `turn=i` (`STORE`) must complete atomically. We do not want to read some "neither `i` nor `j`" value in `turn`because as we were _loading_ the value of `turn`, the other process modifies it.
+
+In the past, we have an 8-bit or even 16-bit architecture. Any `LOAD` or `STORE` involving more than supported bits will result in non-atomic operations by default. We don't have to worry about this anymore nowadays in our 64-bit architecture, unless our values [are not boundary aligned](https://rigtorp.se/isatomic/).
+{:.note}
+
+## Sequential Consistency
+
+This is actually another requirement for Peterson's Solution to work, but omitted in the section above to simplify our syllabus. <span style="color:#f77729;"><b>Sequential consistency</b></span> means (simplified):
+
+The operations of each individual processor appear in a specific sequence in the order specified by its program, and will not be re-ordered by the compiler or executed out-of-order by the CPU.
+{:.info}
+
+The Peterson's Algorithm <span style="color:#f77729;"><b>also required</b></span> that the <span style="color:#f77729;"><b>order</b></span> of the instructions executed is <span style="color:#f77729;"><b>consistent</b></span>,
+
+1. Setting of `flag[i] = True` must happen <span style="color:#f77729;"><b>before</b></span> for `turn = j` for Process i
+2. Setting of `flag[j] = True` must happen <span style="color:#f77729;"><b>before</b></span> for `turn = i` for Process j
+3. Step (1) and (2) must precede the `LOAD` access in the `while` line.
+
+Not all instructions are executed _in order_. A compiler may try to be _smart_ and recompile the Peterson's solution for Process i as follows, reordering the instructions completely since they involve access to different memory location:
+
+```cpp
+turn = j 
+while(flag[j] == True and turn == j); // LOAD from flag[j]
+flag[i] = True  // STORE from flag[i]
+// CS...
+// ...
+flag[i] = False
+```
+
+On <span style="color:#f77729;"><b>modern</b></span> operating system where you have multiple processors, the <span style="color:#f77729;"><b>order</b></span> of `LOAD` and `STORE` instructions can change if these instructions are not dealing with same memory addresses. You can obviously find out why the above is disastrous.
+{: .info}
+
+In order to prevent this, you must implement [memory barrier](https://en.wikipedia.org/wiki/Memory_barrier). You can look at [this post](https://bartoszmilewski.com/2008/12/01/c-atomics-and-memory-ordering/) to learn how this is done in C++ as an example.
+
+### Optimising local variables (e.g: caching in Register)
+
+Also, a compiler may decide that it is unnecessary to read the same variable more than once, especially if they don't change during the entire lifetime of the program. It may create a snapshot copy of `flag[j]` in the register local to Process i, because how could it possibly change if there are no _store_ operations in between?
+
+The store to `flag[j]` is done in Process j (unknown to Process i). As a result, `flag[j]` in Process i may always be `False`.
+
+For instance, assume that Process i is initially scheduled (initialised), and immediately suspended. Then, Process j is scheduled until it reached its CS before preempted. When Process i is scheduled and check `flag[j]`, this will return `False` because its compiler decided to optimise the instructions and make a copy in Process i's register on the value of the old `flag[j]` upon initialisation. As a result, Process i also enter the CS and mutex is violated.
+
+In other words, there are _three_ copies of `flag[j]` --> one in Process i's register, one in Process j's register, and another in the RAM. The value of `flag[j]` is therefore <span style="color:#f77729;"><b>not consistent</b></span>.
+{:.note}
+
+You can use the `volatile` keyword in C to let the compiler know that it is possible for a variable's value to be <span style="color:#f77729;"><b>changed</b></span> by instructions in _another_ program, or by another Thread executing the same set of instructions, and therefore disable the above optimisations because it is no longer safe to do so.
+
+Objects that are declared as <span class="orange-bold">volatile</span> are <span class="orange-bold">not</span> used in certain optimizations because their values can change at any time. The system always reads the <span style="color:#f77729;"><b>current</b></span> value of a volatile object when it is requested, even if a previous instruction asked for a value from the same object. Also, the value of the object is <span style="color:#f77729;"><b>written</b></span> immediately on assignment.
+
+For example:
+
+```cpp
+volatile int turn;
+volatile int flag[2] = {0,0}
+```
+
+## Cache Coherency
+
+Attempting to run Peterson's in multiple core requires <span style="color:#f77729;"><b>cache coherency</b></span>. Cores have individual caches, and for performance efficiency, each process might cache `turn` and `flag` value in its individual caches. This violates <span style="color:#f77729;"><b>sequential consistency</b></span> requirement explained above -- there are multiple copies of `turn` and `flag` with different values. We can try to synchronise between the caches but it comes at a <span style="color:#f77729;"><b>huge</b></span> performance cost (impractical).
+
+## Final Caveats for Peterson's Solution
+
+In summary, Peterson’s solution rests on the assumption that the instructions are executed in a <span style="color:#f77729;"><b>particular</b></span> order (sequential consistency) and memory accesses can be achieved atomically. Both of these assumptions can <span style="color:#f77729;"><b>fail</b></span> with modern hardware. Due to complexities in the design of <span style="color:#f77729;"><b>pipelined</b></span> CPUs, the instructions may be executed in a _different_ order (called [out-of-order](https://en.wikipedia.org/wiki/Out-of-order_execution) execution). Additionally, if the threads are running on different cores that do not guarantee immediate <span style="color:#f77729;"><b>cache coherency</b></span>, the threads may be using <span style="color:#f77729;"><b>different</b></span> memory values.
+
+In fact, Peterson's algorithm cannot be implemented correctly in C99, as explained in [this article](http://bartoszmilewski.com/2008/11/05/who-ordered-memory-fences-on-an-x86/). We need to make sure that we use a sequentially consistent memory order and compilers do not perform additional optimisation hoisting[^2] or sinking[^3][^4] load and stores. Also, we need to make sure that the CPU hardware itself does <span style="color:#f7007f;"><b>not perform out-of-order execution</b></span>.
+
+End of brain-tearing sections.
+{:.info}
+
 ## Sample C Code
 ### Mutex
 

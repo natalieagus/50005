@@ -219,7 +219,7 @@ Now consider the another system state below. Although cycles are present, this s
 2. `P3` may acquire it and eventually complete its execution
 3. Finally, `P2` may resume to completion after `P3` is done.
 
-<img src="{{ site.baseurl }}/assets/images/week5/3.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week5/3.png"  class="center_fifty"/>
 
 # Deadlock Handling Methods
 
