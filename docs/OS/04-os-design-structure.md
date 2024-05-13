@@ -311,7 +311,7 @@ The architecture of the JX system is illustrated below (simplified representatio
   - JVM is an abstract virtual machine that can run on <span style="color:#f7007f;"><b>any</b></span> OS
   - There’s one instance of JVM per Java application
   - JVM provides portable execution environment for Java-based apps
-  _ It maintains a heap used for allocating memory during object creation and threads within itself, as well as for <span style="color:#f77729;"><b>garbage collection</b></span>.
+  - It maintains a heap used for allocating memory during object creation and threads within itself, as well as for <span style="color:#f77729;"><b>garbage collection</b></span>.
 
   <img src="{{ site.baseurl }}/assets/images/week2/16.png"  class="center_fifty no-invert"/>
 
@@ -320,6 +320,9 @@ The architecture of the JX system is illustrated below (simplified representatio
   - Communication between domains occurs through a specific mechanism called <span style="color:#f77729;"><b>portals</b></span>
 - Protection within and between domains relies on the type safety of the Java language.
   - However, since domain zero is not written in Java, it <span style="color:#f77729;"><b>must be considered trusted</b></span> (built by trusted sources)
+
+{:.note}
+**Garbage collection** (GC) is a form of automatic memory management that helps in reclaiming memory occupied by objects that are no longer in use by a program. This process is crucial in preventing memory leaks and optimizing the use of available memory, ensuring that a program runs efficiently. 
 
 # Summary {#summary}
 This section delves into the **architecture** of modern operating systems, exploring their **components** and the **critical** roles they play in system functionality. It highlights the distinction between system and application programs, with a focus on how system programs interact with the kernel through system calls. Various OS structures such as monolithic, layered, microkernel, and hybrid models are discussed to illustrate their design and implementation complexities. 

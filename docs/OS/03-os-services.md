@@ -199,14 +199,14 @@ Take this section with a grain of salt. It is not part of the syllabus but it is
 All processes running in a computer must be able to make system calls. As a result, at the minimum the <span style="color:#f7007f;"><b>entry</b></span> points into the kernel have to be <span style="color:#f77729;"><b>mapped</b></span> into the current address space at all times.
 
 To provide you with a context, let’s see a typical memory layout[^2] of a UNIX process (actual implementation may vary, e.g. Kernel is at low address space instead):
-<img src="{{ site.baseurl }}/assets/images/week2/1.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week2/1.png"  class="center_full"/>
 
 The virtual address space of a process is typically divided into two parts: <span style="color:#f77729;"><b>kernel</b></span> part in the higher address and <span style="color:#f77729;"><b>user</b></span> part in the lower address (or vice versa, depending on the Kernel implementation).
 
 The kernel mapping part exists primarily for the<span style="color:#f77729;"><b> kernel-related purposes</b></span>, not user processes. Processes running in user mode don’t have access to the kernel’s address space (with different MSB), at all. In user mode, there is a <span style="color:#f77729;"><b>single</b></span> mapping for the kernel, shared across all processes, e.g: fixed address between `0xffffffff` to `0xC0000000` as illustrated above.
 
 {: .info}
-When a kernel-side page mapping changes, that change is reflected everywhere. Read more about [Kernel Space in the appendix](#kernel-space) if you'd like to find out more. 
+When a kernel-side page mapping changes, that change is reflected everywhere. Read more about [Kernel Space in the appendix](#kernel-space) if you'd like to find out more. Recall that you have already learned this before as well in 50.002. You can read detailed info such as the **null space** or the **memory mapped region** [in 50.002 notes here](https://natalieagus.github.io/50002/notes/virtualmemory#generic-runtime-memory-layout). 
 
 
 # System Calls via API {#system-calls-through-api}
@@ -307,7 +307,7 @@ Pass parameters that are stored in a persistent contiguous location (<span style
 - When system call `id` (e.g: `write`) is made, the kernel examines certain registers, in this example is `rsi` to obtain the address to the parameter (the bytes to write to `stdout`)
 - Given the <span style="color:#f77729;"><b>pointer</b></span>, Kernel can find the parameter for the system call in the RAM, as illustrated below:
 
-<img src="{{ site.baseurl }}/assets/images/week2/6.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week2/6.png"  class="center_seventy"/>
 
 # Types of System Calls {#types-of-system-calls}
 
@@ -375,7 +375,7 @@ Having created new jobs or processes, we may need to <span style="color:#f77729;
 
 There are so many facets of and variations in process and job control that we need to clarify using examples: MS-DOS and FreeBSD.
 
-<img src="{{ site.baseurl }}/assets/images/week2/7.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week2/7.png"  class="center_seventy"/>
 
 ### Single-tasking System
 

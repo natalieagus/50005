@@ -96,7 +96,7 @@ In general these states are:
 5. <span style="color:#f77729;"><b>Terminated</b></span>: The process has finished execution.
 
 The figure below shows the scheduling state transition diagram of a typical process:
-<img src="{{ site.baseurl }}/assets/images/week3/1.png"  class="center_fifty no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week3/1.png"  class="center_fifty"/>
 
 ## Process Table and Process Control Block {#process-control-block}
 
@@ -128,7 +128,7 @@ Do not memorize the above, it's just for illustration purposes only. The task_st
 
 Within the Linux kernel, all active processes are represented using a <span style="color:#f77729;"><b>doubly linked list</b></span> of `task_struct.` The kernel maintains a `current_pointer` to the process that's currently <span style="color:#f77729;"><b>running</b></span> in the CPU.
 
-<img src="{{ site.baseurl }}/assets/images/week3/3.png"  class="center_fourty no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week3/3.png"  class="center_fourty"/>
 
 ### Context Switching
 
@@ -312,7 +312,7 @@ int main(int argc, char const *argv[])
 
 The simple C program above is executed and when the execution system call `fork()` returns, <span style="color:#f77729;"><b>two processes are present</b></span>.
 
-<img src="{{ site.baseurl }}/assets/images/week3/10.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week3/10.png"  class="center_seventy"/>
 
 Both have the <span style="color:#f77729;"><b>same</b></span> copy of the text (code) and resources (any opened files, etc). The parent process is <span style="color:#f77729;"><b>cloned</b></span>, resulting in the child process. They're at a <span style="color:#f77729;"><b>different</b></span> address space, executed concurrently by the system.
 
@@ -563,6 +563,7 @@ The `exec` family of functions in Unix-like operating systems is used to replace
 
 Each of these functions does not return to the calling process upon successful execution because the calling process's image is completely replaced by the new program. If there's an error (e.g., the executable is not found), the function returns -1.
 <br>
+
 [^1]: Because each process is isolated from one another and runs in different address space (forming virtual machines)
 [^2]: Heap and stack grows in the opposite direction so that it maximises the space that both can have and minimises the chances of overlapping, since we do not know how much they can dynamically grow during runtime. If the heap / stack grows too much during runtime, we are faced with stack/heap overflow error. If there’s a heap overflow, `malloc` will return a `NULL` pointer.
 [^3]: You can list all processes that are currently running in your UNIX-based system by typing `ps aux` in the command line.

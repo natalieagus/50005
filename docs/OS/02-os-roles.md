@@ -120,7 +120,7 @@ Modern computer systems are **<span style="color:#f7007f;"><b>interrupt-driven</
 
 The figure below summarises the **interrupt-driven** procedure of **asynchronous I/O handling** during **<span style="color:#f7007f;"><b>hardware interrupt</b></span>**:
 
-<img src="{{ site.baseurl }}/assets/images/week1/9.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week1/9.png"  class="center_fifty"/>
 
 Notes:
 
@@ -182,7 +182,7 @@ Traps are **software generated interrupts**, that is some special instructions t
 
 The CPU is forced to go to a special handler that does a state save and then execute (may not be immediate!) on the proper interrupt service routine to handle the <span style="color:#f7007f;"><b>request</b></span> (e.g: fetch user input in the python example above) in kernel mode. Software interrupts generally have <span style="color:#f77729;"><b>low priority</b></span>, as they are not as urgent as devices with limited buffering space.
 
-<img src="{{ site.baseurl }}/assets/images/week1/11.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week1/11.png"  class="center_seventy"/>
 
 During the time between system call request until system call return, the program execution is <span style="color:#f7007f;"><b>paused</b></span>. Examples of system calls are: `chmod(), chdir(), print()`. More Linux system calls can be found [here](http://man7.org/linux/man-pages/man2/syscalls.2.html).
 
@@ -190,7 +190,7 @@ During the time between system call request until system call return, the progra
 
 Consider another scenario where you want to open a **very large file** from disk. It takes some time to <span style="color:#f7007f;"><b>load</b></span> (simply transfer your data from disk to the disk controller), and your CPU can proceed to do other tasks in the meantime. Here's a simplified timeline:
 
-<img src="{{ site.baseurl }}/assets/images/week1/12.png"  class="cenetr_full no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week1/12.png"  class="center_full"/>
 
 Imagine that at first, the CPU is busy executing process instructions in user mode. At the same time, the device is idling.
 
@@ -298,7 +298,7 @@ Recall from 50.002 that the CPU always operates on virtual addresses (commonly <
 
 <span style="color:#f7007f;"><b>Caching</b></span> is an important principle of computer systems. We perform the <span style="color:#f77729;"><b>caching algorithm</b></span> each time the CPU needs to execute a new piece of instruction or fetch new data from the main memory. Remember that cache is a <span style="color:#f7007f;"><b>hardware</b></span>, built in as part of the CPU itself in modern computers as shown in the figure below:
 
-<img src="{{ site.baseurl }}/assets/images/week1/14.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week1/14.png"  class="center_fifty"/>
 
 Note that “DMA” means direct memory access from the device controller onto the RAM[^5] (_screenshot taken from SGG book_).
 
@@ -341,7 +341,7 @@ A kernel that supports multiprogramming increases <span style="color:#f77729;"><
 - For example in diagram below, CPU will continue to run Job 3 **as long as** Job 3 does not `wait` for anything else. 
   - When Job 3 waits for some I/O operation in the future, CPU will switch to READY jobs, e.g: either Job 1 or Job 2 (assuming Job 4 is still waiting then)
 
-<img src="{{ site.baseurl }}/docs/OS/images/cse2024-Multiprogramming.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/OS/images/cse2024-Multiprogramming.drawio.png"  class="center_fourty"/>
 
 ### Practical Consideration
 Since the clock cycles of a general purpose CPU is very fast (in Ghz), we don't actually need 100% CPU power in most case. It is often _too fast_ to be dedicated for just one program for the entire 100% of the time. Hence, if multiprogramming is not supported and each process has a fixed quantum (time allocated to execute), then the CPU might spend most of its time <span style="color:#f7007f;"><b>idling</b></span>.
@@ -377,9 +377,9 @@ Timesharing: context switch that’s performed so <span style="color:#f77729;"><
 - The CPU scheduler allocates a fixed time slice to each process in a round-robin fashion.
 - If a process's time slice expires, the CPU switches to the next process in the queue.
 - Processes that need I/O or user input can be interrupted and put into a waiting state, allowing other processes to use the CPU.
-- For example in the diagram below, the CPU will run each job for a fixed quanta `t` and switch to another (ready) job once that time slice ends 
+- For example in the diagram below, the CPU will run each job for a fixed quanta `t` and switch to another (ready) job once that time slice ends:
 
-<img src="{{ site.baseurl }}/docs/OS/images/cse2024-Timesharing.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/OS/images/cse2024-Timesharing.drawio.png"  class="center_full"/>
 
 **User Experience:** Users experience a responsive system as the OS ensures that each user program gets regular CPU time. Interactive tasks, such as typing or browsing, feel immediate because the OS switches between tasks quickly.
 
@@ -485,7 +485,7 @@ Multiprocessor systems have three main advantages:
 
 There are different architectures for multiprocessor system, such as a <span style="color:#f77729;"><b>symmetric</b></span> architecture — we have multiple CPU chips in a computer system:
 
-<img src="{{ site.baseurl }}/assets/images/week1/15.png"  class="center_fifty"/>
+<img src="{{ site.baseurl }}/assets/images/week1/15.png"  class="center_fourty"/>
 
 Notice that each processor has its own set of registers, as well as a private or local cache; however, all processors share the <span style="color:#f77729;"><b>same</b></span> physical memory. This brings about design issues that we need to note in symmetric architectures:
 

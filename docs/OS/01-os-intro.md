@@ -49,7 +49,7 @@ An operating system (OS) is a program that **manages computer hardware**.
 
 The figure below shows the hardware components of a common general purpose computer. There are many user programs that are running in a computer, and the OS acts as an intermediary application that enables many user programs to share the same set of hardware, such as the mouse, printer, keyboard, display monitor, etc.
 
-<img src="/50005/assets/images/week1/1.png"  class="center_seventy no-invert"/>
+<img src="/50005/assets/images/week1/1.png"  class="center_seventy"/>
 
 ## The Operating System {#the-operating-system}
 
@@ -221,7 +221,7 @@ In other words, I/O devices and the CPU can execute **instructions** in parallel
 
 A system must have **device drivers installed** for each device type. This driver is a specific program to <span style="color:#f7007f;"><b>interpret</b></span> the behavior of each device type. We typically install/download _device drivers_ when we plug in **new** I/O units to our computers through the USB port.
 
-<img src="/50005/assets/images/week1/7.png"  class="center_seventy"/>
+<img src="/50005/assets/images/week1/7.png"  class="center_seventy no-invert"/>
 
 It provides a software **interface** to hardware devices so that the device controller is able to communicate with the OS or an application program.
 {:.info}
