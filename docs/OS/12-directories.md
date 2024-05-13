@@ -146,7 +146,7 @@ All of the following file operations involves <span style="color:#f77729;"><b>mo
 
 A single-level directory is best illustrated as follows:
 
-<img src="{{ site.baseurl }}/assets/images/week6/7.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week6/7.png"  class="center_seventy"/>
 
 In the above example, there exist a directory with five entries in it (inside the rectangular border), each pointing to a separate file (the circles).
 - This means that all files are contained in the <span style="color:#f77729;"><b>same</b></span> directory, which is easy to support and understand. 
@@ -163,7 +163,7 @@ If we were to use a single-level directory in our system and the GUI file-manage
 
 ## Two-level Directory
 
-<img src="{{ site.baseurl }}/assets/images/week6/8.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week6/8.png"  class="center_seventy "/>
 
 A two-level directory allows for a separate directory for <span style="color:#f77729;"><b>each user</b></span>. Notions of subdirectory and paths become clearer, e.g: `/User1/readme.md`, or `/Guest/readme.md`
 
@@ -171,7 +171,7 @@ Each user can have a <span style="color:#f77729;"><b>separate name space</b></sp
 
 ## Tree-Structured Directory
 
-<img src="{{ site.baseurl }}/assets/images/week6/9.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week6/9.png"  class="center_full "/>
 
 In a tree structure directory, there’s only <span class="orange-bold">one path</span> to reach each file, as shown above. This is <span class="orange-bold">not the same</span> as a [Graph-structured Directory](#graph-directory-structure). 
 
@@ -279,7 +279,7 @@ Unlike hard links, a symbolic link is <span style="color:#f7007f;"><b>NOT</b></s
 
 The file permission value of a symlink differs between operating systems. For instance, `chmod` command in Linux states that:
 
-> `chmod` never changes the permissions of symbolic links; the `chmod` system call cannot change their permissions. This is **not** a problem since the permissions of symbolic links are **never** used. However, for each symbolic link listed on the command line, `chmod` changes the permissions of the **pointed-to** file. In contrast, `chmod` **ignores** symbolic links encountered during recursive directory traversals.
+> *`chmod` never changes the permissions of symbolic links; the `chmod` system call cannot change their permissions. This is **not** a problem since the permissions of symbolic links are **never** used. However, for each symbolic link listed on the command line, `chmod` changes the permissions of the **pointed-to** file. In contrast, `chmod` **ignores** symbolic links encountered during recursive directory traversals.*
 
 However on macOS, `chmod` does things differently. See the example below:
 
@@ -352,9 +352,9 @@ In acyclic graph directories, we can have the <span style="color:#f77729;"><b>sa
 {:.info}
 
 
-In the graphical representation of a directory, we draw edges to represent any links, be it symbolic or hard link. This diagram is just an example. Don’t try to make much sense about the file names.
+In the graphical representation of a directory, we draw edges to represent any links, be it symbolic or hard link. This diagram is just an example. Don’t try to make much sense about the file names, they're just arbitrary examples.
 
-<img src="{{ site.baseurl }}/assets/images/week6/22.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week6/22.png"  class="center_full"/>
 
 Note that Acyclic Graph Directory structure is <span class="orange-bold">not the same</span> Tree Directory Structure. In <span style="color:#f77729;"><b>Tree</b></span> directory structure, we can’t have more than 1 path to reach the same file entry denoted in pink circles.
 {:.warning}
@@ -370,11 +370,11 @@ An inode entry <span class="orange-bold">cannot</span> be deleted as long as the
 
 ## General Graph Directory
 
-The primary advantage of an acyclic graph is the relative simplicity of the algorithms to <span style="color:#f77729;"><b>traverse</b></span> the graph and to determine when there are no more references to a file. We want to avoid traversing shared sections of an acyclic graph twice, mainly for performance reasons.
+The primary advantage of an acyclic graph is the relative simplicity of the algorithms to <span style="color:#f77729;"><b>traverse</b></span> the graph and to determine when there are no more references to a file. We want to avoid traversing shared sections of an acyclic graph twice, mainly for performance reasons. The figure below illustrates a general graph directory, where **loops** (self referencing) are allowed for usage convenience. 
 
-<img src="{{ site.baseurl }}/assets/images/week6/23.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week6/23.png"  class="center_full "/>
 
-If cycles are allowed to exist in the directory (red arrow above -- can be either soft/symbolic link or hard link), we need to _avoid_ searching any component twice or more for reasons of <span class="orange-bold">correctness</span> as well as <span class="orange-bold">performance</span>.
+**Caveat**: if cycles are allowed to exist in the directory (red arrow above -- can be either soft/symbolic link or hard link), we need to _avoid_ searching any component twice or more for reasons of <span class="orange-bold">correctness</span> as well as <span class="orange-bold">performance</span>.
 
 A poorly designed algorithm might result in an infinite loop continually searching through the cycle and never terminating. One solution is to limit the number of directories traversed when searching.
 {:.note}
@@ -393,7 +393,7 @@ Note that symbolic links <span style="color:#f77729;"><b>do not</b></span> incre
 
 As a result, the `delete` action <span style="color:#f7007f;"><b>does not reduce </b></span>the reference count of this directory to _zero_. We are left with three inaccessible directories as shown in the image below.
 
-<img src="{{ site.baseurl }}/assets/images/week6/24.png"  class="center_full no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/week6/24.png"  class="center_full"/>
 
 # Summary
 
