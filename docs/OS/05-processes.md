@@ -49,6 +49,8 @@ Before we proceed, please remember that <span style="color:#f7007f;"><b>a progra
 
 ### Process Context
 
+<img src="{{ site.baseurl }}/docs/OS/images/labs-Generic Memory Layout.drawio-3.png"  class="center_seventy"/>
+
 A single process includes all of the following information, which we call the process' *context*:
 
 1. The <span style="color:#f77729;"><b>text</b></span> section (code or instructions)
