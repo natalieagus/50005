@@ -197,9 +197,9 @@ Earlier we learned that packets will queue in the local buffer of a network node
 {:.important}
 Packets that arrive at a full queue (full buffer) will be <span class="orange-bold">dropped</span> (lost).  They may be retransmitted by the previous node, source system, or not at all. Loss is <span class="orange-bold">random</span>, where each link has an average loss rate or probability.
 
-You can compute end-to-end loss rate probability given per-link loss rate probability, for example, given the following network topology and per-link loss rate: 
+You can compute end-to-end loss rate probability given per-link loss rate probability. For example, given the following network topology and per-link loss rate: 
 
-<img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-30-28.png"  class="cetner_fifty"/>
+<img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-30-28.png"  class="center_fifty"/>
 
 We can compute the end-to-end loss rate between A to C as: $$(1 - (0.8 - 0.9)) * 100\% = 28\%$$
 
