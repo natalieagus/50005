@@ -467,7 +467,9 @@ It may sound similar to stream redirection, but the general rule of thumb is tha
 
 The curl command allows us to transfer data (download, upload) online. For instance, we can download the GNU general public license text file using the command:
 
-`curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt`
+```
+curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt
+```
 
 - The `-o` option: Write output to `<filename>` instead of `stdout`
 
@@ -486,13 +488,18 @@ A filter takes input from one command, does some processing, and gives output.
 `TASK 8:` Suppose we have a long document, that GNU license we downloaded from the command `curl` above. Search and filter for a particular string. 
 {:.task}
 
-1. To download the license again, type the command: `curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt`
-2. Now search for a string inside a file using the commands:
+To download the license again, type the command: 
+```
+curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt
+```
+  
+Now search for a string inside a file using the commands:
 
 - `grep "<string>” <path/to/file>`
 - For example: `grep “GNU” GPL-3` prints every line containing “GNU” word.
 - Some shells don't require the quotation marks for single-word search, so you can try `grep GNU GPL-3` as well.
-  <img src="{{ site.baseurl }}/assets/images/lab1/17.png"  class="center_seventy no-invert"/>
+
+<img src="{{ site.baseurl }}/assets/images/lab1/17.png"  class="center_seventy no-invert"/>
 
 Here are the common grep options to try:
 
@@ -504,7 +511,8 @@ The `<string> `argument of the grep command can accept **regex** too, for instan
 
 - `grep "^[A-Z]" GPL-3 -n`
 - This search for every line starting with **capital** letters
-  <img src="{{ site.baseurl }}/assets/images/lab1/18.png"  class="center_seventy no-invert"/>
+
+<img src="{{ site.baseurl }}/assets/images/lab1/18.png"  class="center_seventy no-invert"/>
 
 You can also **pipe** the output of a command to the `grep` command so that you can filter it out. For example, `ps -ax` will report all running processes in your system (by all users, including your own). If we want to filter some processes by name, we can use grep and pipe to filter the Telegram process: `ps -ax | grep -i Telegram`
 
@@ -581,8 +589,14 @@ We can also compile and run programs from the **command** line, provided that yo
 
 ### Task 10
 
-`TASK 10:` To demonstrate this idea, download this starter code: `git clone https://github.com/natalieagus/makeFileDemo.git`
+`TASK 10:` Compile a C program. 
 {:.task}
+
+To demonstrate this idea, clone this starter code: 
+
+```
+git clone https://github.com/natalieagus/makeFileDemo.git
+```
 
 We require you to have `gcc` for this task. If your OS doesn't have it, you can install it with (Ubuntu):
 

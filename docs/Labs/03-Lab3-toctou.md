@@ -56,9 +56,9 @@ You will learn about race condition properly in future lectures. This lab is jus
 
 ## Installation
 
-Download the files for this lab using the command:
+Clone the files for this lab using the command:
 
-```git
+```
 git clone https://github.com/natalieagus/lab_toctou
 ```
 
@@ -79,7 +79,7 @@ Do <span class="orange-bold">NOT</span> used a shared drive with your Host machi
 {:.task}
 
 Type the following command:
-```console
+```sh
 sudo passwd root
 ```
 
@@ -90,7 +90,7 @@ Remember this `root` <span style="color:#f77729;"><b>password</b></span>! You ne
 
 Follow the instructions, and then switch to the root user using the command and the password you just created above for `root`:
 
-```console
+```sh
 su root
 ```
 
@@ -122,13 +122,13 @@ In order to proceed with this lab, you need to <span style="color:#f77729;"><b>l
 
 For the first user, do the following (the username must be `test-user-0`):
 
-```console
+```sh
 adduser test-user-0
 ```
 
 Give it any password you like (preferably a good one, like `LDcwzD&#6JKr`), and then add it to the `sudo` group:
 
-```console
+```sh
 adduser test-user-0 sudo
 ```
 
@@ -203,7 +203,7 @@ If a normal user executes this program, this program runs in root <span style="c
 
 While logged in as your original user account, try to read the file `/etc/shadow`:
 
-```console
+```sh
 cat /etc/shadow
 ```
 
@@ -221,7 +221,7 @@ What group does `root` belong to? What about the user account in question (ubunt
 
 Now, run the following command. We assume that your <span style="color:#f77729;"><b>current working directory</b></span> is at `/lab_toctou` directory. If not, please adjust accordingly.
 
-```console
+```
 ./Root/rootdo cat /etc/shadow
 ```
 
@@ -399,13 +399,13 @@ We will soon exploit this bug with <span style="color:#f77729;"><b>symbolic link
 
 We can create a text file with the following command and output redirection: 
 
-```console
+```sh
 echo "good morning" > goodmorning.txt
 ```
 
 Then we can create a <span style="color:#f77729;"><b>symbolic link</b></span> using the command:
 
-```console
+```sh
 ln -s <source> <symlink>
 ```
 
@@ -490,7 +490,7 @@ These targeted `username` is none other than `test-user-0` that you have created
 
 While logged in as a regular user (your original username), change your directory to `/User/` and run the script `exploit.sh`:
 
-```console
+```sh
 cd User
 ./exploit.sh
 ```
