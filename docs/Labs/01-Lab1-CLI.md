@@ -222,7 +222,7 @@ The term "rc" in filenames like `.bashrc`, `.zshrc`, or `.vimrc` stands for "run
 - Go to your home directory: `cd $HOME`
 - Create a new file called .bashrc: `touch .bashrc`
 - Open the file with any text editor, eg: `nano .bashrc`
-- Type: `PATH="$HOME/Desktop:$PATH" `
+- Type: `export PATH="$HOME/Desktop:$PATH" ` at the end of the file 
 - Save the file by pressing <span style="color:#f7007f;"><b>CTRL+X</b></span>, and then follow the instruction and press `Enter`
 - Restart your session by typing `exec bash`
 - Print your `$PATH` using `echo $PATH` command and notice how **Desktop** is now part of your environment variable
@@ -235,6 +235,9 @@ bash-3.2$ echo $PATH
 /Users/natalie_agus/Desktop:...
 bash-3.2$
 ```
+
+{:.note}
+Using `export` makes the `PATH` variable available not just in the current shell session, but also in any **child** processes started from the current shell.
 
 # Common Commands
 
@@ -418,6 +421,23 @@ We can <span style="color:#f7007f;"><b>redirect</b></span> stdin using the `< `o
 
 Note that `stdout` redirection will **truncate** (<span class="orange-bold">erase</span>) the original content of the `<filename>`. If you want to append to the **existing** content of file instead, you can use the `>>` operator.
 {:.warning}
+
+### Test write to other session's output
+
+Open two shell sessions in a separate terminal windows, and type `ps` to print out the output terminal for each session. Then, you can try to write something to the output file of the second session using `echo` and output redirection `>`:
+
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2024-05-15-15-23-32.png"  class="center_seventy"/>
+
+In the example above, two shell sessions are present. The file `/dev/pts/1` and `/dev/pts/2` are each session's input/output file. Therefore, if you type the command:
+
+```
+echo "good morning" >  /dev/pts/2
+```
+
+The word "good morning" appears in the second shell session. 
+
+{:.note}
+When you open two terminal windows, each one creates a separate shell session. Each session has its own terminal output file, like `/dev/pts/1` and `/dev/pts/2`. These files represent the different terminal sessions you are using.
 
 ### Task 6
 
