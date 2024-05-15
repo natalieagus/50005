@@ -716,7 +716,7 @@ Note: `File_1` → `File_2` means that `File_2` depends on `File_1`.
 <img src="{{ site.baseurl }}/assets/images/lab1/25.png"  class="center_seventy "/>
 
 # Summary 
-In this lab, you are exposed to various commands and how to navigate your system using the CLI. It needs time to develop the habit. Perhaps one of the more fun things to do is to decorate and beautify your shell. You may [check this out](https://ohmyz.sh) for a beginner-friendly start. 
+In this lab, you are exposed to various commands and how to navigate your system using the CLI. It needs time to develop the habit. Perhaps one of the more fun things to do is to decorate and beautify your shell. You may [check this out](https://ohmyz.sh) for a beginner-friendly start (macOS/Linux using zsh) and [this](https://ohmyposh.dev/docs/installation/windows) for Windows (powershell). 
 
 # Appendix 
 
