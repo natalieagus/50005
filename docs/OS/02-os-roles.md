@@ -95,7 +95,7 @@ An alternative is to use a <span style="color:#f77729;"><b>polled interrupt syst
 - Unlike vectored interrupt, there’s no such _interrupt_ signal that includes the identity of the device sending the interrupt signal.
 - The kernel must send a signal out to each controller to **determine** which device made a service request. It may determine the interrupt source by reading the interrupt status registers or other means.
 
-This is simpler to implement, but more time-wasting if there’s frequent I/O requests only from one or some particular device (but each time CPU need to spend overhead to poll many devices). Does Linux implement a Polled interrupt or Vectored interrupt system? See [here](https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html) for clues.
+This is simpler to implement, but more time-wasting if there’s frequent, unpredictable I/O requests only from one or some particular device in an array of devices. The CPU need to spend overhead to poll many devices. Does Linux implement a Polled interrupt or Vectored interrupt system? See [here](https://linux-kernel-labs.github.io/refs/heads/master/lectures/interrupts.html) for clues.
 {:.info}
 
 This system may be more appropriate for systems with sparse interrupts, where there are only a few interrupt sources or the interrupts occur infrequently. In non-vectored interrupt systems, . While this approach requires more processing overhead for identifying the interrupt source, it may be sufficient and more straightforward for systems with a small number of interrupts.
