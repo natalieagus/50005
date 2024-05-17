@@ -102,7 +102,7 @@ This system may be more appropriate for systems with sparse interrupts, where th
 
 ## Vectored Interrupt vs Polled Interrupt Scenarios
 
-Polled interrupts are **generally** suitable in simple systems with a **limited** number of devices and **low** interrupt rates. For example, in embedded systems with a single or a few devices generating interrupts infrequently, such as basic sensor input or user interactions, polled interrupts can be sufficient.
+Polled interrupts are **generally** suitable in simple systems with a **limited** number of devices and **low** interrupt rates or **predictable** and moderate interrupt rates. For example, in embedded systems with a single or a few devices generating interrupts infrequently, such as basic sensor input or user interactions, polled interrupts can be sufficient.
 
 Vectored interrupts are commonly used in more **complex** systems with **multiple** devices generating interrupts frequently. They are suitable when efficient handling of multiple interrupts and reduced latency are crucial, such as in high-performance systems, real-time operating systems, or systems with time-sensitive tasks.
 
