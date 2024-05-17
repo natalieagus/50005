@@ -399,7 +399,7 @@ Maps <span style="color:#f77729;"><b>many</b></span> user-level threads to <span
 <span style="color:#f77729;"><b>Disadvantage</b></span>:
 
 - <span style="color:#f77729;"><b>The entire process will block </b></span>if a thread makes a blocking system call since kernel isn’t aware of the presence of these user threads
-- Since only one thread can access the kernel at a time, multiple threads are unable to run in parallel on multicore systems
+- Since only one thread can access the kernel at a time, multiple threads attached to the same kernel thread are unable to run in parallel on multicore systems
 
 <img src="{{ site.baseurl }}/assets/images/week3/19.png"  class="center_fifty "/>
 
