@@ -239,7 +239,7 @@ In the next few sections, we discuss several known solutions to CS problems. The
 - <span style="color:#f77729;"><b>Hardware</b></span> Supported <span style="color:#f77729;"><b>Spinlocks</b></span> (hardware supported, only 1 process in the CS at a time, busy waits)
 - <span style="color:#f77729;"><b>Software Spinlocks and Mutex Locks</b></span>
 - <span style="color:#f77729;"><b>Semaphores</b></span> (does not busy wait, generalization of mutex locks -- able to protect two or more identical shared resources)
-- <span style="color:#f77729;"><b>Conditional Variables</b></span> (does not busy wait, wakes up on condition)
+- <span style="color:#f77729;"><b>Condition variables</b></span> (does not busy wait, wakes up on condition)
 
 # Software Mutex Algorithm
 
@@ -591,13 +591,13 @@ char rcv(){
 }
 ```
 
-# Conditional Variables
+# Condition variables
 
-Conditional variables allow a process or thread to wait for completion of a given <span style="color:#f7007f;"><b>event</b></span> on a particular object (some shared state, data structure, anything). It is used to <span style="color:#f77729;"><b>communicate</b></span> between processes or threads when certain conditions become `true`.
+Condition variables allow a process or thread to wait for completion of a given <span style="color:#f7007f;"><b>event</b></span> on a particular object (some shared state, data structure, anything). It is used to <span style="color:#f77729;"><b>communicate</b></span> between processes or threads when certain conditions become `true`.
 
 The "event" is the _change_ in state of some condition that thread is interested in. Until that is satisfied, the process waits to be awakened later by a signalling process/thread (that actually <span style="color:#f77729;"><b>changes</b></span> the condition).
 
-Conditional variables are and <span style="color:#f77729;"><b>should</b></span> always be implemented with <span style="color:#f77729;"><b>mutex</b></span> locks. When implemented properly, they provide <span style="color:#f7007f;"><b>condition synchronization</b></span>.
+Condition variables are and <span style="color:#f77729;"><b>should</b></span> always be implemented with <span style="color:#f77729;"><b>mutex</b></span> locks. When implemented properly, they provide <span style="color:#f7007f;"><b>condition synchronization</b></span>.
 {:.error}
 
 For example, we can initialize a mutex guarding certain CS:
@@ -655,9 +655,9 @@ This is crucial because it will re-check the state of `cond_x` again before cont
 
 # Final Note
 
-A conditional variable is effectively a <span style="color:#f77729;"><b>signalling</b></span> mechanism under the context of a given mutex lock. With mutex lock alone, we cannot easily block a process out of its CS based on any <span style="color:#f77729;"><b>arbitrary condition</b></span> even when the mutex is <span style="color:#f77729;"><b>available</b></span>.
+A condition variable is effectively a <span style="color:#f77729;"><b>signalling</b></span> mechanism under the context of a given mutex lock. With mutex lock alone, we cannot easily block a process out of its CS based on any <span style="color:#f77729;"><b>arbitrary condition</b></span> even when the mutex is <span style="color:#f77729;"><b>available</b></span>.
 
-By default, conditional variables and mutexes cannot be shared across processes. However, you can use condition variables **across** processes if you make the condition variable **process-shared**, using condition variable attribute configured with the `pthread_condattr_setpshared` function and a value of `PTHREAD_PROCESS_SHARED`. You will also have to make the **associated** mutex process-shared, using a mutex attribute configured with `pthread_mutexattr_setpshared`.
+By default, condition variables and mutexes cannot be shared across processes. However, you can use condition variables **across** processes if you make the condition variable **process-shared**, using condition variable attribute configured with the `pthread_condattr_setpshared` function and a value of `PTHREAD_PROCESS_SHARED`. You will also have to make the **associated** mutex process-shared, using a mutex attribute configured with `pthread_mutexattr_setpshared`.
 
 Here's an excerpt from the Linux `man` page:
 
@@ -679,7 +679,7 @@ pthread_mutexattr_setpshared(&attrmutex, PTHREAD_PROCESS_SHARED);
 /* Initialise mutex. */
 pthread_mutex_init(pmutex, &attrmutex);
 
-/***** CONDITIONAL VARIABLE *****/
+/***** CONDITION VARIABLE *****/
 pthread_cond_t * pcond = NULL;
 pthread_condattr_t attrcond;
 

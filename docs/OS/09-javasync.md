@@ -45,7 +45,7 @@ Singapore University of Technology and Design
 >   - Describe the differences between reentrant locks and non-reentrant locks.
 >   - Analyze scenarios where reentrant locks are beneficial and situations where non-reentrant locks may cause problems.
 > - **Implement Fine-Grained Synchronization Using Condition Variables**
->   - Illustrate the use of named conditional variables in conjunction with reentrant locks for more precise control over thread synchronization.
+>   - Illustrate the use of named condition variables in conjunction with reentrant locks for more precise control over thread synchronization.
 >   - Apply these concepts to practical coding scenarios to ensure correct synchronization and thread management.
 > 
 > These learning objectives are designed to help understand and apply Java's synchronization mechanisms effectively in concurrent programming scenarios.
@@ -147,7 +147,7 @@ public synchronized void doWork(int id)
 In this example, the condition in <span style="color:#f77729;"><b>question</b></span> is that only thread whose `id == turn` can execute the CS.
 {: .highlight}
 
-When calling `wait()`, the lock for mutual exclusion <span style="color:#f77729;"><b>must</b></span> be held by the caller (same as the conditional variable in the section above). That's why the `wait` to the conditional variable is made inside a `synchronized` method. If not, disaster might happen, for example the following execution sequence:
+When calling `wait()`, the lock for mutual exclusion <span style="color:#f77729;"><b>must</b></span> be held by the caller (same as the condition variable in the section above). That's why the `wait` to the condition variable is made inside a `synchronized` method. If not, disaster might happen, for example the following execution sequence:
 
 - At `t=0`,
   - Thread Y check that `turn != id_y`, and then Y is suspended by the asynchronous timer.
@@ -282,7 +282,7 @@ You need to carefully <span style="color:#f77729;"><b>consult the documentation<
 
 ## Fine-Grained Condition Synchronisation
 
-If we want to perform fine grained condition synchronization, we can use Java's <span style="color:#f77729;"><b>named</b></span> conditional variables and a reentrant lock. Named conditional variables are created explicitly by first creating a `ReentrantLock()`. The template is as follows:
+If we want to perform fine grained condition synchronization, we can use Java's <span style="color:#f77729;"><b>named</b></span> condition variables and a reentrant lock. Named condition variables are created explicitly by first creating a `ReentrantLock()`. The template is as follows:
 
 ```java
 Lock lock = new ReentrantLock();
@@ -305,9 +305,9 @@ lockCondition.signal();
 lock.unlock();
 ```
 
-At first, we associate a conditional variable with a lock: `lock.newCondition()`. This <span style="color:#f77729;"><b>forces</b></span> us to always hold a lock when a condition is being signaled or waited for.
+At first, we associate a condition variable with a lock: `lock.newCondition()`. This <span style="color:#f77729;"><b>forces</b></span> us to always hold a lock when a condition is being signaled or waited for.
 
-We can modify the example above of N threads which can only progress if `id == turn` to use <span style="color:#f77729;"><b>conditional variables</b></span> as follows:
+We can modify the example above of N threads which can only progress if `id == turn` to use <span style="color:#f77729;"><b>condition variables</b></span> as follows:
 
 ```java
 // Create arrays of condition
