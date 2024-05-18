@@ -238,16 +238,13 @@ Head to the [appendix](#ivt-in-various-architectures) to learn more about actual
 # Reentrant vs Preemptive Kernel
 ## Reentrancy
 
-A reentrant kernel is the one which allows <span style="color:#f7007f;"><b>multiple</b></span> processes to be executing in the kernel mode at any given point of time, hopefully without causing any consistency problems among the kernel data structures. If the kernel is not re-entrant, a process can only be suspended <span style="color:#f77729;"><b>while it is in user mode</b></span>.
+A reentrant kernel is the one which allows <span style="color:#f7007f;"><b>multiple</b></span> processes to be executing in the kernel mode at any given point of time, hopefully without causing any consistency problems among the kernel data structures. If the kernel is non re-entrant, the kernel is not designed to handle multiple overlapping system calls. A process could still be suspended in kernel mode, but that would mean that it <span style="color:#f77729;"><b>blocks</b></span> kernel mode execution on <span style="color:#f77729;"><b>all other processes</b></span>. No other processes can make system calls (will be put to wait) until the suspended process in kernel mode resumes and returns from the system call. 
 
-In a non-reentrant kernel: although a process could be suspended in kernel mode, that would still <span style="color:#f77729;"><b>block</b></span> kernel mode execution on <span style="color:#f77729;"><b>all other processes</b></span>.
+For example, consider Process 1 that is <span style="color:#f7007f;"><b>voluntarily</b></span> voluntarily suspended when it is in the middle of handling its `read` system call because the it has to wait for some data from disk to become available. It is <span style="color:#f77729;"><b>suspended in Kernel Mode</b></span> by `yielding` itself. Another Process 2 is now scheduled and wishes to make `print` system call. 
 
-For example, consider Process 1 that is <span style="color:#f7007f;"><b>voluntarily</b></span> paused (suspended) when it is in the middle of handling its `async_load` system call. It is <span style="color:#f77729;"><b>suspended in Kernel Mode</b></span> by `yielding` itself.
-
-- In a reentrant kernel: Process 2 is currently executed; able to be handling its `print` system call as well.
+- In a reentrant kernel: Process 2 is currently executed; able to execute its `print` system call.
 - In a non-reentrant kernel: Process 2, although currently executed must **wait** for Process 1 to exit from the Kernel Mode if Process 2 wishes to execute its `print` system call.
 
-In simpler Operating Systems, incoming hardware interrupts are typically <span style="color:#f7007f;"><b>disabled</b></span> while another interrupt (of same or higher priority) is being processed to prevent a lost interrupt i.e: when user states are currently being saved before the actual interrupt service routine began or various **<span style="color:#f7007f;"><b>reentrancy problems</b></span>**[^4].
 
 ## Preemption
 
@@ -256,16 +253,17 @@ A pre-emptive Kernel <span style="color:#f77729;"><b>allows the scheduler</b></s
 Likewise, in a non-preemptive kernel the scheduler is not capable of rescheduling a task while its CPU is executing in the kernel mode.
 {:.info}
 
-In the example of Process 1 and 2 above, assume a scenario whereby there's a periodic scheduler interrupt to check _which_ Process may resume next. Assume that Process 1 is in the middle of handling its `async_load` system call when the timer interrupts.
+Using the same example of Process 1 and 2 above, assume a scenario whereby there's a periodic scheduler interrupt to check _which_ Process may resume next. Assume that Process 1 is in the middle of handling its `read` system call when the timer interrupts.
 
-- In a non-preemptive Kernel: If Process 1 does not voluntarily `yield` while it is still in the middle of its system call, then Process 2 will not be able to forcibly interrupt Process 1.
-- In a preemptive Kernel: When Process 2 is ready, and has a higher priority than Process 1, then the scheduler may **forcibly** suspend Process 1.
+- In a non-preemptive Kernel: If Process 1 does not voluntarily `yield` while it is still in the middle of its system call, then the scheduler will not be able to forcibly interrupt Process 1.
+- In a preemptive Kernel: When Process 2 is ready, and it is time to schedule Process 2 or if Process 2 has a higher priority than Process 1, then the scheduler may **forcibly** suspend Process 1.
 
-A kernel can be reentrant but not preemptive: That is if each process voluntarily `yield` after some time while in the Kernel Mode, thus allowing other processes to progress and enter Kernel Mode as well. However, a kernel <span style="color:#f7007f;"><b>should not</b></span> be preemptive and not reentrant (it doesn't make sense!).
+A kernel can be reentrant but not preemptive: That is if each process voluntarily `yield` after some time while in the Kernel Mode, thus allowing other processes to progress and enter Kernel Mode (make system calls) as well. However, a kernel <span style="color:#f7007f;"><b>should not</b></span> be preemptive and not reentrant (it doesn't make sense!). A preemptive kernel allows processes to be interrupted at any time, requiring the kernel to handle multiple simultaneous executions of its code safely. A non-reentrant kernel cannot handle concurrent execution of kernel code, leading to data corruption and instability if preempted. Thus, a kernel must be reentrant to function correctly in a preemptive environment. We could add further conditions such as: disallowing any other processes to make system calls when another process is currently suspended in Kernel Mode (eg: forcibly switched by scheduler in the middle of handling its system call). This setup avoids concurrent executions of kernel code but lead to inefficiencies and delayed response times: rendering the "preemptive kernel feature" useless. 
 
 **Fun fact:** Linux Kernel is reentrant and preemptive.
 {:.info}
 
+In simpler Operating Systems, incoming hardware interrupts are typically <span style="color:#f7007f;"><b>disabled</b></span> while another interrupt (of same or higher priority) is being processed to prevent a lost interrupt i.e: when user states are currently being saved before the actual interrupt service routine began or various **<span style="color:#f7007f;"><b>reentrancy problems</b></span>**[^4]. Disabling hardware interrupts during critical moments like context switching typically indicates a non-preemptive kernel. 
 
 
 
