@@ -91,7 +91,7 @@ A directory can also contain the name of other directories. We know this as a <s
 {:.note}
 Typically, both the directory structure and the files themselves reside on disk (and cached in memory). The figure below taken from the SGG book shows a common file system organization:
 
-<img src="{{ site.baseurl }}/assets/images/week6/6.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week6/6.png"  class="center_fifty"/>
 
 Each <span style="color:#f77729;"><b>volume/partition</b></span> that contains a file system must also contain information about the files in the system. This information is kept as <span style="color:#f77729;"><b>entries</b></span> in the device directory (a.k.a volume table of contents). The device directory (more commonly known simply as the directory) records some <span style="color:#f77729;"><b>important</b></span> information such as name, location, size, and type—for all files _in that volume_.
 
@@ -109,7 +109,7 @@ The <span style="color:#f77729;"><b>purpose</b></span> of having a directory str
 3. <span style="color:#f77729;"><b>Organization</b></span> – logical grouping of files by various properties for ease of usage:
    - Group files with the same user, project, purpose, type, etc.
 
-> Think about it as IKEA having a *directory* (named spaces, e.g: living room, kitchen things, and named items) to improve user experience: you know where to find the things that you wanted to browser or buy and you can remember the items by name more easily than remembering its serial number. 
+> Think about it as **IKEA** having a *directory* (named spaces, e.g: living room, kitchen things, and named items) to **improve** user experience: you know where to find the things that you wanted to browser or buy and you can remember the items by name more easily than remembering its serial number. 
 
 ## Folder
 

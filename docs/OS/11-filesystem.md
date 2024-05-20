@@ -599,7 +599,7 @@ The inode (index node) is a data structure in a Unix-style file system that <spa
 
 <span style="color:#f7007f;"><b>The inode is the file, excluding its content</b></span>, which is identified by a unique <span style="color:#f7007f;"><b>inode number</b></span>. A filename on the other hand, is just metadata in the file system that refers to a file. A single file/inode can have multiple filenames referring to it (called links, which we will learn later).
 
-<img src="{{ site.baseurl }}/assets/images/week6/10.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/assets/images/week6/10.png"  class="center_fifty"/>
 
 ## The Logical and Physical File system
 
@@ -625,13 +625,16 @@ The four main components of the entire file system is:
 
 4. The <span style="color:#f77729;"><b>File Control Block</b></span> (per file, also known as <span style="color:#f77729;"><b>inode</b></span> in UNIX): contains file attributes, has a unique id, and is associated with directory entry.
 
-_Side note about partition vs volume: _
+{:.note-title}
+> Partition vs Volume
+>
+> 
+> Partition is not the same as volume: 
+> - Partition is always created on a single physical disk, however a volume can span multiple disks and have many partitions.
+> - Partitions only identified by numbers, but volumes have names.
+> - Finally, partitions are more suitable for individual devices, while volumes (especially logical volumes) are more flexible and suited for network attached storage.
 
-- Partition is always created on a single physical disk, however a volume can span multiple disks and have many partitions.
-- Partitions only identified by numbers, but volumes have names.
-- Finally, partitions are more suitable for individual devices, while volumes (especially logical volumes) are more flexible and suited for network attached storage.
-
-<span style="color:#f77729;"><b>Example</b></span> on how user interacts with the logical file system to create a file (simplified):
+Example on how user interacts with the logical file system to create a file (simplified):
 
 1. An application program calls the <span style="color:#f77729;"><b>logical</b></span> file system to <span style="color:#f77729;"><b>create</b></span> a file, e.g: by right click >> create.
 2. The <span style="color:#f77729;"><b>logical</b></span> file system traverse the directory, and check the _requested_ location.
@@ -668,9 +671,9 @@ The in-memory (means these are in RAM, as long as the computer is alive) informa
    - You can check opened files for your current terminal process opened files using `lsof -p $$` command.
      <img src="{{ site.baseurl }}/assets/images/week6/13.png"  class="center_seventy"/>
 
-_Details:_
 
-```
+```py
+# Details 
 FD –  the file descriptor. Some of the values of FDs are,
     cwd – current Working Directory
     txt – text file
