@@ -322,7 +322,9 @@ The architecture of the JX system is illustrated below (simplified representatio
   - However, since domain zero is not written in Java, it <span style="color:#f77729;"><b>must be considered trusted</b></span> (built by trusted sources)
 
 {:.note}
-**Garbage collection** (GC) is a form of automatic memory management that helps in reclaiming memory occupied by objects that are no longer in use by a program. This process is crucial in preventing memory leaks and optimizing the use of available memory, ensuring that a program runs efficiently. 
+**Garbage collection** (GC) is a form of automatic memory management that helps in reclaiming memory occupied by objects that are no longer in use by a program. This process is crucial in preventing memory leaks and optimizing the use of available memory, ensuring that a program runs efficiently.
+
+For more information, you can consult the [appendix](#java-os-details).
 
 # Summary {#summary}
 This section delves into the **architecture** of modern operating systems, exploring their **components** and the **critical** roles they play in system functionality. It highlights the distinction between system and application programs, with a focus on how system programs interact with the kernel through system calls. Various OS structures such as monolithic, layered, microkernel, and hybrid models are discussed to illustrate their design and implementation complexities. 
@@ -368,6 +370,37 @@ Note: "Host OS" in the picture above assumes that it is UNIX-based POSIX complia
 {:.warning}
 
 Example of software applications that support containerisation: [Docker](https://www.freecodecamp.org/news/docker-quick-start-video-tutorials-1dfc575522a0).
+
+## Java OS Details
+
+In Java, the management of processes is largely abstracted from the developer by the Java Virtual Machine (JVM). Here’s a breakdown of how process management works in Java:
+
+1. **Threads and Processes**:
+   - Java does not manage processes directly in the same way as an operating system. Instead, Java applications typically run as a single process within the JVM.
+   - Within this process, Java can manage multiple threads. Threads in Java are managed by the JVM and can be either user threads or daemon threads.
+
+2. **Java Threads**:
+   - Java provides a robust threading model that allows for concurrent execution of code. This is done using the `java.lang.Thread` class and the `java.util.concurrent` package.
+   - Java threads are mapped to native operating system threads. This means that the underlying OS is responsible for scheduling and executing these threads.
+
+3. **JVM and the OS Kernel**:
+   - The JVM relies on the underlying OS kernel for fundamental process and thread management tasks. This includes scheduling, context switching, and inter-process communication.
+   - When you create and manage threads in a Java application, the JVM interfaces with the OS to handle these threads. The OS kernel's scheduler is responsible for allocating CPU time to each thread based on its scheduling algorithm (e.g., round-robin, priority-based).
+
+4. **Java's Concurrency Utilities**:
+   - Java provides a high-level API for managing concurrency through the `java.util.concurrent` package. This includes classes like `ExecutorService`, `Future`, and `Semaphore` that facilitate advanced thread management and synchronization.
+   - These utilities abstract away many of the complexities of thread management and synchronization, allowing developers to focus on higher-level concurrency tasks.
+
+5. **Garbage Collection**:
+   - Another aspect of process management in Java is garbage collection. The JVM includes garbage collectors that automatically reclaim memory occupied by objects that are no longer in use.
+   - Garbage collection runs in its own threads and can impact the performance of a Java application. The JVM provides various garbage collection algorithms (e.g., Serial, Parallel, G1) that can be tuned based on the application's requirements.
+
+6. **Process Management**:
+   - While Java itself doesn’t manage OS-level processes, it can interact with them using the `java.lang.Process` and `java.lang.ProcessBuilder` classes. These classes allow Java applications to start and manage external processes.
+   - Through these classes, a Java application can execute system commands, read and write to the standard input/output streams of the processes, and wait for them to complete.
+
+In summary, Java does not have its own scheduler for processes. Instead, it relies on the underlying OS kernel for basic process and thread management. Java provides a high-level abstraction over threads and concurrency, making it easier for developers to write concurrent programs without dealing with the low-level details of process management handled by the OS.
+
 <br>
 
 [^10]: `tty` itself is a command in Unix and Unix-like operating systems to print the file name of the terminal connected to standard input. If you open multiple terminal windows in your UNIX-based system and type `tty` on each of them, you will be returned with different ids. You may use write to communicate across terminal windows
