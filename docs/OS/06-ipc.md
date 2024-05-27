@@ -562,7 +562,7 @@ Message Passing and Shared Memory both facilitate interprocess communication (IP
 
 3. <span style="color:#f77729;"><b>Usage comparison:</b></span>
 
-   - Message passing is useful for sending <span style="color:#f7007f;"><b>smaller</b></span> amounts of data between two processes, but if large data is exchanged then will suffer from system call overhead.
+   - Message passing is useful for sending <span style="color:#f7007f;"><b>smaller</b></span> amounts of data between two processes, but if large data is exchanged then it will suffer from system call overhead.
 
    - Shared memory is costly if only small amounts of data are exchanged. Useful for <span style="color:#f7007f;"><b>large</b></span> and frequent data exchange.<br>
 
