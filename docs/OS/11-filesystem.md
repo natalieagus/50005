@@ -470,7 +470,7 @@ From fd_b: klmnopqrst
 From fd_d: abcdefghij
 ```
 
-Note that fd_d is a <span style="color:#f77729;"><b>different entry</b></span> in the system-wide open file table because a read/write operation using `fd_a`, `fd_b`, and `fd_c` do not affect the read operation using fd_d. `fd_d` does not share the same **pointer** cp as both `fd_a`, `fd_b`, and `fd_c.
+Note that fd_d is a <span style="color:#f77729;"><b>different entry</b></span> in the system-wide open file table because a read/write operation using `fd_a`, `fd_b`, and `fd_c` do not affect the read operation using fd_d. `fd_d` does not share the same **pointer** cp as both `fd_a`, `fd_b`, and `fd_c`.
 {: .note}
 
 
