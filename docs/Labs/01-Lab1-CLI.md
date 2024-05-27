@@ -725,6 +725,9 @@ Oh My Zsh is a popular framework for managing Zsh configurations, offering a wid
 
 If you're looking for alternatives that are lighter or wish to customize Zsh in a more minimalistic manner, here's a few simple steps to take.  
 
+We assume you use Ubuntu as your OS. If you use debian or other OS, please use your package manager accordingly (not `apt`). For instance, macOS users can use Homebrew.
+{:.important}
+
 ```sh 
 # run these commands at ~ directory 
 # update apt 
