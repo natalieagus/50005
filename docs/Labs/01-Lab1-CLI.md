@@ -753,7 +753,7 @@ git clone https://github.com/unixorn/fzf-zsh-plugin.git ~/.zsh/plugins/fzf-zsh-p
 git clone https://github.com/Aloxaf/fzf-tab.git ~/.zsh/plugins/fzf-tab
 
 # create symbolic link
-ln -s -T ~/.zsh/.zshrc ~/.zshrc
+ln -s ~/.zsh/.zshrc ~/.zshrc
 # open ~/.zshrc using nano
 nano ~/.zshrc 
 ```
@@ -821,8 +821,8 @@ Afterwards, install a few more useful tools:
 
 ```sh
 # exa
-sudo apt install exa -y
-echo "alias ls=\"exa --long\"" >> ~/.zshrc
+sudo apt install eza -y
+echo "alias ls=\"eza --long\"" >> ~/.zshrc
 echo "alias zr=\"source ~/.zshrc\"" >> ~/.zshrc
 
 # bat
