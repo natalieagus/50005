@@ -425,6 +425,7 @@ Suppose a server sends 4 objects under these conditions:
 - Network latency: 50 ms RTT
 - Bandwidth: 10 Mbps (note: this is bit per second)
 
+We would like to calculate the total time taken to receive each object from the moment the request to `GET` these objects are made (ignoring connection establishment). 
 First, calculate the time to transmit a single frame (a 100 KB frame):
 
 $$
