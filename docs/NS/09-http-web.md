@@ -392,7 +392,7 @@ HTTP/2, defined by [RFC 7540, 2015](https://datatracker.ietf.org/doc/rfc7540/), 
 - **Unchanged Core Elements**: Methods, status codes, and most header fields remain consistent with HTTP/1.1, ensuring compatibility and ease of transition.
 - **Client-Specified Object Priority**: The server can transmit objects based on priorities specified by the client, rather than strictly following a First-Come, First-Served (FCFS) order. This allows for more efficient resource delivery.
 - **Server Push**: The server can proactively push unrequested objects to the client, anticipating future requests and reducing latency.
-- **Frame Division and Scheduling**: HTTP/2 divides objects into smaller frames, which are then interleaved and scheduled to mitigate Head-of-Line (HOL) blocking. This division and multiplexing improve the efficiency of data transfer over a single connection.
+- **Frame Division and Scheduling**: HTTP/2 divides objects into smaller frames, which are then interleaved and scheduled to mitigate Head-of-Line (HOL) blocking. This division and multiplexing improve the efficiency of data transfer over a single connection. A typical scheduling strategy will be **round robin**.
 
 These features collectively enhance the performance and flexibility of HTTP/2 compared to HTTP/1.1, allowing for more efficient management of multiple objects and reducing delays in web communication.
 
