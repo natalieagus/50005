@@ -416,7 +416,7 @@ Overall, HTTP/3 enhances performance, especially in high-latency and lossy netwo
 
 In this section, we discuss in detail how HTTP/1.1 with pipelining, HTTP/2, and HTTP/3 handle **sending multiple objects**, focusing on Head-of-Line (HOL) blocking and how each protocol manages it, as well as its impact on web performance.
 
-Suppose a server sends 5 objects under these conditions: 
+Suppose a server sends 4 objects under these conditions: 
 - Object 1: 1 MB (note: this is BYTE)
 - Object 2: 100 KB
 - Object 3: 100 KB
