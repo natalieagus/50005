@@ -344,7 +344,7 @@ With conditional GET requests, servers do not send the requested objects again i
 
 ## Where are the caches?
 
-Some of you might have heard that our web browser also **caches** content. This is correct. A Web Cache can be made of various players::
+Some of you might have heard that our web browser also **caches** content. This is correct. A Web Cache can be made of various players:
 * On our own computer, managed by our browsers (we can clear this from our browser to save space)
 * Local web caches provided by our ISP or institutions (e.g: SUTD)
 
