@@ -215,7 +215,7 @@ RSA involves a set of algorithms for key generation, encryption, and decryption:
      - $$\phi$$ is known as Euler's totient function (see [appendix](#eulers-totient-function) for more details).
    - **Choose an integer $$ e $$ such that $$ 1 < e < z $$ and $$ e $$ is <span class="orange-bold">coprime</span> to $$z$$**. 
      - This $$e$$ will be the <span class="orange-bold">public</span> exponent.
-   - **Determine $$ d $$ as the modular multiplicative inverse of $$e \mod z$$, that is solve $$d$$ such that $$(ed) \mod z = 1$$. 
+   - **Determine $$ d $$ as the modular multiplicative inverse** of $$e \mod z$$, that is solve $$d$$ such that $$(ed) \mod z = 1$$. 
      - This can be calculated using the Extended Euclidean Algorithm (out of syllabus, see Appendix to find out more). 
      - This $$ d $$ is the <span class="orange-bold">private</span> exponent.
 
