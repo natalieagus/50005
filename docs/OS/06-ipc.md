@@ -261,8 +261,8 @@ A socket is one endpoint of a <span style="color:#f77729;"><b>two-way communicat
 
 For processes ran in the same machine (same computer), they communicate through a socket with IP `localhost` and a <span style="color:#f77729;"><b>unique</b></span>, unused port number. Processes can <code>read()</code>or <code>send()</code>data through the socket through system calls:
 
-1. For example, when P1 tries to send a message (data) to P2 using socket, it has to copy the message from <span style="color:#f7007f;"><b>its own space</b></span> to the kernel space first through the socket via `write` system call.
-2. Then, when P2 tries to read from the socket, that message in the kernel space is copied again to P2’s space via `read` system call.
+1. For example, when P1 tries to `send` a message (data) to P2 using socket, it has to copy the message from <span style="color:#f7007f;"><b>its own space</b></span> to the kernel space first through the socket via `write` system call.
+2. Then, when P2 tries to `read` from the socket, that message in the kernel space is copied again to P2’s space via `read` system call.
 
 The diagram below illustrates how socket works in general:
 <img src="{{ site.baseurl }}/assets/images/week3/15.png"  class="center_fifty "/>
@@ -276,6 +276,23 @@ And below illustrates the evolution of the physical memory content when two proc
 3. P2 (client) makes a system call to connect to an existing socket 
 4. Kernel creates a communication socket between P1 and P2 
 5. P1 and P2 can communicate via the established socket in step 4 using `write` and `read` system calls
+
+## Blocking `recv`/`read`
+The `recv` operation is **blocking** by default. This means that if no data is available to be read from the socket, the operation will block the execution of the program. The calling program remains in a waiting state, effectively pausing its execution at that point, until data arrives on the socket. Once data is available on the socket (e.g., a packet is received from the network), the read operation will **proceed**.
+
+## Blocking `send`/`write`
+The `send` operation also blocks when the socket's send buffer is **full**. If the send buffer is full because the remote peer is not reading data fast enough, or there is high network congestion, the buffer cannot accept more data. In blocking mode, if the buffer is full, the `send` call will block the execution of the program. This means the function call will **not** return until there is sufficient space in the buffer to accommodate the data being sent.
+
+During this blocking period, the program remains paused at the `send` call, *waiting* for the buffer to have enough space. This occurs when the remote peer reads some of the previously sent data, freeing up space in the buffer. Once the send buffer has enough space, the send() function proceeds to copy the data into the buffer.
+
+{:.note}
+Blocking recvs/reads and sends/writes on sockets provide a straightforward way to achieve automatic synchronization, managed by the kernel.
+
+## Non-blocking `recv` and `send`
+Although these operations are blocking by default, we can set it such that they are non-blocking.
+
+**Non-blocking `recv`**: In non-blocking mode, if no data is available to read, the recv() or read() function will return immediately with an error code (typically EWOULDBLOCK or EAGAIN).
+**Non-blocking `send`**: If the buffer is full, the `send()` call returns immediately with a special error code (e.g., EWOULDBLOCK or EAGAIN), indicating that the operation could not be completed.
 
 
 ## Program: IPC using Socket {#code-ipc-using-socket}
@@ -448,6 +465,9 @@ When you **recompile** the `server` to implement `valread` via **nonblocking** m
 This is because `server` will not wait for any messages from the client before returning from `recv`, and so we can only observe the message `Hello from client` to be printed out _before_ `Hello message sent to client` **if** client process is scheduled **before** server process.
 
 You can **exaggerate** this behavior by adding a `sleep(1);` instruction in the client code right _after_ it's established connection to the server but _before_ it sends any message to the server.
+
+{:.note}
+Both `recv()` and `read()` can be used for reading data from a socket, but `recv()` is typically preferred in socket programming due to its additional options
 
 ## Message Queue
 
