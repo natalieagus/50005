@@ -292,6 +292,7 @@ Blocking recvs/reads and sends/writes on sockets provide a straightforward way t
 Although these operations are blocking by default, we can set it such that they are non-blocking.
 
 **Non-blocking `recv`**: In non-blocking mode, if no data is available to read, the recv() or read() function will return immediately with an error code (typically EWOULDBLOCK or EAGAIN).
+
 **Non-blocking `send`**: If the buffer is full, the `send()` call returns immediately with a special error code (e.g., EWOULDBLOCK or EAGAIN), indicating that the operation could not be completed.
 
 
@@ -471,7 +472,7 @@ Both `recv()` and `read()` can be used for reading data from a socket, but `recv
 
 ## Message Queue
 
-<span style="color:#f77729;"><b>Message Queue </b></span>is just another <span style="color:#f77729;"><b>interface</b></span> for message passing (another example being socket as shown in the previous section). It uses system call `ftok, msgget, msgsnd, msgrcv` each time data has to be passed between the processes. [`msgrcv` and `msgsnd`](https://man7.org/linux/man-pages/man2/msgsnd.2.html) can be made <span style="color:#f77729;"><b>blocking</b></span> or <span style="color:#f77729;"><b>non blocking</b></span> depending on the setup.
+<span style="color:#f77729;"><b>Message Queue </b></span>is just another <span style="color:#f77729;"><b>interface</b></span> for message passing (another example being socket as shown in the previous section). It uses system call `ftok, msgget, msgsnd, msgrcv` each time data has to be passed between the processes. [`msgrcv` and `msgsnd`](https://man7.org/linux/man-pages/man2/msgsnd.2.html) can be made <span style="color:#f77729;"><b>blocking</b></span> or <span style="color:#f77729;"><b>non blocking</b></span> depending on the setup. Example applications that utilises message queue are: RabbitMQ, Apache Kafka, and Amazon SQS. 
 
 The figure below illustrates the general idea of Message Queue. The queue data structure is maintain by the Kernel, and processes may write into the queue at any time. If there are more than 1 writer and 1 reader at any instant, careful planning has to be made to ensure that the <span style="color:#f77729;"><b>right</b></span> message is obtained by the right process.
 <img src="{{ site.baseurl }}/assets/images/week3/16.png"  class="center_seventy"/>
@@ -563,6 +564,58 @@ int main()
    return 0;
 }
 ```
+## Message Queue vs Socket
+
+
+{:.note}
+Both message queues and sockets can handle messages in a first-in, first-out (FIFO) order, but the key differences lie in how they manage this order and the context in which they operate.  Message queues offer **decoupling**, **persistence**, and **asynchronous** processing, making them ideal for distributed systems requiring reliable communication. Sockets provide real-time, **direct** communication, making them suitable for applications needing **immediate** data transfer and low latency.
+
+
+
+### Message Queue
+
+**Order Handling**:
+- **FIFO**: Message queues typically ensure FIFO order as a core feature, meaning messages are dequeued in the same order they were enqueued.
+- **Guarantees**: Many message queue implementations provide strong guarantees about message order and delivery, including handling retries and ensuring no message is lost even in the event of a crash or network failure.
+
+**Operational Context**:
+- **Asynchronous Processing**: Producers and consumers operate **asynchronously**, which means the producer can *continue* to send messages without waiting for the consumer to process them.
+- **Persistence**: Messages can be stored **persistently** in the queue until they are processed, ensuring reliability and durability.
+- **Buffering and Throttling**: Message queues can buffer a **large** number of messages and throttle processing based on consumer availability and load, providing a way to smooth out spikes in traffic. This is typically way larger than what sockets can handle. 
+
+### Socket
+
+**Order Handling**:
+- **FIFO**: Sockets, particularly with TCP (Transmission Control Protocol), ensure that data is received in the same order it was sent. TCP manages this by <span class="orange-bold">sequencing</span> packets and ensuring ordered delivery.
+- **Real-time**: The FIFO nature of sockets applies to real-time, continuous data streams, where the <span class="orange-bold">order</span> of data packets is maintained strictly in the sequence they were sent.
+
+**Operational Context**:
+- **Direct Communication**: Sockets require a direct, <span class="orange-bold">live</span> connection between the sender and receiver. Both ends must be active and connected for data to be transmitted.
+- **No Persistence**: Sockets do not inherently provide message persistence. If the connection drops or the receiver is not ready to process data, the data can be lost unless additional mechanisms are implemented.
+- **Immediate Processing**: Data sent over sockets is typically processed **immediately** upon receipt. This real-time processing is crucial for applications requiring low-latency communication.
+
+### Detailed Differences
+
+- **Connection Requirement**:
+  - **Message Queue**: No need for a continuous connection between sender and receiver. Messages are stored until the receiver is ready to process them.
+  - **Socket**: Requires an active connection between sender and receiver. If the connection drops, communication is interrupted.
+
+- **Decoupling**:
+  - **Message Queue**: Decouples the producer and consumer, allowing them to operate independently and at different rates.
+  - **Socket**: Tight coupling, requiring both endpoints to be ready for communication simultaneously.
+
+- **Persistence and Reliability**:
+  - **Message Queue**: Provides mechanisms for persistence and reliability, ensuring messages are not lost even in failure scenarios.
+  - **Socket**: Relies on the connection being active and does not inherently provide persistence. Data may be lost if the connection fails.
+
+- **Use Case Suitability**:
+  - **Message Queue**: Suitable for asynchronous, decoupled communication, where reliability and order are critical over time.
+  - **Socket**: Suitable for real-time, bidirectional communication, where immediate data transfer and low latency are essential.
+
+{:.note-title}
+> Number of processes involved
+> 
+> Message queues can involve **multiple** producers and consumers, allowing many processes to send and receive messages **asynchronously** and **independently**. In contrast, sockets typically involve just **two** processes, one on each end of the connection, enabling live, direct, point-to-point communication.
 
 # Message Passing vs Shared Memory {#comparison-between-message-passing-and-shared-memory}
 
