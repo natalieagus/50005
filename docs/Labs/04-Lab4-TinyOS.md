@@ -346,9 +346,8 @@ You may declare a mouse semaphore in P3, and immediately `Wait` (attempt to decr
 MouseSemaphore: semaphore(0)	| Semaphore for mouse, initialised from zero
 
 P3Start:
-
 	Wait(MouseSemaphore) 	| proceed only when prompt has shown
-    | ... implement printing of click coordinates here
+	| ... implement printing of click coordinates here
 
     Signal(Prompt) | signal the prompt so it will print another prompt
     | ... continue implementation
