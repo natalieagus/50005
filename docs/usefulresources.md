@@ -15,3 +15,6 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 
 ### Amazing Articles
 [Putting the "You" in CPU](https://cpu.land): A nice article that explains how CPU works and more. 
+
+### Shell in C 
+[Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/): A useful article to implement PA1 that conforms to UNIX-like philosophy.
