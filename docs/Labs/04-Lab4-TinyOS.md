@@ -378,8 +378,6 @@ SVCTbl:	UUO(HaltH)		| SVC(0): User-mode HALT instruction
 
 The implementation of the two service handlers above is suggested to be as follows:
 
-Note that we consider that empty mouse click buffer contains constant `-1` and **not** `0`. If you implemented it as `0`, then it means that mouse click at coordinate `0,0` is not seen as a valid mouse click. Please adjust your implementation from Week 2 accordingly.
-{: .warning}
 
 ```nasm
 ||| LAB 4 PART B: add new handler to check keyboard state, but doesn't clear it and doesn't block the calling process
