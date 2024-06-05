@@ -424,7 +424,7 @@ beginCheckKeyboard:
     BEQ(R0, beginCheckMouse)
 
 
-||||| END OF Part D
+||||| END OF Part B
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 P0RdCh: GetKey()		| read next character,
