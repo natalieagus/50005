@@ -383,6 +383,7 @@ Note that we consider that empty mouse click buffer contains constant `-1` and *
 
 ```nasm
 ||| LAB 4 PART B: add new handler to check keyboard state, but doesn't clear it and doesn't block the calling process
+
 CheckKeyH:
 	LD(Key_State, r0)
 	ST(r0,UserMState)		| return it in R0.
@@ -409,15 +410,20 @@ P0Read:	Wait(Prompt)		| Wait until P1 has caught up...
 
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 ||||| LAB 4 PART B: TO SYNCHRONISE, busy wait
-beginCheckMouse:	CheckMouse()
-					CMPEQC(R0, -1, R0) | "empty" mouse click buffer contains -1, because 0 is a coordinate
-					BNE(R0, beginCheckKeyboard)
-					Signal(MouseSemaphore)		| if there is mouse click, give signal
-					Yield() | let P3 print sooner, give up the current quanta
-					BR(P0Read)		| and restart process
 
-beginCheckKeyboard: CheckKeyboard()
+beginCheckMouse:	
+	CheckMouse()
+	CMPEQC(R0, -1, R0) 			| "empty" mouse click buffer contains -1, because 0 is a coordinate
+	BNE(R0, beginCheckKeyboard)
+	Signal(MouseSemaphore)		| if there is mouse click, give signal
+	Yield() 		| let P3 print sooner, give up the current quanta
+	BR(P0Read)		| and restart process
+
+beginCheckKeyboard: 
+	CheckKeyboard()
     BEQ(R0, beginCheckMouse)
+
+
 ||||| END OF Part D
 ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
