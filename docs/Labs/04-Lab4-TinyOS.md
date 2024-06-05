@@ -413,7 +413,7 @@ P0Read:	Wait(Prompt)		| Wait until P1 has caught up...
 
 beginCheckMouse:	
 	CheckMouse()
-	CMPEQC(R0, -1, R0) 			| "empty" mouse click buffer contains -1, because 0 is a coordinate
+	CMPEQC(R0, -1, R0) 	| "empty" mouse click buffer contains -1, because 0 is a coordinate
 	BNE(R0, beginCheckKeyboard)
 	Signal(MouseSemaphore)		| if there is mouse click, give signal
 	Yield() 		| let P3 print sooner, give up the current quanta
@@ -431,6 +431,9 @@ P0RdCh: GetKey()		| read next character,
 	WrCh()			| echo back to user
     ...
 ```
+
+{:.warning}
+`beginCheckMouse` assumes that `Mouse_State` is set to `LONG(-1)` if there's no mouse click. If you didn't handle this case properly during Lab 2 checkoff, you need to edit this function. Change e.g: change `CMPEQC(R0, -1, R0)` into `CMPEQC(R0, 0, R0)` if you use `LONG(0)` to indicate absence of mouse click.
 
 In summary, here's what is supposed to happen:
 
