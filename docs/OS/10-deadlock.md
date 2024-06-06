@@ -361,8 +361,14 @@ If you randomly iterate through the `finish` vector, you might end up with these
 7. `P1, P4, P3, P0, P2`
 8. `P1, P4, P3, P2, P0`
 
-In this algorithm,  you can also compute the sequence of _possible_ process execution sequence if you store each value of index `i` acquired. This sequence is not unique.
+In this algorithm,  you can also compute the sequence of _possible_ process execution sequence if you store each value of index `i` acquired. This sequence is <span class="orange-bold">not</span> unique.
 {:.note}
+
+
+In summary, the safety algorithm will return two possible output: safe or unsafe:
+* **Safe State**: A state is considered safe if there exists a sequence of all processes such that each process can be allocated the maximum resources it may need, then return all the allocated resources back, and this can be done for all processes without causing a deadlock. In other words, there is at least one sequence of process execution that avoids deadlock.
+
+* **Unsafe State**: A state is unsafe if no such sequence exists. However, being in an unsafe state does <span class="orange-bold">not</span> guarantee that a deadlock will occur; it simply means that there is a possibility of a deadlock if future resource requests are not handled properly.
 
 ### System State Update
 
