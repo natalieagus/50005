@@ -370,6 +370,15 @@ In summary, the safety algorithm will return two possible output: safe or unsafe
 
 * **Unsafe State**: A state is unsafe if no such sequence exists. However, being in an unsafe state does <span class="orange-bold">not</span> guarantee that a deadlock will occur; it simply means that there is a possibility of a deadlock if future resource requests are not handled properly.
 
+### Unsafe != Guarantee of Deadlock
+Entering an unsafe state does <span class="orange-bold">not</span> guarantee a deadlock will occur. Here's why:
+
+* **Potential for Future Resource Availability**: Even if the current state is unsafe, future resource releases by other processes might allow the system to avoid deadlock. For instance, some processes might complete and release their resources, potentially creating a safe sequence that wasn't apparent initially.
+* **Future Requests Might Be Different**: Processes might <span class="orange-bold">not</span> request the maximum resources they are theoretically entitled to. They might request fewer resources or none at all, which can also prevent a deadlock.
+* **Preemption**: In some systems, certain resources or processes might be **preempted** or **forcibly** taken back from a process, allowing other processes to proceed and potentially avoid a deadlock situation.
+* **Resource Release**: Some process might release its resources at one point in time, making it possible for other processes to progress. 
+
+
 ### System State Update
 
 Note that these requests are made sequentially in time, so don’t forget to update the system state as you grant each request. When considering subsequent new requests, we perform the resource allocation algorithm with the <span style="color:#f77729;"><b>UPDATED</b></span> states that’s modified if you have granted the previous request.
