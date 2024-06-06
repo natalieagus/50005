@@ -347,7 +347,7 @@ For example, given the following system state:
 
 <img src="{{ site.baseurl }}/assets/images/week5/4.png"  class="center_seventy"/>
 
-Suppose there exist a current request `R_1` made by `P1`: `[1,0,2]`. You may find that granting this request leads to a <span style="color:#f7007f;"><b>safe state</b></span> and there exist several possible execution sequence (depending on _how_ you iterate through the `finish` vector, from index 0 onwards or from index `N-1` backwards):
+Suppose there exist a current request made by `P1`: `[1,0,2]`. You may find that granting this request leads to a <span style="color:#f7007f;"><b>safe state</b></span> and there exist several possible execution sequence (depending on _how_ you iterate through the `finish` vector, from index 0 onwards or from index `N-1` backwards):
 
 1. `P1, P3, P4, P0, P2`,
 2. `P1, P3, P4, P2, P0`
