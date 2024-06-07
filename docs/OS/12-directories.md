@@ -198,7 +198,7 @@ In UNIX-like file systems:
 
 - An inode is a data structure containing <span style="color:#f77729;"><b>attributes</b></span> about all files in the system.
 - These are the <span style="color:#f77729;"><b>references</b></span> to the actual file content: anonymous chunks of data, each given an inode number.
-- A file in its entirety is _not_ an inode, a file has an associated inode with it. inode contains only the file attributes (metadata).
+- A file in its entirety is _not_ an inode, a file has an associated inode with it. Inode contains only the file attributes (metadata).
 
 It is pretty difficult for users to find their files based on inode numbers. Therefore, we have <span style="color:#f77729;"><b>directories</b></span> which allows us to traverse the file system using named paths.
 
