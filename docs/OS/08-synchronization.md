@@ -250,7 +250,7 @@ Peterson’s solution is a <span style="color:#f77729;"><b>software-based</b></s
 - Strictly <span style="color:#f77729;"><b>two</b></span> processes that <span style="color:#f77729;"><b>alternate</b></span> execution between their critical sections and remainder sections (can be [generalised to `N` processes](https://www.geeksforgeeks.org/n-process-peterson-algorithm/) with proper data structures, out of syllabus)
   - Practically applied in a <span style="color:#f77729;"><b>single</b></span> core environment only
 - Architectures where `LD` and `ST` are <span style="color:#f77729;"><b>atomic</b></span>[^1] (i.e: executed in 1 clk cycle, or not interruptible).
-  - Definition: atomically storing a value `x` into a memory location with initial value `y` means that the state of that location shall either be `x` or `y` when an attempt to read it at any point in time is done. No _intermediary value_ shall ever be observed.
+  - **Definition**: atomically storing a value `x` into a memory location with initial value `y` means that the state of that location shall either be `x` or `y` when an attempt to read it at any point in time is done. No _intermediary value_ shall ever be observed.
 
 The solution works by utilizing two shared global variables:
 
@@ -546,7 +546,7 @@ The pseudocode below illustrates the idea on how the semaphore can be used to re
 - write index `in` (shared among consumer processes)
 - read index `out` (shared among producer processes)
 - `char buf[N]` (shared among all processes)
-- Semaphores: two counting semaphores, `chars` and `space` to keep track of free space and number of characters in the buffer, and two mutex semaphores, `mutex_p` and `mutex_c` to provide mutex among producers and among consumers
+- **Semaphores**: two counting semaphores, `chars` and `space` to keep track of free space and number of characters in the buffer, and two mutex semaphores, `mutex_p` and `mutex_c` to provide mutex among producers and among consumers
 
 Shared resources:
 
