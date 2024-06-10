@@ -425,7 +425,7 @@ During this <span style="color:#f77729;"><b>delay</b></span> between <span style
 In the screenshot below, we created a <span style="color:#f77729;"><b>symbolic link</b></span> `userfile.txt` to point to `/etc/shadow`, resulting in the regular user being unable to `cat userfile.txt`.
 <img src="{{ site.baseurl }}/assets/images/lab2/13.png"  class="center_full no-invert"/>
 
-We have written the program to create the symbolic link for you. It is inside `/User/symlink.c`.
+We have written the **command** to create the symbolic link for you. It is inside `/User/exploit.sh`.
 
 ## Race Condition
 
@@ -542,7 +542,7 @@ do
     # the shell does not wait for the command to finish, and the return status is 0.
     # on the other hand, commands separated by a ; are executed sequentially; the shell waits for each command to terminate in turn.
     # the return status is the exit status of the last command executed.
-    ../Root/vulnerable_root_prog userfile.txt test-user-0 & ./symlink userfile.txt /etc/shadow & NEWFILE=`ls -l /etc/shadow`
+    ../Root/vulnerable_root_prog userfile.txt test-user-0 & ln -sf /etc/shadow userfile.txt & NEWFILE=`ls -l /etc/shadow`
 
 done
 
@@ -562,10 +562,11 @@ Then, the main loop is repeated <span style="color:#f77729;"><b>until</b></span>
 2. Then, create `userfile.txt` (this line can be replaced by any other instructions that create this `userfile.txt`)
 3. Then, runs 3 commands in <span style="color:#f77729;"><b>succession</b></span>:
    1. `../Root/vulnerable_root_prog userfile.txt test-user-0`: runs the vulnerable program with `userfile.txt`, belonging to currently logged in user account and the <span style="color:#f77729;"><b>targeted</b></span> username.
-   2. `./symlink userfile.txt /etc/shadow`: immediately, executes the `symlink` program to change `userfile.txt` to <span style="color:#f77729;"><b>point</b></span> to `/etc/shadow`.
-   3. `` NEWFILE=`ls -l /etc/shadow`  ``: check the file info of `/etc/shadow`and store it into variable`NEWFILE`; to be used in the <span style="color:#f77729;"><b>next</b></span> loop check
+   2. `ln -sf /etc/shadow userfile.txt`: immediately, `fork` and execute the `ln` program to change `userfile.txt` to <span style="color:#f77729;"><b>point</b></span> to `/etc/shadow`. <span class="orange-bold">Remember</span> from Lab 1 that a shell spawns a **new** child process upon execution of commands. 
+   3. `NEWFILE=`ls -l /etc/shadow`: check the file **info** (not <span class="orange-bold">content</span>!) of `/etc/shadow`and store it into variable `NEWFILE`; to be used in the <span style="color:#f77729;"><b>next</b></span> loop check
+4. It terminates the moment the metadata of the new file `NEWFILE` differs from `OLDFILE`: this means `/etc/shadow` has been **recently** modified which indicates that our attack is successful (assuming no other process is currently changing `/etc/shadow`)
 
-Step (3.1) and (3.2) above are <span style="color:#f77729;"><b>racing</b></span>, and the script terminates when `/etc/shadow` has been successfully changed.
+Two processes from step (3.1) and (3.2) above are <span class="orange-bold">racing</span>, and the script terminates when `/etc/shadow` has been successfully changed.
 
 # Preventing the TOCTOU Bug
 Preventing TOCTOU vulnerabilities involves strategies that either <span class="orange-bold">minimize</span> the window between the "check" and the "use" or <span class="orange-bold">avoid</span> the need for separate check and use steps altogether. Here are some general strategies for mitigating TOCTOU bugs:
