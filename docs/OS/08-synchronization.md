@@ -546,7 +546,7 @@ The pseudocode below illustrates the idea on how the semaphore can be used to re
 - write index `in` (shared among consumer processes)
 - read index `out` (shared among producer processes)
 - `char buf[N]` (shared among all processes)
-- Two semaphores: one binary and one counting semaphore
+- Semaphores: two counting semaphores, `chars` and `space` to keep track of free space and number of characters in the buffer, and two mutex semaphores, `mutex_p` and `mutex_c` to provide mutex among producers and among consumers
 
 Shared resources:
 
