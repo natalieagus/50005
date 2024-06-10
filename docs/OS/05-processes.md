@@ -482,6 +482,16 @@ All processes transition to this zombie state when they terminate, but generally
 If a parent process has died, then all the zombie children will be <span style="color:#f7007f;"><b>cleared</b></span> by the kernel. To <span style="color:#f7007f;"><b>observe</b></span> zombie children, you need to artifically suspend the parent process after the children have terminated.
 {: .note}
 
+#### Running shell command in the background 
+In the lab, you've met the `&` operator which allows us to run a command in the background, for instance, `exploit.sh` from Lab 3 TOCTOU: 
+
+```sh
+    ../Root/vulnerable_root_prog userfile.txt test-user-0 & ln -sf /etc/shadow userfile.txt & NEWFILE=`ls -l /etc/shadow`
+```
+
+This means that the shell **returns** control to the user and does not explicitly `wait()` for the child process to complete. However, this does <span class="orange-bold">not</span> mean that zombie processes will be formed when these child processes terminate. Instead, there's a way to *ignore* and *prevent* zombie processes from happening by declaring beforehand that the parent process does <span class="orange-bold">not</span> need to reap the exit status of the child. You can read this [appendix](#shell-background-process) section if you're interested. 
+
+
 ## Program: Zombie making {#code-zombie-making}
 
 <span style="color:#f77729;"><b>Compile</b></span> and <span style="color:#f77729;"><b>run</b></span> the C program below. It will suspend itself at `scanf`, waiting for input at `stdin`. Do not type anything, leave it hanging there.
@@ -564,6 +574,94 @@ The `exec` family of functions in Unix-like operating systems is used to replace
    - **Use Case**: Useful when the program's location is known and fixed, and you have an array of arguments to pass to the executable.
 
 Each of these functions does not return to the calling process upon successful execution because the calling process's image is completely replaced by the new program. If there's an error (e.g., the executable is not found), the function returns -1.
+
+## Shell Background Process
+
+{:.note}
+When a command is executed in the background in a shell by appending `&` to it, the shell does <span class="orange-bold">not</span> immediately `wait()` for it. Instead, the shell returns control to the user, allowing them to execute other commands. 
+
+However, to prevent the child process from becoming a zombie when it terminates, the shell needs to handle the termination of background processes. This is typically done by periodically calling `waitpid()` with the `WNOHANG` option to check for any terminated background processes without blocking the shell.
+
+Here's a high-level overview of how a typical shell handles background processes and prevents them from becoming zombies:
+
+1. **Fork and Execute Command**: When a command is executed with `&`, the shell forks a new process and executes the command in the child process.
+
+2. **Parent Process (Shell)**: The parent process (the shell) does not immediately wait for the child process to terminate. Instead, it returns to the prompt, allowing the user to enter new commands.
+
+3. **Reaping Background Processes**: The shell periodically reaps any terminated background processes to prevent them from becoming zombies. This is often done in an event loop or signal handler.
+
+   - **Using `waitpid()` with `WNOHANG`**: The shell can periodically call `waitpid()` with the `WNOHANG` option to check for terminated child processes without blocking. For example:
+     ```c
+     while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+         // Handle the termination of the child process with PID 'pid'
+     }
+     ```
+
+   - **Signal Handling**: Alternatively, the shell can set up a signal handler for `SIGCHLD`, which is sent to the parent process when a child process terminates. The signal handler can then call `waitpid()` to reap the terminated child process. For example:
+     ```c
+     void sigchld_handler(int signum) {
+         int status;
+         pid_t pid;
+
+         // Reap all terminated child processes
+         while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+             // Handle the termination of the child process with PID 'pid'
+         }
+     }
+
+     // Set up the signal handler
+     signal(SIGCHLD, sigchld_handler);
+     ```
+
+Here's a simple example of a shell handling background processes:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <signal.h>
+
+void sigchld_handler(int signum) {
+    int status;
+    pid_t pid;
+
+    // Reap all terminated child processes
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        printf("Child process %d terminated\n", pid);
+    }
+}
+
+int main() {
+    char command[256];
+    pid_t pid;
+
+    // Set up the signal handler
+    signal(SIGCHLD, sigchld_handler);
+
+    while (1) {
+        printf("myshell> ");
+        fgets(command, sizeof(command), stdin);
+
+        if ((pid = fork()) == 0) {
+            // Child process
+            execlp(command, command, (char *) NULL);
+            perror("execlp");
+            exit(1);
+        } else if (pid > 0) {
+            // Parent process: Do not wait for the child process
+        } else {
+            perror("fork");
+        }
+    }
+
+    return 0;
+}
+```
+
+In this example, the shell forks a new process for each command and sets up a signal handler to reap any terminated child processes, preventing them from becoming zombies.
+
 <br>
 
 [^1]: Because each process is isolated from one another and runs in different address space (forming virtual machines)
