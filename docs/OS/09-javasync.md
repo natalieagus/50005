@@ -313,7 +313,11 @@ public class ConditionExample {
             // Proceed when someCondition is true
             // ... 
 
-        } finally {
+        } 
+        catch (InterruptedException e){
+            // do something in case there's exception
+        }
+        finally {
             // finally block is always executed 
             lock.unlock();
         }
