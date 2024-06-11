@@ -413,6 +413,23 @@ pthread_spin_unlock(&spinlock);
 // REMAINDER SECTION ...
 ```
 
+{:.note-title}
+> Sharing locks between Processes
+>
+> In C, the function pthread_spin_init is used to initialize a spinlock. The function signature is `int pthread_spin_init(pthread_spinlock_t *lock, int pshared);`. 
+>
+> The `pshared` parameter can take one of two values: 
+> * `PTHREAD_PROCESS_SHARED` (1): The spinlock can be shared between processes.
+> * `PTHREAD_PROCESS_PRIVATE` (0):  The spinlock is only used within a single process.
+>
+> When you use `0` as the value for the `pshared` parameter, it is equivalent to using `PTHREAD_PROCESS_PRIVATE`. This means the spinlock will not be shared outside the process in which it is created. 
+> 
+> Therefore, `pthread_spin_init(&spinlock, 0);` initializes `spinlock` for use within the same process, ensuring it is not shared between multiple processes.
+>
+> To share a spinlock outside of processes, read this [appendix](#share-spinlock-between-processes) section.
+
+
+
 ### Busy Waiting
 
 Busy waiting <span style="color:#f77729;"><b>wastes</b></span> CPU cycles -- some other process might be able to use productively, and it affects efficiency tremendously when a CPU is shared among many processes. The spinning caller will utilise 100% CPU time just waiting: repeatedly checking if a spinlock is available.
@@ -1103,6 +1120,114 @@ ipcs -q | grep `whoami` | awk '{ print $2 }' | xargs -n1 ipcrm -q
 Don't forget to `chmod +x [your-bash-script-name].sh` before executing it.
 {: .note}
 
+## Share Spinlock Between Processes
+
+To share a `pthread_spinlock_t` outside the process, you need to use the `PTHREAD_PROCESS_SHARED` (this value is `1`) option during **initialization**. This allows the spinlock to be used in a **shared** memory region accessible by multiple processes.
+
+Here is how you can do it:
+
+1. Initialize the spinlock with `PTHREAD_PROCESS_SHARED`.
+2. **Allocate** the spinlock in a shared memory segment.
+
+Here's an example using POSIX shared memory:
+
+### Step-by-Step Example
+
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <pthread.h>
+#include <unistd.h>
+
+#define SHM_NAME "/my_shared_memory"
+
+int main() {
+    int shm_fd;
+    pthread_spinlock_t *spinlock;
+
+    // Create shared memory object
+    shm_fd = shm_open(SHM_NAME, O_CREAT | O_RDWR, 0666);
+    if (shm_fd == -1) {
+        perror("shm_open");
+        exit(EXIT_FAILURE);
+    }
+
+    // Set size of the shared memory object
+    if (ftruncate(shm_fd, sizeof(pthread_spinlock_t)) == -1) {
+        perror("ftruncate");
+        exit(EXIT_FAILURE);
+    }
+
+    // Map shared memory object
+    spinlock = mmap(NULL, sizeof(pthread_spinlock_t), PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
+    if (spinlock == MAP_FAILED) {
+        perror("mmap");
+        exit(EXIT_FAILURE);
+    }
+
+    // Initialize spinlock with PTHREAD_PROCESS_SHARED
+    if (pthread_spin_init(spinlock, PTHREAD_PROCESS_SHARED) != 0) {
+        perror("pthread_spin_init");
+        exit(EXIT_FAILURE);
+    }
+
+    // Use the spinlock in the parent process
+    pthread_spin_lock(spinlock);
+    printf("Parent: Acquired the spinlock\n");
+
+    // Fork a child process to demonstrate sharing
+    pid_t pid = fork();
+    if (pid == -1) {
+        perror("fork");
+        exit(EXIT_FAILURE);
+    } else if (pid == 0) {
+        // Child process
+        if (pthread_spin_lock(spinlock) == 0) {
+            printf("Child: Acquired the spinlock\n");
+            pthread_spin_unlock(spinlock);
+        } else {
+            perror("pthread_spin_lock");
+        }
+        exit(EXIT_SUCCESS);
+    }
+
+    // Wait for the child to finish
+    wait(NULL);
+
+    // Release the spinlock in the parent process
+    pthread_spin_unlock(spinlock);
+
+    // Cleanup
+    pthread_spin_destroy(spinlock);
+    munmap(spinlock, sizeof(pthread_spinlock_t));
+    shm_unlink(SHM_NAME);
+
+    return 0;
+}
+```
+
+Detailed **steps**: 
+1. **Creating Shared Memory:**
+   - `shm_open`: Creates or opens a shared memory object.
+   - `ftruncate`: Sets the size of the shared memory object.
+   - `mmap`: Maps the shared memory object into the process's address space.
+
+2. **Initializing the Spinlock:**
+   - `pthread_spin_init`: Initializes the spinlock with `PTHREAD_PROCESS_SHARED`, allowing it to be shared between processes.
+
+3. **Using the Spinlock:**
+   - The parent process locks the spinlock.
+   - A child process is created using `fork`.
+   - The child process attempts to lock the spinlock. If successful, it demonstrates that the spinlock is shared.
+
+4. **Cleanup:**
+   - The spinlock is unlocked and destroyed.
+   - The shared memory is unmapped and unlinked.
+
+This example demonstrates how to share a spinlock between processes using shared memory. The child process is able to lock and unlock the same spinlock initialized by the parent process.
 <hr>
 
 [^1]: An operation acting on shared memory is atomic if it completes in a single step relative to other threads. For example, when an atomic store is performed on a shared variable, no other thread/process can observe the modification half-complete.
