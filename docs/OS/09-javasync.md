@@ -280,34 +280,65 @@ One final point to note is that some implementations require you to <span style=
 
 You need to carefully <span style="color:#f77729;"><b>consult the documentation</b></span> to see if the locks are auto released or if you need to explicitly release a lock `N` times to allow others to successfully acquire it again.
 
+If you're interested to learn more about Java `ReentrantLock` release procedure, consult the [appendix](#java-reentrantlock-release-procedure). 
+
 ## Fine-Grained Condition Synchronisation
 
 If we want to perform fine grained condition synchronization, we can use Java's <span style="color:#f77729;"><b>named</b></span> condition variables and a reentrant lock. Named condition variables are created explicitly by first creating a `ReentrantLock()`. The template is as follows:
 
 ```java
-Lock lock = new ReentrantLock();
-Condition lockCondition = lock.newCondition(); // call this multiple times if you have more than 1 condition
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
-// Step 1: LOCK
-lock.lock(); // remember, need to lock before calling await()
+public class ConditionExample {
 
-// Step 2a: WAIT
-// To wait for specific condition:
-lockCondition.await();
+    // STEP 1: Initialise lock
+    private final Lock lock = new ReentrantLock();
+    // STEP 2: Initialise condition object
+    private final Condition condition = lock.newCondition();
+    // STEP 3: Initialise your condition 
+    private boolean someCondition = false;
 
-// OR Step 2b: SIGNAL
-// To signal specific thread waiting for this condition:
-lockCondition.signal();
-// ...
-// ...
+    public void awaitCondition() throws InterruptedException {
+        lock.lock(); // Try acquire lock 
+        
+        // await() throws an exception, but place try outside of while (this is a good pattern)
+        try {
+            while (!someCondition) { // Put condition inside while loop as usual 
+                condition.await(); // lock will be freed when yield (await)
+            }
 
-// Step 3: UNLOCK
-lock.unlock();
+            // CRITICAL SECTION
+            // Proceed when someCondition is true
+            // ... 
+
+        } finally {
+            // finally block is always executed 
+            lock.unlock();
+        }
+    }
+
+    public void signalCondition() {
+        lock.lock();
+        try {
+         // CRITICAL SECTION 
+         // ....
+         // set custom condition to be true
+            someCondition = true;
+            // wake up the sleeping process
+            condition.signalAll(); // or condition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+
 ```
 
 At first, we associate a condition variable with a lock: `lock.newCondition()`. This <span style="color:#f77729;"><b>forces</b></span> us to always hold a lock when a condition is being signaled or waited for.
 
-We can modify the example above of N threads which can only progress if `id == turn` to use <span style="color:#f77729;"><b>condition variables</b></span> as follows:
+We can modify the example above with N conditions similar to the example we had in the previous notes. Suppose a toy example whereby we have N threads running concurrently, and each thread can only progress if its `id == turn`. `turn` is a **shared variable**. We can use <span style="color:#f77729;"><b>condition variables</b></span> in Java as follows:
 
 ```java
 // Create arrays of condition
@@ -323,21 +354,29 @@ The Thread function is changed to incorporate a wait to each `condVars[id]`:
 public void doWork(int id)
 {
    lock.lock();
-   while (turn != id)
-   {
-       try
-       {
-             condVars[id].await();
-	}
-       catch (InterruptedException e){}
+   try {
+         while (turn != id)
+         {
+                  condVars[id].await();
+         }
+
+         // SAMPLE CRITICAL SECTION
+         // assume there's some work to be done here...
+         turn = (turn + 1) % N;
+         condVars[turn].signal();
+
    }
-   // CS
-   // assume there's some work to be done here...
-   turn = (turn + 1) % N;
-   condVars[turn].signal();
-   lock.unlock();
+   catch (InterruptedException e){
+      // do something in case there's exception
+   }
+   finally{
+      lock.unlock();
+   }
 }
 ```
+
+{:.important}
+The reason for placing the `try-finally` block <span class="orange-bold">outside</span> the while loop is to ensure that the lock is always released, even if an exception occurs. You can read more about it in [appendix](#ensuring-proper-lock-release). 
 
 # Summary
 
@@ -364,3 +403,306 @@ There are also a few solutions listed below.
 6. <span style="color:#f77729;"><b>Java named synchronization</b></span> object provides mutex using named reentrant binary lock (`ReentrantLock()`) and provides condition sync using condition variables and `await()/signal()`
 
 It is entirely up to you to figure out which one is suitable for your application.
+
+# Appendix
+
+## Ensuring Proper Lock Release
+
+The reason for placing the `try-finally` block outside the `while` loop is to ensure that the lock is always released, even if an exception occurs. The lock must be released in a predictable manner, and putting the `try-finally` block inside the `while` loop can lead to scenarios where the lock might not be released properly if an exception is thrown.
+
+Here's a detailed explanation:
+
+1. **Ensuring Lock Release**: The `finally` block is used to guarantee that the lock is released, regardless of whether an exception occurs or not. If the `try-finally` block is inside the `while` loop, and an exception occurs after the lock is acquired but before it is released, the lock might not be released properly.
+
+2. **Exception Handling**: Placing the `try-finally` block outside the `while` loop allows you to handle exceptions in a controlled manner. If an exception occurs within the `while` loop, the `finally` block will still execute, ensuring the lock is released.
+
+Here is the <span class="orange-bold">correct</span> pattern with `try-finally` *outside* the `while` loop:
+
+```java
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ConditionExample {
+
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
+    private boolean someCondition = false;
+
+    public void awaitCondition() throws InterruptedException {
+        lock.lock();
+        try {
+            while (!someCondition) {
+                condition.await();
+            }
+            // Proceed when someCondition is true
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public void signalCondition() {
+        lock.lock();
+        try {
+            someCondition = true;
+            condition.signalAll(); // or condition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+}
+```
+
+
+### What happens if there's no finally block? 
+
+Let's try another case where there's no `finally` block. The code will still compile and run, but there are potential problems: 
+
+```java
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class IncorrectConditionExample {
+
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
+    private boolean someCondition = false;
+
+    public void awaitCondition() throws InterruptedException {
+         lock.lock();
+         while (!someCondition) {
+               try {
+                  condition.await();
+               } catch (InterruptedException e) {
+                  // Handle interruption
+                  throw e; // Re-throw if you want the caller to handle the interruption
+               } 
+         }
+
+         // CRITICAL SECTION 
+         // Proceed when someCondition is true
+
+         lock.unlock(); 
+
+    }
+
+    public void signalCondition() {
+         lock.lock();
+         someCondition = true;
+         condition.signalAll(); // or condition.signal();
+         lock.unlock();
+    }
+
+    public static void main(String[] args) {
+        IncorrectConditionExample example = new IncorrectConditionExample();
+        // You can create threads to test awaitCondition and signalCondition here
+    }
+}
+```
+
+Potential Problems:
+1. **Lock Leak**: If an exception is thrown inside the while loop or anywhere before lock.unlock(), the lock will never be released, causing a lock leak.
+2. **Deadlock**: When Lock Leak happens, other threads that need to acquire the same lock will get blocked indefinitely, leading to deadlock situations.
+
+### What Happens if `try-finally` is Inside the `while` Loop
+
+If you put the `try-finally` inside the `while` loop, you risk not releasing the lock if an exception occurs outside the `try` block or before the lock is released:
+
+```java
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class IncorrectConditionExample {
+
+    private final Lock lock = new ReentrantLock();
+    private final Condition condition = lock.newCondition();
+    private boolean someCondition = false;
+
+    public void awaitCondition() throws InterruptedException {
+        lock.lock();
+        try {
+            while (!someCondition) {
+                try {
+                    condition.await();
+                } catch (InterruptedException e) {
+                    // Handle interruption
+                    throw e; // Re-throw if you want the caller to handle the interruption
+                } finally {
+                    lock.unlock(); // This will release the lock prematurely
+                }
+                // At this point, the lock has been released, which can cause issues
+                lock.lock(); // Attempt to re-acquire the lock (not a good pattern)
+            }
+            // Proceed when someCondition is true
+        } finally {
+            lock.unlock(); // This will not match the number of lock acquisitions
+        }
+    }
+
+    public void signalCondition() {
+        lock.lock();
+        try {
+            someCondition = true;
+            condition.signalAll(); // or condition.signal();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        IncorrectConditionExample example = new IncorrectConditionExample();
+        // You can create threads to test awaitCondition and signalCondition here
+    }
+}
+
+```
+
+Issues with `finally` inside the while-loop:
+1. **Premature Lock Release**: The finally block inside the while loop releases the lock prematurely, which can lead to race conditions because other threads may acquire the lock and modify shared state unexpectedly.
+2. **Re-acquiring the Lock**: The pattern of re-acquiring the lock after the finally block is not safe and leads to incorrect lock management.
+
+
+{:.highlight}
+By placing the `try-finally` block outside the `while` loop, you ensure that the lock is always released correctly, maintaining the integrity of your concurrency control. This pattern helps prevent potential deadlocks and other concurrency issues.
+
+## Java ReentrantLock Release Procedure
+
+{:.note}
+When using a `ReentrantLock` in Java, you must release the lock the same number of times you acquired it. <span class="orange-bold">Each</span> call to `lock()` must be matched with a corresponding call to `unlock()`.
+
+*If you acquire the lock three times, you must call `unlock()` three times to fully release the lock. If an exception occurs after the three recursive calls, you need to ensure that all the `unlock()` calls are made to prevent a <span class="orange-bold">deadlock</span> situation.*
+
+Here is an example to illustrate this:
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ReentrantLockExample {
+    
+    private final Lock lock = new ReentrantLock();
+
+    public void recursiveMethod(int depth) {
+        lock.lock();
+        try {
+            System.out.println("Lock acquired, depth: " + depth);
+            if (depth > 0) {
+                recursiveMethod(depth - 1);
+            }
+            // Perform some operations
+        } catch (Exception e) {
+            // Handle exception
+            e.printStackTrace();
+        } finally {
+            System.out.println("Lock released, depth: " + depth);
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        ReentrantLockExample example = new ReentrantLockExample();
+        try {
+            example.recursiveMethod(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+Explanation:
+1. **Recursive Lock Acquisition**: The `recursiveMethod` acquires the lock, prints the current depth, and then recursively calls itself with `depth - 1` until `depth` reaches 0.
+
+2. **Lock Release**: Each time the method returns from the recursive call, it reaches the `finally` block and releases the lock by calling `unlock()`. This ensures that each acquisition of the lock is matched with a release, preventing deadlocks.
+
+3. **Exception Handling**: If an exception is thrown, it is caught in the `catch` block, but the `finally` block will still execute, ensuring that the lock is always released properly.
+
+### What Happens if You Don't Release the Lock Properly
+
+{:.warning}
+If an exception occurs and you don't release the lock properly, it can lead to a deadlock. 
+
+Here's an example where improper handling could cause a problem:
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class FaultyReentrantLockExample {
+    
+    private final Lock lock = new ReentrantLock();
+
+    public void faultyRecursiveMethod(int depth) {
+        lock.lock();
+        try {
+            System.out.println("Lock acquired, depth: " + depth);
+            if (depth == 1) {
+                throw new RuntimeException("Exception at depth 1");
+            }
+            if (depth > 0) {
+                faultyRecursiveMethod(depth - 1);
+            }
+            // Perform some operations
+        } finally {
+            System.out.println("Lock released, depth: " + depth);
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        FaultyReentrantLockExample example = new FaultyReentrantLockExample();
+        try {
+            example.faultyRecursiveMethod(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+In this example, if the exception is thrown at depth 1, the `finally` block ensures the lock is released at that depth, but because the method is called recursively, each previous depth must also ensure the lock is released. If any unlock is missed, it will lead to problems.
+
+### Ensuring Proper Lock Release in Case of Exceptions
+
+To handle exceptions properly, ensure each level in the recursion releases the lock:
+
+```java
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+public class ProperReentrantLockExample {
+    
+    private final Lock lock = new ReentrantLock();
+
+    public void properRecursiveMethod(int depth) {
+        lock.lock();
+        try {
+            System.out.println("Lock acquired, depth: " + depth);
+            if (depth == 1) {
+                throw new RuntimeException("Exception at depth 1");
+            }
+            if (depth > 0) {
+                properRecursiveMethod(depth - 1);
+            }
+            // Perform some operations
+        } finally {
+            System.out.println("Lock released, depth: " + depth);
+            lock.unlock();
+        }
+    }
+
+    public static void main(String[] args) {
+        ProperReentrantLockExample example = new ProperReentrantLockExample();
+        try {
+            example.properRecursiveMethod(3);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+{:.highlight}
+By ensuring that the `unlock()` call is in the `finally` block, you make sure that the lock is always released, preventing potential deadlocks and ensuring the correct behavior of your code.
