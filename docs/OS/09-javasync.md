@@ -302,7 +302,7 @@ public class ConditionExample {
 
     public void awaitCondition() throws InterruptedException {
         lock.lock(); // Try acquire lock 
-        
+
         // await() throws an exception, but place try outside of while (this is a good pattern)
         try {
             while (!someCondition) { // Put condition inside while loop as usual 
@@ -376,7 +376,7 @@ public void doWork(int id)
 ```
 
 {:.important}
-The reason for placing the `try-finally` block <span class="orange-bold">outside</span> the while loop is to ensure that the lock is always released, even if an exception occurs. You can read more about it in [appendix](#ensuring-proper-lock-release). 
+The reason for placing the `try-finally` block <span class="orange-bold">outside</span> the while loop is to ensure that the lock is always released, even if an exception occurs. You can read more about it in [appendix](#ensuring-proper-lock-release). It is also worth to note that even though `.signal` or `signalAll` will <span class="orange-bold">throw</span> an exception (unlike `await`), it is always a <span class="orange-bold">good pattern</span> to place `unlock()` inside a `finally` block to ensure proper lock release as finally block is <span class="orange-bold">guaranteed</span> to always be executed. We assume *in general* there are *more parts* of the critical section that *might* throw an exception. 
 
 # Summary
 
