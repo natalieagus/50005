@@ -165,6 +165,20 @@ The following video shows the expected interaction between Server and Client pro
 
 Please be present at your designated slots (refer to course handout) for your PA2 demo. Even though you have submitted your code, we still want to witness your PA2 **in person**. You will <span class="orange-bold">clone</span> your submitted code (fresh) and run it <span class="orange-bold">on a different machine</span>. If you're doing the project alone, our TA/Instructor will be your client. 
 
+
+{:.highlight}
+If all goes well, you should obtain a maximum score of 8% of your overall 50.005 grades. 
+
+Here's the breakdown of PA2 assessment, based on each feature: 
+1. Task 1 (3%): Authentication Protocol
+2. Task 2 (2%): Confidentiality Protocol 1 (CP1)
+3. Task 3 (2%): Confidentiality Protocol 2 (CP2)
+4. Following given protocols closely (1%)
+5. Incorporate attempts to support sustainability and inclusivity (**failure** to do so results in -3%)
+
+**Total maximum PA2 grades: 8%**. 
+
+
 {:.important-title}
 > Prepare everyone
 >
