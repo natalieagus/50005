@@ -55,14 +55,14 @@ There are several purposes of an operating system: as a <span style="color:#f777
 
 The kernel <span style="color:#f77729;"><b>controls</b></span> and <span style="color:#f77729;"><b>coordinates</b></span> the use of hardware and I/O devices among various user applications. Examples of I/O devices include mouse, keyboard, graphics card, disk, network cards, among many others.
 
-## Interrupt-Driven I/O Operations
+# Resource Allocator and Coordinator: Interrupt-Driven I/O Operations
 
 Interrupt-Driven I/O operations allow the CPU to efficiently handle interrupts without having to waste resources (waiting for asynchronous IO requests). This notes explains how interrupt-driven I/O operations work in a nutshell. There are <span style="color:#f7007f;"><b>two kinds of interrupts</b></span>:
 
 1. <span style="color:#f7007f;"><b>Hardware Interrupt</b></span>: input from external devices activates the interrupt-request-line, thus pausing the current execution of user programs.
 2. <span style="color:#f7007f;"><b>Software Interrupt</b></span>: a software generated interrupt that is invoked from the instruction itself because the current execution of user program needs to access Kernel services.
 
-# Hardware Interrupt
+## Hardware Interrupt
 
 <img src="{{ site.baseurl }}//assets/images/week1-3_resource/2023-05-16-10-30-51.png"  class="center_fifty no-invert"/>
 
@@ -78,7 +78,7 @@ This forces the CPU to **transfer** control to the **interrupt handler**. This s
 1. **<span style="color:#f7007f;"><b>Save</b></span> the register states** first (the interrupted program instruction) into the process table
 2. And then transferring control to the appropriate interrupt service routine — depending on the device controller that made the request.
 
-## Vectored Interrupt System
+### Vectored Interrupt System
 
 Interrupt-driven system may use a <span style="color:#f77729;"><b>vectored interrupt system</b></span>: the interrupt signal that **INCLUDES** the identity of the device sending the interrupt signal, hence allowing the kernel to know exactly which interrupt service routine to execute[^2]. This is more <span style="color:#f7007f;"><b>complex</b></span> to implement, but more <span style="color:#f77729;"><b>useful</b></span> when there is a large number of different interrupt sources that throws interrupts frequently.
 
@@ -87,7 +87,7 @@ This interrupt mechanism accepts an **address**, which is usually one of a small
 
 With vectored interrupts, each interrupt source is associated with a unique vector address, which allows the processor to directly jump to the appropriate interrupt handler. This eliminates the need for the processor to search or iterate through a list of interrupt requests to identify the source, resulting in faster and more efficient interrupt handling. Therefore, when there are frequent interrupts from various sources, vectored interrupts can help improve the overall system performance.
 
-## Polled Interrupt System
+### Polled Interrupt System
 
 An alternative is to use a <span style="color:#f77729;"><b>polled interrupt system</b></span>:
 
@@ -100,17 +100,17 @@ This is simpler to implement, but more time-wasting if there’s frequent, unpre
 
 This system may be more appropriate for systems with sparse interrupts, where there are only a few interrupt sources or the interrupts occur infrequently. In non-vectored interrupt systems, . While this approach requires more processing overhead for identifying the interrupt source, it may be sufficient and more straightforward for systems with a small number of interrupts.
 
-## Vectored Interrupt vs Polled Interrupt Scenarios
+### Vectored Interrupt vs Polled Interrupt Scenarios
 
 Polled interrupts are **generally** suitable in simple systems with a **limited** number of devices and **low** interrupt rates or **predictable** and moderate interrupt rates. For example, in embedded systems with a single or a few devices generating interrupts infrequently, such as basic sensor input or user interactions, polled interrupts can be sufficient.
 
 Vectored interrupts are commonly used in more **complex** systems with **multiple** devices generating interrupts frequently. They are suitable when efficient handling of multiple interrupts and reduced latency are crucial, such as in high-performance systems, real-time operating systems, or systems with time-sensitive tasks.
 
-## Multiple Interrupts
+### Multiple Interrupts
 
 If there’s more than one I/O interrupt requests from multiple devices, the Kernel may decide which interrupt requests to service first. When the service is done, the Kernel scheduler may **choose** to resume the user program that was interrupted.
 
-## Raw Device Polling
+### Raw Device Polling
 
 It takes time to perform a **<span style="color:#f7007f;"><b>context switch</b></span>** to handle interrupt requests. In some specifically dedicated servers, raw polling may be faster. The CPU <span style="color:#f7007f;"><b>periodically</b></span> checks each device for requests. If there's no request, then it will return to resume the user programs. Obviously, this method is <span style="color:#f77729;"><b>not suitable</b></span> in the case of sporadic I/O usage, or in general-purpose CPUs since at least a fixed bulk of the CPU load will always be dedicated to perform routine polling. For instance, there's no need to poll for anything periodically when a user is watching a video.
 
