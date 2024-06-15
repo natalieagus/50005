@@ -274,7 +274,7 @@ In simpler Operating Systems, incoming hardware interrupts are typically <span s
 
 
 
-# Memory and Process Management
+# Memory Management
 The Kernel has to <span style="color:#f77729;"><b>manage</b></span> all memory devices in the system (disk, physical memory, cache) so that they can be shared among many other running user programs. The hierarchical storage structure requires a concrete form of memory management since the same data may appear in different levels of storage system.
 
 ## Virtual Memory Implementation
