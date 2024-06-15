@@ -109,6 +109,13 @@ This is due to the presence of <span class="orange-bold">race condition</span>.
 
 Assume `buffer` and `counter` are shared between the two processes / threads. The instructions `counter ++` and `counter -- `are not implemented in a single clock cycle (it is <span style="color:#f77729;"><b>not atomic</b></span>).
 
+## Atomic Operation
+{:.info-title}
+> Atomicity
+>
+> An atomic operation is an indivisible operation that completes in a single step relative to other threads. It appears instantaneous and is executed without any interference from other operations, ensuring consistency and preventing race conditions.
+
+
 ## Non-atomic `++` and `--`
 
 `counter++` may be implemented as follows in assembly language:
@@ -118,6 +125,9 @@ LDR(counter, R2)
 ADDC(R2, 1, R2) || or SUBC for counter--
 ST(R2, counter)
 ```
+
+This is **non-atomic** because it is composed of multiple **separate** instructions that are <span class="orange-bold">not</span> executed as a single, indivisible operation. 
+
 
 ## Race Condition Outcome 1
 
