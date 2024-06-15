@@ -110,6 +110,7 @@ This is due to the presence of <span class="orange-bold">race condition</span>.
 Assume `buffer` and `counter` are shared between the two processes / threads. The instructions `counter ++` and `counter -- `are not implemented in a single clock cycle (it is <span style="color:#f77729;"><b>not atomic</b></span>).
 
 ## Atomic Operation
+
 {:.info-title}
 > Atomicity
 >
