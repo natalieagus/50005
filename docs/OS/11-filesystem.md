@@ -67,6 +67,18 @@ There are <span style="color:#f77729;"><b>two</b></span> types of file in the UN
   - Can take any format: .txt, .bin, etc
   - Can contain any information defined by its creator
 
+### Namespace
+
+A **namespace** is like a directory structure in a filesystem that organizes and manages names to avoid conflicts. For example, in the filesystem:
+
+```
+/home/user/documents/report.txt
+/home/user/images/photo.jpg
+/home/admin/documents/report.txt
+```
+
+The directories `/home/user/documents` and `/home/admin/documents` act as namespaces. Each namespace allows a file named `report.txt` to exist without conflict because the full paths `/home/user/documents/report.txt` and `/home/admin/documents/report.txt` uniquely identify them. This way, the same file name can be used in different directories (namespaces) without any issues.
+
 ## File Example
 
 Consider the file with name: `Banker.c` below.
