@@ -2,7 +2,7 @@
 layout: default 
 nav_order: 2
 permalink: /notes/roadmap
-title: Roadmap
+title: OS Roadmap
 description: Bird's eyeview of the course.  
 ---
 
@@ -13,4 +13,4 @@ Here's a Roadmap for you to help you get through tough times in **the first half
 This map is inspired by [roadmap.sh](https://roadmap.sh). Give the site a visit, tons of amazing roadmaps in there!
 {: .note}
 
-<object type="image/svg+xml" data="{{ site.baseurl }}/assets/contentimage/roadmap.svg" style="width:100%;"></object>
+<object type="image/svg+xml" data="{{ site.baseurl }}/assets/contentimage/roadmap-CSE-OS.drawio.svg" style="width:100%;"></object>
