@@ -140,7 +140,6 @@ All of the following file operations involves <span style="color:#f77729;"><b>mo
 - <span style="color:#f77729;"><b>Search</b></span> for a file
 - <span style="color:#f77729;"><b>Traverse</b></span> the file system with `cd` or via the GUI shell
 
-# Directory Structure
 
 ## Single-level Directory
 
