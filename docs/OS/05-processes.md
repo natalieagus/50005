@@ -592,28 +592,28 @@ Here's a high-level overview of how a typical shell handles background processes
 
 3. **Reaping Background Processes**: The shell periodically reaps any terminated background processes to prevent them from becoming zombies. This is often done in an event loop or signal handler.
 
-   - **Using `waitpid()` with `WNOHANG`**: The shell can periodically call `waitpid()` with the `WNOHANG` option to check for terminated child processes without blocking. For example:
-     ```c
-     while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
-         // Handle the termination of the child process with PID 'pid'
-     }
-     ```
+**Creating a simple event loop with `waitpid()` and `WNOHANG`**: The shell can periodically call `waitpid()` with the `WNOHANG` option to check for terminated child processes without blocking. For example:
+```c
+while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+    // Handle the termination of the child process with PID 'pid'
+}
+```
 
-   - **Signal Handling**: Alternatively, the shell can set up a signal handler for `SIGCHLD`, which is sent to the parent process when a child process terminates. The signal handler can then call `waitpid()` to reap the terminated child process. For example:
-     ```c
-     void sigchld_handler(int signum) {
-         int status;
-         pid_t pid;
+**Using signal Handling**: Alternatively, the shell can set up a signal handler for `SIGCHLD`, which is sent to the parent process when a child process terminates. The signal handler can then call `waitpid()` to reap the terminated child process. For example:
+```c
+void sigchld_handler(int signum) {
+    int status;
+    pid_t pid;
 
-         // Reap all terminated child processes
-         while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
-             // Handle the termination of the child process with PID 'pid'
-         }
-     }
+    // Reap all terminated child processes
+    while ((pid = waitpid(-1, &status, WNOHANG)) > 0) {
+        // Handle the termination of the child process with PID 'pid'
+    }
+}
 
-     // Set up the signal handler
-     signal(SIGCHLD, sigchld_handler);
-     ```
+// Set up the signal handler
+signal(SIGCHLD, sigchld_handler);
+```
 
 Here's a simple example of a shell handling background processes:
 
