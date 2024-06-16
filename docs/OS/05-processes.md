@@ -75,7 +75,9 @@ A program becomes a process when an <span style="color:#f77729;"><b>executable</
 A process couples <span style="color:#f7007f;"><b>two abstractions</b></span>: <span style="color:#f7007f;"><b>concurrency</b></span> and <span style="color:#f7007f;"><b>protection</b></span>.
 {:.note}
 
-Each process runs in a different address space and sees itself as running in a virtual machine -- unaware of the presence of other processes in the machine. Multiple processes execution in a single machine is <span style="color:#f7007f;"><b>concurrent</b></span>, managed by the <span style="color:#f7007f;"><b>kernel scheduler</b></span>.
+**Protection**: Each process runs in a different address space and sees itself as running in a virtual machine -- unaware of the presence of other processes in the machine. Multiple processes execution in a single machine is <span style="color:#f7007f;"><b>concurrent</b></span>, managed by the <span style="color:#f7007f;"><b>kernel scheduler</b></span>.
+
+**Concurrency**: Multiple processes being in progress at the same time, sharing system resources. These processes can run in parallel on multiple processors or cores, or they can be interleaved on a single processor through time slicing.
 
 ## Piggybacking
 
