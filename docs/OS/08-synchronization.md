@@ -1016,6 +1016,7 @@ Main process to initialise Producer and Consumer Threads:
 #include <semaphore.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/stat.h>
 
 
 #define RESOURCES 10
