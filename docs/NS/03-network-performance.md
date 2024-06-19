@@ -104,7 +104,7 @@ The average link utilisation model is obtained from observation. The model below
 
 The average queueing delay is related to the average link utilization (traffic intensity). It approaches infinity as the average link utilization approaches 1. 
 
-The formula for average link utilization is $$\frac{La}{R}$ where $$L$$ is packet length in bits, $$a$$ is average packet arrival rate (packets/second), and $$R$$ is the link's bandwith in bits/s. 
+The formula for average link utilization is $$\frac{La}{R}$$ where $$L$$ is packet length in bits, $$a$$ is average packet arrival rate (packets/second), and $$R$$ is the link's bandwith in bits/s. 
 
 {:.note-title}
 > Analysis
