@@ -3,7 +3,7 @@ layout: default
 title: Operating System 
 permalink: /os/intro
 has_children: true
-nav_order: 3
+nav_order: 4
 ---
 
 # Operating System
