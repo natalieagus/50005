@@ -1,7 +1,7 @@
 ---
 layout: notoc 
 nav_order: 2
-permalink: /notes/roadmap
+permalink: /notes/roadmap-os
 title: OS Roadmap
 description: Bird's eyeview of the course.  
 ---
