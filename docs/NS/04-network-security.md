@@ -67,7 +67,7 @@ We will discuss how these properties are threatened, and ways to ensure that the
 
 ## Possible Security Attacks
 
-<img src="{{ site.baseurl }}//docs/NS/images/04-network-security/2024-05-02-14-22-55.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/NS/images/04-network-security/docs/NS/images/04-network-security/2024-05-02-14-22-55.png"  class="center_seventy"/>
 
 
 There are five possible security attacks that we are going to discuss in this chapter. Each of these attacks compromise specific security properties:
