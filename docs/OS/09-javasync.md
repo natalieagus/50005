@@ -182,6 +182,9 @@ In summary,
   - Moves T from the wait set to the <span style="color:#f77729;"><b>entry</b></span> set
   - The state of T will be changed from blocked to <span style="color:#f77729;"><b>runnable</b></span>, so it can be scheduled to reacquire the mutex lock
 
+{:.info}
+In Java, the `wait()` method is designed to be atomic in terms of releasing the monitor (lock) and entering the wait set. If you're interested to find out why <span class="orange-bold">atomicity</span> must be guaranteed, give this [appendix](#java-atomic-wait) section a read. 
+
 ## NotifyAll
 
 Using only `notify()`, we are not completely free of another <span style="color:#f77729;"><b>potential</b></span> problem yet: `notify()` might not wake up the <span style="color:#f77729;"><b>correct</b></span> thread whose `id == turn`, and recall that `turn` is a shared variable.
@@ -710,3 +713,23 @@ public class ProperReentrantLockExample {
 
 {:.highlight}
 By ensuring that the `unlock()` call is in the `finally` block, you make sure that the lock is always released, preventing potential deadlocks and ensuring the correct behavior of your code.
+
+## Java Atomic Wait
+### How `wait()` Works in Java
+In Java, the `wait()` method is designed to be atomic in terms of releasing the monitor (lock) and entering the wait set. Here's a closer look at the process:
+
+1. **Atomic Release-and-Wait**: When a thread calls `wait()` on an object, it must hold the monitor (lock) of that object. Upon invocation of `wait()`, Java does two things in an atomic operation:
+   - **Releases the Monitor**: The thread releases the lock it holds on the object.
+   - **Enters the Wait Set**: Simultaneously, the thread is placed into the wait set associated with the object’s monitor. 
+
+2. **Guaranteed by JVM**: This behavior is ensured by the Java Virtual Machine, which manages thread states and synchronization. The JVM guarantees that no other thread can intervene between these two operations. This means once a thread releases the lock through `wait()`, it is already in the wait set before any other thread can acquire the lock and possibly call `notify()` or `notifyAll()`.
+
+### JVM and Synchronization
+- **Synchronization Mechanisms**: Java's synchronization mechanisms are built around an intrinsic lock (or monitor) per object. The `wait()`, `notify()`, and `notifyAll()` methods must be used within a synchronized block or method, ensuring they are used correctly regarding locking.
+- **Memory Model Compliance**: Java's memory model ensures that all actions in a thread before calling `wait()` are visible to any thread that acquires the same lock after `wait()` is called. This is important for maintaining consistency and visibility across threads.
+
+### Practical Implications
+- **No Missed Signals**: If a thread calls `wait()`, any subsequent `notify()` or `notifyAll()` calls will correctly find this thread in the wait set, assuming it's still waiting when the notification is issued. There's no risk of the thread being in a limbo state where it has released the lock but is not yet waiting.
+- **Correct Handling of Concurrency**: This atomic approach helps prevent common concurrency issues such as lost notifications, race conditions, or deadlocks related to incorrect lock handling or timing issues between threads.
+
+Java's design regarding the `wait()` and `notify()` mechanisms is crafted to avoid the exact kind of issues you're concerned about, making Java a robust choice for developing multithreaded applications with complex synchronization needs.

@@ -272,9 +272,16 @@ The fields of each opened files contains:
 3. <span style="color:#f77729;"><b>Open count</b></span>: how many fd table entries point to it. We cannot remove open file table entry if reference count is more than 0.
 4. <span style="color:#f77729;"><b>Inode pointer</b></span>: a pointer to UNIX inode table.
 
+## Inode
+
+In Linux, an inode is a data structure used to represent a filesystem object, which can be a file, directory, or other types of objects. Each inode stores metadata about the object, including its size, ownership, permissions, and pointers to the data blocks where the actual content is stored.
+{:.info}
+
+
 ## Inode Table
 
-An Inode table is also known as an Index Node table or File Control Block (FCB): a <span style="color:#f7007f;"><b>database</b></span> of all file attributes and <span style="color:#f77729;"><b>location</b></span> of file contents.
+
+An Inode table is also known as an Index Node table or File Control Block (FCB): a <span style="color:#f7007f;"><b>database</b></span> of all file attributes and <span style="color:#f77729;"><b>location</b></span> of file contents. The inode table contains many inodes, each with a *unique* ID to identify different files. Give this [appendix](#inode-id) a read if you're interested to find out how inode id is set. 
 {:.important}
 
 It does <span style="color:#f77729;"><b>not</b></span> contain the content of any file, and it also does <span style="color:#f7007f;"><b>not</b></span> contain any file name. Each file is associated with an <span style="color:#f77729;"><b>inode</b></span> and has a <span style="color:#f77729;"><b>unique</b></span> inode number. You may view inode number of each file in the current directory using the command `ls -i`. 
@@ -703,3 +710,61 @@ FIFO – first in first out policy
 CHR – character special file
 NODE - the inode id that it is pointing to.
 ```
+
+## Inode ID 
+In Linux and other Unix-like operating systems, an inode (index node) ID is a unique identifier assigned to each file or directory within a filesystem. The inode ID, also known as the inode number, is used by the filesystem to manage and access files and directories.
+
+### Key Points about Inode IDs:
+1. **Uniqueness**: Each inode ID is unique within a given filesystem. No two files or directories in the same filesystem will have the same inode ID.
+2. **Metadata Storage**: The inode contains metadata about the file or directory, such as:
+   - File type (regular file, directory, symbolic link, etc.)
+   - File size
+   - Ownership (user ID and group ID)
+   - Permissions (read, write, execute)
+   - Timestamps (creation, modification, access times)
+   - Pointers to data blocks where the actual file content is stored
+
+### Maximum Inode ID
+The maximum value for an inode ID depends on the filesystem and its configuration. Generally, the maximum number of inodes is determined when the filesystem is created, based on the total size of the filesystem and the inode density (number of inodes per block).
+
+For example:
+- **ext4**: The inode number is typically a 32-bit or 64-bit integer, depending on the filesystem size and configuration. The theoretical maximum inode ID can be as high as 2^32 (approximately 4.3 billion) for a 32-bit inode number.
+- **XFS**: Similar to ext4, XFS can support a very large number of inodes, with the inode number also being a 64-bit integer, allowing for a significantly larger range.
+
+### Checking Inode Information
+You can check the inode number of a file or directory using the `ls -i` command:
+
+```sh
+ls -i /path/to/file_or_directory
+```
+
+This command will display the inode number of the specified file or directory.
+
+### Example
+```sh
+$ ls -i /etc/passwd
+1234567 /etc/passwd
+```
+In this example, `1234567` is the inode number of the `/etc/passwd` file.
+
+If you need to find the inode ID of a file or directory programmatically, you can use system calls or functions provided by programming languages that interface with the operating system's filesystem API. For example, in C, you can use the `stat` function to retrieve inode information.
+
+### Maximum Inode
+
+The maximum number of inodes in a filesystem (**not inode id**) is typically determined when the filesystem is created. It depends on the filesystem type and the options specified at creation time. For example:
+
+1. **ext4**: The number of inodes is set when the filesystem is created. By default, one inode is created for every 16 KB of space, but this ratio can be adjusted. The maximum number of inodes can be as large as 2^32 (about 4.3 billion inodes) on ext4, depending on the size of the filesystem and the inode ratio specified.
+
+2. **XFS**: The maximum number of inodes is also set at filesystem creation time. XFS does not have a fixed inode limit; instead, it dynamically allocates inodes as needed, but the practical limit is very high, typically constrained by the filesystem size and the amount of free space.
+
+3. **btrfs**: Similar to XFS, btrfs dynamically allocates inodes and does not have a fixed limit. The number of inodes is limited by the available space and the filesystem's internal structure.
+
+To check the number of inodes and their usage on a specific filesystem, you can use the `df -i` command in Linux, which provides inode information along with disk space usage. For example:
+
+```sh
+df -i
+```
+
+<img src="{{ site.baseurl }}//docs/OS/images/11-filesystem/2024-06-19-12-45-41.png"  class="center_seventy"/>
+
+This command will display the number of inodes: iused for inode used and ifree for inode free) for each mounted filesystem.
