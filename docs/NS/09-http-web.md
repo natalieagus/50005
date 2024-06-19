@@ -202,6 +202,37 @@ The space-time diagram below illustrates the nature of HTTP 1.1:
 
 In practice, clients (e.g: web browsers) will do <span class="orange-bold">pipelining</span>: initiate multiple outstanding HTTP requests within the same TCP connection. Clients are able to send requests as soon as it encounters a referenced object, there is **no need** to wait for the previous request to finish, thereby **reducing latency** and improving the **overall efficiency** of network communication by utilizing a single TCP connection more <span class="orange-bold">effectively</span>. This can lead to faster page load times as it minimizes the delay between requests and responses. 
 
+## Time-Space Diagram  
+
+In this section, we visualise the series of connections made between a web client and a web server. Suppose a web client tries to access a website with 2 embedded image files of similar size. 
+
+### HTTP/1.0 with 2 Parallel Connections
+
+Here's the space-time diagram visualising the connection between the two parties if HTTP/1.0 is used with 2 parallel connections at maximum: 
+
+<img src="{{ site.baseurl }}/docs/NS/images/cse2024-time-space-diagram-tcp-http1.0-parallel.drawio.png"  class="center_seventy"/>
+
+{:.info-title}
+> RTT + Transmission Time
+>
+> If queueing and processing delays are negligible, the total time taken to load the webpage is 4 RTTs + Base HTML transmission time + 1 image object transmission time. 
+
+### HTTP/1.1 with Pipelining
+
+Here's the space-time diagram visualising the connection between the two parties if HTTP/1.0 with pipelining is enabled: 
+
+
+<img src="{{ site.baseurl }}/docs/NS/images/cse2024-time-space-diagram-tcp-http1.1.drawio.png"  class="center_seventy"/>
+
+{:.info-title}
+> RTT + Transmission Time
+>
+> If queueing and processing delays are negligible, the total time taken to load the webpage is 3 RTTs + Base HTML transmission time + 2 * image object transmission time. 
+
+### Comparison of Network Performance 
+
+HTTP/1.0 with parallel connections enabled allow for better **throughput**, but increased RTT. HTTP/1.1 with pipelined connection does not improve overall throughput, however it reduces total RTT. Each protocol has its pros and cons depending on the application scenario (e.g: if RTT is much longer than transmission time or not).
+
 # HTTP Message Format
 HTTP clients like web browsers craft HTTP request messages intended for web servers depending on user interaction (e.g: drags, clicks, etc). The web server will inspect the request and return HTTP Response messages. The web browsers receiving the response will then <span class="orange-bold">render</span> the response to display its content. 
 
@@ -326,14 +357,14 @@ While cookies are essential for web functionality, they also pose certain risks 
 
 # Web Cache 
 
-To **reduce response time** for client requests, many ISP installs web caches. Our browser also helps to cache some web content. The idea is to help to reduce traffic on an institution access link. Web caches acts as *both* client and server:
+To **reduce response time** for client requests, many ISP installs web caches (also known as <span class="orange-bold">proxy</span>). Our browser also helps to cache some web content. The idea is to help to reduce traffic on an institution access link. Web caches acts as *both* client and server:
 * Web cache becomes a "server" for the original requesting client
 * Web cache becomes "client" to origin server
 
 <img src="{{ site.baseurl }}//docs/NS/images/09-http-web/2024-05-09-17-34-11.png"  class="center_seventy"/>
 
 {:.note}
-The connection to local web cache typically has greater bandwidth as opposed to the public internet, due to proximity or simply better infrastructure in nearer locations. Hence using web caches reduces access link utilization (reduces the probability of queueing delay).
+The connection to local web cache typically has **greater** bandwidth as opposed to the public internet, due to proximity or simply better infrastructure in nearer locations. Hence using web caches reduces access link utilization (reduces the probability of queueing delay).
 
 ## Conditional GET 
 
@@ -341,6 +372,9 @@ The connection to local web cache typically has greater bandwidth as opposed to 
 A conditional GET is an HTTP request method that allows a client to make a request for a resource, but only if specific conditions are met. This method helps to reduce bandwidth usage and improve efficiency by avoiding the transfer of data that has not changed since the last access.
 
 With conditional GET requests, servers do not send the requested objects again if cache has an up-to-date version (no transmission delay, less link utilization). The cache stores the date of cached copy in HTTP request. If the cache is not outdated, then the server’s response contains no object, 
+
+{:.important}
+How would you draw the time-space diagram with web cache (proxy) involved between client and web server? The protocol used between client and web cache, and between web cache and web server can be <span class="orange-bold">different</span>. For instance, HTTP/1.0 with 3 parallel connections max between proxy and web server, and HTTP/1.1 with pipelining between web client and web server. 
 
 ## Where are the caches?
 
