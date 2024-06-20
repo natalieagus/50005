@@ -1,5 +1,5 @@
 ---
-layout: notoc 
+layout: default 
 nav_order: 3
 permalink: /notes/roadmap-ns
 title: NS Roadmap

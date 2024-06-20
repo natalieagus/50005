@@ -1,5 +1,5 @@
 ---
-layout: notoc 
+layout: default 
 nav_order: 2
 permalink: /notes/roadmap-os
 title: OS Roadmap
