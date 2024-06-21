@@ -207,7 +207,10 @@ A solution to guarantee a critical-section must satisfy the following three requ
 
 - <span style="color:#f77729;"><b>Mutual exclusion</b></span> (mutex): No other processes can execute the critical section if there is already one process executing it (in the case of condition synchronization, this is adjusted accordingly)
 - <span style="color:#f77729;"><b>Progress</b></span>: If there’s no process in the critical section, and some other processes wish to enter, we need to grant this permission and we cannot postpone the permission indefinitely.
-- <span style="color:#f77729;"><b>Bounded waiting</b></span>: If process A has requested to enter the CS, there exists a bound on the number of times other processes are allowed to enter the CS before A. This implies that CS is also of a finite length, it cannot loop forever and will exit after a finite number of instructions.
+- <span style="color:#f77729;"><b>Bounded waiting</b></span>: If process A has requested to enter the CS, there exists a bound on the number of times other processes are allowed to enter the CS before A. This implies that CS is also of a finite length, it cannot loop forever and will exit after a finite number of instructions. It is a requirement that ensures **fairness** by guaranteeing that every process will eventually get a chance **to** enter its critical section (CS) after a finite number of other processes have done so.
+
+{:.note}
+If the progress condition is violated, meaning no process can ever enter the critical section again, discussing bounded waiting becomes moot. This is because progress is the property that ensures at least one of the processes not in its critical section but wishing to enter is eventually able to do so without interference. Without progress, the system can get stuck in a state where no further entries into critical sections are possible, making the assurance of bounded waiting irrelevant.
 
 ## Properties
 
