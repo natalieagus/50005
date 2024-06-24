@@ -223,7 +223,7 @@ The early UNIX OS was also simple in its form as shown below. In a way, it is la
 The kernel provides file system management, CPU scheduling, memory management, and other operating-system functions through system calls. That is an <span style="color:#f77729;"><b>enormous</b></span> amount of functionality to be combined into one level.
 
 - <span style="color:#f77729;"><b>Pros</b></span>: distinct <span style="color:#f77729;"><b>performance advantage</b></span> because there is very little overhead in the system call interface or in communication within the kernel.
-- <span style="color:#f77729;"><b>Cons</b></span>: difficult to implement and maintain.
+- <span style="color:#f77729;"><b>Cons</b></span>: difficult to maintain.
 
 Other examples of monolithic OS with dual-mode: BSD, Solaris
 
