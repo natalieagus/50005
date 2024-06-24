@@ -50,7 +50,7 @@ You are then free to implement <span class="orange-bold">any additional feature(
 
 There have been some ongoing initiatives from SUTD as well as the Engineering Accreditation Board to include more elements of Sustainability, Diversity and Inclusivity. As such, we encourage you to consider the impact of your project on sustainability, as well as any consideration for diversity and inclusion (e.g., different cultures, demographic groups, etc). 
 
-Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it in *any* part of your assignemnt, be it your additional shell feature, enhancing the system programs, or the overall look of your shell. It does **not** have to be part of your code: e.g if you decide to conduct user testing. Simply highlight your attempts clearly in the README file and write future suggestions (if any).
+Here are some suggestions, it is sufficient to fulfil **one** of each category (1 idea for sustainability, 1 idea for inclusivity).  You may apply it in *any* part of your assignment, be it your additional shell feature, enhancing the system programs, or the overall look of your shell. It does **not** have to be part of your code: e.g if you decide to conduct user testing. Simply highlight your attempts clearly in the README file and write future suggestions (if any).
 
 {:.error}
 Failure to show attempts to incorporate initiatives to support sustainability and inclusivity results in <span class="orange-bold">-3% (penalty)</span> of your overall grades. 
