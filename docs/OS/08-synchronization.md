@@ -824,16 +824,40 @@ The Peterson's Algorithm <span style="color:#f77729;"><b>also required</b></span
 2. Setting of `flag[j] = True` must happen <span style="color:#f77729;"><b>before</b></span> for `turn = i` for Process j
 3. Step (1) and (2) must precede the `LOAD` access in the `while` line.
 
-Not all instructions are executed _in order_. A compiler may try to be _smart_ and recompile the Peterson's solution for Process i as follows, reordering the instructions completely since they involve access to different memory location:
+Not all instructions are executed _in order_. A compiler may try to be _smart_ and recompile the Peterson's solution for Process i as follows, reordering the instructions completely since they involve access to different memory location. One possible reordering is: 
 
 ```cpp
+// Process i code
 turn = j 
 while(flag[j] == True and turn == j); // LOAD from flag[j]
-flag[i] = True  // STORE from flag[i]
+flag[i] = True  // STORE to flag[i]
 // CS...
 // ...
 flag[i] = False
 ```
+
+The above violates **mutual exclusion**:
+1. Suppose Pi has just finished setting `turn = j`, goes to the `while` check and failed the check, hence proceeding to store to `flag[i]` but was context switched before being able to do so 
+2. Pj starts, and does the same: sets `turn=i`, fails the `while` check because at this point nobody sets the flags yet, and then sets `flag[j] = True`, goes to CS and then context switched 
+3. When Pi is resumed, it *has already* passed the `while` check, hence both processes are now in the CS
+
+Another possibility is:
+
+```cpp
+// Process i code
+turn = j 
+flag[i] = True  // STORE to flag[i]
+while(flag[j] == True and turn == j); // LOAD from flag[j]
+// CS...
+// ...
+flag[i] = False
+```
+
+The above violates **mutual exclusion** too: 
+1. Suppose Pi has *just* set `turn=j` and then context switched 
+2. Suppose Pj then resume and set `turn=i, flag[j]=True`, then proceed to `while` check. The check returns `False` because `flag[i]` is still `False`
+3. Pj then enters CS and context switched 
+4. Now Pi is resumed, sets `flag[i]=True` (at this point turn *is* `i` due to step 2 above), goes to the `while` check which also returns `False`, enabling Pi to enter the CS as well while Pj is still in it
 
 On <span style="color:#f77729;"><b>modern</b></span> operating system where you have multiple processors, the <span style="color:#f77729;"><b>order</b></span> of `LOAD` and `STORE` instructions can change if these instructions are not dealing with same memory addresses. You can obviously find out why the above is disastrous.
 {: .info}
