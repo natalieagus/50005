@@ -43,6 +43,21 @@ The `main()` function should have the following **functionality**:
 Your shell should <span class="orange-bold">never</span> abruptly terminate, even when we give commands that don't exist or simply pressing enter multiple times. Your shell should also be able to execute commands as-given, it should <span class="orange-bold">not</span> accidentally access garbage input values from uncleared buffers in any way. Failure to do this results in 1% grade penalty. 
 
 
+### Tips for Cleaning up 
+
+`strdup` in `read_command` will **allocate** a new memory location for your new string. This location is stored at `char** cmd`. It is essential to **free** this for the next loop of prompt. At the end of your shell `main()` function you should do the following before looping to get another prompt from the user:
+
+```cpp 
+  // Free the allocated memory for the command arguments before exiting
+  for (int i = 0; cmd[i] != NULL; i++)
+  {
+    free(cmd[i]);
+  }
+```
+
+
+
+
 ## Inspect Child Process Exit Status 
 
 It is beneficial to inspect the Exit Status of the child process. We check if the child process terminated normally, and if so, retrieves the exit status of the child process.
