@@ -501,7 +501,7 @@ The algorithm goes as follows:
      - This signifies that a Customer `i` that can _complete_ will free its _currently_ allocated resources.
    - Update: `finish[i] = True`
    - <span style="color:#f7007f;"><b>Then, REPEAT step 2</b></span>
-     > You might want to store the values of `i` each time you execute this Step 3 elsewhere to backtrack a possible safe execution sequence, but that's not required for this lab.
+     > You might want to store the values of `i` each time you execute this Step 3 elsewhere to backtrack a possible **safe execution sequence**, although it is not explicitly required for this lab. Head to the [lecture notes](https://natalieagus.github.io/50005/os/deadlock#part-2-the-safety-algorithm) for a summary.  
 
 4. If no such index `i` in Step 2 exists:
    - If `finish[i] == True` for <span style="color:#f7007f;"><b>all</b></span> `i<N`, then it means the system is in a <span style="color:#f77729;"><b>safe state</b></span>. Return `True`.
