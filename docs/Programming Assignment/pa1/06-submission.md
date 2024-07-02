@@ -129,7 +129,7 @@ You will be asked to clone your project from the github classroom repo (<span cl
 You have to be able to demo the workings of your `cseshell` as follows: (note that you're free to implement other system programs, in this example we implement some simple `ps`):
 
 <video controls width="100%" class="center_ninety" autoplay>
-    <source src="{{ site.baseurl }}docs/Programming Assignment/pa1/images/pa1-demo.mp4" type="video/mp4">
+    <source src="{{ site.baseurl }}/docs/Programming Assignment/pa1/images/pa1-demo.mp4" type="video/mp4">
     Sorry, your browser doesn't support embedded videos.
 </video>
 
