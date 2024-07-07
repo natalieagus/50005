@@ -161,7 +161,7 @@ In this exercise, you will run traceroute in two <span style="color:#f77729;"><b
 
 ### Task 6
 
-`TASK 6:` Visit [this link](https://ping.eu/traceroute/) in your web browser.
+`TASK 6:` Visit [this link](https://ping.eu/traceroute/) using your web browser.
 {:.task}
 
 Then do the following:
