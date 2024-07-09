@@ -201,7 +201,7 @@ You can compute end-to-end loss rate probability given per-link loss rate probab
 
 <img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-30-28.png"  class="center_fifty"/>
 
-We can compute the end-to-end loss rate between A to C as: $$(1 - (0.8 - 0.9)) * 100\% = 28\%$$
+We can compute the end-to-end loss rate between A to C as: $$(1 - (0.8 * 0.9)) * 100\% = 28\%$$
 
 # Throughput and Bandwidth
 
