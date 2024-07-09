@@ -273,9 +273,15 @@ And below illustrates the evolution of the physical memory content when two proc
 
 1. P1 (server) makes a system call to create a socket 
 2. Kernel creates a **listening** socket and bind P1 to it  
-3. P2 (client) makes a system call to connect to an existing socket 
-4. Kernel creates a communication socket between P1 and P2 
-5. P1 and P2 can communicate via the established socket in step 4 using `write` and `read` system calls
+3. P2 (client) makes a system call to create and connect to an existing socket (called a connected socket)
+4. Kernel creates a new communication socket between P1 and P2 (called an accepted socket)
+5. P1 and P2 can communicate via the established socket (accepted socket in P1's side and connected socket in P2's side) in step 4 using `write` and `read` system calls
+
+To summarize:
+
+1. **Listening** socket: Created by P1 and used to listen for incoming connections.
+2. **Accepted** socket: Created by the kernel when P1 accepts the connection from P2, used for communication.
+3. **Connected** socket: Created by P2 and used to establish a connection to the server and for communication.
 
 ## Blocking `recv`/`read`
 The `recv` operation is **blocking** by default. This means that if no data is available to be read from the socket, the operation will block the execution of the program. The calling program remains in a waiting state, effectively pausing its execution at that point, until data arrives on the socket. Once data is available on the socket (e.g., a packet is received from the network), the read operation will **proceed**.

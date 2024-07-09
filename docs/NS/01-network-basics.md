@@ -519,6 +519,20 @@ We see that at each layer, a packet has two types of fields:
 {:.important}
 With layering, header vs. payload **size** is now <span class="orange-bold">relative</span> to the layer; e.g., the transport layer’s data (header + payload) becomes the network layer’s payload. 
 
+## Software-Defined Networking (SDN)
+
+Modern internet still follows layering roughly, but there can be significant departure as well like SDN. 
+
+{:.info}
+Software-Defined Networking (SDN) is a **modern** networking architecture that separates the control plane from the data plane in network devices. 
+
+This separation allows for more flexible and efficient network management. 
+* In SDN, a **centralized** controller dynamically manages network behavior through software applications, providing a global view and centralized control over the network. 
+* This approach **enhances** scalability, simplifies network management, improves resource utilization, and enables rapid innovation by allowing network administrators to programmatically configure and manage network services. 
+* SDN is widely used in data centers, cloud environments, and enterprise networks to support dynamic, scalable, and automated network operations.
+
+<img src="{{ site.baseurl }}//docs/NS/images/01-network-basics/2024-07-09-16-05-27.png"  class="center_seventy"/>
+
 # Summary
 
 We have learned about network basics in this chapter, both from its nuts and bolt view and service view. 
