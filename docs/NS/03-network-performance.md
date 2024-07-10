@@ -62,9 +62,12 @@ There are four sources of <span class="orange-bold">packet delay</span> that aff
 
 ## Processing Delay 
 
+{:.info}
+Processing delay is the time it takes for a **network device**, such as a router or switch, to examine a packet's **header** and determine <span class="orange-bold">where</span> to forward the packet. 
+
 <img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-03-32.png"  class="center_fifty"/>
 
-**Duration**: < milliseconds, usually is bounded or fixed. 
+**Duration**: < milliseconds, usually is bounded or fixed. It is affected by the device's performance (e.g: router's CPU speed, memory speed, and its software efficiency). 
 
 **Cause**: Needs time to examine packet header.
 * Check for bit errors (checksum), 
@@ -75,6 +78,9 @@ Routers typically have multiple output ports, each leading to a different networ
 
 ## Queueing Delay
 
+{:.info}
+Queueing delay is the time a packet spends waiting in a queue before it can be transmitted onto the network link
+
 **Duration**: varies, depending on traffic (congestion level). It is <span class="orange-bold">non trivial</span> to compute. 
 
 **Cause**: packet input rate > link output rate, therefore packet needs to wait in the node buffer to get to the front of the queue to reach the output link. 
@@ -83,6 +89,9 @@ Routers typically have multiple output ports, each leading to a different networ
 
 ## Transmission Delay 
 
+{:.info}
+Transmission delay (also known as transmission time) is primarily determined by how **fast** the bits are pushed into the link
+
 **Duration**: varies, depends on bandwidth (link technology). The amount of transmission delay is computed as: $$d_{trans} = \frac{L}{R}$$, where $$L$$ is packet length in **bits** and $$R$$ is link bandwith in bits/s.
 
 **Cause**: Need time to push the whole packet bits, e.g: 512 Bytes from the router to the link itself. 
@@ -90,6 +99,10 @@ Routers typically have multiple output ports, each leading to a different networ
 <img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-06-38.png"  class="center_fifty"/>
 
 ## Propagation Delay
+
+{:.info}
+Propagation delay is the time it takes for a signal to travel from the sender to the receiver over a given medium
+
 **Duration**: depends on the physical length of the link. The amount of propagation delay is computed as: $$d_{prop} = \frac{d}{S}$$, where $$d$$ is the link length in metres, and $$S$$ is the propagation speed of bits on medium, it can be approximated to $$2\times10^8$$ m/s.
 
 ## Total Nodal Delay 
@@ -227,6 +240,8 @@ Link bandwidth varies depending on its material/technology:
 * Gigabit Ethernet (1Gb/s)
 * OC192 (9.95 Gb/s)
 
+*This capacity of a link (bandwidth) is a **combination** of the physical characteristics of the transmission medium, the technology and standards applied, the quality and configuration of the network equipment, and the environmental conditions in which the network operates.* You will learn more about it if you take a full Networks class, but you can read this [appendix](#factors-affecting-bandwidth) section if you're curious about what factors affect bandwidth. 
+
 We can compute end-to-end throughput based on the <span class="orange-bold">bottleneck</span> link. For instance, given the following network topology and bandwidth: 
 
 <img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-35-58.png"  class="center_fifty"/>
@@ -280,3 +295,37 @@ Key learning points include:
 - **Performance Metrics**: Discusses critical metrics such as packet loss, throughput, and bandwidth that affect and reflect the performance of network systems.
 
 For a more detailed examination, you can view the complete note [here](https://natalieagus.github.io/50005/ns/03-network-performance).
+
+# Appendix
+
+## Factors Affecting Bandwidth
+
+{:.note}
+**Bandwidth**: The capacity of the link, measured in bits per second (bps), determines how quickly the bits can be sent. Higher bandwidth links can transmit data faster, reducing transmission delay.
+
+The capacity of a link is often referred to as **bandwidth**. Bandwidth is the maximum rate at which data can be transferred over a network link or connection in a given amount of time, typically measured in bits per second (bps), kilobits per second (Kbps), megabits per second (Mbps), gigabits per second (Gbps), etc.
+
+To elaborate, bandwidth can be thought of in two primary contexts:
+
+1. **Theoretical Bandwidth**: This is the maximum possible data transfer rate that a link can support under ideal conditions, as defined by the technology and standards of the medium and equipment used. For example, a standard Ethernet cable might support up to 1 Gbps.
+
+2. **Effective Bandwidth**: This is the actual data transfer rate that can be achieved, which might be lower than the theoretical maximum due to various factors such as network congestion, protocol overhead, interference, and the quality of the physical connection.
+
+There are several factors that affect the value of bandwidth: 
+
+1. **Transmission Medium**: The type and quality of the physical medium (e.g., fiber optics, copper wire, wireless) directly impact the bandwidth. Fiber optics, for instance, can support much higher bandwidths compared to traditional copper cables.
+
+2. **Network Technology and Standards**: Different networking standards specify different bandwidth capabilities. For example, Wi-Fi 6 offers higher bandwidth compared to Wi-Fi 5.
+
+3. **Signal Modulation and Encoding Techniques**: Advanced modulation techniques can increase the amount of data transmitted per unit of time over a given medium.
+
+4. **Hardware Quality and Configuration**: The specifications and configurations of network hardware like routers, switches, and network interface cards (NICs) can influence the available bandwidth.
+
+5. **Environmental Factors**: In wireless networks, physical obstructions, distance, and electromagnetic interference can reduce effective bandwidth.
+
+6. **Network Traffic and Congestion**: The amount of traffic and the number of users sharing the same network resources can impact the effective bandwidth available to each user.
+
+7. **Protocol Overheads**: The efficiency of network protocols can also impact the bandwidth. Protocol overheads (such as headers, error checking, and retransmissions) can reduce the effective data rate.
+
+In summary, bandwidth represents the data-carrying capacity of a network link. It is a critical factor in determining how quickly data can be transmitted from one point to another over the network. Understanding and optimizing bandwidth is essential for improving network performance and efficiency.
+
