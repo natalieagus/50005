@@ -392,6 +392,12 @@ If you spawn multiple daemon processes at the same time, the log file should sho
 
 <img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/05-system-program/2024-04-11-14-58-07.png"  class="center_full no-invert"/>
 
+{:.error}
+If you run `dspawn` using WSL, your `PPID` may <span class="orange-bold">not</span> be 1. Please find proper Linux distro (be it using someone's VM or dual boot) to confirm that your daemon process' PPID is either `1`, `2`, or other dedicated processes that "adopts" orphaned process. Run the command `pstree -p` to help you understand the process hierarchy better.
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/05-system-program/2024-07-11-13-43-56.png"  class="center_seventy no-invert"/>
+
+
 # `dcheck` 
 
 This system program simply checks how many live daemons (spawned from `dspawn`) are alive right now:
