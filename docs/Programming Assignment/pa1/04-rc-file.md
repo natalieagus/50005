@@ -101,6 +101,9 @@ It should still be able to execute the valid commands, while indicating that the
 
 <img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/04-rc-file/2024-04-11-10-21-01.png"  class="center_full no-invert"/>
 
+{:.important}
+Afterwards, your shell **must** also be able to execute any system program set in `PATH` using `.cseshellrc` at all times, even when we `cd`. Failure to do this results in -1% <span class="orange-bold">penalty</span>.
+
 ## Use `execvp` instead of `execv` 
 
 `execv` and `execvp` are two of the exec family functions in Unix-like operating systems, which are used to **replace** the current process image with a new process image. These functions are typically used in system programming to execute external programs from within a C program. However,   `execv` requires a full path, while `execvp` can work with just the program name or a relative path, <span class="orange-bold">automatically searching the PATH environment variable</span>. 

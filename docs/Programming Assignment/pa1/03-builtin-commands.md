@@ -170,6 +170,9 @@ Change the current working directory of the shell. You can print out your curren
 
 <img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/03-builtin-commands/2024-04-10-18-43-05.png"  class="center_full no-invert"/>
 
+{:.important}
+All commands **must** be able to be executed even after you `cd`. Failure to do this results in -1% penalty. 
+
 ### help 
 
 Print out all builtin commands in the shell. 

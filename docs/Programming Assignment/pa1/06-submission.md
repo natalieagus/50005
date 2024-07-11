@@ -142,9 +142,11 @@ If all goes well, you should obtain a maximum score of 10% of your overall 50.00
 
 Here's the breakdown of PA1 assessment, based on each feature: 
 1. Shell main loop (2%): this is a <span class="orange-bold">requirement</span>, without this, you will automatically obtain 0 marks for PA1. Upon proper bugless completion, you get 2%. Otherwise, if your shell is buggy and only work under ideal condition, you obtain a max of 1%
+   - All commands **must** be able to be executed even after you `cd`. Failure to do this results in -1% <span class="orange-bold">penalty</span>. 
 2. Shell builtin functions (1.5%): `cd` (0.25%), `help` (0.25%), `usage` (0.25%), `env` (0.25%), `setenv` (0.25%), `unsetenv` (0.25%)
 3. `.cseshellrc` interpretation (2%): `PATH` setting (0.75%), Command execution (0.75%), able to handle empty lines (0.5%)
-4. System programs (3%): `sys` (0.5%), `dspawn` (1%), `dcheck` (0.75%), `backup` (0.75%)
+4. System programs (3%): `sys` (0.5%), `dspawn` (1%), `dcheck` (0.75%), `backup` (0.75%). 
+   - Your shell **must** also be able to execute any system program set in `PATH` using `.cseshellrc` at all times (even when we `cd`). Failure to do this results in -1% <span class="orange-bold">penalty</span>.  
 5. Additional functionality (1.5%) 
 6. Incorporate attempts to support sustainability and inclusivity (**failure** to do so results in -3%)
 
