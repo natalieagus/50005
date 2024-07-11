@@ -459,7 +459,7 @@ Suppose a server sends 4 objects under these conditions:
 - Network latency: 50 ms RTT
 - Bandwidth: 10 Mbps (note: this is bit per second)
 
-We would like to calculate the total time taken to receive each object from the moment the request to `GET` these objects are made (ignoring connection establishment). 
+We would like to calculate the total time taken to receive each object from the moment the request to `GET` these objects are made (**ignoring** connection establishment). 
 First, calculate the time to transmit a single frame (a 100 KB frame):
 
 $$
@@ -485,19 +485,16 @@ $$
 - Loss recovery requires retransmitting lost TCP segments, stalling the transmission of other objects in the pipeline.
 
 **Time to transmit the objects**: 
-1. **Establishing a single TCP connection**:
-   - 1 RTT for the TCP handshake: 50 ms
+1. **Sending requests**:
+   - 1 RTT for the GET request: 50 ms
 
-2. **Sending requests**:
-   - Negligible time for sending requests.
-
-3. **Sequential responses due to FCFS**:
+2. **Sequential responses due to FCFS**:
    - Object 1: 1200 ms (1500 KB / 10 Mbps)
    - Object 2 & 4: 80 ms 
    - Object 3: 160 ms
 
 Total time:
-- Handshake: 50 ms
+- GET request: 50 ms
 - Object 1: 1200 ms
 - Object 2: 80 ms
 - Object 3: 160 ms
@@ -518,8 +515,8 @@ Total time:
 - However, TCP still introduces HOL blocking at the transport layer if packet loss occurs, as all streams share the same TCP connection.
 
 **Time to transmit the objects**:
-1. **Establishing a single TCP connection**:
-   - 1 RTT for the TCP handshake: 50 ms
+1. **Sending requests**:
+   - 1 RTT for the GET request: 50 ms
 
 2. **Concurrent transmission**:
    - Frames are interleaved using round-robin scheduling.
@@ -537,7 +534,7 @@ Total time:
 - Round 3 onwards: only frames from Object 1 (9 frames remaining)
 
 **Detailed Timeline**:
-1. Handshake: 50 ms
+1. GET request: 50 ms
 2. First round of frames (4 frames, 100 KB each): 4 × 80 ms = 320 ms
    * Frame 1 from Object 1: 80 ms
    * Frame 1 from Object 2: 80 ms
@@ -551,7 +548,7 @@ Total time:
 4. Remaining frames for Object 1 (11 frames, 100 KB each): 11 × 80 ms = 880 ms
 
 - Objects 2 and 4 are fully received in the first round:
-  - Object 2: 50 ms (handshake) + 80 ms (object 1 frame 1) + 80 ms (object 2 frame) = 210 ms
+  - Object 2: 50 ms (GET request) + 80 ms (object 1 frame 1) + 80 ms (object 2 frame) = 210 ms
   - Object 4: 210 ms + 80 ms (object 3 frame 1) + 80 ms (object 4 frame) = 370 ms
 - Object 3 is fully received after: 370 ms + 80 ms (object 1 frame 2) + 80 ms (object 3 frame 2) = 530 ms 
 - Since there's no more other objects to send, we can focus on sending just Object 1 until completion. We have 13 frames remaining for Object 1 ever since Object 3 is completed:
@@ -574,28 +571,30 @@ Total time taken: 1570 ms, **same** as HTTP/1.1 due to bandwidth constraint, but
 - Allows more efficient and reliable transmission, especially in high-latency or lossy networks.
 
 **Time to transmit the objects**:
-1. **Establishing a QUIC connection**:
-   - 0-RTT handshake: 0 ms
+1. **Sending requests**:
+   - 1 RTT for the GET request: 50 ms
 
 2. **Concurrent transmission**:
    - Frames are transmitted concurrently without HOL blocking.
    - Total data to send: 1.9 MB
    - Time taken to transmit all data: 
 
-$$ \frac{1.9 \text{ MB}}{10 \text{ Mbps}} = 1.04 \text{ s} = 1520 \text{ ms} $$
+$$ \frac{1.9 \text{ MB}}{10 \text{ Mbps}} \times 1000 ms + 50ms = 1570 \text{ ms} $$
 
-**Total time for HTTP/3: 1520 ms**.
+**Total time for HTTP/3: 1570 ms**.
 
 ### Summary of Differences
+
+If we compute the time taken to receive the objects **from the moment we sent `GET`** request, then all methods seem to have the same performance: 
 - **HTTP/1.1 with Pipelining**: 1570 ms
 - **HTTP/2**:
   - Object 1: 1570 ms
   - Objects 2-4: received after 210 ms, 530 ms, and 370 ms respectively
-- **HTTP/3**: 1520 ms
+- **HTTP/3**: 1570 ms
 
 **Differences**:
 - **HTTP/1.1 vs. HTTP/2**: HTTP/2 allows smaller objects to be received much faster (e.g: 210 ms vs. waiting for the full 1570 ms in HTTP/1.1).
-- **HTTP/2 vs. HTTP/3**: HTTP/3 is slightly faster compared to HTTP/2, and it eliminates the TCP handshake and transport-level HOL blocking, making it more robust in lossy or high-latency networks.
+- **HTTP/2 vs. HTTP/3**: HTTP/3 is slightly faster compared to HTTP/2 **if we consider the first TCP handshake** as it eliminates the TCP handshake and transport-level HOL blocking, making it more robust in lossy or high-latency networks. However, if we consider the time taken to transmit the objects from the moment `GET` request is made, then we end up with the same amount of transmission time as <span class="orange-bold">they're limited by bandwidth</span>. 
 
 **Conclusion**:
 - **HTTP/1.1 with Pipelining** suffers from HOL blocking, making smaller objects wait for larger ones to finish.
