@@ -265,7 +265,7 @@ For processes ran in the same machine (same computer), they communicate through 
 2. Then, when P2 tries to `read` from the socket, that message in the kernel space is copied again to P2’s space via `read` system call.
 
 The diagram below illustrates how socket works in general:
-<img src="{{ site.baseurl }}/assets/images/week3/15.png"  class="center_fifty "/>
+<img src="{{ site.baseurl }}/docs/OS/images/week3cse-Page-6.drawio.png"  class="center_fifty "/>
 
 And below illustrates the evolution of the physical memory content when two processes communicate via socket: 
 
