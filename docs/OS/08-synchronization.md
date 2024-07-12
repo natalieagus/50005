@@ -116,6 +116,7 @@ Assume `buffer` and `counter` are shared between the two processes / threads. Th
 >
 > An atomic operation is an indivisible operation that completes in a single step relative to other threads. It appears instantaneous and is executed without any interference from other operations, ensuring consistency and preventing race conditions.
 
+However, an atomic operation does **NOT** necessarily mean it is non-interruptible. An atomic operation ensures that the operation is completed as a single, indivisible step **with respect to other threads/processes**, meaning that once the operation begins, it will complete without **interference** from other operations. This guarantees consistency and prevents race conditions. However, it does not imply that the operation cannot be interrupted at the hardware or operating system level; it means that from the perspective of other threads or processes, the operation appears to happen instantaneously and without interruption.
 
 ## Non-atomic `++` and `--`
 
