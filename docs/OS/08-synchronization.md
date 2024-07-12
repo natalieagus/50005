@@ -130,7 +130,7 @@ ADDC(R2, 1, R2) || or SUBC for counter--
 ST(R2, counter)
 ```
 
-This is **non-atomic** because it is composed of multiple **separate** instructions that are <span class="orange-bold">not</span> executed as a single, indivisible operation. 
+This is **non-atomic** because it is composed of multiple **separate** instructions that are <span class="orange-bold">not</span> executed as a single, indivisible operation. More precisely, each of these instructions can be **interleaved** by the execution of other threads, leading to inconsistencies (race condition) in the result.
 
 
 ## Race Condition Outcome 1
