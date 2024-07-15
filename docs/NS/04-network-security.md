@@ -73,8 +73,12 @@ We will discuss how these properties are threatened, and ways to ensure that the
 There are five possible security attacks that we are going to discuss in this chapter. Each of these attacks compromise specific security properties:
 * Eavesdrop attack threatens **confidentiality** 
 * Message alteration attack threatens **integrity**
-* Impersonation and hijacking threatens **authentication**
+* Impersonation threatens **authentication** 
+* Hijacking threatens **authentication**
 * Denial of Service threatens **access** and **availability**
+
+{:.info}
+Connection **hijacking** is a security breach where an intruder intercepts and takes control of an established communication session between a client and a server. This can be done in various ways, such as session fixation, session side jacking, and TCP/IP hijacking, which is not part of our syllabus. You are welcome to read this [appendix](#connection-hijacking) section if you'd like to find out more about it.  
 
 # Cryptography
 
@@ -578,3 +582,66 @@ To understand why $$a^{\phi(n)} \equiv 1 \mod n$$, we can break it down into a f
 
 Thus, Euler's theorem establishes that when $$a$$ and $$n$$ are coprime, $$a^{\phi(n)}$$ is congruent to 1 modulo $$n$$. This property is fundamental in RSA cryptography, as it forms the basis for correctness and security in the RSA algorithm.
 
+## Connection Hijacking
+
+Connection hijacking is when an intruder takes control of an active communication session between a client and a server. Let's break down what happens when an intruder hijacks a connection:
+
+1. **TCP/IP Hijacking**:
+   - **Initial Setup**: The client establishes a connection with the server, and they start communicating. Each packet sent between them contains sequence numbers.
+   - **Intruder's Actions**: The intruder intercepts the communication stream and starts injecting malicious packets. The intruder needs to predict or know the sequence numbers to successfully inject packets that will be accepted by the client.
+
+2. **Behavior of True Packets**:
+   - **True Server Packets**: If the intruder hijacks the connection and starts sending data to the client, the true server's packets will still be sent to the client unless the intruder also disrupts the server's ability to communicate.
+   - **Client Receiving Packets**: The client may receive packets from both the true server and the intruder. However, due to how TCP/IP handles sequence numbers and acknowledgments, the client's behavior can vary:
+     - If the sequence numbers from the intruder match the expected sequence numbers of the client's TCP stack, the client will accept the intruder's packets and potentially discard out-of-order packets from the true server.
+     - If the sequence numbers from the true server and the intruder are out of sync, the client may experience duplicate or out-of-order packets, leading to confusion and potential errors.
+
+3. **Handling Duplicate Packets**:
+   - **TCP Stack Mechanism**: TCP has mechanisms to handle duplicate and out-of-order packets. It uses sequence numbers and acknowledgments to determine the correct order of packets.
+   - **Intruder's Goal**: A successful hijack involves the intruder sending packets with the correct sequence numbers, making the client believe the packets are coming from the true server. The client will acknowledge these packets, and if the server is not aware of the hijack, it may continue to send packets, which could be considered out of order or duplicates by the client's TCP stack.
+
+4. **Client's Experience**:
+   - The client might receive responses from both the intruder and the true server if the intruder does not completely block the server's packets.
+   - The client may discard packets from the true server if the intruder's packets are considered valid by the client's TCP stack.
+   - There can be a disruption in the session, leading to confusion, errors, or dropped connections.
+
+
+
+### Example Scenario
+Let's clarify how connection hijacking works with a concise example. Suppose we have: 
+- **Client (C)** is communicating with **Server (S)** over a TCP connection.
+- **Intruder (I)** wants to hijack this connection.
+
+#### Steps
+1. **Initial Communication**:
+   - **C** sends data to **S**: "Hello, Server!"
+   - **S** responds: "Hello, Client!"
+
+2. **Intruder Intercepts**:
+   - **I** intercepts the communication.
+   - **I** predicts the sequence numbers being used between **C** and **S**.
+
+3. **Intruder Hijacks**:
+   - **I** starts sending packets to **C**, pretending to be **S**.
+   - Example: **I** sends a packet to **C**: "New Data from Server" with the correct sequence number.
+
+4. **Client Receives Packets**:
+   - **C** receives packets from both **S** and **I**.
+   - If **I**'s packet has the expected sequence number, **C** accepts it as valid.
+   - True packets from **S** might still reach **C**, but **C** might discard them if they seem out of order or duplicates due to incorrect sequence numbers.
+
+#### What Happens to True Packets Sent by S
+- **True Packets from S**:
+  - **C** might receive packets from **S** but could discard them if they don't match the expected sequence numbers.
+  - If **C**'s TCP stack sees these packets as out of order or duplicate, it won't process them correctly.
+
+#### Client Experience
+- **C** may:
+  - Accept data from **I**, believing it's from **S**.
+  - Experience disrupted communication if out-of-order packets cause confusion.
+  - Potentially drop the connection if the sequence numbers and acknowledgments get too out of sync.
+
+### Summary:
+In connection hijacking, the intruder sends packets with the correct sequence numbers to the client, causing the client to accept these as valid. True packets from the server might be ignored or cause errors if they don't match the expected sequence order.
+
+Connection hijacking involves **intercepting** and **injecting** malicious packets into an established communication session. The true server's packets may still reach the client, but their handling depends on the sequence numbers and the client's TCP stack behavior. The client might receive duplicate packets, out-of-order packets, or be tricked into accepting the intruder's packets as valid, disrupting the normal communication with the true server.
