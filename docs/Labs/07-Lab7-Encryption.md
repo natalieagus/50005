@@ -187,11 +187,19 @@ Now you should be able to complete these two tasks.
 `TASK 1-3:` Encrypt the raw bytes. Fill in your answer under the `TODO` for this task. 
 {:.task}
 
+{:.note-title}
+> Fernet Token
+>
+> `encrypted_message_bytes`, known as the *ciphertext* or the Fernet token in this context (as we are using the Fernet protocol in this Python's `cryptography` module), contains a few things in this order:
+> * Version: 1 byte
+> * Timestamp: 8 bytes
+> * IV: 16 bytes (the initialization vector)
+> * Ciphertext: Variable length (the actual encrypted data)
+> * HMAC: 32 bytes (the message authentication code)
 
 ### Task 1-4 
 `TASK 1-4:` Decrypt the raw bytes. Fill in your answer under the `TODO` for this task. 
 {:.task}
-
 
 
 ## Creating a Printable Text Using base64
@@ -444,6 +452,16 @@ ECB stands for ‘electronic codebook’. When using ECB mode, <span style="colo
 CBC stands for 'cipher block chaining'. In CBC mode, the current block is added to the previous ciphertext block, and then the result is encrypted with the key (thus the word chained). Decryption is thus the reverse process, which involves decrypting the current ciphertext and then adding the previous ciphertext block to the result.
 <img src="{{ site.baseurl }}/assets/contentimage/ns-lab-2/cbc.png"  class="center_seventy"/>
 
+{:.note-title}
+> Initialization Vectors (IVs)
+> 
+> IVs are used in encryption to ensure that the same plaintext encrypted with the same key will result in different ciphertexts each time. This randomness is crucial for security in modes like CBC. An IV is generated for **each** encryption operation and is typically included with the ciphertext to be used during decryption.
+>
+> <span class="orange-bold">They don't have to be secret</span>. The security of encryption does not rely on the secrecy of the IV. Instead, it relies on the secrecy of the symmetric key. The IV's purpose is to introduce randomness to ensure that identical plaintexts do not produce identical ciphertexts.
+>
+> In protocols like Fernet above, the IV is included with the ciphertext. When decrypting, the IV is extracted from the token and used to decrypt the data.
+
+
 ## Create a CipherContext instance for encryption
 
 ### Task 2-2
@@ -636,6 +654,18 @@ except:
 Note that the length of `data_bytes` can be arbitrarily long because it will be <span style="color:#f77729;"><b>hashed</b></span> automatically (third argument of `sign`) before encrypted with the private key. The <span style="color:#f77729;"><b>output</b></span> length of `SHA-256` is 32 bytes only (256 bits) which when added with the padding, will still be less than 128 bytes.
 
 We also use a <span style="color:#f77729;"><b>different</b></span> padding scheme for the signature (`PSS`) and not `OAEP` because of the _nature_ of the padding. You may read more about it [here](https://www.cryptosys.net/pki/manpki/pki_rsaschemes.html) or in any other online source materials but it is our of our syllabus.
+
+### Salting in Hashing
+
+{:.info}
+A salt is a random value added to the input (e.g., a password) before hashing.
+
+It ensures that the same input will produce **different** hash outputs. This prevents attackers from using precomputed hash tables (rainbow tables) to reverse-engineer the hashed values.
+
+Characteristics of Salt:
+* **Uniqueness**: Each input (e.g., each password) should have a unique salt to prevent identical inputs from producing the same hash.
+* **Randomness**: The salt should be randomly generated to ensure unpredictability.
+* Non-**Secret**: The salt does <span class="orange-bold">not</span> need to be kept secret. It is typically stored **alongside** the hash in a database. From Lab 3 (TOCTOU), you have seen how salt is kept alongside the hashed password in `/etc/shadow` file. 
 
 ## Creating a Digest
 
