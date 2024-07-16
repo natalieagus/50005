@@ -197,14 +197,16 @@ Characteristics:
 * Input/output size: depends on key size and padding
 
 
-**The RSA fulfils two important requirementsi of Asymmetric Key Cryptography:**
+**The RSA fulfils two important requirements of Asymmetric Key Cryptography:**
 1. Given public key, it is <span class="orange-bold">impossible</span> to compute the private key
-2. Need a public-private key **pair** such that, 
+2. Able to produce a public-private key **pair** such that, 
    * `encrypt(message, public_key) = ciphertext`    (**encryption**)
    * `decrypt(ciphertext, private_key) = message`   (**decryption**)
-3. Note that the opposite can also be done:
-   * `encrypt(message, private_key) = signed_ciphertext`    (**signing**)
-   * `decrypt(signed_ciphertext, public key) = message`   (**verification**)
+
+
+Note that the opposite can also be done:
+* `encrypt(message, private_key) = signed_ciphertext`    (**signing**)
+* `decrypt(signed_ciphertext, public key) = message`   (**verification**)
 
 
 ### How RSA Works
