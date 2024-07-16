@@ -198,15 +198,19 @@ Characteristics:
 
 
 **The RSA fulfils two important requirements of Asymmetric Key Cryptography:**
-1. Given public key, it is <span class="orange-bold">impossible</span> to compute the private key
+1. Given the public key, it is <span class="orange-bold">impossible</span> to compute the private key
+   * This **ensures** the **security** of the cryptographic system. The public key can be widely distributed without compromising the private key. 
+   * The difficulty of deriving the private key from the public key is based on **hard** mathematical problems, such as factoring large prime numbers (RSA) or solving discrete logarithms (Elliptic Curve Cryptography).
 2. Able to produce a public-private key **pair** such that, 
    * `encrypt(message, public_key) = ciphertext`    (**encryption**)
    * `decrypt(ciphertext, private_key) = message`   (**decryption**)
+   * This ensures that messages **encrypted** with the public key can only be **decrypted** with the corresponding private key, providing <span class="orange-bold">confidentiality</span>.
 
 
 Note that the opposite can also be done:
 * `encrypt(message, private_key) = signed_ciphertext`    (**signing**)
 * `decrypt(signed_ciphertext, public key) = message`   (**verification**)
+* This ensures that a message **signed** with the private key can be **verified** by anyone with the public key, providing **authenticity** and **integrity**. *This operation is typically referred to as signing rather than encrypting with the private key, and verifying rather than decrypting with the public key.*
 
 
 ### How RSA Works
