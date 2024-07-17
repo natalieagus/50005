@@ -265,8 +265,8 @@ Hence:
 2. Private key is $$(35, 2753)$$
 
 Let's say we have `m=01000001` (the letter 'A' in UTF-8 encoding). This corresponds to 65 in decimal. 
-* **Encryption**: $$c = 65^17 \mod 3233 = 2790 $$ 
-* **Decryption**: $$m = 2790^2753 \mod 3233 = 65$$ (original value)
+* **Encryption**: $$c = 65^{17} \mod 3233 = 2790 $$ 
+* **Decryption**: $$m = 2790^{2753} \mod 3233 = 65$$ (original value)
 
 ### Message Segmentation
 {:.important}
