@@ -53,11 +53,13 @@ Singapore University of Technology and Design
 >
 > The learning objectives encompass understanding security properties, identifying various security attacks, comprehending cryptography fundamentals including symmetric and asymmetric key cryptography, exploring the RSA algorithm, discussing practical considerations such as computational efficiency and session keys, synthesizing security measures, and analyzing current and future challenges in network security.
 
-Throughout this chapter, we are going to focus on these four security properties pertaining to exchanging messages through the internet that we care about:
+Throughout this chapter, we are going to focus on these **four** security properties pertaining to exchanging messages through the internet that we care about:
 1. <span class="orange-bold">Confidentiality</span>: only sender and receiver should understand the message contents
 2. <span class="orange-bold">Integrity</span>: sender, and receiver want to confirm that the message is not altered without detection during transit
 3. <span class="orange-bold">Authentication</span>: sender, and receiver both can confirm the identity of one another
 4. <span class="orange-bold">Access and Availability</span>: internet services must be accessible and available to users
+
+> Note that not all scenarios require all four of these properties to hold. It **depends** on a case-by-case basis, for instance: there exist scenarios whereby confidentiality is not important (not a requirement), but the other 3 are. For example: broadcasting of emergency alerts.
 
 We will discuss how these properties are threatened, and ways to ensure that these properties hold. In real life, sender + receiver are:
 * Web browser/server for e-transactions + clients, 
@@ -322,7 +324,6 @@ One solution is to use session key.
 > We then use this symmetric session key (instead of the public key) for the subsequent message exchanges throughout the session. See the next chapter for further details. 
 
 # Summary 
-**Summary:**
 
 In this chapter on Network Security and Cryptography, we delve into the crucial properties essential for secure communication over the internet: Confidentiality, Integrity, Authentication, and Access/Availability. We explore various threats to these properties and strategies to mitigate them. Here's a breakdown of key concepts covered:
 
@@ -647,7 +648,7 @@ Let's clarify how connection hijacking works with a concise example. Suppose we 
   - Experience disrupted communication if out-of-order packets cause confusion.
   - Potentially drop the connection if the sequence numbers and acknowledgments get too out of sync.
 
-### Summary:
+### Summary
 In connection hijacking, the intruder sends packets with the correct sequence numbers to the client, causing the client to accept these as valid. True packets from the server might be ignored or cause errors if they don't match the expected sequence order.
 
 Connection hijacking involves **intercepting** and **injecting** malicious packets into an established communication session. The true server's packets may still reach the client, but their handling depends on the sequence numbers and the client's TCP stack behavior. The client might receive duplicate packets, out-of-order packets, or be tricked into accepting the intruder's packets as valid, disrupting the normal communication with the true server.

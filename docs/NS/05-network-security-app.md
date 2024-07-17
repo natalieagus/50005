@@ -103,7 +103,7 @@ T can echo back A’s IP + A’s “secret” password to B, but with a new mess
 
 
 {:.note}
-To perform an eavesdrop attack, the attacker T does not even need to be in the same network. If the attacker is on the same local network as the target, it's easier to perform packet sniffing because the attacker can directly intercept network traffic passing through the local network segment. This could be done by connecting to the same Wi-Fi network, being physically connected to the same Ethernet switch, or being on the same subnet. While being on the same network can simplify eavesdropping attacks, attackers can still intercept communication remotely by targeting specific network nodes or exploiting vulnerabilities in network infrastructure.  Head to [appendix](#eavesdropping) if you'd like concreate examples on how eavesdropping is done. 
+To perform an **eavesdrop** attack, the attacker T does <span class="orange-bold">not</span> even need to be in the same network. If the attacker is on the same local network as the target, it's easier to perform packet sniffing because the attacker can directly intercept network traffic passing through the local network segment. This could be done by connecting to the same Wi-Fi network, being physically connected to the same Ethernet switch, or being on the same subnet. While being on the same network can *simplify* eavesdropping attacks, attackers can still intercept communication remotely by targeting specific network nodes or exploiting **vulnerabilities** in network infrastructure.  Head to [appendix](#eavesdropping) if you'd like concreate examples on *how* eavesdropping is done. 
 
 
 # Case 4: Encrypted message + encrypted password + IP header
@@ -120,19 +120,42 @@ B is still not able tell if the incoming message + encrypted secret message come
 {:.note-title}
 > Playback vs replay attack
 >
-> Both replay attacks and eavesdropping attacks involve <span class="orange-bold">intercepting</span> network communication. Replay attacks involve intercepting and later re-transmitting captured network data to impersonate a legitimate user, while eavesdropping attacks involve passive interception of communication to extract sensitive information without altering it. Replay attacks aim to deceive the target system by replaying captured data, whereas eavesdropping attacks focus on listening in on communication to <span class="orange-bold">extract confidential</span> information.
+> Both replay attacks and eavesdropping attacks involve <span class="orange-bold">intercepting</span> network communication. 
+> 
+> Replay attacks involve **intercepting** and later re-**transmitting** captured network data to impersonate a legitimate user, while eavesdropping attacks involve <span class="orange-bold">passive</span> interception of communication to extract sensitive information without altering it. 
+> 
+> Replay attacks aim to **deceive** the target system by replaying captured data, whereas eavesdropping attacks focus on **listening** in on communication to <span class="orange-bold">extract confidential</span> information.
 
 Therefore in Case 4:
 * Authentication is **not present** (due to replay/playback attack)
-* Integrity is **present**: we know that A wrote the message at some point in time because only A has the symmetric key, just that it might **not*** be right now (not live)
+* Integrity is **present**: we know that A wrote the message at some point in time because only A has the symmetric key, just that it might **not** be right now (not live)
 * Confidentiality is **present**: T cannot decipher the message, only replay it
+
+
+{:.error-title}
+> Message Integrity w/o Authentication? 
+>
+> Even if the message integrity is intact (in the case of replay attack), without authentication (signing of the message), there's *no way* to verify the <span class="orange-bold">timeliness</span> or origin of the message (origin != author). The **significance** of message integrity without authentication does depend on the **context of the message**. An attacker can replay an old message, and while its content has not been altered (thus maintaining integrity), it could still cause **undesirable** effects because the recepient cannot distinguish it from a legitimate, authenticated message from the author. 
+> 
+> For <span class="orange-bold">critical</span> actions publication of software update, ensuring both integrity <span class="orange-bold">and</span> authentication is essential to prevent that the software being installed indeed is published from reputable source (and not some malicious software). 
+> 
+> However, integrity without authentication for <span class="orange-bold">non-critical</span> message like **weather update** might be sufficient as the information is used for general awareness rather than critical decision making. 
+
+{:.error-title}
+> Message Integrity *with* Authentication but *without* Liveness?  
+>
+> In some scenarios that require **immediate** critical decision making, **liveness** is also an important requirement on top of **both** message integrity and authentication. For <span class="orange-bold">time-sensitive critical actions</span> like transferring money and a live-voting system, ensuring integrity, authentication, **and** liveness is **essential** to prevent replay attacks and unauthorized duplicated actions. 
+>
+> It should be clear that the above examples of time-sensitive, critical decision-making scenarios (bank transfer, voting system) are *different* from the **software update** and **weather update** scenarios aforementioned. 
+
+
 
 # Case 5: Signed message + Signed Nonce
 
 {:.important}
 In this scenario, Asymmetric Key Cryptography is used. Assume that confidentiality is **not** a requiremement (not critical)
 
-Case 4's issue is that it is susceptible to replay attack. To tackle this issue, B **wants** to authenticate A and ensure the **liveliness** of A. That is, if A sends the message "Transfer me $5000", B wants to make sure that it is indeed coming from A *right now*. 
+Case 4's issue is that it is susceptible to replay attack. To tackle this issue, B **wants** to authenticate A and ensure the **liveness** of A. That is, if A sends the message "Transfer me $5000", B wants to make sure that it is indeed coming from A *right now*. 
 
 {:.info-title}
 > Nonce
@@ -217,7 +240,7 @@ Let's now review Case 5 again with the addition of CA:
 <img src="{{ site.baseurl }}/docs/NS/images/04-network-security/cse2024-case5c.drawio-4.png"  class="center_seventy"/>
 
 The addition of a CA enables B to be sure that A’s public key indeed belongs to A. However it is *still* forcing A or B to encrypt messages with asymmetric key cryptography which is <span class="orange-bold">slow</span> and takes up <span class="orange-bold">resources</span> because it is computationally expensive. This improved Case 5 with a presence of a trusted CA nonetheless provides:
-* **Authentication**: The Nonce ensures the message signed and sent by A is fresh. In other words, B <span class="orange-bold">authenticates</span> A and ensures the <span class="orange-bold">liveliness</span> of A. The messages B received from A comes from A *right now*.
+* **Authentication**: The Nonce ensures the message signed and sent by A is fresh. In other words, B <span class="orange-bold">authenticates</span> A and ensures the <span class="orange-bold">liveness</span> of A. The messages B received from A comes from A *right now*.
 * **Confidentiality**: From B to A only, not the other way around. 
   * This is because only A has CA-signed certificate. By encrypting messages using A's verified public key, B ensures that only A can read the message.
   * If A would like to send a confidential message to B, then B needs to obtain CA-signed certificate too. A can then encrypt the message using B's verified public key.
