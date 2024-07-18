@@ -78,7 +78,7 @@ Then, cd to `nslab2` and install the required modules:
 python3 -m pip install -r requirements.txt
 ```
 
-In this lab, you're only required to modify all the 3 python files. You don't need to submit your code, and simply answer the questionnaire on eDimension as usual. There are areas labeled in these `.py` files as `TODO`, and these are your tasks.
+In this lab, you're only required to modify all the 3 python files. When you're done, submit your code via our Telegram bot as usual, and answer the questionnaire on eDimension as usual. There are areas labeled in these `.py` files as `TODO`, and these are your tasks.
 
 ## Test the Starter Code
 
