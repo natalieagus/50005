@@ -24,19 +24,23 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 > 
 > - **Understand the Difference Between Process and Program**
->   - Recognize that a process is a dynamic execution instance of a static program.
->   - Acknowledge that a program is a passive entity containing the code, whereas a process is an active entity with executing code and associated resources.
+>   - Recognize that a process is a **dynamic** execution instance of a **static** program.
+>   - Acknowledge that a program is a **passive** entity containing the code, whereas a process is an active entity with executing code and associated resources.
+>   - Lay out **components** of a process **image** (**address space**)
 > - **Explore Process Context**
->   - Identify what constitutes a process' context including the program counter, processor's registers, address space, and more.
+>   - Identify what constitutes a process' **context** including the program counter, processor's registers, stack, image, and more.
 >   - Understand how multiple instances of a program can run as separate processes.
 > - **Concurrency and Protection in Processes**
->   - Grasp how processes allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
-> - **Introduction to Process Scheduling States**
->   - Learn about different process states (New, Running, Waiting, Ready, Terminated) and the lifecycle of a process.
->   - Understand the concept of a process table and a Process Control Block (PCB) which store process attributes.
+>   - Grasp how **processes** allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
+>   - Compare and contrast between **concurrency** and **parallelism**
+> - **Introduction to Process Lifecycle**
+>   - Learn about different process states (New, Running, Waiting, Ready, Terminated) and their transitions.
+>   - Recognise UNIX data structures used to manage process lifecycle: Process Table and a Process Control Block (PCB) which store process attributes.
+>   - Able to **create** a new process, e.g: using `fork()` in C and its **implications**
+>   - Able to **replace** a process' image with the `exec()` system call family and comprehend its **implications**
 > - **Process Management and Scheduling**
->   - Comprehend how processes are managed and scheduled by the operating system, including the role of the scheduler.
->   - Familiarize with context switching and its impact on system performance.
+>   - Comprehend how processes are **managed** and **scheduled** by the operating system, including the role of the **scheduler**.
+>   - Familiarize with **context switching** and its impact on system performance.
 >
 > These objectives are structured to provide a comprehensive overview of the concepts related to processes versus programs, their management, and the system's handling of multiple processes.
 
@@ -77,7 +81,7 @@ A process couples <span style="color:#f7007f;"><b>two abstractions</b></span>: <
 
 **Protection**: Each process runs in a different address space and sees itself as running in a virtual machine -- unaware of the presence of other processes in the machine. Multiple processes execution in a single machine is <span style="color:#f7007f;"><b>concurrent</b></span>, managed by the <span style="color:#f7007f;"><b>kernel scheduler</b></span>.
 
-**Concurrency**: Multiple processes being in progress at the same time, sharing system resources. These processes can run in parallel on multiple processors or cores, or they can be interleaved on a single processor through time slicing.
+**Concurrency**: Multiple processes being in **progress** at the same time, sharing system resources. These processes can run in parallel on multiple processors or cores, or they can be interleaved on a single processor through time slicing.
 
 ## Piggybacking
 

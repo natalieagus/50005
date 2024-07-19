@@ -24,22 +24,19 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 >
 > - **Understand the Role of Operating Systems**
->   - Explain the purposes of an operating system including resource allocation, program execution control, and security enforcement.
-> - **Describe Kernel Functions**
->   - Discuss how the kernel controls and coordinates hardware and I/O device usage among applications.
+>   - Explain the **purposes** of an operating system including **resource allocation**, program **execution** control, and **security** enforcement.
 > - **Explore Interrupt-Driven I/O Operations**
->   - Define the concept of interrupt-driven I/O and differentiate between hardware and software interrupts.
->   - Explain the functions and benefits of vectored and polled interrupt systems.
-> - **Analyze Interrupt Management**
+>   - Define the concept of interrupt-driven I/O and differentiate between **hardware** and **software** interrupts.
+>   - Explain the functions and benefits of **vectored** and **polled** interrupt systems.
 >   - Describe the process of handling hardware interrupts, including the role of interrupt request lines and interrupt handlers.
 >   - Compare vectored and polled interrupt scenarios and their suitability for different system complexities.
 > - **Examine System Calls and Software Interrupts**
->   - Understand the role of system calls in software interrupts and their impact on process execution.
->   - Discuss how software interrupts (traps) facilitate interaction between user processes and the kernel.
+>   - List out the role of **system calls** in software interrupts and their impact on process execution.
+>   - Discuss how software interrupts (**traps**) facilitate interaction between user processes and the kernel.
 > - **Understand Process Management**
->   - Explore how the kernel manages processes to support multiprogramming and timesharing.
+>   - Explore how the kernel manages processes to support **multiprogramming** and **timesharing**.
 >   - Define the difference between a process and a program.
-> - **Investigate Kernel Modes**
+> - **Kernel Reentrancy and Preemptiveness**
 >   - Compare reentrant and preemptive kernel operations and their implications for process management.
 > - **Study Memory and Process Management Techniques**
 >   - Discuss the implementation of virtual memory and the configuration of memory management units (MMU).

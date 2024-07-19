@@ -17,7 +17,7 @@ This section contains the syllabus and materials for the second part of 50.005. 
 > Kurose and Ross. Computer Networking – A Top-Down Approach, 7th Ed. Pearson. ISBN 978-0-273-76896-8. (required) - Abbreviated as “KR” in this document.
 
 ## Week 8: KR Ch. 1.1, 1.3, 1.5
-* Explain what is a network and the internet
+* Explain what a network is and the internet
 * Discuss challenges for the internet
 * Explain what protocol means
 * Explain the difference and pros/cons between time domain multiplexing, frequency domain multiplexing, and packet switching
@@ -40,7 +40,7 @@ This section contains the syllabus and materials for the second part of 50.005. 
 * Explain basic cryptography techniques
 * Explain concepts of symmetric and asymmetric keys, as well as their pros/cons
 * Explain applications of keys: confidentiality, authentication, integrity, authentication protocol and design issues, as well as secure emails
-* Explain possible attack scenarios in each of the application in point (5) above
+* Explain various possible security attack scenarios depending on which cryptography techniques are or are not utilised
 * Describe how public-key certification works
  
 ## Week 11: KR Ch. 2.1, 2.4

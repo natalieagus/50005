@@ -24,28 +24,72 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 >
 > - **Understand the Producer-Consumer Problem**
+>   - Explain **issues** of multiprogramming and concurrency: the race condition
 >   - Recognize the challenge of managing two asynchronous processes or threads (producer and consumer) that interact through a shared bounded buffer.
->   - Comprehend the terms "asynchronous," "concurrent," and "parallel" and their implications on process execution and scheduling.
-> - **Real-Life Applications**
->   - Identify real-life examples of producer-consumer scenarios such as a compiler and assembler interaction, and web servers and browsers.
-> - **Precedence Constraints**
->   - Understand the necessary conditions to prevent the producer from overfilling the buffer and the consumer from reading from an empty buffer.
+>   - Comprehend the terms "**asynchronous**," "**concurrent**," and "**parallel**" and their implications on process execution and scheduling.
+>   - Identify **real-life examples** of producer-consumer scenarios such as a compiler and assembler interaction, and web servers and browsers.
+>   - Understand the **precedence constraints**: the  necessary conditions to prevent the producer from overfilling the buffer and the consumer from reading from an empty buffer.
 > - **Critical Section and Race Conditions**
->   - Define the critical section where processes access shared resources that require mutual exclusion.
+>   - Define the critical section where processes access shared resources that **require mutual exclusion**.
 >   - Explain race conditions, particularly how they can disrupt program correctness in the context of shared variables like counters.
 > - **Synchronization Solutions**
->   - Explore different synchronization techniques including software and hardware solutions, semaphores, and condition variables.
->   - Discuss how these solutions enforce mutual exclusion, manage process execution order, and prevent deadlock and starvation.
-> - **Semaphore Usage and Mechanics**
->   - Delve into how semaphores function as counters for resource management, capable of solving complex synchronization problems beyond simple mutual exclusion.
-> - **Condition Variables**
+>   - **Prove** how various race condition solution supports mutual exclusion, progress, and bounded waiting
+>   - **Explore** different synchronization **techniques** including software and hardware solutions, semaphores, and condition variables.
+>   - Discuss how these solutions **enforce** mutual exclusion, **manage** process execution order (bounded waiting), and maintain **progress** and avoid starvation.
+>   - Discuss how **Peterson’s solution** solve the critical section problem and prove its correctness.
+>   - Recognise the difference between solutions requiring and not requiring to **busy wait**.
+>   - Delve into how **semaphores** function as counters for resource management, capable of solving complex synchronization problems beyond simple mutual exclusion with minimised **busy waiting**
 >   - Learn how condition variables work with mutexes to provide a way for threads to wait for specific conditions to proceed, enabling efficient resource management without busy waiting.
+> - **Evaluate the efficiency and applicability of synchronization mechanisms**
+>   - Assess **when** to use each type of synchronization technique based on the specific requirements and context of the problem, considering factors like system architecture, overhead, and the nature of the critical section.
 > - **Practical Implementations and Code Examples**
 >   - Examine C code samples that implement mutexes, condition variables, and semaphores to handle synchronization in multi-threaded environments.
-> - **Evaluate the efficiency and applicability of synchronization mechanisms**
->   - Assess when to use each type of synchronization technique based on the specific requirements and context of the problem, considering factors like system architecture, overhead, and the nature of the critical section.
 > 
 > These objectives guide through understanding the theoretical concepts and practical implementations, emphasizing the importance of correct synchronization in concurrent programming to maintain data integrity and program stability.
+
+## Asynchrony vs Concurrency vs Parallelism
+
+{:.note}
+**Asynchronous** processing involves **non-blocking** tasks that run independently without waiting for others, **concurrent** processing manages <span class="orange-bold">multiple</span> tasks making progress over time without simultaneous execution, while **parallel** processing executes multiple tasks at the same time on multiple cores or processors.
+
+### Asynchronous Processing
+Asynchronous processing allows a program to perform tasks without waiting for others to complete. This is particularly useful in I/O operations where waiting for a resource could block other tasks. Instead, tasks can be started and the program can move on to other tasks while waiting for the initial tasks to complete.
+
+**Example**: Making an HTTP request. The program can initiate the request and then continue executing other code. When the response is received, a callback function can be executed to handle the response.
+
+### Concurrent Processing
+Concurrent processing involves multiple tasks making progress over time, but not necessarily simultaneously. This can be achieved through various methods like time slicing, where each task is given a small time slot to execute before moving to the next one.
+
+**Example**: Running multiple threads on a single-core processor. Each thread gets a time slice to run, and the operating system switches between them, creating the illusion of simultaneous execution.
+
+### Parallel Processing
+Parallel processing involves performing multiple tasks simultaneously. This requires multiple processors or cores. Each core can execute a different task at the same time, leading to true simultaneous execution.
+
+**Example**: Running multiple processes on a multi-core processor. Each process can run on a different core, truly executing in parallel.
+
+### Key Differences
+1. **Execution Style**:
+   - **Asynchronous**: Non-blocking, tasks are started and the program continues without waiting.
+   - **Concurrent**: Multiple tasks are in progress, but they may not be running at the exact same time.
+   - **Parallel**: Multiple tasks are executed simultaneously, requiring multiple cores or processors.
+
+2. **Typical Use Cases**:
+   - **Asynchronous**: I/O-bound tasks, such as reading/writing files, network requests.
+   - **Concurrent**: Multithreading in applications, such as GUI applications where you don’t want the interface to freeze while performing background tasks.
+   - **Parallel**: CPU-bound tasks, such as scientific calculations, data processing on large datasets.
+
+3. **Hardware Requirements**:
+   - **Asynchronous**: Does not necessarily require multiple cores or processors.
+   - **Concurrent**: Can be achieved with a single-core processor through time slicing.
+   - **Parallel**: Requires multiple cores or processors.
+
+### Summary
+- **Asynchronous** processing allows tasks to be executed **without** blocking the main program flow, often used for I/O operations.
+- **Concurrent** processing enables **multiple** tasks to make <span class="orange-bold">progress over time</span>, often through multithreading or multiprocessing.
+- **Parallel** processing executes multiple tasks **simultaneously**, requiring multi-core processors or multiple processors.
+
+{:.info}
+Each of these concepts can be implemented using different techniques and technologies depending on the specific requirements and constraints of the application. Understanding when and how to use each can significantly impact the performance and efficiency of software systems.
 
 ## The Producer Consumer Problem
 

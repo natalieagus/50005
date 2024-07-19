@@ -29,29 +29,29 @@ Singapore University of Technology and Design
 >   - Grasp the basic definition and purpose of computer networks.
 >   - Differentiate between the "nuts and bolts" and "service" views of networking.
 > - **Explore the "Nuts and Bolts" of Computer Networking**
->   - Identify the components that make up the internet including hosts, communication links, and packet switches.
->   - Describe the function and types of end systems, communication links, and packet switches.
+>   - Identify the **components** that make up the internet including hosts, communication links, and packet switches.
+>   - Describe the **function** and types of **end systems**, communication links, and packet switches.
 >   - Recognize the various types of Internet Service Providers (ISPs) and their roles in providing network access.
 > - **Learn the "Service" View of the Internet**
->   - Understand the internet as an infrastructure that provides services to applications.
->   - Explain the role of APIs in enabling applications to access network services.
+>   - Understand the internet as an infrastructure that provides **services** to applications.
+>   - Explain the role of **APIs** in enabling applications to access network services.
 > - **Delve into Network Challenges and Solutions**
->   - Understand the challenges such as operability, sharing, component interaction, and scalability in networking.
->   - Describe the methods used to overcome these challenges including internet protocols and APIs.
+>   - Understand the **challenges** such as operability, sharing, component interaction, and scalability in networking.
+>   - Describe the **methods** used to overcome these challenges including internet protocols and APIs.
 > - **Master Network Layering and its Importance**
->   - Grasp the concept of network layering and its role in reducing complexity and managing network interactions.
->   - Learn about each layer in the network hierarchy from physical to application layer, and the respective roles and protocols associated with each.
+>   - Grasp the general concept of **network layering** and its role in **reducing complexity** and managing network interactions.
+>   - Learn about **each** layer in the network hierarchy from physical to application layer, and the respective **roles** and **protocols** associated with each.
 > - **Understand Data Transmission Methods**
 >   - Compare and contrast packet switching and circuit switching, understanding their advantages and applications.
 >   - Calculate the time required for data transfer under different network configurations.
 > - **Grasp the Concept of Multiplexing**
->   - Understand frequency division and time division multiplexing and their usage in network communications.
+>   - Understand **frequency** division and **time** division multiplexing and their usage in network communications.
 > - **Learn about Protocols and Standards**
 >   - Identify and understand the significance of different network protocols across various layers.
 >   - Explore how protocols like TCP, UDP, IP, Ethernet, and others function within the network stack.
 > - **Analyze Practical Networking Examples**
 >   - Apply theoretical knowledge to practical examples, including calculations for data transfer and understanding traffic patterns.
-> - **Explore Advanced Networking Concepts**
+>   - Explain the concept of **priority inversion** and **emergent behavior**
 >   - Dive into more complex aspects of networking such as data encapsulation and the interaction between different network layers.
 >
 > These learning objectives are intended to guide your understanding of the comprehensive notes on computer networking.
@@ -346,7 +346,7 @@ In programming, we try to tackle complicated systems all the time by making our 
   * Example: **priority inversion** caused by priority scheduling + locking mechanism (recall the OS topics). This caused something important (of a higher priority) to inadvertently become the lowest priority due to some misguided usage of **locking** mechanism. *Head to class activity to find out more*.  
 
 {:.important}
-Due to the vast size of components making up the internet (or network of internets), breaking them into modules is simply not enough. Plus, we cannot possibly think of all possible emergent behavior that may arise from making these *modules* interact.
+Due to the vast size of components making up the internet (or network of internets), breaking them into modules is simply not enough. Plus, we cannot possibly think of all possible **emergent behavior** that may arise from making these *modules* interact.
 
 The solution is to allow <span class="orange-bold">layering</span>: 
 * Layering <span class="orange-bold">reduces</span> interactions between sub-components

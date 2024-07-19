@@ -25,31 +25,24 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand Security Properties:**
+> - **Understand Security Properties (CAP)**
 >   - Describe the concepts of confidentiality, integrity, authentication, and access/availability in network security.
-> - **Comprehend Cryptography Fundamentals:**
->   - Explain the purpose and scope of cryptography in ensuring secure communication over the internet.
-> - **Explore Symmetric Key Cryptography:**
->   - Describe the principles of symmetric key cryptography.
+>   - Explain the purpose and scope of **cryptography** in ensuring **secure** communication over the internet.
+> - **Explore Symmetric Key Cryptography**
+>   - Describe the **principles** of **symmetric** key cryptography.
 >   - Compare and contrast DES and AES algorithms.
->   - Discuss the advantages and disadvantages of symmetric key encryption.
-> - **Examine Asymmetric Key Cryptography:**
->   - Define asymmetric key cryptography and its role in secure communication.
->   - Analyze the RSA algorithm and its components.
->   - Evaluate the strengths and weaknesses of RSA in different contexts.
-> - **Understand RSA Algorithm:**
+>   - **Evaluate** the advantages and disadvantages of symmetric key encryption.
+> - **Examine Asymmetric Key Cryptography**
+>   - Define **asymmetric** key cryptography and its role in secure communication.
+>   - Analyze the **RSA** algorithm and its components.
 >   - Explain the key generation process in RSA.
 >   - Demonstrate encryption and decryption using RSA.
 >   - Illustrate the process of digital signing and verification with RSA.
-> - **Discuss Practical Considerations:**
->   - Evaluate the computational efficiency of RSA compared to symmetric key algorithms.
->   - Apply the concept of session keys in improving efficiency in message exchanges.
-> - **Synthesize Security Measures:**
->   - Integrate knowledge of network security and cryptography to design robust security measures.
+>   - **Evaluate** the strengths and weaknesses of RSA in different contexts.
+> - **Discuss Practical Considerations**
+>   - Evaluate the c**omputational efficiency** of RSA compared to symmetric key algorithms.
+>   - Apply the concept of **session** keys in improving efficiency in message exchanges.
 >   - Evaluate the effectiveness of cryptographic solutions in mitigating specific security threats.
-> - **Analyze Current and Future Challenges:**
->   - Identify emerging technologies and trends impacting network security.
->   - Discuss potential challenges and solutions in adapting security measures to evolving threats and technologies.
 >
 > The learning objectives encompass understanding security properties, identifying various security attacks, comprehending cryptography fundamentals including symmetric and asymmetric key cryptography, exploring the RSA algorithm, discussing practical considerations such as computational efficiency and session keys, synthesizing security measures, and analyzing current and future challenges in network security.
 

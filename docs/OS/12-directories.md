@@ -23,24 +23,24 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Understand Directories and Namespace Organization**
->   - Define what a directory is in the context of file systems.
->   - Explain how directories help organize files and subdirectories within a structured namespace.
+> - **Directories and Namespace Organization**
+>   - Define what a directory is in the context of file systems, as well as its **differences** vs a regular file.
+>   - Explain how directories help **organize** files and **subdirectories** within a **structured namespace**.
 > - **Directory Permissions and Operations**
 >   - Understand the significance of `x`, `r`, and `w` permissions in directories.
 >   - Identify the effects of directory permissions on file access and operations within the directory.
-> - **Explore Directory Structures and Their Types**
->   - Compare and contrast different directory structures such as single-level, two-level, tree-structured, and acyclic graph directories.
->   - Discuss the benefits and limitations of each directory structure type.
+> - **Directory Structures and Their Types**
+>   - Compare and contrast different directory structures such as single-level, two-level, tree-structured, acyclic graph, and general graph directories.
+>   - Discuss the benefits and limitations of **each** directory structure type.
 > - **Directory and File Linking Concepts**
->   - Differentiate between hard links and symbolic links.
->   - Discuss the use cases for each type of link and how they affect file management and system organization.
+>   - Differentiate between **hard** links and **symbolic** links.
+>   - Discuss the use **cases** for each type of link and how they affect file management and system organization.
 > - **File Searching and Directory Traversal**
->   - Explain the process of searching for files within directories.
->   - Describe how directory traversal works and its importance in file system navigation.
+>   - Explain the general **process** of searching for files within directories.
+>   - Describe how directory traversal works (utilising directories and inode tables) and its importance in file system **navigation**.
 > - **Advanced Directory Concepts**
->   - Explore graph directory structures and the implications of cycles within directories.
->   - Understand how reference counting and garbage collection protocols are used in managing directory lifecycles.
+>   - Explore graph directory structures and the implications of **cycles** within directories.
+>   - Understand how reference counting and garbage collection protocols are used in managing directory **lifecycles**.
 >
 > These learning objectives aim to provide a comprehensive understanding of how directories function as essential components of file systems, facilitating the organization, access, and management of files.
 

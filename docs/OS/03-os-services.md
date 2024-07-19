@@ -25,16 +25,17 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Role of Operating Systems**
->   - Explain the overarching role of the operating system in providing a platform for user interaction with computer systems through system calls and user interfaces.
 > - **Examine Operating System Services**
->   - Identify and describe the basic support services provided by the operating system, including program execution, I/O operations, file-system manipulation, process communication, and error detection.
-> - **Explore Resource Management**
->   - Discuss the operating system's role in resource sharing, including diagnostics, resource allocation, and accounting for system usage.
-> - **Assess Network and Security Functions**
->   - Understand the protective measures and security mechanisms the operating system implements to guard against external threats and manage network interactions.
+>   - Explain the **overarching** role of the operating system in providing a platform for user interaction with computer systems through system calls and user interfaces.
+>   - Identify and describe the **basic** **support services** provided by the operating system (types of system call), including resource sharing, program execution, I/O operations, file-system manipulation, process communication, and error detection.
 > - **Utilize Operating System Interfaces**
->   - Differentiate between the graphical user interface (GUI) and command-line interface (CLI) in operating systems, and explain how these interfaces facilitate user interaction with underlying system services.
+>   - Differentiate between the graphical user interface (**GUI**) and command-line interface (**CLI**) in operating systems, and explain how these interfaces facilitate user interaction with underlying system services.
+> - **Describe ways on how to access OS services**
+>   - Explain how **system calls** are accessed via API
+>   - Articulate the difference between making direct system calls vs through API
+>   - Explain how **parameters** are passed to system calls 
+> - **Assess Network and Security Functions**
+>   - List out the protective measures and security mechanisms the operating system implements to guard against external threats and manage network interactions.
 >
 > These objectives aim to guide your understanding of how operating systems provide essential services and interfaces that enhance user experience and system efficiency.
 
