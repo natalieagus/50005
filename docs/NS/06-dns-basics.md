@@ -27,28 +27,28 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Basics of DNS**
+> - **Basics of DNS**
 >   - Explain how internet **naming** and **addressing** works.
 >   - Explain the difference between **mnemonic** names and IP addresses
 >   - Explain what DNS is and its role in the internet.
->   - Understand the **hierarchical** and **decentralized** nature of DNS.
+>   - Appreciate the **hierarchical** and **decentralized** nature of DNS.
 >   - Describe how DNS translates human-friendly domain names into IP addresses.
 > - **Comprehend DNS Operations**
 >   - Explain the process of **accessing** a website using DNS.
->   - Understand the role of **local** DNS servers and **authoritative** DNS servers.
+>   - Explain the role of **local** DNS servers and **authoritative** DNS servers.
 >   - Describe the steps involved in a **DNS lookup**, from entering a domain name to accessing the website.
 > - **Identify the Structure and Components of DNS**
->   - Understand the **hierarchical structure** of DNS, including root servers, top-level domain (TLD) servers, and authoritative name servers.
+>   - Explain the **hierarchical structure** of DNS, including root servers, top-level domain (TLD) servers, and authoritative name servers.
 >   - Describe design principles of the DNS infrastructure and query
 >   - Describe the purpose and function of **each** type of DNS server.
 >   - Recognize the **importance** of local domain name servers and their role in DNS resolution.
 > - **Analyze DNS Query Types**
 >   - Differentiate between **iterative** and **recursive** DNS queries.
 >   - Explain the **resolution order** for both iterative and recursive queries.
->   - **Understand** how DNS queries are processed and the **load** distribution between clients and servers.
+>   - **Explain** how DNS queries are processed and the **load** distribution between clients and servers.
 > - **Explore DNS Services and Features**
 >   - Identify **additional** services provided by DNS, such as host aliasing, mail server aliasing, and load distribution.
->   - Understand the **general** concept of DNS caching 
+>   - Explain the **general** concept of DNS caching 
 >   - Recognize the significance of DNS in maintaining strong modularity, fault isolation, and scalability.
 > 
 > These learning objectives aim to provide a comprehensive understanding of the Domain Name System (DNS), including its operations, structure, query types, services, and security aspects.

@@ -28,26 +28,26 @@ Singapore University of Technology and Design
 > Detailed learning objectives
 >
 > - **Recognise Various Security Threats**
->   - Understand the definition and differences between various **attacks**: MITM, eavesdropping, spoofing, DDoS, etc
+>   - Explain the definition and differences between various **attacks**: MITM, eavesdropping, spoofing, DDoS, etc
 > - **Explore Security Risks in Plain Message Communication**
 >   - Identify how **unauthenticated** communication leaves systems vulnerable to spoofing and impersonation.
->   - Understand the **impact** of compromised confidentiality, integrity, and authentication.
+>   - Identify the **impact** of compromised confidentiality, integrity, and authentication.
 > - **Evaluate the Effectiveness of Cryptography Applications**
 >   - Explore the benefits and limitations of **symmetric** encryption for confidentiality.
->   - Explain the term **liveness** as an additional property required for critical scenarios.
+>   - Explain the term **liveness**
 >   - Recognize how **asymmetric** encryption with **nonce** exchange helps prevent **replay** attacks and maintain Liveness.
 > - **Examine the Role of Certificate Authorities (CA)**
->   - Understand how CAs ensure secure communication through digital certificates.
+>   - Explain how CAs ensure secure communication through digital certificates.
 >   - Learn to distinguish legitimate public keys using CA-issued certificates.
 > - **Implement Message Digests and Non-Repudiation Techniques**
->   - Identify how **hash** functions ensure data integrity in secure communications.
+>   - Identify how hash functions ensure data integrity in secure communications.
 >   - Explore how digital signatures guarantee non-repudiation.
 > - **Utilize Efficient Secure Communication Techniques**
->   - Learn how **session keys** facilitate secure communication without compromising efficiency.
->   - Understand the conditions needed to achieve non-repudiation with session keys.
+>   - Learn how session keys facilitate secure communication without compromising efficiency.
+>   - Explain the Explain needed to achieve non-repudiation with session keys.
 > - **Apply Concepts to Real-World Scenarios**
->   - Assess potential **vulnerabilities** in secure email communication.
->   - Recognize the importance of **verifying** data integrity over confidentiality in software downloads.
+>   - Assess potential vulnerabilities in secure email communication.
+>   - Recognize the importance of verifying data integrity over confidentiality in software downloads.
 >
 >These learning objectives are designed to deepen your understanding of the nuances involved in network security application scenarios, particularly focusing on how cryptography impacts confidentiality, integrity, and authentication.
 

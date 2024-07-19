@@ -27,26 +27,26 @@ Singapore University of Technology and Design
 {: .highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Understand DNS Records**
+> - **Interpret DNS Records**
 >   - Identify different types of DNS **records**: A, MX, NS, CNAME, and SOA.
 >   - Explain the **purpose** and **structure** of each DNS record type.
->   - Understand the **data fields** in a DNS resource record (name, value, type, TTL).
+>   - Recognize the **data fields** in a DNS resource record (name, value, type, TTL).
 > - **Analyze DNS Query Process using DNS Queries Tools**
->   - Understand how DNS queries are **resolved**, including the roles of local and authoritative nameservers.
+>   - Explain how DNS queries are **resolved**, including the roles of local and authoritative nameservers.
 >   - Explain **iterative** and **recursive** DNS queries using tools like `dig` and `nslookup` to query DNS records.
 >   - Interpret the results provided by these tools, including **understanding** query flags and responses.
->   - Understand the process of resolving CNAME records to their canonical names.
+>   - Explain the process of resolving CNAME records to their canonical names.
 > - **Comprehend DNS Caching Mechanisms**
 >   - Explain **how DNS caching work**s and its importance in speeding up DNS resolution.
->   - Understand how **TTL** (Time to Live) impacts DNS caching and record updates.
+>   - Make sense of how **TTL** (Time to Live) impacts DNS caching and record updates.
 >   - Analyze the **performance** impact of DNS caching by observing query response times.
 > - **DNS Record Insertion and Management**
->   - Understand the steps involved in registering a domain and setting up DNS records.
+>   - Explain the steps involved in registering a domain and setting up DNS records.
 >   - Identify the roles of DNS **registrars** and **authoritative** nameservers.
 >   - Explain the process of updating TLD (Top-Level Domain) records with NS records.
 > - **Recognize DNS Attacks and Mitigations**
 >   - Identify **common** types of DNS **attacks**, such as DDoS, DNS cache poisoning, and DNS amplification attacks.
->   - Understand the impact of these attacks on DNS infrastructure.
+>   - Appreciate the impact of these attacks on DNS infrastructure.
 >   - Discuss **strategies** to mitigate these DNS attacks.
 >
 > These learning objectives aim to provide a comprehensive understanding of DNS records, query processes, tools, caching mechanisms, record management, and security aspects of DNS.

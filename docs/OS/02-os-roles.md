@@ -23,7 +23,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Role of Operating Systems**
+> - **Appreciate the Role of Operating Systems**
 >   - Explain the **purposes** of an operating system including **resource allocation**, program **execution** control, and **security** enforcement.
 > - **Explore Interrupt-Driven I/O Operations**
 >   - Define the concept of interrupt-driven I/O and differentiate between **hardware** and **software** interrupts.
@@ -33,7 +33,7 @@ Singapore University of Technology and Design
 > - **Examine System Calls and Software Interrupts**
 >   - List out the role of **system calls** in software interrupts and their impact on process execution.
 >   - Discuss how software interrupts (**traps**) facilitate interaction between user processes and the kernel.
-> - **Understand Process Management**
+> - **Know Process Management**
 >   - Explore how the kernel manages processes to support **multiprogramming** and **timesharing**.
 >   - Define the difference between a process and a program.
 > - **Kernel Reentrancy and Preemptiveness**

@@ -23,25 +23,25 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand Finite System Resources**
+> - **Discern Finite System Resources**
 >   - Describe the concept of **finite** resources within a computing system.
 >   - Identify different **types** of system resources and **understand** their management.
 > - **Resource Management and Lifecycle**
 >   - Explain the process of **requesting**, **using**, and **releasing** resources.
 >   - Distinguish between kernel-managed and user-managed resources.
->   - Understand the **mechanisms** like semaphores and mutexes used for managing user resources.
+>   - Interpret the **mechanisms** like semaphores and mutexes used for managing user resources.
 > - **Recognize and Define Deadlock**
 >   - **Define** deadlock and understand its implications in systems with finite resources.
 >   - Identify and discuss the 4 **necessary conditions** that lead to deadlock: Mutual Exclusion, Hold and Wait, No Preemption, and Circular Wait.
 >   - Explain through examples **how** deadlocks can occur in systems.
 > - **Deadlock Handling Techniques**
->   - Understand different methods of handling deadlocks: **prevention**, **avoidance**, **detection**, and **recovery**.
+>   - Explain different methods of handling deadlocks: **prevention**, **avoidance**, **detection**, and **recovery**.
 >   - Compare and contrast the **specific** strategies within each method to manage deadlocks.
 > - **Deadlock Prevention Strategies**
 >   - Describe strategies to prevent deadlock by breaking one of the four necessary conditions.
 >   - Analyze the **advantages** and **limitations** of each prevention strategy.
 > - **Deadlock Avoidance Algorithms**
->   - Understand the principle and application of the Banker's Algorithm for deadlock avoidance.
+>   - Reflect on the principle and application of the Banker's Algorithm for deadlock avoidance.
 >   - Discuss the Safety and Resource Allocation Algorithms as components of the Banker's Algorithm.
 > - **Deadlock Detection and Recovery**
 >   - Learn how to detect deadlocks using algorithms and system state analysis.

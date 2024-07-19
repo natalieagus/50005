@@ -25,7 +25,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Understand the Concept of Computer Networking**
+> - **Dive into the Concept of Computer Networking**
 >   - Grasp the basic definition and purpose of computer networks.
 >   - Differentiate between the "nuts and bolts" and "service" views of networking.
 > - **Explore the "Nuts and Bolts" of Computer Networking**
@@ -33,21 +33,21 @@ Singapore University of Technology and Design
 >   - Describe the **function** and types of **end systems**, communication links, and packet switches.
 >   - Recognize the various types of Internet Service Providers (ISPs) and their roles in providing network access.
 > - **Learn the "Service" View of the Internet**
->   - Understand the internet as an infrastructure that provides **services** to applications.
+>   - Explain the internet as an infrastructure that provides **services** to applications.
 >   - Explain the role of **APIs** in enabling applications to access network services.
 > - **Delve into Network Challenges and Solutions**
->   - Understand the **challenges** such as operability, sharing, component interaction, and scalability in networking.
+>   - Appreciate various network **challenges** such as operability, sharing, component interaction, and scalability in networking.
 >   - Describe the **methods** used to overcome these challenges including internet protocols and APIs.
 > - **Master Network Layering and its Importance**
 >   - Grasp the general concept of **network layering** and its role in **reducing complexity** and managing network interactions.
 >   - Learn about **each** layer in the network hierarchy from physical to application layer, and the respective **roles** and **protocols** associated with each.
-> - **Understand Data Transmission Methods**
+> - **Explain Data Transmission Methods**
 >   - Compare and contrast packet switching and circuit switching, understanding their advantages and applications.
 >   - Calculate the time required for data transfer under different network configurations.
 > - **Grasp the Concept of Multiplexing**
->   - Understand **frequency** division and **time** division multiplexing and their usage in network communications.
+>   - Conceptualize **frequency** division and **time** division multiplexing and their usage in network communications.
 > - **Learn about Protocols and Standards**
->   - Identify and understand the significance of different network protocols across various layers.
+>   - Identify and explain the significance of different network protocols across various layers.
 >   - Explore how protocols like TCP, UDP, IP, Ethernet, and others function within the network stack.
 > - **Analyze Practical Networking Examples**
 >   - Apply theoretical knowledge to practical examples, including calculations for data transfer and understanding traffic patterns.

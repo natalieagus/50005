@@ -23,7 +23,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Understand Java Synchronization Mechanisms**
+> - **Comprehend Java Synchronization Mechanisms**
 >   - Identify the two basic synchronization idioms provided by Java: **synchronized methods** and **synchronized statements**.
 >   - Explain the purpose and function of mutex locks associated with Java objects.
 >   - Describe how mutex locks are **acquired** and **released** through synchronized methods and blocks.
@@ -38,7 +38,7 @@ Singapore University of Technology and Design
 >   - Describe the differences between reentrant locks and non-reentrant locks.
 >   - Explain the concept of **reentrancy** in locks and its practical application in Java programming.
 >   - Analyze scenarios where reentrant locks are beneficial and situations where non-reentrant locks may cause problems.
-> - **Understand Condition Synchronization**
+> - **Apply Condition Synchronization**
 >   - Examine Java's mechanisms for condition synchronization using `wait()` and `notify()` methods.
 >   - Discuss the importance of **managing** thread **states** (sleep vs runnable) and **conditions** to prevent issues such as **extraneous** and **spurious** wakeups.
 > - **Implement Fine-Grained Synchronization Using Condition Variables**

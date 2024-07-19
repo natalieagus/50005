@@ -23,13 +23,13 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Understand the Difference Between Process and Program**
+> - **Realize the Differences Between Process and Program**
 >   - Recognize that a process is a **dynamic** execution instance of a **static** program.
 >   - Acknowledge that a program is a **passive** entity containing the code, whereas a process is an active entity with executing code and associated resources.
 >   - Lay out **components** of a process **image** (**address space**)
 > - **Explore Process Context**
 >   - Identify what constitutes a process' **context** including the program counter, processor's registers, stack, image, and more.
->   - Understand how multiple instances of a program can run as separate processes.
+>   - Explain how multiple instances of a program can run as separate processes.
 > - **Concurrency and Protection in Processes**
 >   - Grasp how **processes** allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
 >   - Compare and contrast between **concurrency** and **parallelism**

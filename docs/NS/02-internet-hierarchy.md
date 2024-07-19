@@ -25,17 +25,17 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
->- **Understand the Structure of Internet Hierarchies**
+>- **Make Sense of the Structure of Internet Hierarchies**
 >  - Comprehend the different **levels** of ISPs including access, regional/national, and global tiers.
 >  - Recognize the **role** of each ISP level in facilitating global internet connectivity.
->  - Understand **why** the hierarchical structure is **essential** for the **scalable** and **efficient** operation of the internet.
+>  - Explain **why** the hierarchical structure is **essential** for the **scalable** and **efficient** operation of the internet.
 >- **Explore the Functions and Significance of Internet Exchange Points (IXPs)**
 >  - Describe the purpose of IXPs in internet architecture and how they facilitate peer connections among ISPs.
->  - Understand the **economic** and **operational** benefits of using IXPs for internet traffic exchange.
+>  - Explain the **economic** and **operational** benefits of using IXPs for internet traffic exchange.
 >- **Learn about Content Delivery Networks (CDNs)**
 >  - Identify major **CDNs** and their function in optimizing internet content delivery.
 >  - Explain how CDNs **enhance** user experience by reducing latency and improving content delivery speed.
->- **Understand Points of Presence (PoPs)**
+>- **Points of Presence (PoPs)**
 >  - Define what a PoP is and its role in network access and connectivity.
 >  - Discuss the **advantages** of PoPs including reduced latency, improved bandwidth, and network redundancy.
 >

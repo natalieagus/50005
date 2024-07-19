@@ -28,7 +28,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the basics of HTTP (HyperText Transfer Protocol)**
+> - **Explain the basics of HTTP (HyperText Transfer Protocol)**
 >   - Define **HTTP** and its **role** in web data exchange
 >   - Explain the **difference** between HTTP and HTTPS
 >   - Identify the **components** of an HTTP **request** and **response**
@@ -41,7 +41,7 @@ Singapore University of Technology and Design
 > - **Explore the concept of URLs and their structure**
 >   - Define what a **URL** is and its components
 >   - Explain **how** URLs are used to **access web resources**
-> - **Understand the significance of cookies in maintaining state**
+> - **Explain the significance of cookies in maintaining state**
 >   - Define **cookies** and their purpose in HTTP communication
 >   - Explain the structure and components of cookies
 >   - Discuss the potential **security** and **privacy** **risks** associated with cookies

@@ -23,7 +23,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand Operating Systems**
+> - **Basics of Operating Systems**
 >   - Define what an operating system is
 >   - Define an operating system and its basic role as an **intermediary** between hardware and users.
 >   - Describe computer system organisation (basic architecture) including hardware, operating system, application programs, and users.

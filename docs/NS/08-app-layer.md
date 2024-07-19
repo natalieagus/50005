@@ -28,28 +28,27 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Application Layer**
+> - **Explain the Application Layer**
 >   - Define the role and functions of the application layer in the OSI model.
 >   - Explain how the application layer **interacts** with the transport layer.
 > - **Comprehend Sockets**
 >   - Define what a **socket** is and its purpose in network communication. 
 >   - Derive connections with how socket (message passing) is used for IPC in the first half of the syllabus
 >   - Distinguish between **stream** sockets (TCP) and **datagram** sockets (UDP).
->   - Understand how sockets are used as **endpoints** for communication.
-> - **Learn Socket Characteristics and Usage:**
->   - Identify the **unique identifier** of a socket (IP address + Port number).
->   - Understand the concept of socket **binding** and its importance.
->   - Recognize that sockets are **special** file descriptors in UNIX systems.
-> - **Explore the Socket API:**
->   - Understand the **key** functions provided by the Socket API for network communication.
->   - Differentiate between **internet** sockets and UNIX **domain** sockets.
-> - **Grasp Multiplexing and Demultiplexing:**
->   - Define **multiplexing** and **demultiplexing** in the context of the transport layer.
->   - Explain how transport layer protocols **handle** data from multiple sockets.
-> - **Understand Transport Layer Protocols:**
->   - **Explain** how UDP and TCP works.
->   - Explain the **role** of TCP (Transmission Control Protocol) in providing reliable, in-order byte-stream transfer.
->   - Describe the **characteristics** of UDP (User Datagram Protocol) and its use for connectionless communication.
+>   - Explain how sockets are used as endpoints for communication.
+> - **Learn Socket Characteristics and Usage**
+>   - Identify the unique identifier of a socket (IP address + Port number).
+>   - Explain the concept of socket binding and its importance.
+>   - Recognize that sockets are special file descriptors in UNIX systems.
+> - **Explore the Socket API**
+>   - Explain the key functions provided by the Socket API for network communication.
+>   - Differentiate between internet sockets and UNIX domain sockets.
+> - **Grasp Multiplexing and Demultiplexing**
+>   - Define multiplexing and demultiplexing in the context of the transport layer.
+>   - Apply how transport layer protocols handle data from multiple sockets.
+> - **Dive into the details of various Transport Layer Protocols**
+>   - Explain the role of TCP (Transmission Control Protocol) in providing reliable, in-order byte-stream transfer.
+>   - Describe the characteristics of UDP (User Datagram Protocol) and its use for connectionless communication.
 >
 > These learning objectives are designed to provide a comprehensive understanding of the application layer, sockets, socket API, and their interactions with transport layer protocols in network communication.
 

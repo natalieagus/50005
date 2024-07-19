@@ -30,13 +30,13 @@ Singapore University of Technology and Design
 >   - Identify the **reasons** for process cooperation: information sharing, speeding up computations, and modularity for protection and convenience.
 > - **Interprocess Communication (IPC)**
 >   - Learn about the two main IPC mechanisms: Shared Memory and Message Passing.
->   - Understand the kernel's role in supporting IPC mechanisms.
+>   - Explain the kernel's role in supporting IPC mechanisms.
 > - **Shared Memory in IPC**
 >   - Comprehend how shared memory **allows** multiple processes to access the same memory segment.
 >   - Explore how shared memory is **created**, **accessed**, and **managed** without continuous kernel assistance thereafter.
 > - **Message Passing in IPC**
 >   - Learn how message passing allows processes to communicate and synchronize without sharing the same address space.
->   - Understand the roles of **sockets** in message passing and the involvement of the kernel in this IPC method.
+>   - Explain the roles of **sockets** in message passing and the involvement of the kernel in this IPC method.
 >
 > These objectives are structured to provide a comprehensive overview of how processes may interact within a computer system through cooperation and communication, emphasizing the importance of IPC mechanisms.
 

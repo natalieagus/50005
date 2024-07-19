@@ -23,12 +23,12 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Understand the Producer-Consumer Problem**
+> - **Appreciate the Producer-Consumer Problem**
 >   - Explain **issues** of multiprogramming and concurrency: the race condition
 >   - Recognize the challenge of managing two asynchronous processes or threads (producer and consumer) that interact through a shared bounded buffer.
 >   - Comprehend the terms "**asynchronous**," "**concurrent**," and "**parallel**" and their implications on process execution and scheduling.
 >   - Identify **real-life examples** of producer-consumer scenarios such as a compiler and assembler interaction, and web servers and browsers.
->   - Understand the **precedence constraints**: the  necessary conditions to prevent the producer from overfilling the buffer and the consumer from reading from an empty buffer.
+>   - Maintain and explain the **precedence constraints**: the  necessary conditions to prevent the producer from overfilling the buffer and the consumer from reading from an empty buffer.
 > - **Critical Section and Race Conditions**
 >   - Define the critical section where processes access shared resources that **require mutual exclusion**.
 >   - Explain race conditions, particularly how they can disrupt program correctness in the context of shared variables like counters.
