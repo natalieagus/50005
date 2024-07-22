@@ -24,16 +24,16 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Appreciate Components of Modern Operating Systems**
+> 1. **Appreciate Components of Modern Operating Systems**
 >   - Identify the **roles** of different **components** in a modern operating system: the kernel, system programs, and application programs.
-> - **Explore System Programs**
+> 2. **Explore System Programs**
 >   - Describe the **function** of system programs and their importance in providing a convenient **environment** for program development and execution.
 >   - Explain how system programs operate in user mode and **interact** with the kernel through system calls.
-> - **System Program Categories**
+> 3. **System Program Categories**
 >   - Examine various **categories** of system programs including package managers, status information tools, programming-language support, program loading and execution, communications, and background services.
-> - **Distinguish Between System and Application Programs**
+> 4. **Distinguish Between System and Application Programs**
 >   - **Differentiate** between system programs (which facilitate operation of the hardware and system) and application programs (which perform user-oriented tasks).
-> - **Explain the basic principles behind the design of OS Structure**
+> 5. **Explain the basic principles behind the design of OS Structure**
 >   - Compare and contrast between simple, layered, microkernel, and hybrid designs using examples such as macOS, JX, MSDos, and UNIX.
 >
 > These objectives are aimed at providing a comprehensive understanding of the operating system's architecture beyond the kernel, highlighting the crucial roles of system and application programs in enhancing user experience and system functionality.

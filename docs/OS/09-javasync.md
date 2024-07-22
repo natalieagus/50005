@@ -23,25 +23,25 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Comprehend Java Synchronization Mechanisms**
+> 1. **Recognise Various Java Synchronization Mechanisms**
 >   - Identify the two basic synchronization idioms provided by Java: **synchronized methods** and **synchronized statements**.
 >   - Explain the purpose and function of mutex locks associated with Java objects.
 >   - Describe how mutex locks are **acquired** and **released** through synchronized methods and blocks.
 >   - Explore the use of synchronized statements with specific named objects versus the anonymous 'this' instance.
 >   - Detail how to declare a synchronized method in Java and its implications.
-> - **Comprehend Thread Management and Locks**
+> 2. **Comprehend Thread Management and Locks in Java**
 >   - Explain how Java maintains a queue to require object locks.
 >   - Highlight the distinction between the **entry** set and **wait** set of threads.
 >   - Analyze the **conditions** under which a thread can acquire an object lock and become **runnable**.
-> - **Explore Java Static and Reentrant Locks**
+> 3. **Explore Java Static and Reentrant Locks**
 >   - Discuss the concept and application of **static** synchronized methods and their association with **class-level locks**.
 >   - Describe the differences between reentrant locks and non-reentrant locks.
 >   - Explain the concept of **reentrancy** in locks and its practical application in Java programming.
 >   - Analyze scenarios where reentrant locks are beneficial and situations where non-reentrant locks may cause problems.
-> - **Apply Condition Synchronization**
+> 4. **Implement basic Condition Synchronization in Java**
 >   - Examine Java's mechanisms for condition synchronization using `wait()` and `notify()` methods.
 >   - Discuss the importance of **managing** thread **states** (sleep vs runnable) and **conditions** to prevent issues such as **extraneous** and **spurious** wakeups.
-> - **Implement Fine-Grained Synchronization Using Condition Variables**
+> 5. **Implement Fine-Grained Synchronization Using Condition Variables**
 >   - Illustrate the use of **named** condition variables in conjunction with **reentrant** locks for more **precise** control over thread synchronization.
 >   - Apply these concepts to **practical** coding scenarios to ensure correct synchronization and thread management.
 > 

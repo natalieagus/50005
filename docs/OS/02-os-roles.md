@@ -23,27 +23,27 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Appreciate the Role of Operating Systems**
+> 1. **Appreciate the Role of Operating Systems**
 >   - Explain the **purposes** of an operating system including **resource allocation**, program **execution** control, and **security** enforcement.
-> - **Explore Interrupt-Driven I/O Operations**
+> 2. **Explore Interrupt-Driven I/O Operations**
 >   - Define the concept of interrupt-driven I/O and differentiate between **hardware** and **software** interrupts.
 >   - Explain the functions and benefits of **vectored** and **polled** interrupt systems.
 >   - Describe the process of handling hardware interrupts, including the role of interrupt request lines and interrupt handlers.
 >   - Compare vectored and polled interrupt scenarios and their suitability for different system complexities.
-> - **Examine System Calls and Software Interrupts**
+> 3. **Examine System Calls and Software Interrupts**
 >   - List out the role of **system calls** in software interrupts and their impact on process execution.
 >   - Discuss how software interrupts (**traps**) facilitate interaction between user processes and the kernel.
-> - **Know Process Management**
+> 4. **Explain Process Management**
 >   - Explore how the kernel manages processes to support **multiprogramming** and **timesharing**.
 >   - Define the difference between a process and a program.
-> - **Kernel Reentrancy and Preemptiveness**
+> 5. **Comprehend Kernel Reentrancy and Preemptiveness**
 >   - Compare reentrant and preemptive kernel operations and their implications for process management.
-> - **Study Memory and Process Management Techniques**
+> 6. **Study Memory and Process Management Techniques**
 >   - Discuss the implementation of virtual memory and the configuration of memory management units (MMU).
 >   - Analyze cache performance and the role of the kernel in memory and process management.
-> - **Assess Security and Protection Mechanisms**
+> 7. **Assess Security and Protection Mechanisms**
 >   - Explain the mechanisms operating systems use to provide security and protection, including user identification and access control.
-> - **Describe computer system organisation (basic architecture)**
+> 8. **Describe computer system organisation (basic architecture)**
 >   - Recognise the differences between symmetric, asymmetric, and clustered system 
 >  
 > These objectives aim to guide your exploration of operating system concepts, focusing on the interactions between the OS kernel and system hardware, the management of processes and memory, and the crucial role of security within computer systems.

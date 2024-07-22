@@ -23,25 +23,25 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Basics of Threads**
+> 1. **Comprehend the Basics of Threads**
 >   - Define a thread as a segment of a process, and recognize that every process has at least **one** thread.
 >   - Identify the **components** of a thread: thread ID, program counter, register set, and stack.
 >   - Learn how threads within the **same** process share the same address space and resources like code, data sections, and system resources.
 >   - Explain how threads can **execute** the same or different parts of the process code concurrently.
-> - **Multithreading Benefits**
+> 2. **Explain Multithreading Benefits**
 >   - Explore how multithreading can improve the **responsiveness** of applications by allowing continued operation even if **part** of the application is blocked.
 >   - Discuss the **efficiency** of resource sharing among threads compared to processes, highlighting the reduced overhead in creating and switching contexts between threads.
-> - **Multithreading vs. Multiprocessing**
+> 3. **Explain the Differences between Multithreading vs. Multiprocessing**
 >   - Compare the concurrency and protection aspects of **processes** versus **threads**.
 >   - **Analyze** the communication, parallel execution, and synchronization differences between using multiple processes and multiple threads.
-> - **Types of Threads and Their Management**
+> 4. **Recognise Different Types of Threads and Their Management**
 >   - Differentiate between **user-level threads** and **kernel-level thread**s.
 >   - Examine how each type of thread is scheduled, the level of **overhead** involved, and the **implications** for parallel execution on multicore systems.
 >   - Recognise thread mapping models like many-to-one, one-to-one, and many-to-many, and discuss their advantages and disadvantages.
-> - **Practical Implementation of Threads**
+> 5. **Study Practical Implementation of Threads**
 >   - Implement threads in Java using **Runnable** interfaces and by extending the Thread class.
 >   - Use the `pthread` library in C to create, manage, and synchronize threads.
-> - **Evaluating Performance in Multithreaded Applications**
+> 6. **Evaluate Performance in Multithreaded Applications**
 >   - Compute amount of **speedup** possible in multicore programming using Amdahl's Law
 >   - Consider the fraction of the application that can be parallelized and the **diminishing returns** of adding more processing cores.
 > 

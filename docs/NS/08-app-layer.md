@@ -28,25 +28,25 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Explain the Application Layer**
+> 1. **Explain the Role for Application Layer Services**
 >   - Define the role and functions of the application layer in the OSI model.
 >   - Explain how the application layer **interacts** with the transport layer.
-> - **Comprehend Sockets**
+> 2. **Explain Sockets in a Computer System**
 >   - Define what a **socket** is and its purpose in network communication. 
 >   - Derive connections with how socket (message passing) is used for IPC in the first half of the syllabus
 >   - Distinguish between **stream** sockets (TCP) and **datagram** sockets (UDP).
 >   - Explain how sockets are used as endpoints for communication.
-> - **Learn Socket Characteristics and Usage**
+> 3. **List Socket Characteristics and Common**
 >   - Identify the unique identifier of a socket (IP address + Port number).
 >   - Explain the concept of socket binding and its importance.
 >   - Recognize that sockets are special file descriptors in UNIX systems.
-> - **Explore the Socket API**
+> 4. **Assess the Socket API**
 >   - Explain the key functions provided by the Socket API for network communication.
 >   - Differentiate between internet sockets and UNIX domain sockets.
-> - **Grasp Multiplexing and Demultiplexing**
+> 5. **Examine Multiplexing and Demultiplexing**
 >   - Define multiplexing and demultiplexing in the context of the transport layer.
 >   - Apply how transport layer protocols handle data from multiple sockets.
-> - **Dive into the details of various Transport Layer Protocols**
+> 6. **Examine the details of various Transport Layer Protocols**
 >   - Explain the role of TCP (Transmission Control Protocol) in providing reliable, in-order byte-stream transfer.
 >   - Describe the characteristics of UDP (User Datagram Protocol) and its use for connectionless communication.
 >

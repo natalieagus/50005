@@ -23,16 +23,16 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Appreciate the Producer-Consumer Problem**
+> 1. **Get Familiar with the Producer-Consumer Problem**
 >   - Explain **issues** of multiprogramming and concurrency: the race condition
 >   - Recognize the challenge of managing two asynchronous processes or threads (producer and consumer) that interact through a shared bounded buffer.
 >   - Comprehend the terms "**asynchronous**," "**concurrent**," and "**parallel**" and their implications on process execution and scheduling.
 >   - Identify **real-life examples** of producer-consumer scenarios such as a compiler and assembler interaction, and web servers and browsers.
 >   - Maintain and explain the **precedence constraints**: the  necessary conditions to prevent the producer from overfilling the buffer and the consumer from reading from an empty buffer.
-> - **Critical Section and Race Conditions**
+> 2. **Explain Critical Section and Race Conditions**
 >   - Define the critical section where processes access shared resources that **require mutual exclusion**.
 >   - Explain race conditions, particularly how they can disrupt program correctness in the context of shared variables like counters.
-> - **Synchronization Solutions**
+> 3. **Study Various Synchronization Mechanisms**
 >   - **Prove** how various race condition solution supports mutual exclusion, progress, and bounded waiting
 >   - **Explore** different synchronization **techniques** including software and hardware solutions, semaphores, and condition variables.
 >   - Discuss how these solutions **enforce** mutual exclusion, **manage** process execution order (bounded waiting), and maintain **progress** and avoid starvation.
@@ -40,9 +40,9 @@ Singapore University of Technology and Design
 >   - Recognise the difference between solutions requiring and not requiring to **busy wait**.
 >   - Delve into how **semaphores** function as counters for resource management, capable of solving complex synchronization problems beyond simple mutual exclusion with minimised **busy waiting**
 >   - Learn how condition variables work with mutexes to provide a way for threads to wait for specific conditions to proceed, enabling efficient resource management without busy waiting.
-> - **Evaluate the efficiency and applicability of synchronization mechanisms**
+> 4. **Evaluate the Efficiency and Applicability of Each Synchronization Mechanisms**
 >   - Assess **when** to use each type of synchronization technique based on the specific requirements and context of the problem, considering factors like system architecture, overhead, and the nature of the critical section.
-> - **Practical Implementations and Code Examples**
+> 5. **Explore Practical Implementations and Code Examples**
 >   - Examine C code samples that implement mutexes, condition variables, and semaphores to handle synchronization in multi-threaded environments.
 > 
 > These objectives guide through understanding the theoretical concepts and practical implementations, emphasizing the importance of correct synchronization in concurrent programming to maintain data integrity and program stability.

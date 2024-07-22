@@ -28,32 +28,32 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Explain the basics of HTTP (HyperText Transfer Protocol)**
+> 1. **Explain the basics of HTTP (HyperText Transfer Protocol)**
 >   - Define **HTTP** and its **role** in web data exchange
 >   - Explain the **difference** between HTTP and HTTPS
 >   - Identify the **components** of an HTTP **request** and **response**
-> - **Describe the client/server model in HTTP**
+> 2. **Describe the client/server model in HTTP**
 >   - Define the **roles** of the client and server in HTTP communication
 >   - Illustrate the **process** of a client initiating a connection and requesting web resources
-> - **Differentiate between non-persistent and persistent HTTP connections**
+> 3. **Differentiate between non-persistent and persistent HTTP connections**
 >   - Explain the characteristics and limitations of **non-persistent** HTTP (HTTP 1.0)
 >   - Describe the benefits and functioning of **persistent** HTTP (HTTP 1.1)
-> - **Explore the concept of URLs and their structure**
+> 4. **Interpret the concept of URLs and their structure**
 >   - Define what a **URL** is and its components
 >   - Explain **how** URLs are used to **access web resources**
-> - **Explain the significance of cookies in maintaining state**
+> 5. **Explain the significance of cookies in maintaining state**
 >   - Define **cookies** and their purpose in HTTP communication
 >   - Explain the structure and components of cookies
 >   - Discuss the potential **security** and **privacy** **risks** associated with cookies
-> - **Learn about web caching and its benefits**
+> 6. **Discuss web caching and its benefits**
 >   - Define **web caching** and its **purpose**
 >   - Describe the role of conditional GET requests in web caching
 >   - **Differentiate** between browser cache and cookies
-> - **Explain the fundamentals of Modern HTTP (HTTP/2 & HTTP/3) and analyse their web performance**
+> 7. **Explain the fundamentals of Modern HTTP (HTTP/2 & HTTP/3) and analyse their web performance**
 >   - Compare and contrast HTTP/2 vs HTTP/1.1
 >   - Compare and contrast HTTP/2 vs HTTP/3 
 >   - Analyse web performance of hypothetical scenario with HTTP version 1.0, 1.1, 2, and 3.
-> - **Visual Illustration**
+> 8. **Support Understanding Regarding Network Performance via Visual Illustration**
 >   - **Draw the space-time diagram** to illustrate the latency of downloading objects from web servers/web cache, depending on HTTP versions used.
 >
 > These learning objectives aim to provide a comprehensive understanding of HTTP, including its fundamental concepts, communication models, connection types, URL structures, state management through cookies, and the role of web caching in enhancing web performance.

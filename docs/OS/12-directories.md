@@ -23,23 +23,23 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Directories and Namespace Organization**
+> 1. **Explain Directories and Namespace Organization**
 >   - Define what a directory is in the context of file systems, as well as its **differences** vs a regular file.
 >   - Explain how directories help **organize** files and **subdirectories** within a **structured namespace**.
-> - **Directory Permissions and Operations**
->   - Recognize the significance of `x`, `r`, and `w` permissions in directories.
+> - **Explain Directory Permissions and Operations**
+>   - Examine the significance of `x`, `r`, and `w` permissions in directories.
 >   - Identify the effects of directory permissions on file access and operations within the directory.
-> - **Directory Structures and Their Types**
+> - **Explain Directory Structures and Their Types**
 >   - Compare and contrast different directory structures such as single-level, two-level, tree-structured, acyclic graph, and general graph directories.
 >   - Discuss the benefits and limitations of **each** directory structure type.
-> - **Directory and File Linking Concepts**
+> - **Explain Directory and File Linking Concepts**
 >   - Differentiate between **hard** links and **symbolic** links.
 >   - Discuss the use **cases** for each type of link and how they affect file management and system organization.
-> - **File Searching and Directory Traversal**
+> - **Describe File Searching and Directory Traversal Process**
 >   - Explain the general **process** of searching for files within directories.
 >   - Describe how directory traversal works (utilising directories and inode tables) and its importance in file system **navigation**.
-> - **Advanced Directory Concepts**
->   - Explore graph directory structures and the implications of **cycles** within directories.
+> - **Explain Advanced Directory Concepts**
+>   - Justify each graph directory structures and the implications of **cycles** within directories.
 >   - Explain how **reference counting** and **garbage collection protocols** are used in managing directory **lifecycles**.
 >
 > These learning objectives aim to provide a comprehensive understanding of how directories function as essential components of file systems, facilitating the organization, access, and management of files.

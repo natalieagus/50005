@@ -25,16 +25,16 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Examine Operating System Services**
+> 1. **Examine Operating System Services**
 >   - Explain the **overarching** role of the operating system in providing a platform for user interaction with computer systems through system calls and user interfaces.
 >   - Identify and describe the **basic** **support services** provided by the operating system (types of system call), including resource sharing, program execution, I/O operations, file-system manipulation, process communication, and error detection.
-> - **Utilize Operating System Interfaces**
+> 2. **Utilize Operating System Interfaces**
 >   - Differentiate between the graphical user interface (**GUI**) and command-line interface (**CLI**) in operating systems, and explain how these interfaces facilitate user interaction with underlying system services.
-> - **Describe ways on how to access OS services**
+> 3. **Describe ways on how to access OS services**
 >   - Explain how **system calls** are accessed via API
 >   - Articulate the difference between making direct system calls vs through API
 >   - Explain how **parameters** are passed to system calls 
-> - **Assess Network and Security Functions**
+> 4. **Assess Network and Security Functions**
 >   - List out the protective measures and security mechanisms the operating system implements to guard against external threats and manage network interactions.
 >
 > These objectives aim to guide your understanding of how operating systems provide essential services and interfaces that enhance user experience and system efficiency.

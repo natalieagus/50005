@@ -23,22 +23,22 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Realize the Differences Between Process and Program**
+> 1. **Realize the Differences Between Process and Program**
 >   - Recognize that a process is a **dynamic** execution instance of a **static** program.
 >   - Acknowledge that a program is a **passive** entity containing the code, whereas a process is an active entity with executing code and associated resources.
 >   - Lay out **components** of a process **image** (**address space**)
-> - **Explore Process Context**
+> 2. **Explore Process Context**
 >   - Identify what constitutes a process' **context** including the program counter, processor's registers, stack, image, and more.
 >   - Explain how multiple instances of a program can run as separate processes.
-> - **Concurrency and Protection in Processes**
+> 3. **Appreciate Concurrency and Protection in Processes**
 >   - Grasp how **processes** allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
 >   - Compare and contrast between **concurrency** and **parallelism**
-> - **Introduction to Process Lifecycle**
+> 4. **Get Familiar with Introduction to Process Lifecycle**
 >   - Learn about different process states (New, Running, Waiting, Ready, Terminated) and their transitions.
 >   - Recognise UNIX data structures used to manage process lifecycle: Process Table and a Process Control Block (PCB) which store process attributes.
 >   - Able to **create** a new process, e.g: using `fork()` in C and its **implications**
 >   - Able to **replace** a process' image with the `exec()` system call family and comprehend its **implications**
-> - **Process Management and Scheduling**
+> 5. **Explain Process Management and Scheduling**
 >   - Comprehend how processes are **managed** and **scheduled** by the operating system, including the role of the **scheduler**.
 >   - Familiarize with **context switching** and its impact on system performance.
 >

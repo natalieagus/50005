@@ -25,34 +25,34 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> - **Dive into the Concept of Computer Networking**
->   - Grasp the basic definition and purpose of computer networks.
+> 1. **Dive into the Concept of Computer Networking**
+>   - List the basic definition and purpose of computer networks.
 >   - Differentiate between the "nuts and bolts" and "service" views of networking.
-> - **Explore the "Nuts and Bolts" of Computer Networking**
+> 2. **Explore the "Nuts and Bolts" of Computer Networking**
 >   - Identify the **components** that make up the internet including hosts, communication links, and packet switches.
 >   - Describe the **function** and types of **end systems**, communication links, and packet switches.
->   - Recognize the various types of Internet Service Providers (ISPs) and their roles in providing network access.
-> - **Learn the "Service" View of the Internet**
+>   - Assess the various types of Internet Service Providers (ISPs) and their roles in providing network access.
+> 3. **Describe the "Service" View of the Internet**
 >   - Explain the internet as an infrastructure that provides **services** to applications.
 >   - Explain the role of **APIs** in enabling applications to access network services.
-> - **Delve into Network Challenges and Solutions**
->   - Appreciate various network **challenges** such as operability, sharing, component interaction, and scalability in networking.
+> 4. **Delve into Network Challenges and Solutions**
+>   - Assess various network **challenges** such as operability, sharing, component interaction, and scalability in networking.
 >   - Describe the **methods** used to overcome these challenges including internet protocols and APIs.
-> - **Master Network Layering and its Importance**
->   - Grasp the general concept of **network layering** and its role in **reducing complexity** and managing network interactions.
->   - Learn about **each** layer in the network hierarchy from physical to application layer, and the respective **roles** and **protocols** associated with each.
-> - **Explain Data Transmission Methods**
->   - Compare and contrast packet switching and circuit switching, understanding their advantages and applications.
+> 5. **Master Network Layering and its Importance**
+>   - Describe the general concept of **network layering** and its role in **reducing complexity** and managing network interactions.
+>   - Classify **each** layer in the network hierarchy from physical to application layer, and the respective **roles** and **protocols** associated with each layer
+> 6. **Explain Data Transmission Methods**
+>   - Justify packet switching and circuit switching, understanding their advantages and applications.
 >   - Calculate the time required for data transfer under different network configurations.
-> - **Grasp the Concept of Multiplexing**
->   - Conceptualize **frequency** division and **time** division multiplexing and their usage in network communications.
-> - **Learn about Protocols and Standards**
+> 7. **Describe the Concept of Multiplexing**
+>   - Compare **frequency** division and **time** division multiplexing and their usage in network communications.
+> 8. **Discuss Nuances about Protocols and Standards**
 >   - Identify and explain the significance of different network protocols across various layers.
->   - Explore how protocols like TCP, UDP, IP, Ethernet, and others function within the network stack.
-> - **Analyze Practical Networking Examples**
+>   - Examine how protocols like TCP, UDP, IP, Ethernet, and others function within the network stack.
+> 9. **Analyze Practical Networking Examples**
 >   - Apply theoretical knowledge to practical examples, including calculations for data transfer and understanding traffic patterns.
 >   - Explain the concept of **priority inversion** and **emergent behavior**
->   - Dive into more complex aspects of networking such as data encapsulation and the interaction between different network layers.
+>   - Appraise into more complex aspects of networking such as data encapsulation and the interaction between different network layers.
 >
 > These learning objectives are intended to guide your understanding of the comprehensive notes on computer networking.
 

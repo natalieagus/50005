@@ -23,21 +23,21 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> - **Basics of Operating Systems**
+> 1. **Basics of Operating Systems**
 >   - Define what an operating system is
 >   - Define an operating system and its basic role as an **intermediary** between hardware and users.
 >   - Describe computer system organisation (basic architecture) including hardware, operating system, application programs, and users.
-> - **Examine the Functions of an Operating System**
+> 2. **Examine the Functions of an Operating System**
 >   - Identify the operating system as a **resource allocator**, program **execution** controller, and **security** enforcer.
 >   - Articulate the **division** of operating system **components** into the kernel, system programs, and user programs.
-> - **Explore the Kernel**
+> 3. **Explore the Kernel**
 >   - Explain the high-level **functions** and **privileges** of the operating system kernel.
 >   - Discuss the kernel's role in **managing** the computer's hardware and memory hierarchy.
 >   - Explain dual mode operation and hardware support for kernel and user modes.
-> - **Analyze Computer System Architecture**
+> 4. **Analyze Computer System Architecture**
 >   - **Describe** the components and operations of the memory hierarchy including registers, caches, main memory, and secondary storage.
 >   - Outline the **booting** process and the role of firmware or BIOS in system startup.
-> - **Investigate I/O Operations and Device Management**
+> 5. **Investigate I/O Operations and Device Management**
 >   - Outline the roles of **device controllers** and device **drivers** in managing I/O operations.
 >   - Explain how device drivers interface with hardware devices and the implications of running drivers in kernel or user mode.
 >
