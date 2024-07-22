@@ -27,13 +27,13 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed learning objectives
 >
-> 1. **Recognise Various Security Threats**
+> 1. **List out Various Security Threats**
 >   - Explain the definition and differences between various **attacks**: MITM, eavesdropping, spoofing, DDoS, etc
-> 2. **Explore Security Risks in Plain Message Communication**
+> 2. **Name Security Risks in Plain Message Communication**
 >   - Identify how **unauthenticated** communication leaves systems vulnerable to spoofing and impersonation.
 >   - Identify the **impact** of compromised confidentiality, integrity, and authentication.
 > 3. **Evaluate the Effectiveness of Cryptography Applications**
->   - Explore the benefits and limitations of **symmetric** encryption for confidentiality.
+>   - Justify the benefits and limitations of **symmetric** encryption for confidentiality.
 >   - Explain the term **liveness**
 >   - Recognize how **asymmetric** encryption with **nonce** exchange helps prevent **replay** attacks and maintain Liveness.
 > 4. **Examine the Role of Certificate Authorities (CA)**
@@ -41,13 +41,13 @@ Singapore University of Technology and Design
 >   - Justify how to distinguish legitimate public keys using CA-issued certificates.
 > 5. **Implement Message Digests and Non-Repudiation Techniques**
 >   - Identify how hash functions ensure data integrity in secure communications.
->   - Explore how digital signatures guarantee non-repudiation.
+>   - Explain how digital signatures guarantee non-repudiation.
 > 6. **Utilize Efficient Secure Communication Techniques**
 >   - Justify how session keys facilitate secure communication without compromising efficiency.
 >   - Explain the Explain needed to achieve non-repudiation with session keys.
 > 7. **Apply Concepts to Real-World Scenarios**
 >   - Assess potential vulnerabilities in secure email communication.
->   - Recognize the importance of verifying data integrity over confidentiality in software downloads.
+>   - Justify the importance of verifying data integrity over confidentiality in software downloads.
 >
 >These learning objectives are designed to deepen your understanding of the nuances involved in network security application scenarios, particularly focusing on how cryptography impacts confidentiality, integrity, and authentication.
 

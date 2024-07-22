@@ -46,10 +46,10 @@ Singapore University of Technology and Design
 >   - Differentiate between **iterative** and **recursive** DNS queries.
 >   - Explain the **resolution order** for both iterative and recursive queries.
 >   - **Explain** how DNS queries are processed and the **load** distribution between clients and servers.
-> 5. **Explore DNS Services and Features**
+> 5. **Explain DNS Services and Features**
 >   - Identify **additional** services provided by DNS, such as host aliasing, mail server aliasing, and load distribution.
 >   - Explain the **general** concept of DNS caching 
->   - Recognize the significance of DNS in maintaining strong modularity, fault isolation, and scalability.
+>   - Relate to the significance of DNS in maintaining strong modularity, fault isolation, and scalability.
 > 
 > These learning objectives aim to provide a comprehensive understanding of the Domain Name System (DNS), including its operations, structure, query types, services, and security aspects.
 

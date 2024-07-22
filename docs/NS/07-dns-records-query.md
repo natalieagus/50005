@@ -38,7 +38,7 @@ Singapore University of Technology and Design
 >   - Explain the process of resolving CNAME records to their canonical names.
 > 3. **Explain DNS Caching Mechanism**
 >   - Explain **how DNS caching work**s and its importance in speeding up DNS resolution.
->   - Make sense of how **TTL** (Time to Live) impacts DNS caching and record updates.
+>   - Question how **TTL** (Time to Live) impacts DNS caching and record updates.
 >   - Analyze the **performance** impact of DNS caching by observing query response times.
 > 4. **Explain the Procedure for DNS Record Insertion and Management**
 >   - Explain the steps involved in registering a domain and setting up DNS records.

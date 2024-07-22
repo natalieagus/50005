@@ -53,7 +53,7 @@ Singapore University of Technology and Design
 >   - Compare and contrast HTTP/2 vs HTTP/1.1
 >   - Compare and contrast HTTP/2 vs HTTP/3 
 >   - Analyse web performance of hypothetical scenario with HTTP version 1.0, 1.1, 2, and 3.
-> 8. **Support Understanding Regarding Network Performance via Visual Illustration**
+> 8. **Describe Network Performance via Visual Illustration**
 >   - **Draw the space-time diagram** to illustrate the latency of downloading objects from web servers/web cache, depending on HTTP versions used.
 >
 > These learning objectives aim to provide a comprehensive understanding of HTTP, including its fundamental concepts, communication models, connection types, URL structures, state management through cookies, and the role of web caching in enhancing web performance.

@@ -25,14 +25,14 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Appreciate Important Security Properties (CAP)**
+> 1. **Identify Important Security Properties (CAP)**
 >   - Describe the concepts of confidentiality, integrity, authentication, and access/availability in network security.
 >   - Explain the purpose and scope of **cryptography** in ensuring **secure** communication over the internet.
-> 2. **Explore Symmetric Key Cryptography**
+> 2. **Explain Symmetric Key Cryptography**
 >   - Describe the **principles** of **symmetric** key cryptography.
 >   - Compare and contrast DES and AES algorithms.
 >   - **Evaluate** the advantages and disadvantages of symmetric key encryption.
-> 3. **Examine Asymmetric Key Cryptography**
+> 3. **Explain Asymmetric Key Cryptography**
 >   - Define **asymmetric** key cryptography and its role in secure communication.
 >   - Analyze the **RSA** algorithm and its components.
 >   - Explain the key generation process in RSA.

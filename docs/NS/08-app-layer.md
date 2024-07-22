@@ -39,7 +39,7 @@ Singapore University of Technology and Design
 > 3. **List Socket Characteristics and Common**
 >   - Identify the unique identifier of a socket (IP address + Port number).
 >   - Explain the concept of socket binding and its importance.
->   - Recognize that sockets are special file descriptors in UNIX systems.
+>   - Conclude that sockets are special file descriptors in UNIX systems.
 > 4. **Assess the Socket API**
 >   - Explain the key functions provided by the Socket API for network communication.
 >   - Differentiate between internet sockets and UNIX domain sockets.

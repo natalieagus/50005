@@ -25,20 +25,20 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> 1. **Dive into the Concept of Computer Networking**
+> 1. **Identify Basic Concepts of Computer Networking**
 >   - List the basic definition and purpose of computer networks.
 >   - Differentiate between the "nuts and bolts" and "service" views of networking.
-> 2. **Explore the "Nuts and Bolts" of Computer Networking**
+> 2. **Explain the "Nuts and Bolts" of Computer Networking**
 >   - Identify the **components** that make up the internet including hosts, communication links, and packet switches.
 >   - Describe the **function** and types of **end systems**, communication links, and packet switches.
 >   - Assess the various types of Internet Service Providers (ISPs) and their roles in providing network access.
-> 3. **Describe the "Service" View of the Internet**
+> 3. **Explain the "Service" View of the Internet**
 >   - Explain the internet as an infrastructure that provides **services** to applications.
->   - Explain the role of **APIs** in enabling applications to access network services.
-> 4. **Delve into Network Challenges and Solutions**
+>   - Give Examples on the role of **APIs** in enabling applications to access network services.
+> 4. **Justify Network Challenges and Solutions**
 >   - Assess various network **challenges** such as operability, sharing, component interaction, and scalability in networking.
 >   - Describe the **methods** used to overcome these challenges including internet protocols and APIs.
-> 5. **Master Network Layering and its Importance**
+> 5. **Evaluate Network Layering and its Importance**
 >   - Describe the general concept of **network layering** and its role in **reducing complexity** and managing network interactions.
 >   - Classify **each** layer in the network hierarchy from physical to application layer, and the respective **roles** and **protocols** associated with each layer
 > 6. **Explain Data Transmission Methods**
@@ -52,7 +52,7 @@ Singapore University of Technology and Design
 > 9. **Analyze Practical Networking Examples**
 >   - Apply theoretical knowledge to practical examples, including calculations for data transfer and understanding traffic patterns.
 >   - Explain the concept of **priority inversion** and **emergent behavior**
->   - Appraise into more complex aspects of networking such as data encapsulation and the interaction between different network layers.
+>   - Appraise more complex aspects of networking such as data encapsulation and the interaction between different network layers.
 >
 > These learning objectives are intended to guide your understanding of the comprehensive notes on computer networking.
 

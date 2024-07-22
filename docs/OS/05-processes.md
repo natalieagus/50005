@@ -23,24 +23,24 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 
-> 1. **Realize the Differences Between Process and Program**
+> 1. **Discuss the Differences Between Process and Program**
 >   - Recognize that a process is a **dynamic** execution instance of a **static** program.
->   - Acknowledge that a program is a **passive** entity containing the code, whereas a process is an active entity with executing code and associated resources.
->   - Lay out **components** of a process **image** (**address space**)
+>   - Demonstrate that a program is a **passive** entity containing the code, whereas a process is an active entity with executing code and associated resources.
+>   - Point out **components** of a process **image** (**address space**)
 > 2. **Explore Process Context**
 >   - Identify what constitutes a process' **context** including the program counter, processor's registers, stack, image, and more.
 >   - Explain how multiple instances of a program can run as separate processes.
-> 3. **Appreciate Concurrency and Protection in Processes**
->   - Grasp how **processes** allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
+> 3. **Locate Concurrency and Protection in Processes**
+>   - Recall how **processes** allow for concurrency and provide protection, enabling processes to operate as if they are the only ones running on the system.
 >   - Compare and contrast between **concurrency** and **parallelism**
-> 4. **Get Familiar with Introduction to Process Lifecycle**
->   - Learn about different process states (New, Running, Waiting, Ready, Terminated) and their transitions.
->   - Recognise UNIX data structures used to manage process lifecycle: Process Table and a Process Control Block (PCB) which store process attributes.
->   - Able to **create** a new process, e.g: using `fork()` in C and its **implications**
->   - Able to **replace** a process' image with the `exec()` system call family and comprehend its **implications**
+> 4. **Summarize Process Lifecycle**
+>   - Examine different process states (New, Running, Waiting, Ready, Terminated) and their transitions.
+>   - Explain UNIX data structures used to manage process lifecycle: Process Table and a Process Control Block (PCB) which store process attributes.
+>   - Show how to **create** a new process, e.g: using `fork()` in C and its **implications**
+>   - Show how to **replace** a process' image with the `exec()` system call family and comprehend its **implications**
 > 5. **Explain Process Management and Scheduling**
->   - Comprehend how processes are **managed** and **scheduled** by the operating system, including the role of the **scheduler**.
->   - Familiarize with **context switching** and its impact on system performance.
+>   - Demonstrate how processes are **managed** and **scheduled** by the operating system, including the role of the **scheduler**.
+>   - Describe **context switching** and its impact on system performance.
 >
 > These objectives are structured to provide a comprehensive overview of the concepts related to processes versus programs, their management, and the system's handling of multiple processes.
 

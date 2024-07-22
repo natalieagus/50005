@@ -23,19 +23,19 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Recognise Process Independence vs Cooperation**
->   - Recognize the **default** nature of processes as independent.
->   - Recognize that certain scenarios require processes to **communicate** 
+> 1. **Explain Process Independence vs Cooperation**
+>   - Identify the **default** nature of processes as independent.
+>   - Identify that certain scenarios require processes to **communicate** 
 >   - Identify how a **cooperating** process can affect or be affected by other processes.
 >   - Identify the **reasons** for process cooperation: information sharing, speeding up computations, and modularity for protection and convenience.
 > 2. **Explain Interprocess Communication (IPC)**
->   - Learn about the two main IPC mechanisms: Shared Memory and Message Passing.
->   - Explain the kernel's role in supporting IPC mechanisms.
-> 3. **Recognize Shared Memory as IPC**
->   - Comprehend how shared memory **allows** multiple processes to access the same memory segment.
->   - Explore how shared memory is **created**, **accessed**, and **managed** without continuous kernel assistance thereafter.
-> 4. **Recognize Message Passing as IPC**
->   - Learn how message passing allows processes to communicate and synchronize without sharing the same address space.
+>   - Explain the two main IPC mechanisms: Shared Memory and Message Passing.
+>   - Conclude kernel's role in supporting IPC mechanisms.
+> 3. **Describe Shared Memory as IPC**
+>   - Point out how shared memory **allows** multiple processes to access the same memory segment.
+>   - Experiment how shared memory is **created**, **accessed**, and **managed** without continuous kernel assistance thereafter.
+> 4. **Describe Message Passing as IPC**
+>   - Experiment how message passing allows processes to communicate and synchronize without sharing the same address space.
 >   - Explain the roles of **sockets** in message passing and the involvement of the kernel in this IPC method.
 >
 > These objectives are structured to provide a comprehensive overview of how processes may interact within a computer system through cooperation and communication, emphasizing the importance of IPC mechanisms.

@@ -25,24 +25,24 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 > 1. **Identify Network Performance Metrics**
->   - Grasp the concept of network performance including **efficiency** and **reliability** in data transmission.
+>   - Explain the concept of network performance including **efficiency** and **reliability** in data transmission.
 >   - Identify the **factors** that impact network performance such as latency and throughput.
-> 2. **Learn about Sources of Packet Delay**
+> 2. **Breakdown Sources of Packet Delay**
 >   - Describe the **four main sources of packet delays**: processing, queueing, transmission, and propagation.
 >   - Identify how each type of delay affects the overall network performance.
-> 3. **Explore Tools for Measuring Network Delays**
->   - Gain familiarity with network diagnostic tools like `traceroute`, `ping` and their functionalities.
+> 3. **Experiment with Tools for Measuring Network Delays**
+>   - Experiment with network diagnostic tools like `traceroute`, `ping` and their functionalities.
 >   - Learn how traceroute uses **ICMP** to map the route data packets take across the network.
 >   - Comprehend **how** ICMP works and its **significance** in error messaging and network diagnostics.
 >   - Analyze the **practical application of ICMP** in tools like `traceroute` and `ping`.
 > 4. **Analyze Packet Loss and Its Implications**
 >   - Identify the causes and consequences of packet loss within a network.
->   - Learn how to compute end-to-end loss rate probability based on per-link loss rates.
+>   - Practice how to compute end-to-end loss rate probability based on per-link loss rates.
 > 5. **Distinguish Between Throughput and Bandwidth**
 >   - Define and differentiate between throughput and bandwidth in network contexts.
->   - Explore the calculations and factors affecting throughput, including network topology and link technologies.
+>   - Discover the calculations and factors affecting throughput, including network topology and link technologies.
 > 6. **Visualize Network Performance**
->   - Master the use of time-space diagrams in visualizing network data flow and performance.
+>   - Demonstrate the use of time-space diagrams in visualizing network data flow and performance.
 >   - Analyze how changes in network parameters like bandwidth and packet size affect the data transmission represented in time-space diagrams.
 >
 > These learning objectives are designed to provide a comprehensive understanding of network performance, including how to measure, analyze, and optimize the efficiency and reliability of data transmission across networks.

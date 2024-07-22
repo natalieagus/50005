@@ -27,7 +27,7 @@ Singapore University of Technology and Design
 >   - Define **what** a file and the file system namespace are and describe its **purpose** in a computer system.
 >   - Differentiate between **volatile** and **non-volatile storage**.
 >   - Describe how a file system organizes data on a disk.
-> 2. **Explore the UNIX File System**
+> 2. **Summarize UNIX File System**
 >   - Identify the types of files in the UNIX file system, including **regular** files and **directories**.
 >   - Discuss the importance and role of inodes in the UNIX file system.
 >   - Explain file **format**, **permission**, and **type** and how they are used in the UNIX file system.
@@ -36,8 +36,8 @@ Singapore University of Technology and Design
 >   - Explain how files are **accessed** and **managed** in UNIX, including the role of per-process file descriptor tables, system-wide open file tables, and inode table.
 >   - Explain UNIX file system **data structures** and **mapping** between table entries.
 >   - Discuss how the operating system handles file operations using file descriptors (via system calls like `open()` and its permissions) and the implications for file sharing and **process communication**.
-> 3. **Comprehend the Interactions Between Files and Processes**
->   - Recognize how per-process file descriptors are **duplicated** upon process creation via `fork()`
+> 3. **Identify Possible Interactions Between Files and Processes**
+>   - Explain how per-process file descriptors are **duplicated** upon process creation via `fork()`
 >   - Explain how files are **shared** and **accessed** by multiple processes, including the implications of operations like `fork()` and `dup()`.
 >   - **Analyze** the behaviors and outcomes of file interactions within a multi-process environment.
 >

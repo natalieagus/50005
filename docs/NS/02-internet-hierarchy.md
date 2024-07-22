@@ -26,10 +26,10 @@ Singapore University of Technology and Design
 > Detailed Learning Objectives
 > 
 > 1. **Justify the Structure of Internet Hierarchies**
->   - Comprehend the different **levels** of ISPs including access, regional/national, and global tiers.
->   - Recognize the **role** of each ISP level in facilitating global internet connectivity.
+>   - Justify the different **levels** of ISPs including access, regional/national, and global tiers.
+>   - Identify the **role** of each ISP level in facilitating global internet connectivity.
 >   - Explain **why** the hierarchical structure is **essential** for the **scalable** and **efficient** operation of the internet.
-> 2. **Explore the Functions and Significance of Internet Exchange Points (IXPs)**
+> 2. **Describe the Functions and Significance of Internet Exchange Points (IXPs)**
 >   - Describe the purpose of IXPs in internet architecture and how they facilitate peer connections among ISPs.
 >   - Explain the **economic** and **operational** benefits of using IXPs for internet traffic exchange.
 > 3. **Explain Content Delivery Networks (CDNs)**

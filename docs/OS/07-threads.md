@@ -23,10 +23,10 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Comprehend the Basics of Threads**
+> 1. **Discuss the Basics of Threads**
 >   - Define a thread as a segment of a process, and recognize that every process has at least **one** thread.
 >   - Identify the **components** of a thread: thread ID, program counter, register set, and stack.
->   - Learn how threads within the **same** process share the same address space and resources like code, data sections, and system resources.
+>   - Justify how threads within the **same** process share the same address space and resources like code, data sections, and system resources.
 >   - Explain how threads can **execute** the same or different parts of the process code concurrently.
 > 2. **Explain Multithreading Benefits**
 >   - Explore how multithreading can improve the **responsiveness** of applications by allowing continued operation even if **part** of the application is blocked.
@@ -34,16 +34,16 @@ Singapore University of Technology and Design
 > 3. **Explain the Differences between Multithreading vs. Multiprocessing**
 >   - Compare the concurrency and protection aspects of **processes** versus **threads**.
 >   - **Analyze** the communication, parallel execution, and synchronization differences between using multiple processes and multiple threads.
-> 4. **Recognise Different Types of Threads and Their Management**
+> 4. **Distinguish Different Types of Threads and Their Management**
 >   - Differentiate between **user-level threads** and **kernel-level thread**s.
 >   - Examine how each type of thread is scheduled, the level of **overhead** involved, and the **implications** for parallel execution on multicore systems.
->   - Recognise thread mapping models like many-to-one, one-to-one, and many-to-many, and discuss their advantages and disadvantages.
-> 5. **Study Practical Implementation of Threads**
+>   - Justify thread mapping models like many-to-one, one-to-one, and many-to-many, and discuss their advantages and disadvantages.
+> 5. **Experiment with Practical Implementation of Threads**
 >   - Implement threads in Java using **Runnable** interfaces and by extending the Thread class.
 >   - Use the `pthread` library in C to create, manage, and synchronize threads.
 > 6. **Evaluate Performance in Multithreaded Applications**
 >   - Compute amount of **speedup** possible in multicore programming using Amdahl's Law
->   - Consider the fraction of the application that can be parallelized and the **diminishing returns** of adding more processing cores.
+>   - Compute the fraction of the application that can be parallelized and the **diminishing returns** of adding more processing cores.
 > 
 > These objectives are structured to provide a comprehensive overview of multithreading, highlighting its advantages, challenges, and practical applications in programming.
 
