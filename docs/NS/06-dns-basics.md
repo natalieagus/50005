@@ -179,7 +179,7 @@ The resolution order is as drawn:
 {:.highlight-title}
 > DNS Client
 > 
-> Majority of the "work" (resolution) is done by the DNS client. A DNS client can be any application or tool that initiates DNS queries, such as CLI tools like `dig`, web browsers, email clients, etc. 
+> Majority of the "work" (resolution) is done by the DNS client. A DNS client can be any application or tool that initiates DNS queries, such as CLI tools like `dig`, web browsers, OS DNS Resolver, email clients, etc. 
 
 ## Recursive Query 
 
@@ -188,6 +188,45 @@ In **recursive** query, we put the burden of name resolution on the contacted na
 The resolution order is as drawn:
 
 <img src="{{ site.baseurl }}/docs/NS/images/06-dns/cse2024-recursive-query.drawio.png"  class="center_seventy"/>
+
+## Who decides? 
+
+{:.important}
+The type of DNS query—whether iterative or recursive—is determined by the **client** making the query <span class="orange-bold">and</span> the **configuration** of the DNS server receiving the query.
+
+DNS Client need to specify whether the query is iterative or recursive. DNS server will then respond **depending** on its configuration. Hence DNS resolution behavior **depends** on **both** the configuration of the DNS server and the **type** of query received from the client. 
+
+Let's look at a simple example on how web browsers (DNS client) handles DNS queries. 
+
+### How Web Browsers Handle DNS Queries
+1. **Browser Initiates a DNS Query:**
+   - When you enter a URL in the browser’s address bar (e.g., `http://example.com`), the browser needs to resolve the domain name to an IP address.
+
+2. **Browser Requests DNS Resolution from the OS DNS Resolver:**
+   - The browser sends a DNS query to the operating system’s DNS resolver. The browser itself does not directly perform recursive or iterative queries; it relies on the OS resolver to handle this.
+   - Read this [appendix](#OS-dns-resolver) section to know more about OS DNS Resolver if you wish (out of syllabus). For now, to make things simple we treat Browser +  OS DNS Resolver as a single "DNS Client" entity. 
+
+3. **OS Resolver Checks Cache:**
+   - The OS resolver first checks its local cache to see if it has a recent answer for the queried domain name. If it has the answer cached, it returns it to the browser immediately.
+
+4. **OS Resolver Sends a Recursive Query to the Local DNS Server:**
+   - If the OS resolver does not have the answer cached, it sends a recursive query to the local DNS server (often provided by your ISP or set up in your network configuration).
+   - A recursive query means the OS resolver is asking the local DNS server to handle the entire resolution process and return the final answer.
+
+5. **Local DNS Server Performs Iterative Queries:**
+   - The local DNS server receives the recursive query and then performs the necessary iterative queries to resolve the domain name. This involves querying the root DNS servers, TLD DNS servers, and authoritative DNS servers as needed.
+   - The local DNS server follows the DNS hierarchy step-by-step to find the authoritative server for the domain and obtain the IP address.
+
+6. **Response Returned to the Browser:**
+   - Once the local DNS server resolves the domain name, it returns the answer to the OS resolver, which then provides it to the browser.
+   - The browser uses the resolved IP address to establish a connection to the web server and load the webpage.
+
+### Summary:
+- **Browsers make recursive queries** to the operating system’s DNS resolver.
+- **OS resolver handles the query** by either returning a cached response or sending a recursive query to the local DNS server.
+- **Local DNS servers perform iterative queries** to fully resolve the domain name if the answer is not cached locally.
+
+In essence, while the browser itself initiates the DNS resolution process, the heavy lifting of recursion and iteration is managed by the OS resolver and local DNS servers. This multi-layered approach optimizes performance and ensures efficient DNS resolution.
 
 # Summary
 
@@ -281,4 +320,52 @@ The key point about DNS zones is that they are <span class="orange-bold">adminis
 In practice, if you manage a large organization, you might want DNS zones for different departments or functions to separate administrative control or enhance security. For example, IT might manage the main domain's DNS records, while marketing manages a subdomain for promotional sites in a different DNS zone.
 
 Understanding DNS zones as these distinct entities that contain DNS records for specific namespaces under your domain can help you manage and delegate DNS more effectively.
+
+## OS DNS Resolver
+The OS DNS resolver is a crucial component of the operating system, responsible for handling DNS queries from applications, caching results, and communicating with external DNS servers. It provides a centralized, efficient, and secure way to manage DNS resolution for all applications running on the system.
+
+{:.info}
+The OS DNS resolver functions as a system service or library within the operating system. It runs in **user mode** and need to make system calls when necessary like any other system programs.
+
+The browser does not send DNS queries directly to the local DNS server for several reasons, primarily revolving around system design, efficiency, and security. 
+1. **System Design and Abstraction**
+   - **Separation of Concerns:**
+     - The operating system (OS) is designed to handle network-related tasks, including DNS resolution, to provide a consistent and centralized way of managing network configurations and queries. This separation of concerns allows applications like web browsers to remain simpler and more focused on their primary tasks.
+2. **Efficiency and Caching:**
+   - **Centralized Caching:**
+     - The OS resolver maintains a cache of DNS responses. This centralized cache ensures that if multiple applications request the same domain, the query is resolved once, and cached responses are reused, improving efficiency and reducing redundant network traffic.
+   - **System-wide Configuration:**
+     - DNS settings, such as the addresses of local DNS servers, are typically configured at the OS level. By querying the OS resolver, applications automatically use the system-wide DNS settings without needing to manage these configurations individually.
+3. **Security:**
+   - **Unified Security Policies:**
+     - Handling DNS queries at the OS level allows for the application of system-wide security policies and mechanisms, such as DNSSEC validation, firewall rules, and other network security measures.
+   - **Reduced Attack Surface:**
+     - By not allowing each application to directly interact with external DNS servers, the system reduces the potential attack surface. Centralized DNS resolution via the OS resolver can help mitigate certain types of DNS-related attacks.
+4. **Portability and Compatibility:**
+   - **Abstracting Network Configuration:**
+     - Applications like web browsers are designed to be portable across different operating systems and environments. By relying on the OS resolver, they avoid dealing with the complexities and variations of network configurations on different platforms.
+   - **Consistent Behavior:**
+  - Relying on the OS resolver ensures consistent DNS resolution behavior across different applications and system updates, providing a more predictable and stable environment.
+5. **Performance Optimization:**
+   - **Efficient Resource Use:**
+     - The OS resolver can optimize DNS resolution for all applications on the system, avoiding redundant queries and managing network resources more effectively.
+
+### How it Works in Practice:
+1. **Browser Request:**
+   - The browser sends a DNS resolution request to the OS resolver using standard APIs provided by the operating system.
+2. **OS Resolver Action:**
+   - The OS resolver checks its cache. If the requested domain is cached, it returns the IP address to the browser.
+   - If not cached, the OS resolver sends a recursive query to the configured local DNS server.
+3. **Local DNS Server:**
+   - The local DNS server performs the necessary iterative queries to resolve the domain name and returns the result to the OS resolver.
+4. **Response to Browser:**
+   - The OS resolver caches the response and provides the resolved IP address to the browser.
+
+**Summary**:
+- **Abstraction and Simplification:** Delegating DNS queries to the OS resolver simplifies application development and ensures that network configurations are consistently applied.
+- **Efficiency and Caching:** Centralized DNS caching at the OS level improves performance and reduces redundant queries.
+- **Security:** Centralized handling of DNS queries enhances security by applying unified policies and reducing the attack surface.
+- **Portability and Compatibility:** Relying on the OS resolver ensures that applications remain portable and compatible across different environments.
+
+By following this approach, the overall system is more efficient, secure, and easier to manage.
 
