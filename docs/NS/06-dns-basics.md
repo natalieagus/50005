@@ -170,7 +170,7 @@ There are two ways to resolve the hostname-IP translation: iterative and recursi
 ## Iterative Query 
 
 {:.info}
-In an iterative DNS query, the DNS client allows the DNS server to return the best answer it can. If the queried server does not have the answer, instead of asking other servers itself, it returns a referral to other more authoritative DNS servers. 
+In an iterative DNS query, the DNS client allows the DNS server to return the *best* answer it can. If the queried server does not have the answer, instead of asking other servers itself, it returns a referral to other more authoritative DNS servers. 
 
 The resolution order is as drawn: 
 
@@ -183,20 +183,56 @@ The resolution order is as drawn:
 
 ## Recursive Query 
 
-In **recursive** query, we put the burden of name resolution on the contacted name server. This puts a heavy load at the <span class="orange-bold">upper hierarchy</span>. 
+{:.info}
+A recursive DNS lookup is where one DNS server communicates with several other DNS servers to hunt down an IP address and return it to the client. The DNS server does **all** the work of fetching the requested information. This is in contrast to an iterative DNS query, where the client communicates *directly* with each DNS server involved in the lookup.
+
+We put the burden of name resolution on the contacted name server. This puts a heavy load at the <span class="orange-bold">upper hierarchy</span>. 
 
 The resolution order is as drawn:
 
 <img src="{{ site.baseurl }}/docs/NS/images/06-dns/cse2024-recursive-query.drawio.png"  class="center_seventy"/>
 
-## Who decides? 
+{:.warning}
+> Potentially Misleading Information
+> 
+> Note that the diagram above *can* be slightly misleading (although this is the exact illustration taken from the KR book). It seems to point out that all other DNS servers in the path is doing the work and then answer is *propagated* back. This might be done for educational purposes. In practice, the root servers and TLD servers do not do the work for us. When a recursive query is made by the DNS client / user, the local DNS server (if it supports recursive query) **will perform iterative** querying to resolve the answer for the user. In the eyes of the user, the Local DNS server that supports recursive query **does all the work**, and hence we regard it as **recursion available**. 
+
+The next section explains it more. 
+
+## Possible Source of Confusion 
+
+{:.warning}
+In some books, it is said that **recursive query** means the local DNS server **takes** responsibility for resolving the domain name on behalf of the client. 
+
+This means that if the query is **not** cached, the local DNS server will then perform *iterative* query **on behalf of the client** upon receiving a DNS query with an `rd` flag (instead of propagating recursive queries as shown in the our course book, requiring all DNS servers in the path to "do the work"). In other words, DNS servers that supports recursive query typically **perform** iterative queries when resolving domain names.
+
+Finally, the local DNS server then caches the result to optimize future queries. Here's a diagram to visualize this process:
+
+<img src="{{ site.baseurl }}/docs/NS/images/06-dns/cse2024-recursive-query-v2.drawio.png"  class="center_seventy"/>
+
+<span class="orange-bold">Do not fret too much about these details</span>. These protocols change over time. What's important is that you realise these differences: 
+1. **Recursive Query:**
+   - In a recursive query, the DNS server does **all** the work of fetching the requested information. The client (such as your computer or device) sends a query to the DNS server, and the server then queries other DNS servers on behalf of the client until it gets the final answer. The client receives a single response with the requested information.
+   - It **does not matter** how exactly the Local DNS Server resolves your query behind the scene: be it iteratively or that all other DNS servers in the path recursively solve the query for you. 
+
+2. **Iterative Query:**
+   - In an iterative query, the DNS server does **not** fetch the complete answer for the client. Instead, it responds with a referral to another DNS server that may have the answer. The client then has to query the referred DNS server, and this process continues iteratively until the client gets the final answer.
+
+
+{:.note}
+A local DNS server provided by an ISP typically supports **recursive** queries rather than iterative queries, while Root and TLD servers only support iterative queries. ISPs typically configure their DNS servers to operate in a recursive mode to simplify the process for end users, providing a straightforward and efficient resolution process. This means that when you use your ISP's DNS server, it will handle the entire process of querying other DNS servers as needed to resolve your request, rather than requiring your device to make multiple iterative queries.
+
+
+### Who decides whether a query should be iterative or recursive? 
 
 {:.important}
 The type of DNS query—whether iterative or recursive—is determined by the **client** making the query <span class="orange-bold">and</span> the **configuration** of the DNS server receiving the query.
 
 DNS Client need to specify whether the query is iterative or recursive. DNS server will then respond **depending** on its configuration. Hence DNS resolution behavior **depends** on **both** the configuration of the DNS server and the **type** of query received from the client. 
 
-Let's look at a simple example on how web browsers (DNS client) handles DNS queries. 
+Let's look at a simple example on how web browsers (DNS client) handles DNS queries.  
+
+
 
 ### How Web Browsers Handle DNS Queries
 1. **Browser Initiates a DNS Query:**
@@ -213,20 +249,22 @@ Let's look at a simple example on how web browsers (DNS client) handles DNS quer
    - If the OS resolver does not have the answer cached, it sends a recursive query to the local DNS server (often provided by your ISP or set up in your network configuration).
    - A recursive query means the OS resolver is asking the local DNS server to handle the entire resolution process and return the final answer.
 
-5. **Local DNS Server Performs Iterative Queries:**
-   - The local DNS server receives the recursive query and then performs the necessary iterative queries to resolve the domain name. This involves querying the root DNS servers, TLD DNS servers, and authoritative DNS servers as needed.
+5. **Local DNS Server Checks Cache:**
+   - The local DNS server receives the recursive query and then checks its cache. It will return the queried IP if available in its cache. 
+   - If the IP is not cached, it then performs the necessary *iterative* queries to resolve the domain name (if supported).
+   - This involves querying the root DNS servers, TLD DNS servers, and authoritative DNS servers as needed.
    - The local DNS server follows the DNS hierarchy step-by-step to find the authoritative server for the domain and obtain the IP address.
+   - If the local DNS server does <span class="orange-bold">not</span> support recursive query, it will return a **best** answer, e.g: IP of root DNS servers.
+
+5. **Response Returned to the OS Resolver:**
+   - If OS Resolver receives the actual IP address (recursion is available or cached in the local DNS server), then it will return the IP address immediately to the Browser. 
+   - Else, this means that recursion is *not* available, and the OS Resolver will perform iterative query (querying the root DNS servers, TLD DNS servers, and authoritative DNS servers as needed) until an IP address is obtained (if any).
 
 6. **Response Returned to the Browser:**
-   - Once the local DNS server resolves the domain name, it returns the answer to the OS resolver, which then provides it to the browser.
-   - The browser uses the resolved IP address to establish a connection to the web server and load the webpage.
+   - The browser uses the resolved IP address (if any) to establish a connection to the web server and load the webpage.
+   - It is entirely possible that the queried domain name does not return in any IP addresses. The web browser will display some kind of `SERVER NOT FOUND` error message to indicate the status to the user. 
 
-### Summary:
-- **Browsers make recursive queries** to the operating system’s DNS resolver.
-- **OS resolver handles the query** by either returning a cached response or sending a recursive query to the local DNS server.
-- **Local DNS servers perform iterative queries** to fully resolve the domain name if the answer is not cached locally.
-
-In essence, while the browser itself initiates the DNS resolution process, the heavy lifting of recursion and iteration is managed by the OS resolver and local DNS servers. This multi-layered approach optimizes performance and ensures efficient DNS resolution.
+In essence, while the browser itself initiates the DNS resolution process, the heavy lifting of recursion and iteration is managed by the OS resolver and local DNS servers. This multi-layered approach optimizes performance and ensures **efficient** DNS resolution.
 
 # Summary
 
