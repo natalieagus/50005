@@ -69,6 +69,8 @@ There are three flags under the header: `qr`, `aa`, and `rd`:
 - This means that the message is a query (`qr`), and dig is requesting a recursive lookup (`rd` stands for ‘recursion desired’) and the server is the authoritative name server (`aa` stands for ‘authoritative answer’).
 - Not all servers perform recursive lookups due to the heavier load involved, and so you don’t see any `ra` flags here (`ra` stands for ‘recursion available’).
 
+
+
 `dig` only prints the <span style="color:#f77729;"><b>final</b></span> result of a recursive search, but you can mimic the individual steps involved by making a query with the `+norecurs` option enabled. For example, to send a non-recursive query to one of the root servers, we enter the command `dig @a.ROOT-SERVERS.NET www.slashdot.org +norecurs`:
 
 <img src="{{ site.baseurl }}/assets/images/nslab3/4.png"  class="center_seventy no-invert"/>
@@ -123,7 +125,7 @@ Look up the manual for `dig` to find out what the `+domain` parameter does. Base
 
 # Hierarchy Caching
 
-We will be using `dig` with `norecurse` option.
+We will be using `dig` with `+norecurs` option for this section to try to resolve some domain and mimic manual **iterative** query. 
 {:.info}
 
 In the previous section, you ran `dig` without changing the default options. This causes `dig` to perform a <span style="color:#f77729;"><b>recursive</b></span> lookup if the DNS server being queried supports it. In this part, you will _trace_ the intermediate steps involved in a performing recursive query by beginning at a `root` server and <span style="color:#f77729;"><b>manually</b></span> going through the DNS hierarchy to resolve a host name. You can obtain a list of all the root servers by running the command `dig . NS`.
@@ -138,7 +140,76 @@ In the previous section, you ran `dig` without changing the default options. Thi
 `TASK 7:` Go through the DNS hierarchy from the root until you have found the IP address of `lirone.csail.mit.edu`.
 {:.task}
 
-You should disable recursion and follow the referrals manually. Take note of all the commands that you use, and addresses that you found.
+You should disable recursion each time and follow all the referrals manually. Take note of all the commands that you use, and addresses that you found.
+
+### Iterative Resolution Process
+What you just did in the two tasks above mimic an **iterative resolution process**. 
+* When a DNS resolver performs an iterative resolution, it **starts** querying the root DNS servers first.
+* The root DNS servers provide a **referral** to the top-level domain (TLD) DNS servers (e.g., .com, .org).
+* The TLD DNS servers then provide a **referral** to the authoritative DNS servers for the specific domain.
+* Finally, the **authoritative** DNS servers provide the **actual** IP address for the domain.
+
+If recursion is not available, you can ask `dig` to perform automatic iterative resolution for you. You can use the `+trace` option to see each step of the iterative process. 
+
+{:.info}
+From `dig` manual: `+trace` option performs **iterative** queries and display the entire trace path to resolve a domain name
+
+For instance:
+
+```sh
+dig +trace disney.sg 
+```
+
+Results in:
+
+```sh
+; <<>> DiG 9.10.6 <<>> +trace disney.sg
+;; global options: +cmd
+.			514391	IN	NS	a.root-servers.net.
+.			514391	IN	NS	b.root-servers.net.
+.			514391	IN	NS	c.root-servers.net.
+.			514391	IN	NS	d.root-servers.net.
+.			514391	IN	NS	e.root-servers.net.
+.			514391	IN	NS	f.root-servers.net.
+.			514391	IN	NS	g.root-servers.net.
+.			514391	IN	NS	h.root-servers.net.
+.			514391	IN	NS	i.root-servers.net.
+.			514391	IN	NS	j.root-servers.net.
+.			514391	IN	NS	k.root-servers.net.
+.			514391	IN	NS	l.root-servers.net.
+.			514391	IN	NS	m.root-servers.net.
+.			514391	IN	RRSIG	NS 8 0 518400 20240804200000 20240722190000 20038 . JeAF0TGVahJnkgDNbn5CvqQnUuJkK9Fm3slLNlnyp/HkNdmXTRY0ZFbk 0krZxWEl75fJv0vNDY740s/s02irZnMvKTGqcLS5lLivJNNKr3AA2dBv uWAbhHpgIObo8bNUnZCc8UbBuTvJSuuZ9wZAdahVG7GZBJZirVo2o6XV Ibv+9ElyU4i/ADr6JPN8MM0NSd9PQnt2ITR0HR/7UwfZy0Mt/jLi7tHo 6zA7/lGMMY1fxQJHJnT6WcYoZwAg8PZfvlyudb8ex/CzYN70CIZImlbe UH/9DUozo+qXF4u6C5zptB+qndksgT5tsvnpGsGaQxf+ezFcFQgiz9ub 7BAAIA==
+;; Received 525 bytes from 192.168.2.22#53(192.168.2.22) in 7 ms
+
+sg.			172800	IN	NS	ns4.apnic.net.
+sg.			172800	IN	NS	pch.sgzones.sg.
+sg.			172800	IN	NS	dsany.sgnic.sg.
+sg.			172800	IN	NS	dsany2.sgnic.sg.
+sg.			172800	IN	NS	dsany3.sgnic.sg.
+sg.			86400	IN	DS	26329 8 2 404A15E6CA2F4CE259D8B2BD13894C7823A9513973103C962FF52BFC 57A380AF
+sg.			86400	IN	RRSIG	DS 8 1 86400 20240804200000 20240722190000 20038 . uO9Yw4pQKVIa5wuVkLbApWO+PZKsZz6ds0Berm7hYLZaA0sNBu5HL1a+ aNDGmQ+xuBuEZqZrtBCEuibOWOxU4zfv/YyPtxQ3ObBGBBoyBPbZCp/c EK0FKjX9hyYjVzHk+yibioVhbzlmF7H6ExfzXFkRReF4YvvpK9jTE6tw si/QSruNcmjyKr1VLsOemsAIqsFZ5Cu5oDIgIyXj2cFkRLmB0+50yRUA 0DiklkCV2IC5CARDaUeSQLBJ7ccqZLD/ewnLJFBG9RMdYCs6DN//WLp0 c3x84A1S2sW2f5XP5L3RrOB4CoguU53XZR9cSqvVCe5IcKMD4pHfQA1z AnBZcA==
+;; Received 718 bytes from 170.247.170.2#53(b.root-servers.net) in 6 ms
+
+disney.sg.		3600	IN	NS	ns4.disneyinternational.net.
+disney.sg.		3600	IN	NS	ns2.disneyinternational.net.
+disney.sg.		3600	IN	NS	ns1.disneyinternational.net.
+disney.sg.		3600	IN	NS	ns3.disneyinternational.net.
+sk2017lipfiq108d3npir0g7s9hqufi6.sg. 3600 IN NSEC3 1 1 0 - SM90S2MA02ILRPA9TA4FPIOL4GTPOC77  NS SOA RRSIG DNSKEY NSEC3PARAM
+sk2017lipfiq108d3npir0g7s9hqufi6.sg. 3600 IN RRSIG NSEC3 8 2 3600 20240728101424 20240721133051 43735 sg. L+02Z0D1av2/a+15lIhLSwebndFC0KSnp1iOcQiyps9GAdGspcv9xoXg IUUtn4w+29vwSJFXRGxIcR8pbIx1v+bNG4BVOf0dLmW3pGaYL1X7lO8l awPRJuw5F4fh2E5Nd9UIQZx3Sxx0gQ71/r4deIXr7qMnsRCBSBrWI4Qp PkZPX5oPO5YjRDeS93+i2nbgIfbLEzgY0FVlJBIjrQvrk/XY75TRxZ2q LcW3I7OOFuWrIwAUO5ODnpdWkpYc2y0Yyv2/MnR4nLVdmCmUgFBcI/kp 3IDoSFFqBt5hTCPMJBLNv31A/S/mL/uSlVI56D2tocjWJ0UJrcPxi+Yl 17TBUw==
+0ghn9o7jkvc2r1r8g24mrmrauvjhks3g.sg. 3600 IN NSEC3 1 1 0 - 0HPO4SGKGC7DN06HPBGKFC6OBJRH9B30  NS DS RRSIG
+0ghn9o7jkvc2r1r8g24mrmrauvjhks3g.sg. 3600 IN RRSIG NSEC3 8 2 3600 20240728030408 20240720223051 43735 sg. eSxket84qQILcZttDdhRnGKJ2eX/rIGg6td4g++/ufXNcJAHLo/GjGvu gCe+fs4KDQXJi0lRdkHKyb+lZefxlin/f+AqCQgm8rYO/pomzXj56jsz p9rvRa02usMPB/Y6CeawB4+1ZguoexCDO3DO0f//ui+rl0Ol9xwx5H7m Sf+mhsBpPPHwRCTmRP7dwVVDNOWLo4jI/c2k5+F+WrLoJdwsZ0rpP/EV 1ouKgDKgUMm98AkLRXNT6kzv2/U7v6BlvbX3yl/14eqPA14Y/fiFLCDJ awpAYkiu00LPGtxfbGcMGxffxMg8i2BwMtlOwtd+7gvp71OTarMaLpmC 7dN98A==
+;; Received 872 bytes from 120.29.253.11#53(dsany.sgnic.sg) in 5 ms
+
+disney.sg.		300	IN	A	13.248.150.189
+disney.sg.		300	IN	A	76.223.18.1
+disney.sg.		86400	IN	NS	ns1.disneyinternational.net.
+disney.sg.		86400	IN	NS	ns2.disneyinternational.net.
+disney.sg.		86400	IN	NS	ns3.disneyinternational.net.
+disney.sg.		86400	IN	NS	ns4.disneyinternational.net.
+;; Received 341 bytes from 205.251.196.47#53(ns1.disneyinternational.net) in 6 ms
+```
+
+Each step in the output shows how dig queries different DNS servers iteratively to resolve the domain name.
 
 ## DNS Caching
 

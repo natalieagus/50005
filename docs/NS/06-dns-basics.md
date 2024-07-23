@@ -176,8 +176,10 @@ The resolution order is as drawn:
 
 <img src="{{ site.baseurl }}/docs/NS/images/06-dns/cse2024-iterative-query.drawio.png"  class="center_seventy"/>
 
-{:.highlight}
-Majority of the "work" is done by the DNS client.
+{:.highlight-title}
+> DNS Client
+> 
+> Majority of the "work" (resolution) is done by the DNS client. A DNS client can be any application or tool that initiates DNS queries, such as CLI tools like `dig`, web browsers, email clients, etc. 
 
 ## Recursive Query 
 
