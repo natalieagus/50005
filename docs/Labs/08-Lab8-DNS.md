@@ -58,6 +58,9 @@ The answer section for this query contains a DNS record:
 If you’d like to know who’s the authoritative NS for the queried domain, you can add the trace option: `dig slashdot.org +trace`:
 <img src="{{ site.baseurl }}/assets/images/nslab3/2.png"  class="center_seventy no-invert"/>
 
+{:.info}
+From `dig` manual: `+trace` option performs **iterative** queries and display the entire trace path to resolve a domain name.
+
 The records of type `NS` indicate the names of the DNS servers storing records for a particular <span style="color:#f77729;"><b>domain</b></span>. Here, we can see that the hosts `ns1.dnsmadeeasy.com.` and etc are responsible for providing <span style="color:#f77729;"><b>authoritative responses</b></span> to names in the `slashdot.org` domain.
 
 We can <span style="color:#f77729;"><b>query</b></span> a specific server for information about a host by using the `@` option. For example, to perform a lookup using the DNS server `ns1.dnsmadeeasy.com.`, we can run the command `dig @ns1.dnsmadeeasy.com. slashdot.org.`:
@@ -151,8 +154,7 @@ What you just did in the two tasks above mimic an **iterative resolution process
 
 If recursion is not available, you can ask `dig` to perform automatic iterative resolution for you. You can use the `+trace` option to see each step of the iterative process. 
 
-{:.info}
-From `dig` manual: `+trace` option performs **iterative** queries and display the entire trace path to resolve a domain name
+
 
 For instance:
 
