@@ -388,7 +388,7 @@ The browser does not send DNS queries directly to the local DNS server for sever
    - **Efficient Resource Use:**
      - The OS resolver can optimize DNS resolution for all applications on the system, avoiding redundant queries and managing network resources more effectively.
 
-### How it Works in Practice:
+### How it Works in Practice
 1. **Browser Request:**
    - The browser sends a DNS resolution request to the OS resolver using standard APIs provided by the operating system.
 2. **OS Resolver Action:**
