@@ -293,7 +293,7 @@ Host A needs to send 128MB to Host B using packet switching. However, the requir
 We are given the prior knowledge that users will use 10MBps if they are active, and that they are only active 20% of the time. How long will it take for Host A to send all the data to Host B? 
 
 We cannot compute the answer right away. We need to first compute the *probability* of $$N$$ users being active at the same time using **binomial distribution**:
-* P(1 user is active): $$\binom{5}{2}\times(0.2)^1\times(0.8)^4$$
+* P(1 user is active): $$\binom{5}{1}\times(0.2)^1\times(0.8)^4$$
 * P(less than 3 users are active): $$\binom{5}{0}\times(0.2)^0\times(0.8)^5 +$$  $$\binom{5}{1}\times(0.2)^1\times(0.8)^4 +$$ $$\binom{5}{2}\times(0.2)^2\times(0.8)^3$$ 
 * P(exactly $$N$$ out of $$M$$ users are active): $$\binom{M}{N}\times(0.2)^N\times(0.8)^M$$
 * P(less than $$N$$ outf $$M$$ users are active): $$\sum_{i=0}^{N}\times(P_{active})^i\times(1-P_{active})^{M-i}$$
