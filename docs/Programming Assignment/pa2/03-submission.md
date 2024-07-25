@@ -80,10 +80,10 @@ padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGT
 
 - Ensure that `Fernet` is used to generate symmetric key and utilise it (encryption/decryption)
 - **AP**: Ensure that your `MODE 3`: sticks to the protocol
-   1. Client to send **TWO** messages first upon connection establishment: `M1` (int, indicating the size of incoming message `M2`) and `M2` (the message)
-   2. Server to respond with **FOUR** messages (two pairs of size `int` and the corresponding message). This marks the **end** of `MODE 3`
-   3. No other message exchanges allowed in `MODE 3`
-   4. Whatever "fix" you do in **AP** should <span class="orange-bold">not</span> change these facts and should be incorporated into `MODE 3` protocol
+   * Client to send **TWO** messages first upon connection establishment: `M1` (int, indicating the size of incoming message `M2`) and `M2` (the message)
+   * Server to respond with **FOUR** messages (two pairs of size `int` and the corresponding message). This marks the **end** of `MODE 3`
+   * No other message exchanges allowed in `MODE 3`
+   * Whatever "fix" you do in **AP** should <span class="orange-bold">not</span> change these facts and should be incorporated into `MODE 3` protocol
 - **CP1**: Ensure that in `MODE 1`, `M1` contains the **total encrypted file length** (sent by client). It is up to you to send `M2` repeatedly as 128-byte chunks *or* to accumulate encrypted 128 byte chunks and then send it all in one single `send()` socket call. 
 - Do <span class="orange-bold">not</span> create any new modes. We only expect: `MODE 0 - MODE 4`. 
 
