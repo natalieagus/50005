@@ -36,14 +36,14 @@ You are expected to <span style="color:#f77729;"><b>save</b></span> <span class=
 2. Server to save received encrypted file to client to `/recv_files_enc` before decrypting, with the name `enc_recv_[filename]`, e.g: `enc_recv_image.ppm`.
 
 You should have the following files now:
-<img src="{{ site.baseurl }}/docs/Programming%20Assignment/pa2/images/03-submission/2024-07-25-14-19-48.png"  class="center_fifty no-invert" />
+<img src="{{ site.baseurl }}/docs/Programming Assignment/pa2/images/03-submission/2024-07-25-14-19-48.png"  class="center_fifty no-invert" />
 
 The new files are mainly (<span class="orange-bold">names must be exactly these</span>):
 
 ```sh
 1. server_signed.crt, server_private_key.pem # in source/auth
-2. ClientWithSecurityAP/[CP1|CP2].py # in source/
-3. ServerWithSecurityAP/[CP1|CP2].py # in source/
+2. ClientWithSecurity[AP|CP1|CP2].py # in source/
+3. ServerWithSecurity[AP|CP1|CP2].py # in source/
 ```
 
 All other files inside `[PROJ_ROOT_DIR]/files` directory must **remain** as per the original files from the previous sections.
