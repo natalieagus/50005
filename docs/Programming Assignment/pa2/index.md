@@ -145,9 +145,9 @@ To get this to work, you most probably need to use <span style="color:#f77729;">
 
 Consult the [Debug Notes](https://natalieagus.github.io/50005/pa2/debug-notes) page should you find any difficulties running the starter code. 
 
-# Do NOT Import Other Python Modules
+# Do NOT Import Other Python Modules for the Main Tasks
 
-You are <span style="color:#f7007f;"><b>NOT</b></span> allowed to import any other python modules other than what's given:
+You are <span style="color:#f7007f;"><b>NOT</b></span> allowed to import any other python modules other than what's given to implement the main tasks:
 
 ```python
 import pathlib
@@ -165,3 +165,5 @@ from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.backends import default_backend
 ```
+
+You can however utilise other libraries to implement the Sustainability and Inclusivity part for demo purposes only, without disturbing the main FTP protocol. 
