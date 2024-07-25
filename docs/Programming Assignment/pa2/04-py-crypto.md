@@ -178,18 +178,22 @@ encrypted_message = public_key.encrypt(
 Note that in the example above, [`OAEP`](https://en.wikipedia.org/wiki/Optimal_asymmetric_encryption_padding) padding scheme is used. This is an RSA <span style="color:#f77729;"><b>encryption padding scheme</b></span> (as opposed to `PSS`, which is a signature padding scheme). 
 
 {:.info}
-There are two RSA <span style="color:#f77729;"><b>signature</b></span> schemes specified in [PKCS1](https://www.cryptosys.net/pki/manpki/pki_References.html#PKCS1): RSASSA-PKCS1-v1_5 and RSASSA-PSS, and there are two RSA <span style="color:#f77729;"><b>encryption</b></span> schemes: RSAES-PKCS-v1_5 and RSAES-OAEP. The details are out of our syllabus.
+There are two RSA <span style="color:#f77729;"><b>signature</b></span> schemes specified in [PKCS1](https://www.cryptosys.net/pki/manpki/pki_References.html#PKCS1): **RSASSA-PKCS1-v1_5** and **RSASSA-PSS**, and there are two RSA <span style="color:#f77729;"><b>encryption</b></span> schemes: **RSAES-PKCS-v1_5** and **RSAES-OAEP**. The details are out of our syllabus.
 
-The <span style="color:#f77729;"><b>minimum</b></span> length of `OAEP` padding is 66 bytes. A `1024` bit RSA keys can at most encrypt 128 bytes of message data chunk at a time. With 66 bytes of padding at minimum this leaves us with 62 bytes of message to encrypt at a time.
+**You can choose either `OAEP` or `PKCS1v15` for encryption/decryption, but this affects the block size you can encrypt/decrypt at a time.**
+
+The <span style="color:#f77729;"><b>minimum</b></span> length of `OAEP` padding is 66 bytes. A `1024` bit RSA keys can at most encrypt 128 bytes of message data chunk at a time. With 66 bytes of padding at minimum this leaves us with <span class="orange-bold">62</span> bytes of message to encrypt at a time.
 {:.error}
 
 If you were to encrypt with `PKCS1v15` instead (min 11 bytes of padding):
 ```python
 encrypted_message = public_key.encrypt(message, padding.PKCS1v15())
 ```
-Then the maximum length of the message to encrypt at a time with 1024 bit RSA key is <span class="orange-bold">117</span> bytes. 
 
-It is up to you to <span style="color:#f77729;"><b>choose</b></span> which padding implementation to use to encrypt the chunk of messages (file data) sent by client to the server. Just ensure that you set the chunk size accordingly. 
+- Using `PCKS1v15`: The maximum length of the message to encrypt at a time with 1024 bit RSA key is <span class="orange-bold">117</span> bytes. 
+- Using `OAEP`: The maximum length of the message to encrypt at a time with 1024 bit RSA key is <span class="orange-bold">62</span> bytes. 
+
+It is up to you to <span style="color:#f77729;"><b>choose</b></span> which padding implementation to use to encrypt/decrypt the chunk of messages (file data) sent by client to the server. Just ensure that you set the chunk size accordingly. 
 
 ## Standard Decryption
 You can <span style="color:#f77729;"><b>decrypt</b></span> a message with a `private_key`.
@@ -212,7 +216,7 @@ decrypted_message = private_key.decrypt(
 You can also <span style="color:#f77729;"><b>decrypt</b></span> a message with a `public_key`. In order to  *decrypt* with a public key, this message has to be *encrypted* with a private key, and we call this a <span style="color:#f77729;"><b>signature</b></span> (instead of regular encrypted message). You have seen this in the [previous](https://natalieagus.github.io/50005/assignments/pa2_5_crypto#sign-message-and-verify) section above.
 
 ## Generating a Symmetric Key
-You can generate a symmetric key as <span style="color:#f77729;"><b>session key</b></span> for a better file encryption performance. You can use the [`Fernet`](https://cryptography.io/en/latest/fernet/) method to generate a <span style="color:#f77729;"><b>secure</b></span> symmetric key, instead of the usual AES/3DES. It is really simple to use:
+You can generate a symmetric key as <span style="color:#f77729;"><b>session key</b></span> for a better file encryption performance. You **should** use the [`Fernet`](https://cryptography.io/en/latest/fernet/) method to generate a <span style="color:#f77729;"><b>secure</b></span> symmetric key, instead of the usual AES/3DES. It is really simple to use:
 ```python
 from cryptography.fernet import Fernet
 session_key_bytes = Fernet.generate_key() # generates 128-bit symmetric key as bytes
@@ -220,7 +224,7 @@ session_key = Fernet(session_key_bytes) # instantiate a Fernet instance with key
 ```
 
 ## Using a Symmetric Key
-Unlike RSA encryption, you can `encrypt` any byte datatype without separating them into chunks: 
+Unlike RSA encryption, you can `encrypt` any file size without having to separate them into chunks prior to encryption/decryption: 
 ```python
 long_message = b""
 with open("[PROJ_ROOT_DIR]/files/image.ppm", "rb") as f:
@@ -230,6 +234,7 @@ decrypted_long_message = session_key.decrypt(encrypted_long_message)
 assert decrypted_long_message == long_message
 ```
 
+{:.important}
 You may *experiment* with <span style="color:#f77729;"><b>other</b></span> [symmetric key algorithms](https://cryptography.io/en/latest/hazmat/primitives/symmetric-encryption/) if you wish, but for this assignment, we <span style="color:#f7007f;"><b>expect you to use Fernet</b></span>. 
 
 ## More details
