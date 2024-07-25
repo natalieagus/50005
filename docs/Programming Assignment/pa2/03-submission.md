@@ -149,7 +149,7 @@ Failure to show attempts to incorporate initiatives to support sustainability an
 
 # Submission
 
-Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>## README 
+Simply push to your github classroom repo **before the assignment's due date**. <span class="orange-bold">No late submission is allowed</span>
 
 ### README 
 
