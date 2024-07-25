@@ -69,24 +69,6 @@ Assuming your `python3` is aliased to `python3.10`, then you can do:
 python3 -m pip install cryptography
 ```
 
-### Command Y Not Found
-
-If you run `autograder.py` or `./cleanup.sh` and you're met with `command Y not found` error, then you can simply reinstall your whole OS.
-
-_Just kidding_. Did you forget your Lab 1 materials? What does that error mean?
-{:.highlight}
-
-That's right you just dont have the system program like `truncate` or `diff`. Simply install it for your own OS (`sudo apt install [program]` for Ubuntu, `brew install [program]` for macOS, etc).
-
-<!-- ### Autograder Complains File Output/Y Not Found
-
-If the autograder complains that your programs did not produce the output files at the designated location under `source/output` but it did create these when ran manually, it's due to <span style="color:#f77729;"><b>trailing</b></span> whitespaces `\n\r` (invisible to the eye) that's present when it is reading `input1` or `input2`. 
-
-For instance, your client program is trying to find `files/file.txt\r\n` instead of just `files/file.txt` because of the way the `input` files are loaded in your system.
-
-{:.highlight}
-Simply add a `strip()` function inside your `Client[version].py` scripts when getting `filename` from the <span style="color:#f77729;"><b>user</b></span> to eliminate these trailing whitespaces. -->
-
 ### No Such File or Directory: recv_files/EXPECTED_FILE
 
 Depending on your OS, when you run `ServerWithSecurity[version].py` or the <span style="color:#f77729;"><b>autograder</b></span>, it might complain about files in the directories: `recv_files/EXPECTED_FILE`, `recv_files_enc/EXPECTED_FILE`, etc <span style="color:#f77729;"><b>not found</b></span> when you clearly have it in your project path or have run `cleanup.sh`.

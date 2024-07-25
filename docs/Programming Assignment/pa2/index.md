@@ -55,7 +55,8 @@ Anything under `source/` is where you will work for this assignment. All files i
 ```sh
 .
 ├── README.md
-├── setup.sh
+├── cleanup.sh
+├── .gitignore 
 ├── files
 │   ├── cbc.bmp
 │   ├── file.txt
@@ -75,11 +76,11 @@ Anything under `source/` is where you will work for this assignment. All files i
 ```
 
 
-### Run `./setup.sh`
+### Run `./cleanup.sh`
 
-`[PROJ_ROOT_DIR]/recv_files`, `[PROJ_ROOT_DIR]/recv_files_enc`, and `[PROJ_ROOT_DIR]/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./setup.sh` in the **project root**. 
+`[PROJ_ROOT_DIR]/recv_files`, `[PROJ_ROOT_DIR]/recv_files_enc`, and `[PROJ_ROOT_DIR]/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./cleanup.sh` in the **project root**. 
 
-You should see exactly the above file structure afterwards. `./setup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
+You should see exactly the above file structure afterwards. `./cleanup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
 
 
 # Test the Starter Code
