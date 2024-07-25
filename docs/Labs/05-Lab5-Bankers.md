@@ -740,7 +740,7 @@ You can enable `ssh` at your VM, [here](https://dev.to/developertharun/easy-way-
 Then, type in your VM address when prompted in this format: `ssh -p <port_number> <username>@<local_ip>`, for example:
 
 ```
-ssh -p 3022 ubuntu@127.0.0.1
+ssh -p 3022 ubuntu@192.168.55.2
 ```
 
 You will need to then enter your password. Then click `Open Folder` and select your Home folder. You will have a nice interface with VSCode now, connected to your VM. Drag and drop to transfer files between your host OS and your VM. No lag, nice terminal, can utilise VSCode functionalities.. Doesn't it spark joy?

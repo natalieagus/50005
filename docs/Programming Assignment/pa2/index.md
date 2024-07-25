@@ -121,7 +121,7 @@ The screenshot below shows how client process can send files to the server proce
 You can also host the Server file in another computer:
 
 ```sh 
-python3 source/ServerWithoutSecurity.py [port] 127.0.0.1
+python3 source/ServerWithoutSecurity.py [port] 0.0.0.0 
 ```
 
 The client computer can connect to it using the command:
