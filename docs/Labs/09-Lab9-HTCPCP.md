@@ -42,11 +42,11 @@ The Hyper Text Coffee Pot Control Protocol (**HTCPCP**) is a whimsical communica
 
 This lab is created to give you some kind of understanding on how to deploy fullstack (sort of) application that can be accessible via the network. You will then deploy both the web application and the HTCPCP server and sniff the packets exchanged using Wireshark.
 
-> [The base code for project was originally taken from here](https://jamesg.blog/2021/11/18/hypertext-coffee-pot/), refactored, styled and adapted with more functionalities added to suit our learning experience in the lab. Special thanks to CSE TAs Cassie and Ryan for the inspiration, ideas, and contribution to create this lab.
+> [The base code for project was originally taken from here](https://jamesg.blog/2021/11/18/hypertext-coffee-pot/), refactored, styled and adapted with more functionalities added to suit our learning experience in the lab. Special thanks to 2023 CSE TAs Cassie and Ryan for the inspiration, ideas, and contribution to create this lab.
 
 ### System requirements
 
-You need Python 3.10 or above (with `pip`) to run this project, and Wireshark (or equivalent) installed in your system. You are free to use any CLI or GUI based network protocol analyser. The latter is recommended for beginners. The rest of this lab is written with the assumption that you used **Wireshark**. Other equivalent network protocol analyser should have similar functionalities.
+You need **Python 3.10** and `pipenv` to run this project, and Wireshark (or equivalent) installed in your system. You are free to use any CLI or GUI based network protocol analyser. The latter is recommended for beginners. The rest of this lab is written with the assumption that you used **Wireshark**. Other equivalent network protocol analyser should have similar functionalities.
 
 ### Source Code
 
@@ -56,10 +56,11 @@ Clone the repository for this lab:
 git clone https://github.com/natalieagus/lab_htcpcp
 ```
 
-Then, install the requirements:
+Then, install the requirements and launch `pipenv`: 
 
 ```
-pip install -r requirements.txt
+pipenv install
+pipenv shell
 ```
 
 There are two main processes to run:
@@ -222,18 +223,18 @@ If all checks pass, this method should return `True`, otherwise, it should call 
 ```py
 def ensure_request_is_valid(url, content_type, method, connection, requested_pot,
                             accepted_coffee_schemes, accepted_methods, not_found_message):
-    # Check if the URL scheme is correct
-    scheme = url.split("://")[0]
-    # Validate the scheme against accepted coffee schemes
-    if scheme not in accepted_coffee_schemes:
-        return send_error(connection, b"HTCPCP/1.1 400 Bad Request\n\n")
+    # TODO: Basic request checking 
+    """
+    This method checks if the URL scheme is correct. You shall: 
+    
+    1. Validate the scheme against accepted_coffee_schemes
+    2. Check for correct URL path format
+    3. Validate the HTTP method: check method against accepted_methods
+    4. Check the content type format to conform to "application/coffee-pot-command"
+    5. Specific check for "tea" pot request
 
-    # TODO: Complete further request checking
-    # Check for specific URL path: ://ducky, else return generic not_found_message
-    # Validate the HTCPCP method is under list of accepted_methods, else return 501
-    # Check the content type to match as specified in section 2.1.1 of the RFC, else return 415 
-    # Specific check for "tea" as requested_pot, else return 418 
-    # If all checks pass
+    If all checks pass, return True
+    """
     return True
 ```
 
@@ -450,7 +451,7 @@ Modify it to render a proper webpage. You can see how we handled `418` above and
 {:.task-title}
 > ✅ Checkoff
 > 
-> Demonstrate the features implemented in Task 1 and Task 7 to our TAs to obtain the checkoff mark for this lab.
+> Demonstrate the features implemented in Task 1 **and** Task 7 to our TAs to obtain the checkoff mark for this lab.
 
 # HTTPS
 
@@ -535,4 +536,5 @@ In this lab, you have learned several things pertaining to our syllabus:
 2. Understand how web server works and the HTTP requests and responses
 3. Understand how wireshark packet sniffer and analyzer works and its application
 
+{:.note}
 It might do you some good to try and draw the space-time diagram of `sample_capture/homepage_coffee.pcapng` as practice. Although it is not formally graded, it might give you a better understanding on TCP handshake and the timeline of HTTP messages exchanged between server/client.
