@@ -50,13 +50,12 @@ You should have joined the GitHub Classroom and obtain the starter code for this
 
 ### PA2 Files
 
-This will result in a directory called `pa2`. Anything under `source/` is where you will work for this assignment. All files in the same level as `source/` are for <span style="color:#f77729;"><b>admin purposes</b></span>. Do <span class="orange-bold">not</span> modify these.
+Anything under `source/` is where you will work for this assignment. All files in the same level as `source/` are for <span style="color:#f77729;"><b>admin purposes</b></span>. Do <span class="orange-bold">not</span> modify these.
 
 ```sh
 .
 ├── README.md
-├── autograde.py
-├── cleanup.sh
+├── setup.sh
 ├── files
 │   ├── cbc.bmp
 │   ├── file.txt
@@ -66,17 +65,7 @@ This will result in a directory called `pa2`. Anything under `source/` is where 
 │   ├── squeak.wav
 │   ├── vscodejsim.mp4
 │   └── week9.html
-├── input1
-├── input2
-├── output_client
-├── output_server
-├── recv_files
-├── recv_files_enc
 ├── requirements.txt
-├── result
-├── result_enc
-├── result_plain
-├── send_files_enc
 └── source
     ├── ClientWithoutSecurity.py
     ├── ServerWithoutSecurity.py
@@ -86,7 +75,7 @@ This will result in a directory called `pa2`. Anything under `source/` is where 
 ```
 
 
-### Run `./cleanup.sh`
+### Run `./setup.sh`
 
 `[PROJ_ROOT_DIR]/recv_files`, `[PROJ_ROOT_DIR]/recv_files_enc`, and `[PROJ_ROOT_DIR]/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./cleanup.sh` in the **project root**. 
 
