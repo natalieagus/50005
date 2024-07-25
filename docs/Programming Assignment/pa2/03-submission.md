@@ -45,16 +45,6 @@ The new files are mainly (<span class="orange-bold">names must be exactly these!
 
 All other files inside `[PROJ_ROOT_DIR]/files` directory must **remain** as per the original files from the previous sections.
 
-<!-- You can now run the <span class="orange-bold">autograder</span> yourself, assuming your current working directory is at the same level as `source/`. The second argument can be 1 or 2 depending on whether you want to test CP1 or CP2.
-
-```
-python3 autograde.py 1
-python3 autograde.py 2
-```
-
-You should have the following message if everything goes well (`8` marks for CP1, and `14` marks for CP2).
-
-<img src="{{ site.baseurl }}/assets/images/pa2/3.png"  class="center_fifty no-invert"/> -->
 
 You should then make the final commit of all tracked files so far:
 
@@ -73,11 +63,23 @@ We will not check your program's `stdout` during the demo, so you're <span style
 
 As stated throughout the handout, you need to stick to the protocol <span style="color:#f77729;"><b>strictly</b></span>, that is to implement each `MODE` as specified (`send` or `read` exactly as specified in the `MODE`) so that we can run your server scripts against our <span style="color:#f77729;"><b>answer key</b></span> client scripts and vice versa. <span class="orange-bold">This is where the last 1% of your grade come from.</span>
 
-You may easily ensure this by checking your server against another pair's client, and vice versa. You may need to handle two cases: 
-1. Ensure the padding schemes <span style="color:#f77729;"><b>match</b></span>, and 
-2. Check for `MODE 1` if the encrypted bytes are concatenated together by client before sending to server, or if client is sending it 128 bytes at a time (and server decrypt each chunk and assemble).
+You may easily ensure this by checking your server against another pair's client, and vice versa. To summarize:  
+1. Ensure the padding schemes <span style="color:#f77729;"><b>are correct</b></span>:
+   - You (client/server) use **either** `OAEP` or `PKCS1v15` for **encryption** and **decryption** of file data when RSA is used 
+     - This is either `padding.OAEP(mgf=padding.MGF1(hashes.SHA256()), algorithm=hashes.SHA256(),label=None)`
+     - Or: `padding.PKCS1v15()`
+   - You (server) use `PSS` for **signing**: `padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH)`
+   - Client uses `PKCS1v15` to **verify** `server.crt` using cacsertificate's public key because that's the padding scheme used by our bot 
+2. Ensure that `Fernet` is used to generate symmetric key and utilise it (encryption/decryption)
+3. **AP**: Ensure that your `MODE 3`: sticks to the protocol
+   1. Client to send **TWO** messages first upon connection establishment: `M1` (int, indicating the size of incoming message `M2`) and `M2` (the message)
+   2. Server to respond with **FOUR** messages (two pairs of size `int` and the corresponding message). This marks the **end** of `MODE 3`
+   3. No other message exchanges allowed in `MODE 3`
+   4. Whatever "fix" you do in **AP** should <span class="orange-bold">not</span> change these facts and should be incorporated into `MODE 3` protocol
+4. **CP1**: Ensure that in `MODE 1`, `M1` contains the **total encrypted file length** (sent by client). It is up to you to send `M2` repeatedly as 128-byte chunks *or* to accumulate encrypted 128 byte chunks and then send it all in one single `send()` socket call. 
+5. Do <span class="orange-bold">not</span> create any new modes. We only expect: `MODE 0 - MODE 4`. 
 
-Not to worry, our server and client scripts that will be used to test your client and server script will handle these cases.
+Not to worry, things will work seamlessly if you stick to these protocols. 
 {:.note}
 
 # Sustainability and Inclusivity 
