@@ -64,20 +64,26 @@ We will not check your program's `stdout` during the demo, so you're <span style
 As stated throughout the handout, you need to stick to the protocol <span style="color:#f77729;"><b>strictly</b></span>, that is to implement each `MODE` as specified (`send` or `read` exactly as specified in the `MODE`) so that we can run your server scripts against our <span style="color:#f77729;"><b>answer key</b></span> client scripts and vice versa. <span class="orange-bold">This is where the last 1% of your grade come from.</span>
 
 You may easily ensure this by checking your server against another pair's client, and vice versa. To summarize:  
-1. Ensure the padding schemes <span style="color:#f77729;"><b>are correct</b></span>:
+- Ensure the padding schemes <span style="color:#f77729;"><b>are correct</b></span>:
    - You (client/server) use **either** `OAEP` or `PKCS1v15` for **encryption** and **decryption** of file data when RSA is used 
-     - This is either `padding.OAEP(mgf=padding.MGF1(hashes.SHA256()), algorithm=hashes.SHA256(),label=None)`
-     - Or: `padding.PKCS1v15()`
-   - You (server) use `PSS` for **signing**: `padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH)`
+   - You (server) use `PSS` for **signing** 
    - Client uses `PKCS1v15` to **verify** `server.crt` using cacsertificate's public key because that's the padding scheme used by our bot 
-2. Ensure that `Fernet` is used to generate symmetric key and utilise it (encryption/decryption)
-3. **AP**: Ensure that your `MODE 3`: sticks to the protocol
+```py
+# OAEP
+padding.OAEP(mgf=padding.MGF1(hashes.SHA256()), algorithm=hashes.SHA256(),label=None)`
+# PKCS1v15
+padding.PKCS1v15()
+# PSS
+padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH)
+```
+- Ensure that `Fernet` is used to generate symmetric key and utilise it (encryption/decryption)
+- **AP**: Ensure that your `MODE 3`: sticks to the protocol
    1. Client to send **TWO** messages first upon connection establishment: `M1` (int, indicating the size of incoming message `M2`) and `M2` (the message)
    2. Server to respond with **FOUR** messages (two pairs of size `int` and the corresponding message). This marks the **end** of `MODE 3`
    3. No other message exchanges allowed in `MODE 3`
    4. Whatever "fix" you do in **AP** should <span class="orange-bold">not</span> change these facts and should be incorporated into `MODE 3` protocol
-4. **CP1**: Ensure that in `MODE 1`, `M1` contains the **total encrypted file length** (sent by client). It is up to you to send `M2` repeatedly as 128-byte chunks *or* to accumulate encrypted 128 byte chunks and then send it all in one single `send()` socket call. 
-5. Do <span class="orange-bold">not</span> create any new modes. We only expect: `MODE 0 - MODE 4`. 
+- **CP1**: Ensure that in `MODE 1`, `M1` contains the **total encrypted file length** (sent by client). It is up to you to send `M2` repeatedly as 128-byte chunks *or* to accumulate encrypted 128 byte chunks and then send it all in one single `send()` socket call. 
+- Do <span class="orange-bold">not</span> create any new modes. We only expect: `MODE 0 - MODE 4`. 
 
 Not to worry, things will work seamlessly if you stick to these protocols. 
 {:.note}
@@ -86,7 +92,7 @@ Not to worry, things will work seamlessly if you stick to these protocols.
 
 As mentioned in Programming Assignment 1, there have been some ongoing initiatives from SUTD as well as the Engineering Accreditation Board to include more elements of Sustainability, Diversity and Inclusivity. As such, we encourage you to consider the impact of your project on sustainability, as well as any consideration for diversity and inclusion (e.g., different cultures, demographic groups, etc). 
 
-Here are some suggestions, it is sufficient to fulfil **one**.  You may apply it as *any* part of your assignment, as long as you're still following the protocols requested closely. It does **not** have to be part of your code: e.g if you decide to conduct user testing. Simply highlight your attempts clearly in the README file and write future suggestions (if any).
+Here are some suggestions, it is sufficient to fulfil **one** from each.  You may apply it as *any* part of your assignment, as long as you're <span class="orange-bold">still</span> following the protocols requested closely. It does **not** have to be part of your code: e.g if you decide to conduct user testing. Simply highlight your attempts clearly in the README file and write future suggestions (if any).
  
 {:.error}
 Failure to show attempts to incorporate initiatives to support sustainability and inclusivity results in <span class="orange-bold">-3% (penalty)</span> of your overall grades. 
@@ -106,8 +112,8 @@ Failure to show attempts to incorporate initiatives to support sustainability an
    - **Task**: Implement logging of CPU, memory, and network usage during file transfers, and analyze these logs to identify and optimize inefficient parts of the protocol.
 
 4. **Documentation of Efficient Practices**:
-   - Description: Document best practices for writing efficient and sustainable code.
-   - Task: Include a section in the README detailing efficient coding practices and optimizations used in the project, encouraging the use of these practices in future development.
+   - **Description**: Document best practices for writing efficient and sustainable code.
+   - **Task**: Include a section in the README detailing efficient coding practices and optimizations used in the project, encouraging the use of these practices in future development.
 
 ### Inclusivity Ideas
 
@@ -128,14 +134,16 @@ Failure to show attempts to incorporate initiatives to support sustainability an
    - **Task**: Implement error messages that are clear, descriptive, and offer actionable steps to resolve issues, ensuring they are easily understandable for all users.
 
 5. **Inclusivity in Testing**:
-   - Description: Ensure that the system is tested with a diverse range of users.
-   - Task: Conduct user testing with individuals from various backgrounds and with different abilities, gathering feedback to improve the inclusivity and usability of the system.
+   - **Description**: Ensure that the system is tested with a diverse range of users.
+   - **Task**: Conduct user testing with individuals from various backgrounds and with different abilities, gathering feedback to improve the inclusivity and usability of the system.
 
 
 {:.important-title}
 > Don't forget!
 > 
 > Write a README explaining how your implementation considers both sustainability and inclusivity, detailing the specific features and design choices made to address these aspects as part of your submission. Push it to your project repo. 
+>
+> Do <span class="orange-bold">NOT</span> break protocol (e.g add additional `MODE`).
 
 # Submission
 
