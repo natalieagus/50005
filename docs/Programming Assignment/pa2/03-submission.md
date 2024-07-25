@@ -68,6 +68,7 @@ You may easily ensure this by checking your server against another pair's client
    - You (client/server) use **either** `OAEP` or `PKCS1v15` for **encryption** and **decryption** of file data when RSA is used 
    - You (server) use `PSS` for **signing** 
    - Client uses `PKCS1v15` to **verify** `server.crt` using cacsertificate's public key because that's the padding scheme used by our bot 
+
 ```py
 # OAEP
 padding.OAEP(mgf=padding.MGF1(hashes.SHA256()), algorithm=hashes.SHA256(),label=None)`
@@ -76,6 +77,7 @@ padding.PKCS1v15()
 # PSS
 padding.PSS(mgf=padding.MGF1(hashes.SHA256()), salt_length=padding.PSS.MAX_LENGTH)
 ```
+
 - Ensure that `Fernet` is used to generate symmetric key and utilise it (encryption/decryption)
 - **AP**: Ensure that your `MODE 3`: sticks to the protocol
    1. Client to send **TWO** messages first upon connection establishment: `M1` (int, indicating the size of incoming message `M2`) and `M2` (the message)
