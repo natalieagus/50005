@@ -118,7 +118,7 @@ Now suppose both the message and "secret message" between A and B are now encryp
 B is still not able tell if the incoming message + encrypted secret message comes from A or the intruder T. In this particular example, T does not get an extra $5000, but they damage B by incurring financial loss. The unauthorized duplicate transaction can disrupt legitimate financial transactions, cause financial losses for customers, and erode trust in the banking system and institutions involved. 
 
 {:.note-title}
-> Playback vs replay attack
+> Playback/replay vs eavesdropping attack
 >
 > Both replay attacks and eavesdropping attacks involve <span class="orange-bold">intercepting</span> network communication. 
 > 
