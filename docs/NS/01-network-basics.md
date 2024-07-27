@@ -296,7 +296,7 @@ We cannot compute the answer right away. We need to first compute the *probabili
 * P(1 user is active): $$\binom{5}{1}\times(0.2)^1\times(0.8)^4$$
 * P(less than 3 users are active): $$\binom{5}{0}\times(0.2)^0\times(0.8)^5 +$$  $$\binom{5}{1}\times(0.2)^1\times(0.8)^4 +$$ $$\binom{5}{2}\times(0.2)^2\times(0.8)^3$$ 
 * P(exactly $$N$$ out of $$M$$ users are active): $$\binom{M}{N}\times(0.2)^N\times(0.8)^M$$
-* P(less than $$N$$ out of $$M$$ users are active): $$\sum_{i=0}^{N} \binom{M}{i} \times(P_{active})^i\times(1-P_{active})^{M-i}$$
+* P(less than $$N$$ out of $$M$$ users are active): $$\sum_{i=0}^{N-1} \binom{M}{i} \times(P_{active})^i\times(1-P_{active})^{M-i}$$
 
 From this, we know that the time taken to transfer 128MB between host A and host B **varies**, depending on how many users are <span class="orange-bold">currently active</span>. 
 
