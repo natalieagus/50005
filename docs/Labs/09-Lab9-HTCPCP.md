@@ -46,7 +46,7 @@ This lab is created to give you some kind of understanding on how to deploy full
 
 ### System requirements
 
-You need **Python 3.10** and `pipenv` to run this project, and Wireshark (or equivalent) installed in your system. You are free to use any CLI or GUI based network protocol analyser. The latter is recommended for beginners. The rest of this lab is written with the assumption that you used **Wireshark**. Other equivalent network protocol analyser should have similar functionalities.
+You need Python 3.10 (it won't work with Python 3.12) and `pipenv` to run this project, and Wireshark (or equivalent) installed in your system. You are free to use any CLI or GUI based network protocol analyser. The latter is recommended for beginners. The rest of this lab is written with the assumption that you used **Wireshark**. Other equivalent network protocol analyser should have similar functionalities.
 
 ### Source Code
 
@@ -61,6 +61,11 @@ Then, install the requirements and launch `pipenv`:
 ```
 pipenv install
 pipenv shell
+```
+
+If you don't have `pipenv`, install it using `pip` (assuming `python3` is aliased to `python 3.10`)
+```
+python3 -m pip install pipenv
 ```
 
 There are two main processes to run:
