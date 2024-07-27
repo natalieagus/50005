@@ -305,7 +305,7 @@ This time round there's no answer provided, meaning that this record was <span c
 
 Suppose you want your website to be accessible via the internet using your own domain name. You can **insert** (or register) DNS records to ensure that they are recognized Internet-wide, allowing other hosts to find your website. The steps are as follows:
 1. Find a DNS Registrar to register the domain name of your site 
-2. Find authoritative nameservers to responsible for solving your domain name 
+2. Find authoritative nameservers that will be responsible for solving your domain name 
 3. Insert DNS records (A type) into the authoritative nameservers 
 4. Insert DNS records (NS types) of your authoritative nameservers to the TLD 
 
