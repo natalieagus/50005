@@ -189,7 +189,7 @@ B's intended "confidential" message to A is also susceptible to MITM:
 Therefore in current Case 5:
 * Authentication is **not present**: B does not know that A's public key belong to A
 * Integrity is **not present**: MITM attack allows T to pose as A to B and as B to A and tamper with the message exchanged
-* Confidentiality is **present**: same reason as above
+* Confidentiality is **not present**: same reason as above
 
 There are **two solutions** to avoid the MITM attack: to utilise symmmetric key cryptography or to rely on Certificate Authority. 
 
