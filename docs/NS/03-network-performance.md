@@ -284,7 +284,7 @@ Ask yourself: will the <span class="orange-bold">slope</span> of the transmissio
 {:.highlight}
 Please head to Class Activities for more practice. 
 
-### Illustrating Processing and Queueing Delay 
+## Illustrating Processing and Queueing Delay 
 
 {:.warning}
 We will **not** ask you to illustrate processing and queueing delay in this course. This section is just for exercise purposes. 
