@@ -42,7 +42,7 @@ Singapore University of Technology and Design
 >   - Define and differentiate between throughput and bandwidth in network contexts.
 >   - Discover the calculations and factors affecting throughput, including network topology and link technologies.
 > 6. **Visualize Network Performance**
->   - Demonstrate the use of time-space diagrams in visualizing network data flow and performance.
+>   - Demonstrate the use of space-time diagrams in visualizing network data flow and performance.
 >   - Analyze how changes in network parameters like bandwidth and packet size affect the data transmission represented in time-space diagrams.
 >
 > These learning objectives are designed to provide a comprehensive understanding of network performance, including how to measure, analyze, and optimize the efficiency and reliability of data transmission across networks.
@@ -265,24 +265,50 @@ Now consider another network topology:
 When a link is <span class="orange-bold">shared</span> among N connections, each connection may (unless otherwise stated) get an equal share of the transmission rate, i.e: the transmission rate is divided equally and each connected host (A, B, and D) gets 2.5 MBps each. Therefore the throughput from A to C becomes 2.5 MBps instead.
 
 # Network Performance Visualisation 
-## The Time-Space Diagram
+## The Space-time Diagram
 
-The time-space diagram as shown below can be used to visualise network performance. 
+The space-time diagram as shown below can be used to **visualise** network performance. 
+* **Vertical** direction represents **time**, while **horizontal** direction represents **space** between source and destination points (distance). You can compute the last bit transmitted given $$L$$ (packet length) and $$R$$ (bandwidth). 
+* Here we often omit the illustration of queueing delay
+* We also omit the illustration of transmission delay for negligible-sized packets (e.g: packets so small that transmission delay won't matter)
+* We also severly **simplify** the diagram and assume that there are no other nodes between the source and destination (this is not true in practice, as the packets between source and destination would need to go through several routers)
+
+<img src="{{ site.baseurl }}/docs/NS/images/03-network-performance/cse2024-time-space-diagram.drawio.png"  class="center_seventy"/>
 
 Network performance is <span class="orange-bold">throughput and delay limited</span>, and the only way to improve it is by using faster links with bigger bandwidth.
-
-
-<img src="{{ site.baseurl }}//docs/NS/images/03-network-performance/2024-04-25-16-38-40.png"  class="center_fifty"/>
-
-**Vertical** direction represents **time**, while **horizontal** direction represents **space** between source and destination points (distance). You can compute the last bit transmitted given $$L$$ (packet length) and $$R$$ (bandwidth). 
-
-
 
 {:.important}
 Ask yourself: will the <span class="orange-bold">slope</span> of the transmission line in the space-time diagram ever change between the same source and destination? Why or why not? What does it represent? 
 
+
 {:.highlight}
 Please head to Class Activities for more practice. 
+
+### Illustrating Processing and Queueing Delay 
+
+{:.warning}
+We will **not** ask you to illustrate processing and queueing delay in this course. This section is just for exercise purposes. 
+
+A packet experiences different delays on its path through the network. We have learned in class that there are 4 major sources of packet delays: processing, queueing, transmission, and propagation delay. If we would like to illustrate processing and queueing delay between source and destination host using the space-time diagram, we would need to illustrate each node (e.g: each router and/or switch) passed between the source and destination host. 
+
+The following diagram shows how we can do that:
+
+<img src="{{ site.baseurl }}/docs/NS/images/03-network-performance/cse2024-time-space-diag-queueing-delay.drawio.png"  class="center_seventy"/>
+
+There are a few things that you can observe from this diagram:
+1. The **bandwidth** between source and router 1 is **less** than between router 1 and router 2 
+2. Router 1 performs **store-and-forward** packet switching technique 
+3. The physical distance between source and router 1 is **more** than between router 1 and router 2
+4. The "slope" remains the same because it is affected only by propagation speed 
+   - Therefore, if two signals have the same slope in a space-time diagram, it implies that they are traveling through media with **similar** propagation speeds
+   - The link between the source host and router 1, and between router 1 and router 2 must have **similar** propagation speed 
+
+{:.info-title}
+> Store and forward
+>
+> **Store-and-Forward** is a **packet-switching technique** in which the router receives an **entire** data packet, temporarily stores it, and *then* forwards it to the next node in the network. This process involves checking the packet for errors and ensuring it is complete before sending it on its way.
+>
+> This is different from another packet-switching technique called **Cut-Through-Switching**. Unlike store-and-forward, cut-through switching starts forwarding the packet **as soon as** the destination address is read, without waiting for the entire packet to arrive. This reduces latency but *may* forward corrupted packets.
 
 # Summary
 

@@ -204,7 +204,7 @@ The space-time diagram below illustrates the nature of HTTP 1.1:
 
 In practice, clients (e.g: web browsers) will do <span class="orange-bold">pipelining</span>: initiate multiple outstanding HTTP requests within the same TCP connection. Clients are able to send requests as soon as it encounters a referenced object, there is **no need** to wait for the previous request to finish, thereby **reducing latency** and improving the **overall efficiency** of network communication by utilizing a single TCP connection more <span class="orange-bold">effectively</span>. This can lead to faster page load times as it minimizes the delay between requests and responses. 
 
-## Time-Space Diagram  
+## Space-Time Diagram  
 
 In this section, we visualise the series of connections made between a web client and a web server. Suppose a web client tries to access a website with 2 embedded image files of similar size. 
 
