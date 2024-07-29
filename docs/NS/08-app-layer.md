@@ -116,10 +116,19 @@ For detailed implementation in C and Python, head to this [appendix](#socket-api
 ## Multiplexing and Demultiplexing 
 
 Since there are **many** applications that can be running on the hosts, the transport layer protocol multiplex at sender and demultiplex at receiver:
-* <span class="orange-bold">Multiplexing</span>: the transport layer protocol handles data from multiple sockets, add transport header (later used for demultiplexing)
-* <span class="orange-bold">Demultiplexing</span>: transport layer protocol uses header to deliver segments to the correct socket
+* <span class="orange-bold">Multiplexing</span>: Multiplexing at the transport layer involves **combining** data from multiple application processes into a **single stream** of packets that can be sent over the network. The transport layer adds necessary **headers** (including source and destination port numbers) to each packet before passing them to the network layer.
+* <span class="orange-bold">Demultiplexing</span>: Demultiplexing is the process by which the transport layer **receives** packets from the network layer and **directs** them to the appropriate application process. This involves examining the headers of incoming packets to determine which application process should receive the data. 
 
 <img src="{{ site.baseurl }}//docs/NS/images/08-app-layer/2024-05-09-11-36-20.png"  class="center_seventy"/>
+
+{:.note}
+In the context of TCP and UDP, multiplexing and demultiplexing are handled by the **kernel's transport layer**. The kernel uses port numbers in the transport layer headers to route incoming packets to the correct application process and to send outgoing data from multiple processes over the network efficiently. 
+
+When a TCP <span class="orange-bold">segment</span> arrives, the kernel uses the **destination** **port** number, along with the **source** **IP**, **source** **port**, and **destination** **IP**, to identify the socket that is managing the connection. The segment is then passed to the appropriate socket buffer for the corresponding application process to read.
+
+When a UDP <span class="orange-bold">datagram</span> arrives, the kernel uses the **destination** **port** number + destination (this host's) IP number to find the UDP socket *bound* to that number. It does not utilise source IP and source port to identify the UDP socket since UDP socket is *connectionless*.
+
+
 
 # Transport Layer Protocols 
 In the previous chapter, we learned that DNS is used to translate between hostname to its IP address. Then, we use a socket to direct the packet to the right application on the computer. 
@@ -140,7 +149,7 @@ The diagram below might help you recap on the purpose of each network layer prot
 ## TCP 
 
 {:.info}
-TCP (Transmission Control Protocol) provides reliable, in-order byte-stream transfer (“pipe”) between client and server in application viewpoint.
+TCP (Transmission Control Protocol) provides reliable, in-order byte-stream transfer (“pipe”) between client and server in application viewpoint. It involves a <span class="orange-bold">three-way handshake process</span> to establish a connection, ensuring that both parties are ready to communicate.
 
 In terms of TCP implementation in UNIX-like systems, the series of instructions that handle TCP **exists as part of the Kernel**. For example, the Linux kernel is aware of the existence of network hardwares in the system and abstracts it into a set of link adapters. The TCP/UDP/IP stack is then aware of these adapters. They are further abstracted into higher-level concepts for users to use (via system-calls), such as the Socket API.
 
@@ -245,7 +254,10 @@ The three-way handshake is essential for establishing a reliable TCP connection,
 ## UDP 
 
 {:.info}
-User Datagram Protocol (UDP) is also known as <span class="orange-bold">connectionless</span> protocol. This protocol provides an unreliable-but-fast, may-be-out-of-order transfer of bytes between client and server.
+User Datagram Protocol (UDP) is also known as <span class="orange-bold">connectionless</span> protocol. This protocol provides an unreliable-but-fast, may-be-out-of-order transfer of bytes between client and server. 
+
+{:.note}
+Each datagram (packet) is sent <span class="orange-bold">independently</span>, with no guarantee of order, delivery, or error correction. There is <span class="orange-bold">no</span> handshake process; packets are simply sent to the destination without prior arrangement.
 
 Like UDP, the series of instructions that handle UDP **exists as part of the Kernel**. The general API for UDP is as shown below:
 
