@@ -274,12 +274,23 @@ The presence of DNS **protects** domains. The same name can point to a different
 * Strong modularity, 
 * Strong fault isolation
 
-
-DNS also provides <span class="orange-bold">indirection</span> (name to IP address) as design principle has many virtues:
+We can also conclude that DNS provides <span class="orange-bold">indirection</span> (name to IP address) as its core design principle. This has **many** virtues:
 * **Late binding at runtime**, e.g: physical server can move around with different IP and keeping the same name
 * **Many-to-one mapping**: aliasing. Some people use *multiple* domains aliased to a single site as part of their search engine strategy.
 * **One-to-many mapping**: the same domain name can have many IP addresses. This is useful for load balancing. 
 
+{:.info-title}
+> Late Binding
+> 
+> Late binding in DNS refers to **delaying** the resolution of a domain name to an IP address until the **last** possible moment to optimize routing based on current network conditions, server load, and user location. This approach enhances performance, load balancing, and resource utilization.
+>
+> For example: When a user types `google.com` into their browser, a DNS request is sent to resolve google.com to an IP address. At this stage, Google's authoritative DNS server responds with an IP address. This IP address usually points to a **Google load balancer** or a **CDN** node, <span class="orange-bold">not</span> directly to the final server.
+> 
+> This node has the **most current information** about Google's global network, including server loads, user locations, and network conditions. The user’s browser then sends an `HTTP/s` request to the IP address provided (the load balancer or CDN node).
+>
+> **Internal Routing and Final Binding**: The load balancer/CDN node then resolves this HTTP/s request to the <span class="orange-bold">optimal</span> Google server’s IP address, which is currently the best choice based on the latest data. This server could be geographically closer to the user or less loaded.
+>
+> Note that the load balancer or CDN node is *not* a DNS server, it just helps to **route** HTTP/s requests to the most optimum Google webserver. 
 
 # Appendix
 
