@@ -445,49 +445,17 @@ However we have not implement anything in the webapp to handle that status code 
 
 ### Task 7
 
-`TASK 7:` Handle `HTCPCP` status code 406
+`TASK 7:` Confirm handling of `HTCPCP` status code 406, 418, etc.
 {:.task}
 
-Open `webapp/webapp_coffee.py` and find the `# TODO` section:
-
-```python
-def handle_when_brew_post(message):
-    global previous_response_status
-    # handles the cases when method is when, brew, or post
-    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.connect((HOST, COFFEE_SERVER_PORT))
-
-    server.send(bytes(message.encode()))
-
-    # get response from server
-    data = server.recv(1024).decode()
-
-    response = data.split("\r\n")
-    if data.find("418") != -1:
-        return render_template(
-            ERROR_TEMPLATE, title="I'm a Teapot!", error=418
-        )
-
-    ########################
-    # TODO TASK 7: handle other status code specified in HTCPCP instead of just 418
-    ########################
-
-    try:
-        previous_response_status = int(response[-1])
-    except Exception as _:
-        previous_response_status = 0
-
-    return redirect("/")
-```
-
-Modify it to render a proper webpage. You can see how we handled `418` above and simply follow. A finished sample would be something like this page when you attempted to brew coffee with addition of chamomile:
+Check that you can handle illegal requests properly. For instance, you shall see this page when you attempted to brew coffee with addition of chamomile:
 
 <img src="{{ site.baseurl }}//assets/images/lab4_3-error/2023-06-27-17-50-49.png"  class="center_full no-invert"/>
 
 {:.task-title}
 > ✅ Checkoff
 > 
-> Demonstrate the features implemented in Task 1 **and** Task 7 to our TAs to obtain the checkoff mark for this lab.
+> Demonstrate the features implemented in Task 1 to our TAs to obtain the checkoff mark for this lab.
 
 # HTTPS
 
