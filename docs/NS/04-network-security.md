@@ -135,7 +135,9 @@ There are two algorithms for symmetric key encryption: **DES** and **AES**.
 Details about DES are summarised as follows:
 * An algorithm to perform symmetric key cryptography
 * 56-bit symmetric key is used 
-* 64-bit plaintext input is required (padding may be needed). If input size is longer than 64 bits, they need to be chopped into blocks of 64-k bits, where k is the padding. 
+* 64-bit plaintext input is required (padding may be needed). If input size is longer than 64 bits, they need to be chopped into blocks of 64 bits. 
+  * The final block that does not amount to 64 bits will need to be padded to form 64 bits. 
+  * There might be some protocol variant that add probabilistic padding for each block, but the details are out of this syllabus. 
 * 16 identical rounds of encryption to produce 64-bit encrypted output
 * It was US encryption standard in 1993
 * <span class="orange-bold">Can be decrypted using brute force in less than a day using modern computing power</span>
@@ -160,7 +162,8 @@ Despite its increased security over DES, 3DES is considerably slower than many o
 Details about AES are summarised as follows:
 * AES is better algorithm to perform symmetric key cryptography as opposed to 3DES
 * 128, 192, or 256-bit symmetric key is used
-* 128-bit plaintext input (padding may be needed) blocks are accepted
+* 128-bit plaintext input blocks are accepted
+  * Similarly, padding is needed for blocks < 128 bits
 * 10,12,14 rounds of encryption is performed to produce 128-bit encrypted output
 * AES replaced DES in 2001, 
 * If a 128-bit key is used, brute force decryption will take 1 billion billion years (yes, double billions) even with a supercomputer
