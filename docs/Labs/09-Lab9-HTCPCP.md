@@ -190,7 +190,7 @@ The HTCPCP response header `headers_to_send` should contain the following <span 
 
 Additionally, **each line** in the header should be separated by line break: `\r\n` and each  field name followed by a colon (:) and a leading whitespace.
 
-Here's an example for `HTTP` response message. This is for your **reference** only, adapt it for `HTCPCP`: 
+Here's an example for `HTTP` response message. This is for your **reference** only, adapt the **header fields** for `HTCPCP`: 
 
 ```html
 HTTP/1.1 200 OK
@@ -242,6 +242,37 @@ def ensure_request_is_valid(url, content_type, method, connection, requested_pot
     """
     return True
 ```
+#### Test Invalid Requests
+
+The file `webapp/coffee_app.py` already contains some test routes for you to see if you have implemented `ensure_request_is_valid` properly. Utilize them by checking that your coffee pot server indeed returns the correct statuses given these scenarios.
+
+```py
+@app.route("/test-400")
+def test_400():
+    data = connect_to_server("GET caffeine://ducky HTTP/1.1\r\nContent-Type: application/coffee-pot-command\r\n\r\n")
+    status, response = check_response_status(data)
+    return craft_error_template(status, response)
+
+@app.route("/test-404")
+def test_404():
+    data = connect_to_server("GET coffee://psyduck HTTP/1.1\r\nContent-Type: application/coffee-pot-command\r\n\r\n")
+    status, response = check_response_status(data)
+    return craft_error_template(status, response)
+
+@app.route("/test-501")
+def test_501():
+    data = connect_to_server("MILK coffee://ducky HTTP/1.1\r\nContent-Type: application/coffee-pot-command\r\n\r\n")
+    status, response = check_response_status(data)
+    return craft_error_template(status, response)
+
+@app.route("/test-415")
+def test_415():
+    data = connect_to_server("GET coffee://ducky HTTP/1.1\r\nContent-Type: application/tea-pot-command\r\n\r\n")
+    status, response = check_response_status(data)
+    return craft_error_template(status, response)
+```
+
+
 
 {:.note}
 You might want to read the rest of the labs first before returning to complete the code, especially this section about [http status code](#http-status-code). 
