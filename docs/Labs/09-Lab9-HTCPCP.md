@@ -447,7 +447,7 @@ However we have not implement anything in the webapp to handle that status code 
 
 ### Task 7
 
-`TASK 7:` Confirm handling of `HTCPCP` status code 406, 418, etc.
+`TASK 7:` Confirm handling of `HTCPCP` status code 406, 418, etc (other than 200). You may choose to **embellish** the reason-phrase in the frontend app if you wish.  
 {:.task}
 
 Check that you can handle illegal requests properly. For instance, you shall see this page when you attempted to brew coffee with addition of chamomile:
