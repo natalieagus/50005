@@ -223,7 +223,7 @@ Construct `final_response` string to complete this `TODO`. It should contain app
 
 This method is called once at `main()` to ensure that the request format is valid and follows a proper `HTCPCP` protocol.  Complete its implementation. 
 
-If all checks pass, this method should return `True`, otherwise, it should call `send_error` which sends the appropriate HTCPCP response back to the client. The first check is done for you, where we check that the message contains accepted coffee schemes:
+If all checks pass, this method should return `True`, otherwise, it should call `send_error_message` which sends the appropriate HTCPCP response back to the client. The first check is done for you, where we check that the message contains accepted coffee schemes:
 
 ```py
 def ensure_request_is_valid(url, content_type, method, connection, requested_pot,
@@ -238,7 +238,9 @@ def ensure_request_is_valid(url, content_type, method, connection, requested_pot
     4. Check the content type format to conform to "application/coffee-pot-command"
     5. Specific check for "tea" pot request
 
-    If all checks pass, return True
+    If all checks pass, return True, otherwise return False
+
+    For each case 1 to 5 above, call send_error_message(error_message) with an appropriately crafted error message containing status code and reason-phrase. The arg not_found_message gives you a general idea of the format of the expected error message conforming to HTCPCP/1.0 protocol.
     """
     return True
 ```
