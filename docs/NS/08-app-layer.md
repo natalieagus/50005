@@ -244,12 +244,15 @@ Client                    Server
 3. **ACK (Acknowledge) Packet**:
    - The client sends an ACK packet to the server, acknowledging the receipt of the server's SYN-ACK packet.
    - The packet contains the client's next sequence number (X+1) and acknowledges the server's sequence number by setting the acknowledgment number to Y+1.
+   - **Piggybacking**: data can be sent along with an acknowledgment in the same packet. 
+     - However, The final ACK in the TCP handshake acknowledges the server's SYN-ACK and doesn't need to carry any data. 
+     - While the client may piggyback data with the ACK if ready, it's <span class="orange-bold">not</span> required; the ACK can simply be an empty acknowledgment in TCP. 
 
 
 In short, the **SYN** packet is used to initiate the connection. The **SYN-ACK** packet is used to acknowledge the SYN packet and provide the server's sequence number. Finally, the **ACK** packet is used to acknowledge the SYN-ACK packet and finalize the connection establishment.
 
 {:.note}
-The three-way handshake is essential for establishing a reliable TCP connection, ensuring that both the client and server are ready to communicate and have synchronized sequence numbers for the data transfer that follows. You will be able to see the SYN, SYN-ACK, and ACK packets in the later labs using packet sniffing tools like Wireshark.
+The three-way handshake is essential for establishing a reliable TCP connection, ensuring that **both** the client and server are ready to communicate and have synchronized sequence numbers for the data transfer that follows. You will be able to see the SYN, SYN-ACK, and ACK packets in the later labs using packet sniffing tools like Wireshark.
 
 ## UDP 
 

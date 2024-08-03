@@ -184,14 +184,14 @@ The space-time diagram below illustrates the nature of HTTP 1.0:
 <img src="{{ site.baseurl }}//docs/NS/images/09-http-web/2024-05-09-16-51-47.png"  class="center_fourty"/>
 
 **Characteristics**:
-* At most one object sent per TCP connection -- and then connection is closed.
+* **At most one** object sent per TCP connection -- and then connection is closed.
 * Downloading multiple objects requires multiple connections.
-* Requires 2 RTT per object + file transmission time, causing OS overhead for each TCP connection.()
+* Requires 2 RTT per object + file transmission time, causing OS overhead for each TCP connection.
 
 In practice, web browsers will open **parallel** (controlled degree of parallelism, e.g: N connections at a time) TCP connections to fetch referenced object. Browsers should be able to start retrieving other objects **before** completing retrieval of previous objects. This is more efficient than serial retrievals. 
 
 {:.note}
-Parallel retrievals increases link utilization.
+Parallel retrievals **increases** link utilization.
 
 ## Persistent HTTP (HTTP 1.1)
 The space-time diagram below illustrates the nature of HTTP 1.1:
@@ -203,6 +203,15 @@ The space-time diagram below illustrates the nature of HTTP 1.1:
 * Requires only 1 RTT to establish connection and 1 RTT + file transmission time per referenced object.
 
 In practice, clients (e.g: web browsers) will do <span class="orange-bold">pipelining</span>: initiate multiple outstanding HTTP requests within the same TCP connection. Clients are able to send requests as soon as it encounters a referenced object, there is **no need** to wait for the previous request to finish, thereby **reducing latency** and improving the **overall efficiency** of network communication by utilizing a single TCP connection more <span class="orange-bold">effectively</span>. This can lead to faster page load times as it minimizes the delay between requests and responses. 
+
+### Piggybacking ACK with HTTP REQ 
+
+Notice how the last ACK in the three-way handshake of TCP <span class="orange-bold">piggybacks</span> a HTTP-GET request. This is **not** a TCP handshake requirement but specific to the application whereby the client has data ready to send immediately after the connection is established.
+
+{:.note}
+In some typical cases, like web browser establishing a connection to a web server, the client is usually ready to send an HTTP GET request right after the TCP handshake completes. The client might indeed piggyback the HTTP GET request with the final ACK in the three-way handshake, combining the ACK and the first data packet into one.
+
+However, there are situations where the client might not immediately send data after the TCP connection is established such as Telnet connection setup, SSL/TLS handshake. 
 
 ## Space-Time Diagram  
 
