@@ -71,7 +71,7 @@ python3 -m pip install cryptography
 
 ### No Such File or Directory: recv_files/EXPECTED_FILE
 
-Depending on your OS, when you run `ServerWithSecurity[version].py` or the <span style="color:#f77729;"><b>autograder</b></span>, it might complain about files in the directories: `recv_files/EXPECTED_FILE`, `recv_files_enc/EXPECTED_FILE`, etc <span style="color:#f77729;"><b>not found</b></span> when you clearly have it in your project path or have run `cleanup.sh`.
+Depending on your OS, when you run `ServerWithSecurity[version].py` or the <span style="color:#f77729;"><b>autograder</b></span>, it might complain about files in the directories: `recv_files/EXPECTED_FILE`, `recv_files_enc/EXPECTED_FILE`, etc <span style="color:#f77729;"><b>not found</b></span> when you clearly have it in your project path or have run `setup.sh`.
 
 This is due to differences in what constitutes a _line break_:
 
@@ -79,10 +79,10 @@ This is due to differences in what constitutes a _line break_:
 - `\n` is a POSIX Style
 - `\r` is a old pre-OS X Macs Style, Modern Mac's using POSIX Style
 
-Therefore your directory name might be set as `recv_files\r\n` when you run `cleanup.sh`. You can't tell whether the line break is there or not. Similarly, when you receive `filename` from `input` in `ClientWithSecurity[version].py`, the line break might be there, creating filename like `files.txt\r\n`. In order to tackle this, you can:
+Therefore your directory name might be set as `recv_files\r\n` when you run `setup.sh`. You can't tell whether the line break is there or not. Similarly, when you receive `filename` from `input` in `ClientWithSecurity[version].py`, the line break might be there, creating filename like `files.txt\r\n`. In order to tackle this, you can:
 
 1. Add `.strip()` at the end of `input`, resulting in `input("Enter a filename....").strip()`
-2. Create a new `cleanup.sh` with the exact same content and overwrites the old one so that the line break suits your system's
+2. Create a new `setup.sh` with the exact same content and overwrites the old one so that the line break suits your system's
 
 When submitting, please use `LF` as your end of line sequence because we are running your code on Linux-distro containers.
 {:.warning}
@@ -97,7 +97,7 @@ To install, simply type `sudo apt -y install coreutils` (Ubuntu), or `brew insta
 
 <!-- ### Bot: Autograder Fails to Run
 
-If the bot complains that the autograder **fails to run**, then check if you have modified the `./cleanup.sh` to be **executable**. We did not explicitly tell you to `chmod +x ./cleanup.sh` , but we _did_ ask you to run it. 
+If the bot complains that the autograder **fails to run**, then check if you have modified the `./setup.sh` to be **executable**. We did not explicitly tell you to `chmod +x ./setup.sh` , but we _did_ ask you to run it. 
 
 {:.highlight}
 You did go through Lab 1 right? Yes? We assume you know how to _apply knowledge_.

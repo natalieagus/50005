@@ -55,7 +55,7 @@ Anything under `source/` is where you will work for this assignment. All files i
 ```sh
 .
 ├── README.md
-├── cleanup.sh
+├── setup.sh
 ├── .gitignore 
 ├── files
 │   ├── cbc.bmp
@@ -76,11 +76,11 @@ Anything under `source/` is where you will work for this assignment. All files i
 ```
 
 
-### Run `./cleanup.sh`
+### Run `./setup.sh`
 
-`[PROJ_ROOT_DIR]/recv_files`, `[PROJ_ROOT_DIR]/recv_files_enc`, and `[PROJ_ROOT_DIR]/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./cleanup.sh` in the **project root**. 
+`[PROJ_ROOT_DIR]/recv_files`, `[PROJ_ROOT_DIR]/recv_files_enc`, and `[PROJ_ROOT_DIR]/send_files_enc` are all empty directories that are not added in `.git`. To create them, simply run `./setup.sh` in the **project root**. 
 
-You should see exactly the above file structure afterwards. `./cleanup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
+You should see exactly the above file structure afterwards. `./setup.sh` is a bash script, in order to **execute** it you must `chmod` it to be executable first.  
 
 
 # Test the Starter Code
@@ -108,7 +108,7 @@ python3 source/ClientWithoutSecurity.py
 ```
 
 
-You can type in the filename you want to send, e.g `files/image.ppm` from the Client's window, and the server will receive it and store it under `source/recv_files` directory.
+You can type in the filename you want to send, e.g `files/image.ppm` from the Client's window, and the server will receive it and store it under `[PROJECT_DIR]/recv_files` directory.
 
 
 You can repeat the above steps multiple times for each file you want to send to the server. If the client would like to close connection to the server, key in `-1`.
