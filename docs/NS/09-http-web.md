@@ -233,7 +233,7 @@ Here's the space-time diagram visualising the connection between the two parties
 Here's the space-time diagram visualising the connection between the two parties if HTTP/1.0 with pipelining is enabled: 
 
 
-<img src="{{ site.baseurl }}/docs/NS/images/cse2024-time-space-diagram-tcp-http1.1.drawio.png"  class="center_seventy"/>
+<img src="{{ site.baseurl }}/docs/NS/images/cse2024-time-space-diagram-tcp.drawio.png"  class="center_seventy"/>
 
 {:.info-title}
 > RTT + Transmission Time
