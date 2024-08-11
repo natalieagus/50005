@@ -132,7 +132,7 @@ DNS is a **distributed** and **hierarchical** database.
 
 ## Root Server
 
-**Root Server** (highest in the hierarchy): contacted by local name servers (end hosts) that cannot resolve names. End hosts get mapping, and return to the local name server. There are 13 root servers in the world. Find the list at [<http://root-servers.org/>](http://root-servers.org/).
+**Root Server** (highest in the hierarchy): contacted by local name servers (or end hosts explicitly configured for it) that cannot resolve names. The Root Server does not provide the final answer to the query (i.e., it doesn't resolve the domain name directly); instead, it directs the query to the appropriate Top-Level Domain (TLD) server (like .com, .org, etc.). There are 13 root servers in the world. Find the list at [<http://root-servers.org/>](http://root-servers.org/).
 
 <img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-07-17-14-52.png"  class="center_seventy no-invert"/>
 
