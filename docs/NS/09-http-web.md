@@ -439,6 +439,11 @@ HTTP/2, defined by [RFC 7540, 2015](https://datatracker.ietf.org/doc/rfc7540/), 
 - **Server Push**: The server can proactively push unrequested objects to the client, anticipating future requests and reducing latency.
 - **Frame Division and Scheduling**: HTTP/2 divides objects into smaller frames, which are then interleaved and scheduled to mitigate Head-of-Line (HOL) blocking. This division and multiplexing improve the efficiency of data transfer over a single connection. A typical scheduling strategy will be **round robin**.
 
+{:.info-title}
+> Round Robin 
+>
+> As the name suggests, this basic multiplexing strategy sends only **one** frame from each *active* object in each round. The number of active objects in each round may reduce over time because we have completed its transfer. 
+
 These features collectively enhance the performance and flexibility of HTTP/2 compared to HTTP/1.1, allowing for more efficient management of multiple objects and reducing delays in web communication.
 
 ## HTTP/3
@@ -465,7 +470,7 @@ Suppose a server sends 4 objects under these conditions:
 - Object 1: 1.5 MB (note: this is BYTE)
 - Object 2: 100 KB
 - Object 3: 200 KB
-- Object 4: 100 KB
+- Object 4: 300 KB
 - Frame size: 100 KB (round robin manner)
 - Network latency: 50 ms RTT
 - Bandwidth: 10 Mbps (note: this is bit per second)
@@ -501,21 +506,18 @@ $$
 
 2. **Sequential responses due to FCFS**:
    - Object 1: 1200 ms (1500 KB / 10 Mbps)
-   - Object 2 & 4: 80 ms 
+   - Object 2: 80 ms 
    - Object 3: 160 ms
+   - Object 4: 240 ms
 
-Total time:
-- GET request: 50 ms
-- Object 1: 1200 ms
-- Object 2: 80 ms
-- Object 3: 160 ms
-- Object 4: 80 ms
-
-**Total time for HTTP/1.1**: 50 ms + 1200 ms + 2 × 80 ms + 160 ms = 1570 ms**
+**Total time for HTTP/1.1**: 50 ms + 1200 ms + 80 ms + 160 ms + 240 ms = 1730 ms**
 
 ### HTTP/2
 
 <img src="{{ site.baseurl }}//docs/NS/images/09-http-web/2024-05-10-18-57-56.png"  class="center_seventy"/>
+
+> Note: image for illustration purposes only, does not strictly accurately represent this current case study of O1 to O4 with this specific object size. 
+
 **Multiplexing via Frame Division Schediling**:
 - Allows multiple requests and responses to be sent concurrently over a single TCP connection.
 - Uses streams to interleave data, mitigating application-level HOL blocking.
@@ -537,12 +539,13 @@ Total time:
      - Object 1: 15 frames (1500 KB / 100 KB)
      - Object 2: 1 frame (100 KB)
      - Object 3: 2 frames (200 KB)
-     - Object 4: 1 frame (100 KB)
+     - Object 4: 3 frames (300 KB)
 
 4. **Round-Robin Schedule**: there are 4 objects per round
 - Round 1: Frames from Object 1, Object 2, Object 3, Object 4 (4 frames)
-- Round 2: Second frame from Object 3, and 3 frames from Object 1 
-- Round 3 onwards: only frames from Object 1 (9 frames remaining)
+- Round 2: Second frame from Object 1, 3, and 4
+- Round 3: Third frame from Object 1 and 4 
+- Remaining rounds: all remaming frames of Object 1 
 
 **Detailed Timeline**:
 1. GET request: 50 ms
@@ -551,25 +554,25 @@ Total time:
    * Frame 1 from Object 2: 80 ms
    * Frame 1 from Object 3: 80 ms
    * Frame 1 from Object 4: 80 ms
-3. Second round of frames (4 frames, 100 KB each): 4 x 80 ms = 320 ms 
+3. Second round of frames (3 frames, 100 KB each): 3 x 80 ms = 240 ms 
    * Frame 2 from Object 1: 80 ms
    * Frame 2 from Object 3: 80 ms
+   * Frame 2 from Object 4: 80 ms
+4. Third round of frames (2 frames, 100 KB each): 2 x 80 ms = 160 ms  
    * Frame 3 from Object 1: 80 ms
-   * Frame 4 from Object 1: 80 ms
-4. Remaining frames for Object 1 (11 frames, 100 KB each): 11 × 80 ms = 880 ms
+   * Frame 3 from Object 4: 80 ms  
+5. Remaining frames for Object 1 (12 frames, 100 KB each): 12 × 80 ms = 960 ms
 
-- Objects 2 and 4 are fully received in the first round:
+If we consider the time from the first GET as t=0: 
+- Objects 2 is fully received in the first round at t=210 ms
   - Object 2: 50 ms (GET request) + 80 ms (object 1 frame 1) + 80 ms (object 2 frame) = 210 ms
-  - Object 4: 210 ms + 80 ms (object 3 frame 1) + 80 ms (object 4 frame) = 370 ms
-- Object 3 is fully received after: 370 ms + 80 ms (object 1 frame 2) + 80 ms (object 3 frame 2) = 530 ms 
-- Since there's no more other objects to send, we can focus on sending just Object 1 until completion. We have 13 frames remaining for Object 1 ever since Object 3 is completed:
-  - 530 ms + 13*80 ms = 1570 ms
+- Object 3 is fully received in the second round: 370 ms + 80 ms (object 1 frame 2) + 80 ms (object 3 frame 2), at t = 530 ms 
+- Object 4 is fully received in the third round: 610 ms + 80 ms (object 1 frame 3) + 80 ms (object 4 frame 3), at t = 770 ms
+- Since there's no more other objects to send, we can focus on sending just Object 1 until completion. We have 12 frames remaining for Object 1 ever since Object 4 is completed:
+  - 770 ms + 12*80 ms = 1730 ms
 
-**Total time for HTTP/2**:
-- Object 1: received after 1570 ms
-- Objects 2-4: received after 210 ms, 530 ms, and 370 ms respectively
 
-Total time taken: 1570 ms, **same** as HTTP/1.1 due to bandwidth constraint, but we get to receive Object 2-4 way **earlier**. These objects can be rendered first in the browser.
+**Total time taken: 1730 ms**, **same** as HTTP/1.1 due to bandwidth constraint, but we get to receive Object 2-4 way **earlier**. These objects can be rendered first in the browser.
 
 ### HTTP/3
 
@@ -587,25 +590,25 @@ Total time taken: 1570 ms, **same** as HTTP/1.1 due to bandwidth constraint, but
 
 2. **Concurrent transmission**:
    - Frames are transmitted concurrently without HOL blocking.
-   - Total data to send: 1.9 MB
+   - Total data to send: 2.1 MB 
    - Time taken to transmit all data: 
 
-$$ \frac{1.9 \text{ MB}}{10 \text{ Mbps}} \times 1000 ms + 50ms = 1570 \text{ ms} $$
+$$ \frac{2.1 \text{ MB}}{10 \text{ Mbps}} \times 1000 ms + 50ms = 1730 \text{ ms} $$
 
-**Total time for HTTP/3: 1570 ms**.
+**Total time for HTTP/3: also 1730 ms**.
 
 ### Summary of Differences
 
 If we compute the time taken to receive the objects **from the moment we sent `GET`** request, then all methods seem to have the same performance: 
-- **HTTP/1.1 with Pipelining**: 1570 ms
+- **HTTP/1.1 with Pipelining**: 1730 ms
 - **HTTP/2**:
-  - Object 1: 1570 ms
-  - Objects 2-4: received after 210 ms, 530 ms, and 370 ms respectively
-- **HTTP/3**: 1570 ms
+  - Object 1: 1730 ms
+  - Objects 2-4: received after 210 ms, 530 ms, and 770 ms respectively
+- **HTTP/3**: 1730 ms
 
 **Differences**:
-- **HTTP/1.1 vs. HTTP/2**: HTTP/2 allows smaller objects to be received much faster (e.g: 210 ms vs. waiting for the full 1570 ms in HTTP/1.1).
-- **HTTP/2 vs. HTTP/3**: HTTP/3 is slightly faster compared to HTTP/2 **if we consider the first TCP handshake** as it eliminates the TCP handshake and transport-level HOL blocking, making it more robust in lossy or high-latency networks. However, if we consider the time taken to transmit the objects from the moment `GET` request is made, then we end up with the same amount of transmission time as <span class="orange-bold">they're limited by bandwidth</span>. 
+- **HTTP/1.1 vs. HTTP/2**: HTTP/2 allows smaller objects to be received much faster (e.g: 210 ms vs. waiting for the full 1730 ms in HTTP/1.1).
+- **HTTP/2 vs. HTTP/3**: HTTP/3 is slightly faster compared to HTTP/2 **if we consider the first TCP handshake** as it eliminates the TCP handshake and transport-level HOL blocking, making it more robust in lossy or high-latency networks. **However, if we consider the time taken to transmit the objects from the moment `GET` request is made**, then we end up with the same amount of transmission time as <span class="orange-bold">they're limited by bandwidth</span>. 
 
 **Conclusion**:
 - **HTTP/1.1 with Pipelining** suffers from HOL blocking, making smaller objects wait for larger ones to finish.
