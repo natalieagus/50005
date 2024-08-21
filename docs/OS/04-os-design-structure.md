@@ -329,7 +329,7 @@ The architecture of the JX system is illustrated below (simplified representatio
 For more information, you can consult the [appendix](#java-os-details).
 
 # Summary {#summary}
-This section delves into the **architecture** of modern operating systems, exploring their **components** and the **critical** roles they play in system functionality. It highlights the distinction between system and application programs, with a focus on how system programs interact with the kernel through system calls. Various OS structures such as monolithic, layered, microkernel, and hybrid models are discussed to illustrate their design and implementation complexities. 
+This section explains the **architecture** of modern operating systems, exploring their **components** and the **critical** roles they play in system functionality. It highlights the distinction between system and application programs, with a focus on how system programs interact with the kernel through system calls. Various OS structures such as monolithic, layered, microkernel, and hybrid models are discussed to illustrate their design and implementation complexities. 
 
 
 Key learning points include:

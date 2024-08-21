@@ -384,7 +384,7 @@ The reason for placing the `try-finally` block <span class="orange-bold">outside
 
 # Summary
 
-This chapter delves into synchronization techniques in Java, essential for managing concurrent processes in programming. It explores mechanisms such as synchronized methods and blocks, static and reentrant locks, and condition synchronization using `wait()` and `notify()` methods. The guide covers practical aspects like mutex locks, thread management, and avoiding deadlocks, providing a comprehensive understanding of how Java handles synchronization to ensure thread safety and efficiency. 
+This chapter discusses many synchronization techniques in Java which is essential for managing concurrent processes in programming. It explores mechanisms such as synchronized methods and blocks, static and reentrant locks, and condition synchronization using `wait()` and `notify()` methods. The guide covers practical aspects like mutex locks, thread management, and avoiding deadlocks, providing a comprehensive understanding of how Java handles synchronization to ensure thread safety and efficiency. 
 
 
 Key learning points include:

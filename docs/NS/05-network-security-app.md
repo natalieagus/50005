@@ -377,7 +377,7 @@ Non-repudiation in asymmetric cryptography relies on the <span class="orange-bol
 # Summary 
 
 
-The essential security properties for secure network communication include confidentiality, integrity, authentication, and access/availability. Cryptography plays a pivotal role in fulfilling the first three properties, but ensuring access and availability requires additional measures like DNS caching to defend against DDoS attacks. Here, we delve into practical applications that illustrate cryptographic mechanisms and their impact.
+The essential security properties for secure network communication include confidentiality, integrity, authentication, and access/availability. Cryptography plays a pivotal role in fulfilling the first three properties, but ensuring access and availability requires additional measures like DNS caching to defend against DDoS attacks. Here, we detail practical applications that illustrate cryptographic mechanisms and their impact.
 
 **Plain Message Vulnerability**
 In unencrypted communication, an attacker can easily impersonate a sender or modify messages, thereby breaching all three core security properties. Adding an IP header offers little protection, as attackers can still spoof the address to send deceptive messages.

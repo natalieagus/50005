@@ -682,7 +682,7 @@ All processes created by Chrome have to <span style="color:#f77729;"><b>communic
 
 ## Socket Sharing
 
-While a single socket connection typically facilitates communication between two processes, it is possible to use sockets to enable communication among multiple processes through techniques such as socket sharing, multiple connections, and broadcasting. Let's delve into these concepts and see how they can be used effectively for inter-process communication (IPC).
+While a single socket connection typically facilitates communication between two processes, it is possible to use sockets to enable communication among multiple processes through techniques such as socket sharing, multiple connections, and broadcasting. Let's get into further details about these concepts and see how they can be used effectively for inter-process communication (IPC).
 
 ### Communication Between Two Processes
 
