@@ -299,8 +299,7 @@ You can view it via `ps -ef` command, they are shown within square brackets `[]`
 
 <img src="{{ site.baseurl }}//assets/images/week3-4_threads/2023-06-04-11-49-39.png"  class="center-full no-invert"/>
 
-They each have a specific task, for instance `[migration/0]` handles distributes processes across cores, `[cpuhp/0]` supports physically adding and removing CPUs from the system, etc. You can read some info about other kernel threads and what [they might do from here](https://everylinuxprocess.com). The are alot of kernel threads that are not well documented, just like your 1D assignments, so don't take it too hard.
-
+They each have a specific task, for instance `[migration/0]` handles distributes processes across cores, `[cpuhp/0]` supports physically adding and removing CPUs from the system, etc. You can read some info about other kernel threads and what [they might do from here](https://everylinuxprocess.com). The are alot of kernel threads that are not well documented, just like your 1D assignments, so take it with a grain of salt.  
 ## Use case
 
 ### System Monitoring

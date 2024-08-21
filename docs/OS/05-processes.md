@@ -64,7 +64,8 @@ A single process includes all of the following information, which we call the pr
 5. <span style="color:#f77729;"><b>Stack</b></span> (temporary data such as function parameters, return address, and local variables, grows downwards),
 6. <span style="color:#f77729;"><b>Data</b></span> (allocated memory during compile time such as global and static variables that have predefined values)
 7. <span style="color:#f77729;"><b>Heap</b></span> (dynamically allocated memory -- typically by calling `malloc `in C -- during process runtime, grows upwards)[^2]
-   These information are also known as a process <span style="color:#f7007f;"><b>state</b></span>, or a process <span style="color:#f7007f;"><b>context</b></span>:
+
+> This set of information is also known as a process <span style="color:#f7007f;"><b>state</b></span>, or a process <span style="color:#f7007f;"><b>context</b></span>.
 
 The same program can be run `n` times to create `n` processes simultaneously.
 
@@ -151,7 +152,7 @@ When a CPU switches execution between one process to another, the Kernel has to 
 
 ### Timesharing Support
 
-Timesharing requires <span style="color:#f77729;"><b>interactivity</b></span>, and this is done by performing rapid context switching between execution of multiple programs in the computer system.
+From users' point of view, a good computer system should be interactive. Interactivity requires <span style="color:#f77729;"><b>timesharing</b></span>, and this is done by performing rapid context switching between execution of multiple programs in the computer system.
 
 When an interrupt occurs, the kernel needs to save the current context of the process running on the CPU so that it can restore that context when its processing is done, essentially <span style="color:#f77729;"><b>suspending</b></span> the process and then resuming it at the later time. The suspended process context is stored in the <span style="color:#f77729;"><b>PCB</b></span> of that process.
 

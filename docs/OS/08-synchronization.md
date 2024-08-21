@@ -240,7 +240,7 @@ In the critical section the (asynchronous) processes may be:
 
 To support the CS, we need to design a <span style="color:#f77729;"><b>protocol</b></span> that the processes can use to cooperate or synchronize.
 
-It is a challenging problem to <span style="color:#f77729;"><b>guarantee</b></span> a critical section. Therefore, having a critical section in your program is a <span style="color:#f77729;"><b>problem</b></span>, and it requires complex synchronisation solutions.
+It is a challenging problem to <span style="color:#f77729;"><b>protect</b></span> a critical section. Therefore, having a critical section in your program is a <span style="color:#f77729;"><b>problem</b></span>, and it requires complex synchronisation solutions.
 {: .warning}
 
 There are <span style="color:#f77729;"><b>two</b></span> basic forms of synchronization:
