@@ -1,4 +1,4 @@
-# Course website for 50002
+# Course website for 50005
 
 Respective markdown materials can be found under `/docs` directory.
 
