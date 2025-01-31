@@ -2,7 +2,7 @@
 layout: default
 title: Home
 nav_order: 1
-description: We can explain it to you, but we can't understand it for you.
+description: Learn like TCP, not UDP 
 permalink: /
 ---
 
