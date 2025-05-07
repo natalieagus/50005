@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/06-ping-and-traceroute
-title: Lab 6 - Ping and Traceroute
+title: Ping and Traceroute
 description:  Experiment with ICMP packets
 parent: Labs
 nav_order:  6
@@ -32,6 +32,12 @@ In this lab exercise, you will learn how to use `ping` and `traceroute` programs
 - Observe and understand the effects of <span style="color:#f77729;"><b>varying</b></span> packet sizes on delays experienced.
 
 You will need both ping and traceroute to be installed on your OS. Most Ubuntu or macOS installations should already include ping by default. You can install traceroute by running `sudo apt install traceroute` from the command line.
+
+# Submission
+You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+
+
+No checkoff required for this lab. 
 
 # RTT Measurement using ping
 

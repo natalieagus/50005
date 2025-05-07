@@ -18,3 +18,8 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 
 ### Shell in C 
 [Write a Shell in C](https://brennan.io/2015/01/16/write-a-shell-in-c/): A useful article to implement PA1 that conforms to UNIX-like philosophy.
+
+### CPU Scheduling
+
+[The Fancy Algorithms That Make Your Computer Feel Smoother](https://www.youtube.com/watch?v=O2tV9q6784k): An excellent animation that details how CPU scheduling works. 
+

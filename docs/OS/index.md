@@ -14,7 +14,7 @@ This section contains the syllabus and materials for the first part of 50.005. Y
 {: .note-title}
 > Textbook
 > 
-> Silberschatz, Galvin, Gagne. **Operating Systems Concepts with Java**, 8th Ed. Wiley. ISBN 978-0-470-50949-4. (required) - Abbreviated as “SGG” in this document
+> Silberschatz, Galvin, Gagne. **Operating Systems Concepts with Java**, 8th Ed. Wiley. ISBN 978-0-470-50949-4. (required) - Abbreviated as “SGG” in this website. 
 
 ## Week 1: SGG Ch. 1.1 - 1.6, 1.8.3, 1.13.3
 * Define what an operating system is

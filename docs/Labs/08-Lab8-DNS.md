@@ -5,6 +5,7 @@ title: Lab 8 - Domain Name Server
 description:  Explore how DNS works
 parent: Labs
 nav_order:  8
+nav_exclude: true
 ---
 
 * TOC

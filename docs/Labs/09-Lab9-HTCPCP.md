@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/09-htcpcp
-title: Lab 9 - HTCPCP
+title: HTCPCP
 description:  Understand how HTTP works via HTCPCP Example
 parent: Labs
 nav_order:  8
@@ -32,9 +32,7 @@ At the end of this lab exercise, you should be able to:
 - Explore **differences** between HTTP and HTTPs using packet sniffer (Wireshark / termshark)
 - **Analyse** various captured packets exchanged between the browser, web server, and HTCPCP server
 
-## Checkoff and Lab Questionnaire
 
-You are required to finish the lab questionnaire on eDimension and complete one `CHECKOFF` with our TAs by **next week**, during your PA2 checkoff slots. Simply show that your app simulates the desirable checkoff outcome (binary grading, either you complete it or you don't). Read along to find out more.
 
 # The Hyper Text Coffee ☕️ Pot Control Protocol
 
@@ -43,6 +41,16 @@ The Hyper Text Coffee Pot Control Protocol (**HTCPCP**) is a whimsical communica
 This lab is created to give you some kind of understanding on how to deploy fullstack (sort of) application that can be accessible via the network. You will then deploy both the web application and the HTCPCP server and sniff the packets exchanged using Wireshark.
 
 > [The base code for project was originally taken from here](https://jamesg.blog/2021/11/18/hypertext-coffee-pot/), refactored, styled and adapted with more functionalities added to suit our learning experience in the lab. Special thanks to 2023 CSE TAs Cassie and Ryan for the inspiration, ideas, and contribution to create this lab.
+
+# Submission 
+
+Once you have completed all tasks, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
+
+{:.task-title}
+> ✅ Checkoff
+> 
+> Demonstrate the features implemented in Task 1 to our TAs to obtain the checkoff mark for this lab.
+
 
 ### System requirements
 
@@ -454,10 +462,6 @@ Check that you can handle illegal requests properly. For instance, you shall see
 
 <img src="{{ site.baseurl }}//assets/images/lab4_3-error/2023-06-27-17-50-49.png"  class="center_full no-invert"/>
 
-{:.task-title}
-> ✅ Checkoff
-> 
-> Demonstrate the features implemented in Task 1 to our TAs to obtain the checkoff mark for this lab.
 
 # HTTPS
 

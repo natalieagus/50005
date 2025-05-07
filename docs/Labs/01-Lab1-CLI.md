@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/01-cli
-title: Lab 1 - Command Line Interface
+title: Command Line Interface
 description: Introduction to the CLI 
 parent: Labs
 nav_order:  1
@@ -29,6 +29,12 @@ An operating system Kernel’s job is to provide **services** so that softwares 
 * I/O operations like printing, reading from disk, communication via network, resource management (overclock speed, VM size), 
 * Protection (security and permission settings), etc. 
 
+# Submission
+You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+
+No checkoff required for this lab. 
+
+
 # The Shell
 
 A **shell** is one of these user applications that acts as an interface to allow users to **access** OS services. It is named shell because it is seen as an *“outer”* layer around the OS kernel. OS shells are made either in a form of command-line interface (**CLI**, also known as) where users can **provide commands** via **text**, or graphical user interface (**GUI**) where users can provide commands via mouse clicks. In this lab, we are going to learn a little bit about the command-line interface, bash scripting, and makefiles. 
@@ -44,9 +50,6 @@ In order for us to be able to use CLI, we need to be familiar with their **comma
 > Fun fact 
 > 
 > The term "terminal" in the context of operating systems and computing has its origins in the early days of computers. Initially, computers were large, centralized machines that were accessed by multiple users through individual terminal devices. These terminals were called "terminal" because they served as the endpoint (or the terminus) of a communication line between the user and the mainframe or minicomputer. Today, when we refer to the "terminal" on a computer, we're usually talking about a <span class="orange-bold">terminal emulator</span> program that provides a text-based interface to the operating system. Users can enter commands through a shell (like bash, zsh, or PowerShell), which are then executed by the operating system. The term "terminal" has thus evolved from its original meaning but retains the core concept of being the point of interaction between a user and the computer system.
-
-# Submission
-The total marks for this lab is **20**. Please answer the questionnaire provided on eDimension Week 1. You are to score any **20 points** for this lab.  
 
 
 ### Task 1
@@ -245,14 +248,14 @@ Using `export` makes the `PATH` variable available not just in the current shell
 
 An `alias` lets you create a **shortcut** name for a command, file name, or any shell text. By using aliases, you save a lot of time when doing tasks you do frequently. You can see current aliases using the `alias` command:
 
-<img src="{{ site.baseurl }}/assets/images/lab1/7.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/lab1/7.png"  class="center_fifty no-invert"/>
 
 Or **create** an alias:
 
 - `alias name=’command’`
 - Example: `alias gst=’git status’`
 
-<img src="{{ site.baseurl }}/assets/images/lab1/8.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}/assets/images/lab1/8.png"  class="center_fifty no-invert"/>
 
 `alias` is particularly useful when you define them in your shell’s setup script.
 {:.info}
@@ -462,7 +465,8 @@ This is because tr <span class="orange-bold">cannot</span> get input directly fr
 3.  Now what if we want to store the capitalized content to another file? Try: `tr "[a-z]" "[A-Z]" < test.txt > new_test.txt`. You should find that “HELLO, HAVE A GOOD DAY TODAY!” exists within `new_test.txt`, since we **redirect** `stdout` to create this new file.
 4.  What if we want to write back to `test.txt`? What can you deduce from the output?
 
-Perhaps the screenshot below might help you for steps 1-7 above.
+The screenshot below might help you for steps 1-7 above.
+
 <img src="{{ site.baseurl }}/assets/images/lab1/14.png"  class="center_seventy no-invert"/>
 
 ## Pipe `|`
@@ -478,9 +482,11 @@ It may sound similar to stream redirection, but the general rule of thumb is tha
 {:.task}
 
 1. Suppose we want to pass the output of `cat` command as the input of `sort` command. We can’t do this with redirection:
+   
    <img src="{{ site.baseurl }}/assets/images/lab1/15.png"  class="center_fifty no-invert"/>
 
 2. However, using **pipe** works. It serves as a way to allow **interprocess** communication (Week 3 materials):
+   
    <img src="{{ site.baseurl }}/assets/images/lab1/16.png"  class="center_thirty no-invert"/>
 
 ## Download Files using `curl`
@@ -601,6 +607,7 @@ bash-3.2$
 From the task above, you have just created and run a super simple bash script. Note that the first line is the [shebang](<https://en.wikipedia.org/wiki/Shebang_(Unix)>). Similar to coding in any other language, you can use variables, functions, conditional statements, loops, comparisons, etc in your bash script. You can learn more in your own time, and see [examples of awesome bash scripts](https://github.com/awesome-lists/awesome-bash).
 
 For example, you can [customize your prompt](https://github.com/arialdomartini/oh-my-git) in a git repo:
+
 <img src="{{ site.baseurl }}/assets/images/lab1/20.png"  class="center_seventy no-invert"/>
 
 ## Compiling Programs
@@ -716,12 +723,12 @@ Note: `File_1` → `File_2` means that `File_2` depends on `File_1`.
 <img src="{{ site.baseurl }}/assets/images/lab1/25.png"  class="center_seventy "/>
 
 # Summary 
-In this lab, you are exposed to various commands and how to navigate your system using the CLI. It needs time to develop the habit. Perhaps one of the more fun things to do is to decorate and beautify your shell. You may [check this out](https://ohmyz.sh) for a beginner-friendly start (macOS/Linux using zsh) and [this](https://ohmyposh.dev/docs/installation/windows) for Windows (powershell). 
+In this lab, you are exposed to various commands and how to navigate your system using the CLI. It needs time to develop the habit. Perhaps one of the more fun things to do is to decorate and beautify your shell. You may [check this out](https://ohmyz.sh) for a beginner-friendly start (macOS/Linux using zsh) and [this](https://ohmyposh.dev/docs/installation/windows) for Windows (powershell). Zsh users: for a slimmer alternative, you can try [Antidote](https://antidote.sh). You can also use another shell entirely, try [fish](https://fishshell.com). 
 
 # Appendix 
 
 ## Simple `.zshrc` setup 
-Oh My Zsh is a popular framework for managing Zsh configurations, offering a wide array of themes, plugins, and features that enhance the Zsh experience. However, due to its **extensive** functionality and the sheer number of plugins and themes it provides, some users may find it somewhat **bloated**, especially if they only need a subset of its capabilities or are using older hardware where performance is a concern.
+Oh My Zsh is a popular framework (but huge) for managing Zsh configurations, offering a wide array of themes, plugins, and features that enhance the Zsh experience. However, due to its **extensive** functionality and the sheer number of plugins and themes it provides, some users may find it somewhat **bloated**, especially if they only need a subset of its capabilities or are using older hardware where performance is a concern.
 
 If you're looking for alternatives that are lighter or wish to customize Zsh in a more minimalistic manner, here's a few simple steps to take.  
 

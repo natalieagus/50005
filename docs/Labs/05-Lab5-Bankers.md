@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/05-bankers-algorithm
-title: Lab 5 - Banker's Algorithm
+title: Banker's Algorithm
 description:  Implement Banker's Algorithm, a deadlock prevention method
 parent: Labs
 nav_order:  5
@@ -37,6 +37,18 @@ There are two parts of the Banker's Algorithm:
 2. <span style="color:#f77729;"><b>Safety</b></span> Algorithm
 
 You will be implementing the <span style="color:#f77729;"><b>Safety Algorithm</b></span> and then calling it in Resource Allocation Algorithm in this lab.
+
+# Submission
+
+You are to complete this lab's questionnaire on eDimension as you complete the tasks. 
+
+Once you have completed `Banker.py`, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
+
+{:.task-title}
+> ✅ Checkoff
+> 
+> You are to demonstrate your code passing all 6 test cases using `banker_test.py`. 
+ 
 
 # Starter Code
 
@@ -697,31 +709,29 @@ The tester file runs on Windows as well as of 14/06/2023.
 
 It performs a simple output string matching (which is how our autograder works). Therefore it is <span style="color:#f7007f;"><b>crucial</b></span> for you not to print anything else. If you need to debug, <span style="color:#f7007f;"><b>use a debugger</b></span>. Be a proper programmer, it's never too late to start today 🥳.
 
-# Submission
 
-Once you have completed `Banker.py`, zip that file and submit your answer to our bot. Just type `/start` and follow the instruction there.
 
-Zip can be done easily via the CLI (POSIX-compliant OS). Call this command inside `lab_banker/` directory:
 
-```
-zip lab3_submit.zip banker.py
-```
 
-<img src="{{ site.baseurl }}/assets/images/lab3/3.png"  class="center_full no-invert"/>
+# Summary 
 
-If you don't have `zip`, you shall install it:
+In this lab, you have implemented the Banker's Algorithm using Python. 
 
-```
-sudo apt update
-sudo apt install zip
-```
+The Banker's Algorithm is used in operating systems to <span class="orange-bold">avoid</span> deadlocks by safely allocating resources to processes. It's a deadlock **avoidance** technique that checks whether granting a resource request will keep the system in a safe state: i.e., whether all processes can still eventually complete. It’s mainly taught as a *theoretical model and rarely used in modern OS kernels* due to its high runtime complexity and need for advanced knowledge of future resource requests. However, it serves as a **foundation** for understanding resource allocation, particularly in systems where resource usage patterns are predictable, such as embedded or real-time systems with strict guarantees.
 
-You need to submit the code by the due date stipulated in the course handout. <span style="color:#f7007f;"><b>Remember</b></span>: only type your answers in the given space. <span style="color:#f7007f;"><b>DO NOT</b></span> print anything else, and <span style="color:#f7007f;"><b>DO NOT</b></span> import any other modules, and <span style="color:#f7007f;"><b>DO NOT</b></span> modify any other instructions.
-{:.error}
+
+**The Banker's Algorithm is not used in modern general-purpose operating systems** like Linux, Windows, or macOS. It's mostly a teaching tool or used in **very controlled environments** like embedded or real-time systems where all resource requirements are known in advance. In practice, OSes avoid deadlocks using a combination of:
+
+1. **Deadlock prevention**: Structuring the system to make deadlocks impossible (e.g., by enforcing **resource ordering**).
+2. **Deadlock avoidance (rare)**: Like Banker's, but impractical due to overhead.
+3. **Deadlock detection and recovery**: Allowing deadlocks to happen, then detecting and breaking them (e.g., killing a process).
+4. **Ostrich algorithm**: Ignoring deadlocks entirely if they are rare and impact is low (common in general OSes).
+
+So in modern OSes, deadlocks are often just **detected (not prevented)** using techniques like wait-for graphs, especially in database engines or advanced resource managers.
 
 # Appendix
 
-### How to migrate the .zip file?
+### How to migrate .zip file between VM and Host OS?
 
 Working on a VM and don't know how to migrate your .zip file out to your host OS? You can choose the <span style="color:#f77729;"><b>hard way</b></span> like login to your email account in your VM and then email yourself the zipfile. Or, login to Telegram in your VM.
 

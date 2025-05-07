@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/07-encryption
-title: Lab 7 - Python Cryptography
+title: Python Cryptography
 description:  Symmetric key encryption on images and texts
 parent: Labs
 nav_order:  7
@@ -38,6 +38,18 @@ There are 3 parts of this lab:
 1. Symmetric key encryption for a <span style="color:#f77729;"><b>text</b></span> file
 2. Symmetric key encryption for an <span style="color:#f77729;"><b>image</b></span> file
 3. Signed message <span style="color:#f77729;"><b>digests</b></span>
+
+# Submission 
+
+You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+
+Once you have completed all tasks, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
+
+{:.task-title}
+> ✅ Checkoff
+> 
+> Demonstrate completion of ALL tasks in this handout: encryption and decryption of text, encryption and decryption of images using CBC and EBC mode, generation of message digest and verification. 
+
 
 ## System Requirements
 
@@ -78,7 +90,7 @@ Then, cd to `nslab2` and install the required modules:
 python3 -m pip install -r requirements.txt
 ```
 
-In this lab, you're only required to modify all the 3 python files. When you're done, submit your code via our Telegram bot as usual, and answer the questionnaire on eDimension as usual. There are areas labeled in these `.py` files as `TODO`, and these are your tasks.
+In this lab, you're only required to modify the 3 python files in the starter code. There are areas labeled as `TODO` in the `.py` files, complete it. 
 
 ## Test the Starter Code
 
@@ -117,8 +129,7 @@ Assuming your `python3` is aliased to `python3.10`, then you can do the followin
 python3 -m pip install -r requirements.txt
 ```
 
-## Submission 
-Once you have completed `1_encrypt_text.py, 2_encrypt_image.pym 3_sign_digest.py.py`, zip all files and submit your answer to our bot. Just type `/start` and follow the instruction there. Don't forget to head to eDimension and complete the lab questionnaire as usual.
+
 
 
 # Text Encryption
@@ -699,6 +710,7 @@ message_digest_bytes b'\x03\r\xc1\xf96\xc3AZ\xff?3W\x165\x15\x19\r4z(\xe7X\xe1\x
 
 `TASK 3-(5-8):` With all the explanations above, you should be able to complete these tasks. Fill in your answer under the `TODO` for this task.
 {:.task}
+
 
 ## Summary
 

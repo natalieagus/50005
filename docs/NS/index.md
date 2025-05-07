@@ -14,7 +14,7 @@ This section contains the syllabus and materials for the second part of 50.005. 
 {: .note-title}
 > Textbook
 > 
-> Kurose and Ross. Computer Networking – A Top-Down Approach, 7th Ed. Pearson. ISBN 978-0-273-76896-8. (required) - Abbreviated as “KR” in this document.
+> Kurose and Ross. **Computer Networking – A Top-Down Approach**, 7th Ed. Pearson. ISBN 978-0-273-76896-8. (required) - Abbreviated as “KR” in this document.
 
 ## Week 8: KR Ch. 1.1, 1.3, 1.5
 * Explain what a network is and the internet

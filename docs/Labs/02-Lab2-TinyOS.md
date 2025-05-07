@@ -5,6 +5,7 @@ title: Lab 2 - TinyOS IRQ handler and SVC Handler
 description:  Implement a simple IO handler and SVC handler
 parent: Labs
 nav_order:  2
+nav_exclude: true
 ---
 
 * TOC

@@ -1,7 +1,7 @@
 ---
 layout: default
 permalink: /labs/02-toctou
-title: Lab 3 - Time of Check, Time of Use Attack
+title: Time of Check, Time of Use Attack
 description:  Investigate how TOCTOU attack is launched
 parent: Labs
 nav_order:  3
@@ -35,6 +35,17 @@ The lab is written <span style="color:#f77729;"><b>entirely in C</b></span>, and
 - <span style="color:#f77729;"><b>Compile</b></span> programs and make documents with different privilege level
 - Understand how <span style="color:#f77729;"><b>sudo</b></span> works
 - Understand the difference between <span style="color:#f77729;"><b>symbolic</b></span> and <span style="color:#f77729;"><b>hard</b></span> links
+
+# Submission 
+You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+
+Schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
+
+{:.task-title}
+> ✅ Checkoff
+> 
+> Demonstrate a successful TOCTOU Attack (Task 11) to gain marks. 
+
 
 # Background
 
@@ -618,9 +629,8 @@ This is more of a preventative measure to limit the potential impact of vulnerab
 
 Open <span style="color:#f77729;"><b>exploit.sh</b></span> and replace `vulnerable_root_prog` with `root_prog_nosuid`, and run the script again (while logged in as user account).
 
-# Summary
 
-Ensure that you have answered all questions in edimension corresponding to each task in this handout. No other separate code submission is needed.
+# Summary
 
 By the end of this lab, we hope that you have learned:
 

@@ -5,6 +5,7 @@ title: Lab 4 - TinyOS Process Scheduling and Synchronization
 description:  Implement a simple Process Control Block and Semaphore
 parent: Labs
 nav_order:  4
+nav_exclude: true
 ---
 
 * TOC
