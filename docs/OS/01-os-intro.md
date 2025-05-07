@@ -15,7 +15,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-**Natalie Agus (Summer 2024)**
+**Natalie Agus (Summer 2025)**
 
 # Introduction to Operating System
 {: .no_toc}
