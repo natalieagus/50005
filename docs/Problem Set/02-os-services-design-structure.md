@@ -291,7 +291,7 @@ int main() {
 ```
 
 Answer the following questions:
-1. Clearly explain how your user-space logging program can invoke OS kernel functionalities via APIs. Use your write() function call as a concrete example.
+1. Clearly explain how your user-space logging program can invoke OS kernel functionalities via APIs. Use your `write()` function call as a concrete example.
 2. Parameter passing for system calls can be done in several ways. Briefly describe these three methods with simple conceptual examples (no detailed code necessary):
    * Registers
    * Stack
