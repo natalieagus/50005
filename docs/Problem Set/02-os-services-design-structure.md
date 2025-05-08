@@ -323,20 +323,6 @@ You will learn more about file systems terminologies (file descriptor, etc) late
 
 
 ## PATH of Least Resistance
-You install a **new** version of Python using a third-party installer (e.g., from python.org or pyenv), but your terminal still runs the system-installed Python when you type `python`. You’ve heard that environment variables like `PATH` control how commands are resolved, but you want to understand exactly how the shell finds and executes system programs.
-
-{:.highlight}
-This highlights how system programs rely on user-mode tools like **environment variables**, rather than low-level system calls.
-
-Ah, got it — if your students haven't worked with `cron` yet, then it's best not to introduce it as a core part of the exercise.
-
-Here’s a **revised, more accessible version** of the same idea — still interesting, still deals with environment variables, `PATH`, Python versions, and system programs — **but runnable entirely in the shell**:
-
----
-
-## 🖥️ **Problem Set Question 9: "PATH of Least Resistance"**
-
-**Context:**
 You install a new version of Python using a third-party installer (e.g., from python.org or pyenv), but your terminal still runs the system-installed Python when you type `python`. You’ve heard that environment variables like `PATH` control how commands are resolved, but you want to understand exactly how the shell finds and executes system programs.
 
 Answer the following questions:
