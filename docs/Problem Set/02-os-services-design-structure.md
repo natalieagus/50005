@@ -21,6 +21,30 @@ Singapore University of Technology and Design
 
 ## The Mystery of the Missing System Program
 
+
+### Background: Shell Builtin Functions vs System Programs
+When we type a command in a shell, it may either trigger a **built-in function** or invoke an **external system program**.
+
+* **Built-in Shell Functions**
+  These are commands implemented *within the shell itself*. They run **without creating a new process**. Examples include:
+
+  * `cd` – changes the current directory
+  * `export` – sets environment variables
+  * `echo` – prints text to the terminal
+    Since they're handled internally, they're **faster** and essential for changing the shell’s own state.
+
+* **System Programs (External Commands)**
+  These are **separate executables** located in directories like `/bin` or `/usr/bin`. When called, the shell **creates a child process** to run them. Examples:
+
+  * `ls` – lists directory contents
+  * `cat` – reads file contents
+  * `grep`, `python`, `gcc`, etc.
+    These programs use **system calls** to request kernel services (e.g., read files, print output).
+
+In summary, builtins are fast and internal; system programs are external and involve process creation and system calls.
+
+### Scenario
+
 A student implemented a minimalistic shell in C. The student notices that built-in commands like `cd` work perfectly, but external commands such as `ls` or `rm` fail mysteriously. The student <span class="orange-bold">mistakenly</span> refers to these external commands as "system calls" and is unsure why they don't behave the same way as the built-in commands.
 
 Answer the following questions:
@@ -50,7 +74,7 @@ You built a GUI application that downloads files from a remote server. After ini
 
 Answer the following questions:
 
-1. **Explain** clearly what it means for a system call to be blocking and provide an example related to this GUI scenario.
+1. **Explain** clearly what it means for a system call to be <span class="orange-bold">blocking</span> and provide an example related to this GUI scenario.
 2. **Describe** the impact of blocking system calls on the responsiveness of GUI-based applications.
 3. Briefly **describe** what a non-blocking or asynchronous system call is, and how using this approach could improve the application's responsiveness.
 4. Suggest a **practical** approach to fix this issue and clearly explain why your solution would resolve the problem.
@@ -76,7 +100,17 @@ We will learn more about this (multithreading and synchronization) in the weeks 
 
 ## The Hidden Cost of Layered OS Structure
 
-A team of students decides to **reorganize** their operating system project into a strictly layered structure. They reason that this *will simplify debugging* and *improve modularity*, as each layer clearly defines its responsibilities and only communicates directly with the layer immediately below it. However, after restructuring their OS, they observe a noticeable drop in overall system performance. Tasks that were previously fast now take significantly longer to execute.
+### Background: Layered OS Architecture
+A layered OS architecture organizes the operating system into a hierarchy of layers, each built upon the one below. This structure promotes modularity and simplifies debugging, though it may introduce performance overhead if strictly enforced. Real-world systems often adopt a loosely layered or hybrid approach. They have the following key points: 
+
+* Each layer only interacts with adjacent layers (above and below).
+* The lowest layer handles hardware; the top layer interacts with user applications.
+* Early example: THE OS – 6 strict layers from hardware to user interface.
+* Modern example: Windows NT – HAL → Kernel → Executive → Subsystems → Applications.
+* Linux shows layered traits: Hardware → Kernel → System Libraries → User Apps.
+
+### Scenario
+A team of students decides to **reorganize** their operating system project into a strictly layered structure. They reason that this *will simplify debugging* and *improve modularity*, as each layer clearly defines its responsibilities and only communicates directly with the layer immediately below it. However, after restructuring their OS, they observe a <span class="orange-bold">noticeable drop</span> in overall system **performance**. Tasks that were previously fast now take significantly longer to execute.
 
 Answer the following questions:
 
@@ -103,7 +137,7 @@ A practical approach to balance the advantages of layered design with performanc
 
 ## The Layered Linux Dilemma
 
-Imagine the developers of Linux decided to restructure their operating system kernel into a strictly layered approach. They reorganize the kernel into multiple clearly-defined layers: hardware interaction at the bottom (layer 0), basic resource management above that, followed by advanced scheduling, memory management, and finally system-call interfaces at higher layers. The motivation was to improve modularity and ease of debugging, inspired by earlier operating systems like **[MULTICS](https://en.wikipedia.org/wiki/Multics)**.
+Imagine the developers of Linux decided to restructure their operating system kernel into a strictly layered approach. They reorganize the kernel into multiple clearly-defined layers: **hardware** interaction at the bottom (layer 0), basic resource management above that, followed by advanced **scheduling**, memory management, and finally **system-call interfaces** at higher layers. The motivation was to improve modularity and ease of debugging, inspired by earlier operating systems like **[MULTICS](https://en.wikipedia.org/wiki/Multics)**.
 
 {:.note}
 Initially, this structure allowed kernel developers to debug each layer separately, significantly reducing development complexity. However, users soon began complaining about slower performance, especially for operations that previously required direct interactions with hardware (such as disk I/O and interrupt handling).
@@ -133,6 +167,22 @@ Linux developers could adopt a **hybrid** or **selectively layered approach** to
 
 ## The Policy-Mechanism Paradox
 
+### Background: Policy vs Mechanism
+
+In operating systems, **mechanism** refers to the low-level implementation that enables certain operations, while **policy** determines the strategy or rules that govern how those operations are used. 
+
+{:.highlight}
+This separation allows flexibility: the OS provides general tools (mechanisms), and the system or user defines how to use them (policies).
+
+For example:
+1. **In CPU scheduling**, the **mechanism** is the context switch (the ability to save and restore process states). The **policy** is the scheduling algorithm, such as round-robin, shortest job first, or multilevel feedback queues, which decides which process to run next.
+2. **In memory management**, the **mechanism** includes paging and virtual memory mapping. The **policy** determines which page to evict on a page fault. For instance, using Least Recently Used (LRU) or First-In-First-Out (FIFO).
+3. **In file systems**, the **mechanism** is the ability to set permissions (e.g., read, write, execute). The **policy** decides who gets what access — for example, based on user roles or security levels.
+
+
+By separating mechanisms from policies, OSes like Linux and Windows allow different strategies to be applied without changing the core implementation. This makes the system more adaptable to diverse use cases.
+
+### Scenario
 You are reviewing a simple memory allocator written by another student. The original design aims to separate policy (how to choose a memory block) from mechanism (how to perform allocation). The student's code is shown below:
 
 
@@ -171,7 +221,7 @@ void malloc_sim(Block blocks[], int n, Block* (*policy)(Block[], int)) {
 
 ```
 
-This design lets the user switch memory allocation strategies by changing the policy function passed into `malloc_sim`.
+This design lets the user *switch memory allocation strategies* by changing the policy function passed into `malloc_sim`.
 
 Answer the following questions:
 
@@ -198,7 +248,44 @@ This approach is highly beneficial for experimentation and tuning, especially in
 
 ## The Flexible Scheduler
 
-You are reviewing the scheduler design for a toy operating system. The system initially used a simple round-robin policy to decide which process runs next. Over time, new requirements emerged: support for priority-based scheduling, and the option to plug in experimental policies like <span class="orange-bold">shortest job first (SJF)</span>. The initial implementation had the scheduling decision logic mixed into the same function that performed context switching, which made policy changes risky and error-prone.
+### Background: Priority Based Scheduling
+
+**Priority-based scheduling** is a CPU scheduling method where each process is assigned a priority value, and the CPU is always allocated to the process with the highest priority. Priorities can be assigned **statically** (fixed at process creation) or **dynamically** (adjusted during execution based on behavior or resource usage).
+
+This approach ensures that important tasks are served *quickly* but can lead to **starvation**, where low-priority processes wait *indefinitely* and ultimately might not meet the deadline. To address this, many systems use **aging**, a technique that gradually increases the priority of waiting processes over time to ensure fairness.
+
+{:.highlight}
+Priority scheduling is used in both **preemptive** and **non-preemptive** forms. In preemptive systems, a higher-priority process can interrupt a running lower-priority one, while in non-preemptive systems, the current process runs to completion before the scheduler checks priorities again.
+
+#### Real-Life Example: I/O Scheduling in Linux
+
+Linux applies scheduling not just to CPUs but also to I/O operations (e.g., disk reads/writes).
+* **The Deadline Scheduler** assigns deadlines to I/O requests and serves them in order to **prevent starvation**.
+* It uses FIFO queues internally and checks **deadlines** to ensure timely completion of I/O.
+
+Other Linux I/O schedulers include:
+* **CFQ** (Completely Fair Queuing): balances fairness among processes.
+* **BFQ** (Budget Fair Queuing): ideal for desktop responsiveness.
+* **noop**: a simple FIFO queue, best for SSDs with low seek times.
+
+Deadline scheduling is especially helpful on spinning disks to avoid long delays from deep I/O queues.
+
+#### Deadline Setting
+
+The deadline for each I/O request is determined using a **fixed** timeout value set for read and write operations. They are set by the system but **configurable** by the user.
+
+We can view or modify them using the `sysfs` interface. For example, on a system using the deadline scheduler:
+
+```bash
+cat /sys/block/sda/queue/iosched/read_expire
+echo 250 > /sys/block/sda/queue/iosched/read_expire
+```
+
+This level of control allows you to prioritize latency vs throughput depending on your system’s behavior (e.g., tuning read responsiveness for databases or write buffering for batch logging).
+
+### Scenario
+
+You are reviewing the scheduler design for a toy operating system. The system initially used a simple round-robin policy to decide which process runs next. Over time, new requirements emerged: support for **priority-based scheduling**, and the option to plug in experimental policies like <span class="orange-bold">shortest job first (SJF)</span>. The initial implementation had the scheduling decision logic mixed into the same function that performed context switching, which made policy changes risky and error-prone.
 
 To address this, the developers refactored the code as shown:
 
@@ -264,6 +351,18 @@ If the policy and mechanism were not separated, every change to scheduling logic
 
 ## The Case of the Hanging Logger
 
+### Background: The Need for Supervisor Call
+
+When user-space programs need to perform actions that require **access** to hardware or protected system resources like r*eading input or writing to a file*, they cannot interact with the hardware (disk) directly. 
+
+Instead, they must **request** these services from the operating system through well-defined interfaces known as <span class="orange-bold">system call APIs</span>. These APIs are typically provided by system libraries (like `libc` in Linux), which act as a **bridge** between the application and the OS kernel. 
+
+Under the hood, the API triggers a software interrupt or trap instruction that switches the CPU from user mode to kernel mode, allowing the kernel to safely perform the requested operation before returning control. 
+
+{:.highlight}
+Understanding this interface is critical, especially in cases where responsiveness and efficient resource handling are essential—such as in a logging program that waits for user input.
+
+### Scenario 
 You wrote a simple C application to log user activities in real-time. It reads user inputs from the terminal and records the input along with timestamps into a log file. However, you notice the application hangs whenever users stop providing input for extended periods.
 
 Your logging function snippet looks something like this:
@@ -322,8 +421,25 @@ You will learn more about file systems terminologies (file descriptor, etc) late
 </p></div><br>
 
 
-## PATH of Least Resistance
-You install a new version of Python using a third-party installer (e.g., from python.org or pyenv), but your terminal still runs the system-installed Python when you type `python`. You’ve heard that environment variables like `PATH` control how commands are resolved, but you want to understand exactly how the shell finds and executes system programs.
+## `PATH` of Least Resistance
+
+### Background: Where is the path to `PATH`? 
+
+The `PATH` environment variable in Unix-like systems (Linux, macOS) defines a list of directories where the shell looks for executable programs when a command is entered. Instead of typing full paths (like `/usr/bin/ls`), users can just type `ls` because it's located in one of the directories listed in `PATH`. This variable is critical for convenience, scripting, and correct system behavior.
+
+Different users and system contexts can define or modify `PATH` in various ways:
+
+* **System-wide default PATH**: Usually defined in files like `/etc/profile`, `/etc/environment`, or shell-specific global files like `/etc/zsh/zshenv` (for Zsh) or `/etc/bash.bashrc` (for Bash).
+* **Root user PATH**: Often set in `/root/.bashrc`, `/root/.profile`, or `/root/.zshrc`. Root may also inherit from `/etc/profile`.
+* **Regular user PATH**: Can be customized in `~/.bashrc`, `~/.bash_profile`, `~/.profile`, or `~/.zshrc`, depending on the shell in use. These override or extend the system-wide defaults.
+* **Login vs non-login shells**: Login shells read `~/.profile` or `~/.bash_profile`; interactive non-login shells read `~/.bashrc` or `~/.zshrc`.
+* **Changes via `export PATH=...`** only affect the **current** session unless added to one of the config files above.
+
+Understanding where and how `PATH` is set ensures that commands behave as expected and that custom tools or scripts can be accessed without typing their full paths. Revisit the Command Line lab if you're still unsure. 
+
+### Scenario
+
+You install a new version of Python using a third-party installer (e.g., from python.org or `pyenv`), but your terminal still runs the system-installed Python when you type `python`. You’ve heard that environment variables like `PATH` control how commands are resolved, but you want to understand exactly how the shell finds and executes system programs.
 
 Answer the following questions:
 
