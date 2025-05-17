@@ -44,7 +44,7 @@ You are then free to implement <span class="orange-bold">any additional feature(
 {:.task-title}
 > Additional Shell Feature 
 >
-> This accounts for 1.5% of your grade (PA1 in total accounts for 10% of your grades). Be <span class="orange-bold">creative</span>, you are to implement one or two great functionality (there's no need to implement 50 of them). *There's no rubric for this.* It is both objective (in terms of functionality and difficulty of implementation) and subjective (in terms of usefulness and looks).  
+> This accounts for 1.5% of your grade (PA1 in total accounts for 10% of your grades). Be <span class="orange-bold">creative</span>, you are to implement one or two great functionalities (there's no need to implement 50 of them). *There's no rubric for this.* It is both objective (in terms of functionality and difficulty of implementation) and subjective (in terms of usefulness and looks).  
 
 # Sustainability and Inclusivity 
 

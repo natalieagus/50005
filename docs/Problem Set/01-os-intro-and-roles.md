@@ -332,7 +332,7 @@ You are analyzing a device driver that controls a custom serial port. The driver
 
 You notice that **sometimes**, during large or repeated writes, the system **crashes**, or the device behaves **erratically** (e.g., data is sent twice, or part of it is missing). Upon inspection, you realize:
 * The driver does not use any **locks**.
-  * A lock is a synchronization mechanism that ensures only one thread or process can access a shared resource or critical section at a time, preventing race conditions. You will learn more about this in the coming weeks. 
+  * A lock is a <span class="orange-bold">synchronization</span> mechanism that ensures only one thread or process can access a shared resource or critical section at a time, preventing race conditions. You will learn more about this in the coming weeks. 
 * The driver is compiled with interrupts **enabled**.
 * The device uses an **interrupt** handler to send the next byte when the device is ready.
 
