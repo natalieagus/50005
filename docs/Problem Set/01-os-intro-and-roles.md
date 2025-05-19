@@ -362,7 +362,7 @@ Reentrancy means a function can be **safely interrupted** and **re-invoked** bef
 <br><br>
 In this scenario, `write_to_device()` accesses a shared buffer, possibly overwriting in-progress data or resetting internal state. If the interrupt handler re-enters it mid-way, you can get corrupted buffers, multiple concurrent transfers, lost or duplicated data.
 <br><br>
-Preemption <span class="orange-bold">worsens</span> this because it introduces **unpredictability**. w`rite_to_device()` might get paused halfway, and then **resumed** after the interrupt handler returns, storing partial state in memory.
+Preemption <span class="orange-bold">worsens</span> this because it introduces **unpredictability**. `write_to_device()` might get paused halfway, and then **resumed** after the interrupt handler returns, storing partial state in memory.
 <br><br>
 To prevent this, the driver should <span class="orange-bold">disable interrupts</span> briefly while modifying shared structures (making it an atomic section). It can use spinlocks or mutexes to enforce mutual exclusion. It also must separate the **initiation** logic (in `write_to_device()`) from the **continuation** logic (handled exclusively by the interrupt handler). You will understand more of these terms (spinlocks, race condition, synchronization, concurrency) in the weeks to come. 
 <br><br> 
