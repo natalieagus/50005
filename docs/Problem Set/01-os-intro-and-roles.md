@@ -368,3 +368,23 @@ To prevent this, the driver should <span class="orange-bold">disable interrupts<
 <br><br> 
 This example illustrates a classic systems bug: assuming a function is safe to call anywhere, when in fact <span class="orange-bold">it's not reentrant and not protected from concurrency</span>. In kernel code or drivers, these assumptions can lead to catastrophic, hard-to-debug failures.
 </p></div><br> 
+
+
+## Device Drivers and Execution Mode
+
+Device drivers can either run in kernel mode (where they have direct access to hardware and privileged instructions) or user mode (isolated from critical system resources). Some operating systems like Linux run most drivers in kernel mode, while others like certain versions of Windows or microkernel-based systems (e.g., QNX, MINIX) allow or even require user-mode drivers.
+
+Answer the following questions:
+1. Name two operating systems that run most device drivers in kernel mode, and one OS that prefers or supports user-mode drivers. You need to search the internet for answers.
+2. Explain three benefits of running device drivers in kernel mode.
+3. Explain three potential risks or drawbacks of kernel-mode drivers compared to user-mode drivers.
+4. Imagine you are building a new OS for a critical real-time system (e.g., a medical device). Would you place most drivers in kernel mode or user mode? Justify your choice by referring to performance, reliability, and maintainability concerns.
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
+Two operating systems that run most device drivers in kernel mode are Linux and Windows NT-based systems (e.g., Windows 10).
+An operating system that supports or prefers user-mode drivers is MINIX 3, which follows a microkernel architecture. Additionally, Windows Vista and later introduced User-Mode Driver Framework (UMDF) for certain classes of devices.
+
+Running drivers in kernel mode offers **performance** benefits since drivers can directly access hardware and memory without costly user-kernel transitions. It also allows **tighter integration** with OS subsystems and avoids the overhead of inter-process communication. However, this approach has serious drawbacks. **Bugs** in kernel-mode drivers can **crash** the entire system, posing a major stability risk. It also increases the attack surface for security vulnerabilities and makes debugging more difficult due to limited tooling and lack of isolation.
+
+For a critical real-time system like a <span class="orange-bold">medical device</span>, user-mode drivers should be preferred wherever possible. **Reliability** and **fault isolation** are more **important** than raw performance in such systems. A user-mode driver crash would only affect the specific device, not the whole system, and updates or debugging can be done more safely. However, for timing-critical components, kernel-mode may still be necessary if latency becomes a bottleneck. A hybrid approach—with clear justification for any kernel-mode drivers—offers the best balance between safety and performance.
+</p></div><br> 
