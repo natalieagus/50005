@@ -28,12 +28,13 @@ Imagine that you’re designing a machine with no kernel. User programs are copi
 2. Which operations would be unsafe or outright impossible without a kernel?
 3. Is it possible to simulate multitasking or device access in this setup? If so, how crude or complex would the approach be?
 
-**Hints**: 
-* **Think** about how access to hardware is usually controlled.
-* What ensures that one program doesn’t **overwrite** another in memory?
-* How are devices like keyboards and disks normally **accessed** in a system?
-* How does the CPU know **when to switch** between programs? 
-* 
+{:.highlight}
+> **Hints**: 
+> * **Think** about how access to hardware is usually controlled.
+> * What ensures that one program doesn’t **overwrite** another in memory?
+> * How are devices like keyboards and disks normally **accessed** in a system?
+> * How does the CPU know **when to switch** between programs? 
+ 
 Think about the metaphor used in class: the OS as a "government" or "manager." How does this experiment demonstrate the value of central coordination? What kind of "rules" or "contracts" does the kernel enforce that user programs alone cannot?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -74,11 +75,12 @@ They expect the program to jump directly to a kernel function located at that ad
 3. What should the program have done instead to access kernel functionality?
 4. What are the risks if such jumps were allowed?
 
-**Hints**:
-* Consider what happens when a CPU in user mode *tries* to access memory it doesn’t have permission to.
-* Check whether `0x80000000` is even mapped in a user-mode program’s address space.
-* Think about what `ecall` does and what the kernel registers in stvec.
-* Can a program safely switch to a higher privilege level by itself?
+{:.highlight}
+> **Hints**:
+> * Consider what happens when a CPU in user mode *tries* to access memory it doesn’t have permission to.
+> * Check whether `0x80000000` is even mapped in a user-mode program’s address space.
+> * Think about what `ecall` does and what the kernel registers in stvec.
+> * Can a program safely switch to a higher privilege level by itself?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 RISC-V enforces privilege boundaries by using both CPU modes and virtual memory protection. User-mode programs are sandboxed, meaning they can only execute non-privileged instructions and access user-mapped memory. If a user program tries to jump to `0x80000000`, which is typically *reserved* for kernel code, the processor **checks** the current mode and memory permissions. Since that region is inaccessible in user mode, a trap is raised often a **page fault** or **illegal instruction exception**.
@@ -110,11 +112,12 @@ Answer the following questions:
 4. What could go wrong if the boot process was tampered with or failed?
 
 
-**Hints**
-* Consider: what happens immediately after you press the power button?
-* Why can’t the OS already be in RAM?
-* What’s special about ROM in this context?
-* Could security or stability be compromised if the boot process were modified?
+{:.highlight}
+> **Hints**
+> * Consider: what happens immediately after you press the power button?
+> * Why can’t the OS already be in RAM?
+> * What’s special about ROM in this context?
+> * Could security or stability be compromised if the boot process were modified?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 The bootstrapping paradox arises from the idea that programs must already be in memory before they can run but the operating system itself is just a program. So how does it get into memory in the first place?
@@ -148,11 +151,12 @@ Answer the following questions:
 3. What could go wrong if a buggy driver runs in kernel mode?
 4. How does this modular approach help both developers and end users?
 
-**Hints**:
-* Think about how often new hardware gets released.
-* Who writes the drivers? The OS vendor or the hardware manufacturer?
-* What happens if a graphics driver crashes while in kernel mode?
-* What is the difference between performance and fault isolation?
+{:.highlight}
+> **Hints**:
+> * Think about how often new hardware gets released.
+> * Who writes the drivers? The OS vendor or the hardware manufacturer?
+> * What happens if a graphics driver crashes while in kernel mode?
+> * What is the difference between performance and fault isolation?
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
@@ -195,11 +199,12 @@ Draw a **labeled** diagram (or describe in words) that shows:
 * How an interrupt might trigger kernel code execution
 * Where drivers sit, and what privilege they require
 
-**Hints**:
-* Don’t forget the direction of control: who calls whom?
-* What happens when a user process needs to read a file?
-* What happens when a keyboard interrupt occurs?
-* Where does system calls fit?
+{:.highlight}
+> **Hints**:
+> * Don’t forget the direction of control: who calls whom?
+> * What happens when a user process needs to read a file?
+> * What happens when a keyboard interrupt occurs?
+> * Where does system calls fit?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
 <br>
@@ -260,11 +265,13 @@ Answer the following questions:
 4. Suppose the user ran `stty -echo`. What happens now? Can the program still work? Why or why not?
 5. How would behavior change if the terminal were in raw mode?
 
-💬 Hints
-* What actually causes characters to appear on screen as you type?
-* Does `read()` affect whether input is displayed?
-* Look up termios settings like `ECHO` and `ICANON`.
-* Try tracing with `strace ./a.out`. What syscalls happen?
+
+{:.highlight}
+> **Hints**
+> * What actually causes characters to appear on screen as you type?
+> * Does `read()` affect whether input is displayed?
+> * Look up termios settings like `ECHO` and `ICANON`.
+> * Try tracing with `strace ./a.out`. What syscalls happen?
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
@@ -299,11 +306,13 @@ Answer the following questions;
 * Could this be solved by polling instead of interrupts? Why or why not?
 * Suppose the printer had its own internal buffer. What would change?
 
-**Hints**:
-* Think about mutual exclusion and serialization of access.
-* What happens when multiple write() calls are made to the same character device?
-* Does the interrupt handler know which process sent the data?
-* Would you let user programs send data directly to the device driver?
+
+{:.highlight}
+> **Hints**:
+> * Think about mutual exclusion and serialization of access.
+> * What happens when multiple write() calls are made to the same character device?
+> * Does the interrupt handler know which process sent the data?
+> * Would you let user programs send data directly to the device driver?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
 This problem illustrates a breakdown in resource allocation, specifically, the lack of exclusive access to a non-shareable, sequential device. Although the printer is interrupt-driven (which is good for efficiency), the OS must synchronize access to the printer across all processes.
@@ -349,11 +358,14 @@ Answer the following questions:
 > 
 > Even though each invocation has its own stack frame, they may share globals, buffers, or device state, leading to corrupted behavior. The stack itself isn’t the problem. The problem is assuming “if I started modifying this data, no one else is touching it.” That assumption is false without explicit locking or disabling interrupts.
 
-Hints:
-* Think about what happens to shared data structures if accessed simultaneously.
-* Consider **call stack behavior** and how preemption *breaks* assumptions of atomicity.
-* Is it safe to modify a buffer while it's being sent?
-* What does it mean to "disable interrupts" temporarily?
+
+
+{:.highlight}
+> **Hints**:
+> * Think about what happens to shared data structures if accessed simultaneously.
+> * Consider **call stack behavior** and how preemption *breaks* assumptions of atomicity.
+> * Is it safe to modify a buffer while it's being sent?
+> * What does it mean to "disable interrupts" temporarily?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
 The crash and erratic behavior stem from the fact that `write_to_device()` is **not reentrant**, yet it may be interrupted mid-execution, and then **called again** by the interrupt handler, leading to **race conditions** and **corruption** of shared state.

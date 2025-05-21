@@ -52,11 +52,12 @@ Answer the following questions:
 2. Identify whether commands such as ls and rm are system calls or system programs. Provide reasoning to support your identification.
 3. Describe clearly why built-in shell commands (like `cd`) behave differently from external system programs (like `ls`, `rm`) within a custom shell.
 
-**Hints**:
-* Recall what you've learned about **how user programs access OS services**. Are system calls directly executable commands from the terminal, or are they something lower-level?
-* Think about where commands like `ls` or `rm` are located and how your shell executes them. Do these commands directly interact with kernel space, or do they rely on something else? Refer to Command Line Lab for clues.
-* Consider how built-in commands are executed within the shell compared to how external programs are launched and executed. What is fundamentally different in their implementation within a shell?
-
+{:.highlight}
+> **Hints**:
+> * Recall what you've learned about **how user programs access OS services**. Are system calls directly executable commands from the terminal, or are they something lower-level?
+> * Think about where commands like `ls` or `rm` are located and how your shell executes them. Do these commands directly interact with kernel space, or do they rely on something else? Refer to Command Line Lab for clues.
+> * Consider how built-in commands are executed within the shell compared to how external programs are launched and executed. What is fundamentally different in their implementation within a shell?
+ 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 System calls are <span class="orange-bold">programming interfaces</span> provided by the operating system kernel that allow user-level programs to request low-level OS services, such as file I/O operations, memory allocation, or process management. They represent controlled entry points into kernel space, typically invoked indirectly via programming APIs (e.g., `write()`, `open()` in POSIX). In contrast, system programs are user-level utility programs provided by the operating system to perform common tasks, such as managing files or processes, and running in user mode. Examples of system calls include `open()`, `read()`, and `write()`, while examples of system programs are terminal commands like `ls`, `rm`, and `mkdir`.
 <br><br>
@@ -79,11 +80,12 @@ Answer the following questions:
 3. Briefly **describe** what a non-blocking or asynchronous system call is, and how using this approach could improve the application's responsiveness.
 4. Suggest a **practical** approach to fix this issue and clearly explain why your solution would resolve the problem.
 
-**Hints**: 
-* Blocking vs non-blocking: *what's the key difference?*
-* Consider what happens when the UI thread is waiting for an operation to finish.
-* Is there a way to let the download happen "in the background"?
-* Think about threads or asynchronous mechanisms you might know. We will learn more about this in the weeks to come. 
+{:.highlight}
+> **Hints**: 
+> * Blocking vs non-blocking: *what's the key difference?*
+> * Consider what happens when the UI thread is waiting for an operation to finish.
+> * Is there a way to let the download happen "in the background"?
+> * Think about threads or asynchronous mechanisms you might know. We will learn more about this in the weeks to come. 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 A **blocking** system call is one that causes the calling process or thread to **pause** execution until the requested operation fully completes. In the given scenario, an example is the *file download operation*. When the GUI program initiates a blocking network or file-read operation, the application's main thread is halted and waits for the operation to finish before continuing execution.
@@ -119,11 +121,12 @@ Answer the following questions:
 3. **Identify** and **explain** why implementing a strictly layered OS structure might negatively affect system performance.
 4. **Suggest** a way to balance the advantages of a layered approach while mitigating its performance drawbacks.
 
-**Hints**:
-* Think about how layers communicate and rely on each other.
-* Consider what happens to data or calls as they travel through multiple layers.
-* Is there overhead involved with layering, and where might it come from?
-* Can a hybrid approach provide a better compromise?
+{:.highlight}
+> **Hints**:
+> * Think about how layers communicate and rely on each other.
+> * Consider what happens to data or calls as they travel through multiple layers.
+> * Is there overhead involved with layering, and where might it come from?
+> * Can a hybrid approach provide a better compromise?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 The **layered** approach to operating system design involves breaking down the OS into clearly defined, hierarchical layers. Each layer is **built on top** of the layer immediately below it, providing services only to the layer above it. The lowest layer interacts **directly** with hardware, while the **highest** layer provides an interface to the users or application programs. Each layer has a **specific**, **isolated** responsibility, simplifying implementation and debugging.
@@ -149,11 +152,12 @@ Answer the following questions:
 3. **Discuss** a specific operation (e.g., handling disk I/O or an interrupt) and explain how its execution would differ in a strictly layered kernel compared to a monolithic kernel, focusing on performance.
 4. **Suggest** a practical structural compromise or alternative approach that Linux developers could use to maintain some benefits of layering while improving performance.
 
-**Hints**:
-* How does isolating responsibilities simplify error tracking?
-* Consider how many steps it takes to reach hardware in a layered system.
-* Think concretely about I/O requests or interrupts—what must happen in each kernel architecture?
-* Could selectively collapsing some layers or using a hybrid model help?
+{:.highlight}
+> **Hints**:
+> * How does isolating responsibilities simplify error tracking?
+> * Consider how many steps it takes to reach hardware in a layered system.
+> * Think concretely about I/O requests or interrupts—what must happen in each kernel architecture?
+> * Could selectively collapsing some layers or using a hybrid model help?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 A layered kernel design significantly **simplifies** debugging and maintenance because each layer handles a distinct, isolated responsibility and communicates directly only with adjacent layers. Developers can test each layer **independently**, ensuring it works correctly before proceeding to the next higher layer. When errors or bugs arise, developers can quickly narrow down the potential sources of problems to a single layer, greatly reducing complexity and improving efficiency in debugging.
@@ -230,11 +234,12 @@ Answer the following questions:
 3. Suppose the developer had **hardcoded** the best-fit logic directly inside `malloc_sim`. What <span class="orange-bold">negative</span> consequence would that have on future flexibility or maintainability?
 4. Suggest **one** specific advantage of this approach for experimentation or system tuning in real-world OS memory allocation.
 
-**Hints**:
-* Mechanism: performs the actual effect or system-level action.
-* Policy: decides which block to act on.
-* Think about what happens if you want to try a new policy.
-* What does this modularity allow system developers to do?
+{:.highlight}
+> **Hints**:
+> * Mechanism: performs the actual effect or system-level action.
+> * Policy: decides which block to act on.
+> * Think about what happens if you want to try a new policy.
+> * What does this modularity allow system developers to do?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 In this code, the function `allocate(`) represents the **mechanism**. It performs the actual memory allocation by marking a block as used and updating relevant system state. The functions `first_fit()` and `best_fit()` are **policies**; they define different *strategies* for selecting which memory block to allocate but do not modify system state themselves.
@@ -331,12 +336,12 @@ Answer the following questions:
 3. Suppose a new scheduling policy needs to be tested under high-load conditions. How would this design make that *easier* compared to a non-separated design?
 4. What would be a <span class="orange-bold">risk</span> or <span class="orange-bold">drawback</span> if policy and mechanism were not separated in this context?
 
-
-**Hints**:
-* Look for the function that actually performs the "switching."
-* What changes when you try different strategies? What stays the same?
-* Can you reuse the mechanism code when trying new policies?
-* What happens if you want to test **SJF** without modifying existing low-level code?
+{:.highlight}
+> **Hints**:
+> * Look for the function that actually performs the "switching."
+> * What changes when you try different strategies? What stays the same?
+> * Can you reuse the mechanism code when trying new policies?
+> * What happens if you want to test **SJF** without modifying existing low-level code?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 In this code, the `context_switch()` function is the mechanism—it carries out the low-level task of switching from the currently running process to the next one, handling CPU state and control structures. The functions `round_robin()` and `priority_based()` are <span class="orange-bold">policies</span>; they implement strategies for selecting which process to run next based on different scheduling criteria.
@@ -398,15 +403,16 @@ Answer the following questions:
 3. Explain what it means for a system call to be "blocking." Using the code snippet above, identify precisely which system call is blocking, and why this causes your logger to hang.
 4. Propose a practical modification to the above code snippet to make the program **responsive** even if the user stops typing. Clearly explain your solution, addressing how non-blocking system calls or related system calls (such as `select()` or `poll()`) can be utilized.
 
-**Hints**:
 
-* How does API connect to OS kernel? Think about how user programs typically request services from the OS kernel—do they call the kernel directly, or is there something in between?
-* Parameter passing strategies:
-  * **Registers**: CPU registers are very fast but limited in number.
-  * **Stack**: Remember function calls—how do you usually pass parameters to regular functions in C?
-  * **Block or Table**: Useful when you have many parameters. Can you think of a structure that could hold these parameters in memory?
-* Blocking system call: Look carefully at your provided code snippet—where exactly could the code become stuck waiting indefinitely for input?
-* Making it non-blocking: Consider system calls or methods in POSIX C that help you check if input is ready before trying to read it. Is there a way to ask the OS, "Hey, is there anything to read yet?" before actually reading?
+{:.highlight}
+> **Hints**:
+> * How does API connect to OS kernel? Think about how user programs typically request services from the OS kernel—do they call the kernel directly, or is there something in between?
+> * Parameter passing strategies:
+>   * **Registers**: CPU registers are very fast but limited in number.
+>   * **Stack**: Remember function calls—how do you usually pass parameters to regular functions in C?
+>   * **Block or Table**: Useful when you have many parameters. Can you think of a structure that could hold these parameters in memory?
+> * Blocking system call: Look carefully at your provided code snippet—where exactly could the code become stuck waiting indefinitely for input?
+> * Making it non-blocking: Consider system calls or methods in POSIX C that help you check if input is ready before trying to read it. Is there a way to ask the OS, "Hey, is there anything to read yet?" before actually reading?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 A user-space logging program <span class="orange-bold">cannot</span> directly execute kernel instructions because it runs in user mode. To request services provided by the OS kernel, the program instead relies on system call APIs provided by the OS libraries. For example, when calling the `write()` function in POSIX C, this API internally issues a system call via a software-generated interrupt (also known as a trap/system call/supervisor call). The OS kernel then temporarily switches to kernel mode to execute the requested task (e.g., writing data to a file) before returning control back to the user program in user mode.
@@ -449,12 +455,12 @@ Answer the following questions:
 4. Explain how the OS design distinguishes **system program location and resolution** (which is user-mode behavior) from **kernel system calls** (which are accessed via fixed interfaces like syscall tables).
 
 
-**Hints:**
-
-* `$PATH` is searched left to right for the first matching executable name.
-* `env -i` wipes the environment — the shell won't have the usual config.
-* Try using `ls`, `echo`, or `pwd` inside the clean shell to observe limitations.
-* Consider how `exec()` family functions use `$PATH`.
+{:.highlight}
+> **Hints:**
+> * `$PATH` is searched left to right for the first matching executable name.
+> * `env -i` wipes the environment — the shell won't have the usual config.
+> * Try using `ls`, `echo`, or `pwd` inside the clean shell to observe limitations.
+> * Consider how `exec()` family functions use `$PATH`.
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 When you run `echo $PATH`, you should see a **list** of directories separated by colons, such as `/usr/local/bin:/usr/bin:/bin`. Running `which python` shows the full path to the first `python` executable found in that list. If you <span class="orange-bold">prepend</span> a custom directory to the `PATH` using `export PATH=/my/custom/bin:$PATH` and put a dummy `python` script in there, running `python` executes your script instead. This shows that the shell uses the `PATH` variable to resolve commands.
