@@ -74,7 +74,7 @@ git clone https://github.com/natalieagus/lab_toctou
 ```
 
 You should find that the following files are given to you:
-<img src="{{ site.baseurl }}/assets/images/lab2/1.png"  class="center_fourty no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/03-Lab3-toctou/2025-05-22-13-51-24.png"  class="center_seventy no-invert"/>
 
 Now go to the `User/` directory and call `make`. You should find these files in the end.
 <img src="{{ site.baseurl }}/assets/images/lab2/2.png"  class="center_full no-invert"/>
