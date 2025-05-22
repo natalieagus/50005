@@ -87,6 +87,9 @@ Do the same thing with `cal, pwd, who, clear`.
 - Figure out what each command does using `man`
 - You can use `man <command>` and press `q` to quit anytime.
 
+{:.note}
+If your distro does not come with `cal`, you can install it first using `sudo apt install ncal`. 
+
 ## With Options
 
 The commands you have typed above are those that **do not** require options or more arguments (although they do accept these too). Some commands require more input arguments.
