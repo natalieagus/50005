@@ -366,7 +366,7 @@ You can open any created text file using the command:
 
 After saving, you can check the content of the file using the command `cat <path/to/filename>`.
 
-## Standard Streams
+# Standard Streams
 
 Standard streams are **input** **and** output communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution. They are **streams** of data that travel from where a program was **executed**, to the places where the program is **processed** and then back again to where the program was **executed**.
 
@@ -469,7 +469,7 @@ The screenshot below might help you for steps 1-7 above.
 
 <img src="{{ site.baseurl }}/assets/images/lab1/14.png"  class="center_seventy no-invert"/>
 
-## Pipe `|`
+# Pipe `|`
 
 The Pipe `|` is a *special* feature in Linux that lets you use **two** or **more** commands such that <span style="color:#f7007f;"><b>output</b></span> of one command serves as <span style="color:#f7007f;"><b>input</b></span> to the next. Since pipes are a feature of the shell (and not a command), they are available in **any** shell environment, including bash, zsh, and others found on Unix-like systems such as Linux and macOS
 
@@ -544,7 +544,7 @@ You can also **pipe** the output of a command to the `grep` command so that you 
 
 <img src="{{ site.baseurl }}/assets/images/lab1/19.png"  class="center_seventy no-invert"/>
 
-## Why do we use the CLI? 
+# Why do we use the CLI? 
 Now that we have learned _how_ to execute some commands, it is natural to **question** _why_ we need to use the command line. What can you do here with CLI that you cannot do through your common graphical user interface?
 
 Well, it **depends** on your <span style="color:#f7007f;"><b>use case</b></span>. There’s a lot of debate on that, some might say that CLI allows you to do tasks **fast**, but that depends: depends on how **well versed you are** in using the CLI.
@@ -556,7 +556,7 @@ The most common use of the command line is ”system administration” or, basic
 
 This includes **installing** and **configuring** software, **monitoring** computer resources (manage logs, setup cron jobs, daemons), **setting** up web servers (renaming or modifying thousands of files), and **automating** processes (setup databases / servers) on many hosts. Obviously these tasks are <span style="color:#f7007f;"><b>repetitive</b></span> and <span style="color:#f7007f;"><b>tedious</b></span> such that it is impossible to be done manually or one by one via the GUI.
 
-## Shell Scripting
+# Shell Scripting
 
 In this section, we briefly overview how shell scripts work, eg: `.sh`, `.zsh` scripts. A shell script is simply lines of code for the shell to interpret (if you use z/bash shell, you can use z/bash shell script. Since both bash and z are derived from the Bourne shell family, both scripts have similar syntax). 
 
@@ -610,7 +610,7 @@ For example, you can [customize your prompt](https://github.com/arialdomartini/o
 
 <img src="{{ site.baseurl }}/assets/images/lab1/20.png"  class="center_seventy no-invert"/>
 
-## Compiling Programs
+# Compiling Programs
 
 We can also compile and run programs from the **command** line, provided that you have the **compiler** or **interpreter**, e.g. `python3`, `gcc`, or `javac`.
 
