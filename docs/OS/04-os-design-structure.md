@@ -244,7 +244,7 @@ The operating system is broken into a many number of <span style="color:#f77729;
 
 <span style="color:#f77729;"><b>Cons</b></span>:
 
-- Extra need to <span style="color:#f77729;"><b>appropriately</b></span> defining the various layers, and careful planning is necessary.
+- Extra need to <span style="color:#f77729;"><b>appropriately</b></span> define the various layers, and careful planning is necessary.
   - If we are met with <span style="color:#f77729;"><b>bugs</b></span> in our program, we debug our program and not our compiler
   - <span style="color:#f7007f;"><b>We mostly assume that the layers beneath us are already made correct</b></span>
   - Sometimes, this assumption is not always true and difficult to maintain with the growing size of the OS. Some OS is shipped with bugs on its lower layers that are very difficult for users to debug.
