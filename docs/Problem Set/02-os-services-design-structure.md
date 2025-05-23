@@ -47,7 +47,7 @@ In summary, builtins are fast and internal; system programs are external and inv
 
 A student implemented a minimalistic shell in C. The student notices that built-in commands like `cd` work perfectly, but external commands such as `ls` or `rm` fail mysteriously. The student <span class="orange-bold">mistakenly</span> refers to these external commands as "system calls" and is unsure why they don't behave the same way as the built-in commands.
 
-Answer the following questions:
+**Answer the following questions:**
 1. Explain clearly the difference between a system call and a system program, giving examples of each in the context of a shell.
 2. Identify whether commands such as ls and rm are system calls or system programs. Provide reasoning to support your identification.
 3. Describe clearly why built-in shell commands (like `cd`) behave differently from external system programs (like `ls`, `rm`) within a custom shell.
@@ -73,8 +73,7 @@ This question is similar to [another](#the-case-of-the-hanging-logger) question 
 
 You built a GUI application that downloads files from a remote server. After initiating a download operation, users noticed that the application's user interface (UI) becomes completely unresponsive. Clicking buttons or interacting with the UI does nothing until the file download completes, at which point the UI suddenly becomes responsive again.
 
-Answer the following questions:
-
+**Answer the following questions:**
 1. **Explain** clearly what it means for a system call to be <span class="orange-bold">blocking</span> and provide an example related to this GUI scenario.
 2. **Describe** the impact of blocking system calls on the responsiveness of GUI-based applications.
 3. Briefly **describe** what a non-blocking or asynchronous system call is, and how using this approach could improve the application's responsiveness.
@@ -114,8 +113,7 @@ A layered OS architecture organizes the operating system into a hierarchy of lay
 ### Scenario
 A team of students decides to **reorganize** their operating system project into a strictly layered structure. They reason that this *will simplify debugging* and *improve modularity*, as each layer clearly defines its responsibilities and only communicates directly with the layer immediately below it. However, after restructuring their OS, they observe a <span class="orange-bold">noticeable drop</span> in overall system **performance**. Tasks that were previously fast now take significantly longer to execute.
 
-Answer the following questions:
-
+**Answer the following questions:**
 1. **Explain** the main concept behind the layered approach to operating system design.
 2. **Describe** clearly one significant advantage of organizing an OS using a layered structure.
 3. **Identify** and **explain** why implementing a strictly layered OS structure might negatively affect system performance.
@@ -145,8 +143,7 @@ Imagine the developers of Linux decided to restructure their operating system ke
 {:.note}
 Initially, this structure allowed kernel developers to debug each layer separately, significantly reducing development complexity. However, users soon began complaining about slower performance, especially for operations that previously required direct interactions with hardware (such as disk I/O and interrupt handling).
 
-Answer the following questions:
-
+**Answer the following questions:**
 1. Using the given scenario, **explain** how a layered kernel design helps developers simplify debugging and maintenance.
 2. Based on the scenario, clearly **identify** and **explain** the main reason why users experienced slower performance.
 3. **Discuss** a specific operation (e.g., handling disk I/O or an interrupt) and explain how its execution would differ in a strictly layered kernel compared to a monolithic kernel, focusing on performance.
@@ -227,8 +224,7 @@ void malloc_sim(Block blocks[], int n, Block* (*policy)(Block[], int)) {
 
 This design lets the user *switch memory allocation strategies* by changing the policy function passed into `malloc_sim`.
 
-Answer the following questions:
-
+**Answer the following questions:**
 1. **Explain** in your own words what part of the code represents the mechanism, and what part represents the policy.
 2. **Describe** how this design demonstrates good separation between policy and mechanism.
 3. Suppose the developer had **hardcoded** the best-fit logic directly inside `malloc_sim`. What <span class="orange-bold">negative</span> consequence would that have on future flexibility or maintainability?
@@ -329,8 +325,7 @@ void schedule(ProcessQueue* q, Process* (*policy)(ProcessQueue*)) {
 ```
 
 
-Answer the following questions:
-
+**Answer the following questions:**
 1. **Identify** which functions in the above code represent the mechanism and which represent policy.
 2. **Explain** clearly how this refactoring improves the maintainability and flexibility of the scheduler.
 3. Suppose a new scheduling policy needs to be tested under high-load conditions. How would this design make that *easier* compared to a non-separated design?
@@ -394,7 +389,7 @@ int main() {
 
 ```
 
-Answer the following questions:
+**Answer the following questions:**
 1. Clearly explain how your user-space logging program can invoke OS kernel functionalities via APIs. Use your `write()` function call as a concrete example.
 2. Parameter passing for system calls can be done in several ways. Briefly describe these three methods with simple conceptual examples (no detailed code necessary):
    * Registers
@@ -447,8 +442,7 @@ Understanding where and how `PATH` is set ensures that commands behave as expect
 
 You install a new version of Python using a third-party installer (e.g., from python.org or `pyenv`), but your terminal still runs the system-installed Python when you type `python`. You’ve heard that environment variables like `PATH` control how commands are resolved, but you want to understand exactly how the shell finds and executes system programs.
 
-Answer the following questions:
-
+**Answer the following questions:**
 1. Run `echo $PATH` and `which python`. Then temporarily prepend a fake directory with a dummy Python script to the front of your `PATH`. What happens when you type `python` now?
 2. Create a file called `python` in a new directory and make it executable. Inside it, echo "You’ve been hijacked!". Add that directory to the front of your `PATH`. Try running `python`. What does this demonstrate about system program resolution?
 3. Now run `env -i bash --noprofile --norc` to start a clean shell with no environment. Run `python`. What do you notice about `$PATH` and which Python runs? Compare with your original shell.

@@ -24,7 +24,16 @@ Singapore University of Technology and Design
 
 A student writes a C program that opens a file and then calls `fork()`. Both the parent and child continue to write to the file. However, the resulting file contents appear **garbled**, with overlapping or duplicated lines. The student is surprised. They expected the two processes to behave independently and becomes unsure about what `fork()` actually <span class="orange-bold">duplicates</span> and whether file descriptors or file offsets are shared. The unexpected corruption makes them question how resources are managed between parent and child.
 
-Answer the following questions: 
+### Background
+
+In Unix-like operating systems, the `fork()` system call is used to create a new process by duplicating the calling process. The newly created process, known as the *child*, receives a copy of the parent’s memory space, register state, and file descriptor table. This allows the child to begin execution as a near-exact replica of the parent, resuming at the instruction immediately following the `fork()` call.
+
+A subtle but important aspect of `fork()` is how it handles open file descriptors. While the file descriptor table is copied, the underlying file **descriptions** (which include the file offset and access mode) are **shared**. This means that if both parent and child write to the same file descriptor, they are writing through a shared offset, and their operations can interfere with one another unless properly synchronized.
+
+Understanding how `fork()` interacts with file descriptors and other process resources is critical for writing correct concurrent programs. Misunderstandings in this area often lead to race conditions, data corruption, or unpredictable behavior, especially when multiple processes interact with shared I/O resources.
+
+### Task
+**Answer the following questions:**
 1. What parts of a process are **copied** and what are **shared** between parent and child after a `fork()`?
 2. Why can writing to the same file descriptor in both parent and child lead to **race conditions** or **data corruption**?
 3. If the parent wants to **avoid interference**, what should they do after `fork()`?
@@ -48,8 +57,19 @@ The program counter is also duplicated, meaning both processes resume execution 
 
 ## Mystery of the Missing Command
 
+### Background
+
+
+The `exec` family of system calls in Unix-like operating systems allows a running process to **replace its current memory image** with a new program. Unlike `fork()`, which creates a <span class="orange-bold">separate</span> child process, `exec()` transforms the current process into a new one without changing its process ID or creating a new execution thread. All code, data, and stack segments of the original program are replaced, and the process begins execution from the entry point of the new program.
+
+This behavior has important implications in scripting contexts. When a shell script invokes `exec`, the shell process itself is <span class="orange-bold">replaced</span> by the specified program. As a result, control does not return to the script after the `exec` call. The script effectively **terminates** at that point. If `exec` is used at the top level of an interactive shell session, it can even terminate the session itself.
+
+Understanding the semantics of `exec()` is critical for correctly managing control flow in scripts and for designing process lifecycles in larger systems. Misusing `exec()` often leads to confusion, as the process replacement is irreversible and does not allow the original program to resume execution.
+
+### Scenario
 
 While experimenting with shell scripts, a student writes a line that uses `exec ls`. Instead of listing the directory and continuing with the rest of the script, the shell seems to vanish, the script ends <span class="orange-bold">abruptly</span>, and control doesn’t return as expected. In some cases, the terminal session itself closes. The student is caught off guard and begins to suspect a bug, not realizing that `exec` fundamentally changes how the process behaves.
+
 
 
 **Answer the following questions:**
@@ -76,7 +96,7 @@ In the case of `exec ls` within a shell script, the script’s shell process is 
 
 ## The Case of the Cloned Counter
 
-You’re helping your teammate Jun debug a strange issue in a C program that involves process creation. The program uses `fork()` to spawn a child process. Both parent and child increment a shared counter variable in a loop, and print it out to a file.
+You’re helping your teammate debug a strange issue in a C program that involves process creation. The program uses `fork()` to spawn a child process. Both parent and child increment a shared counter variable in a loop, and print it out to a file.
 
 Here's a simplified version of the code:
 
@@ -110,7 +130,6 @@ When you inspect the contents of `log.txt`, you find that both processes wrote f
 
 
 **Answer the following questions:**
-
 1. Explain why the `counter` variable is not shared between parent and child after the `fork()`.
 2. Describe what happens to the **standard memory**, **open file descriptor**, and **file offset** in this program after `fork()`.
 3. Suppose you want both processes to share and update the same `counter` variable. What approaches could you use? Compare at least two.
@@ -140,7 +159,7 @@ Lastly, even though both processes are using the same file descriptor internally
 
 ## The Case of the Shared Counter (mmap edition)
 
-You and your best friend refactor the previous program to try **actual shared memory**. You use `mmap()` to create a `counter` that both parent and child can access and modify. Here's the updated code:
+You now refactor the previous program to try **actual shared memory**. You use `mmap()` to create a `counter` that both parent and child can access and modify. Here's the updated code:
 
 ```c
 #include <stdio.h>
@@ -178,7 +197,6 @@ Now both processes increment the same memory, but <span class="orange-bold">new 
 
 
 **Answer the following questions:**
-
 1. Why does `mmap()` work here while a global variable did not?
 2. Why do some counter values appear duplicated or skipped?
 3. Propose a fix to ensure both processes safely update the counter without data races.
@@ -252,7 +270,6 @@ In this version, only the child counts, and the parent prints what it receives.
 
 
 **Answer the following questions:**
-
 1. What problem does this approach avoid, compared to shared memory?
 2. Why is this version free from data races on the counter value?
 3. Suppose you wanted both parent and child to send messages, how would you modify the pipe(s)?
@@ -273,6 +290,15 @@ However, communication is **one-way** unless a second pipe is added. Unlike `mma
 
 </p></div><br>
 
+### Further Notes 
+
+IPC is essential when separate processes need to coordinate or exchange data. Two primary IPC models are **shared memory** and **message passing**. In the shared memory model, multiple processes map a common memory region (e.g., using `mmap()`), allowing direct access to shared variables. This model is efficient but requires careful synchronization (e.g., mutexes or semaphores) to avoid race conditions.
+
+In contrast, the message passing model enforces stricter isolation between processes. Communication occurs through explicit system calls such as `write()` and `read()`, and the kernel acts as an <span class="orange-bold">intermediary</span>. **Pipes** are a classic example of message passing IPC in Unix-like systems. A pipe provides a <span class="orange-bold">unidirectional</span> channel through which one process can send data to another. This helps serialize communication and reduce the risk of data races, especially when only one process writes and the other reads.
+
+The code in this problem demonstrates a simple parent-child interaction using a pipe. Rather than sharing a `counter` variable directly, the child sends its updates to the parent through a pipe. The parent reads and prints the received messages, illustrating a safe and structured approach to communication without shared state.
+
+This problem contrasts with shared memory designs and raises useful questions about synchronization, data integrity, and bidirectional communication in IPC.
 
 
 
@@ -312,7 +338,7 @@ To avoid this, the parent must call `wait()` after `fork()` to reap each child. 
 
 
 
-While running a long-running simulation in the terminal, a student tries two different approaches: launching it normally with `./simulator` and then again using `./simulator &` to run it in the background. They observe that the foreground job blocks the shell, preventing them from typing further commands until it finishes, while the backgrounded version immediately returns control to the prompt.
+While running a long-running simulation in the terminal, a student tries two different approaches: launching it normally with `./simulator` and then again using `./simulator &` to run it in the background. They observe that the foreground job **blocks** the shell, preventing them from typing further commands until it finishes, while the backgrounded version immediately returns control to the prompt.
 
 Curious, the student begins experimenting with multiple background jobs and notices differences in responsiveness, I/O behavior, and CPU usage. In some cases, background jobs seem to be throttled or behave inconsistently. This leads the student to question how the shell manages job execution, whether the OS treats foreground and background processes differently, and why performance varies depending on how the job was launched.
 
@@ -336,7 +362,8 @@ In Unix-like systems, **job control signals** allow the shell and users to manag
 
 The shell plays a key role in **managing these signals**. It tracks process groups and forwards appropriate signals to foreground or background jobs. It also uses system calls like `waitpid()` to detect when jobs stop or exit, enabling the shell to update job status and provide interactive control. This system enables a single terminal session to juggle multiple processes efficiently and safely.
 
-Here are common job control signals:
+### Common UNIX Job Control Signals
+
 
 | **Signal** | **Name**             | **Description**                                    | **Typically Sent By**      |
 | ---------- | -------------------- | -------------------------------------------------- | -------------------------- |
@@ -347,6 +374,41 @@ Here are common job control signals:
 | `SIGSTOP`  | Stop (non-catchable) | Forcefully stops a process (cannot be ignored)     | User via `kill -STOP PID`  |
 
 
+Below is a short example showing how a program might **handle `SIGTSTP`** (triggered by `Ctrl+Z`) using `signal()` or `sigaction()`:
+
+```c
+#include <signal.h>
+#include <stdio.h>
+#include <unistd.h>
+
+void handle_tstp(int sig) {
+    printf("Caught SIGTSTP (Ctrl+Z), ignoring suspend...\n");
+}
+
+int main() {
+    // Set up custom handler for SIGTSTP
+    signal(SIGTSTP, handle_tstp);
+
+    while (1) {
+        printf("Running... press Ctrl+Z\n");
+        sleep(1);
+    }
+
+    return 0;
+}
+```
+
+{:.important}
+In a real terminal, `SIGTSTP` normally stops the process regardless of handlers. To truly override this behavior, you need terminal control and job control logic, which is typically managed by the shell. This example only **prints a message** when the signal is caught (and may not work depending on terminal settings).
+
+
+### Task 
+
+**Answer the following questions:**
+1. What is the difference between a foreground and background job in the shell?
+2. Who is responsible for scheduling background jobs: the shell or the operating system?
+3. Why do background jobs sometimes get stopped when they try to read from the terminal?
+4. What role does the shell play in job control, especially in managing job-related signals?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 Foreground and background jobs differ mainly in how the shell manages them. A **foreground process** is given access to the terminal’s input and output. The shell waits for it to finish before accepting new commands. A **background process**, invoked with `&`, runs concurrently, and the shell <span class="orange-bold">immediately</span> returns control to the user, allowing them to type further commands.
@@ -393,7 +455,7 @@ While MS-DOS’s model might be lighter-weight, FreeBSD’s approach enables **c
 ## State of Confusion
 
 
-While debugging a custom scheduler, you notice that some processes remain stuck in the "Ready" or "Waiting" state far **longer** than expected. These processes aren’t progressing, some never seem to get scheduled, while others wait indefinitely for events that never occur.
+While debugging a custom scheduler, you notice that some processes remain stuck in the "Ready" or "Waiting" state far **longer** than expected. <span class="orange-bold">These processes aren’t progressing</span>, some never seem to get scheduled, while others wait indefinitely for events that never occur.
 
 This unexpected behavior raises concerns about possible bugs in the scheduler logic or the way certain blocking operations are handled. To diagnose the issue, it becomes necessary to revisit the expected transitions between process states and explore how processes might become trapped due to scheduling flaws, missed signals, or incorrect assumptions about resource availability.
 
@@ -428,8 +490,27 @@ A process can get stuck in **Ready** if the scheduler never selects it, possibly
 
 ## The Phantom Thread
 
+### Background
+
+Certainly. Here is the revised **background section** without hyphens:
+
+---
+
+### Background
+
+In multithreaded Java programs, memory visibility refers to whether one thread's changes to shared variables become observable by other threads. This issue is governed by the Java Memory Model (JMM), which specifies the rules for how and when reads and writes to variables are propagated between threads and main memory.
+
+By default, the JVM and modern processors may cache variables in registers or processor-local caches. This can lead to a situation where one thread updates a variable, but another thread continues reading a stale value. Such behavior is <span class="orange-bold">not</span> a compiler bug. It is legal under the JMM unless a happens before relationship is explicitly established.
+
+Two common ways to enforce visibility are:
+
+* Declaring a variable as `volatile`, which ensures that reads and writes go directly to main memory rather than being cached
+* Using `synchronized` blocks or methods, which enforce visibility and mutual exclusion by acquiring and releasing locks
+
+Failing to establish proper memory visibility leads to *nondeterministic* bugs where a thread may never observe an update even though it logically should. These bugs are subtle and often arise in busy wait loops, flags, and concurrent data structures. Understanding and applying the Java Memory Model is essential for writing correct and predictable concurrent programs.
 
 
+### Scenario
 You're reviewing a teammate’s Java program that uses two threads: one sets a shared boolean flag `done`, while the other loops until the flag becomes `true`. Despite `done = true` being executed in the setter thread, the loop sometimes **never exits**, it gets stuck as if the flag was never set.
 
 Here’s a simplified version of the code:
@@ -460,7 +541,6 @@ Sometimes, `System.out.println("Done!")` is printed. Sometimes, it isn't, even t
 
 
 **Answer the following questions:**
-
 1. Why does the loop sometimes never terminate even though the flag is set?
 2. How does the Java Memory Model explain this behavior?
 3. What is the role of the `volatile` keyword in fixing this bug?
@@ -531,11 +611,10 @@ int main() {
 }
 ```
 
-Sometimes the program prints all thread messages; sometimes it doesn't. He is unsure whether this is a bug or expected behavior.
+Sometimes the program prints all thread messages, sometimes it doesn't. He is unsure whether this is a bug or expected behavior.
 
 
 **Answer the following questions:**
-
 1. What happens to a thread created with `pthread_create` if the main program finishes before it does?
 2. What is the purpose of `pthread_join`, and how does it affect program correctness?
 3. Could there be memory-related side effects from omitting `pthread_join` in this context?
@@ -571,7 +650,6 @@ Sometimes the program prints all thread messages; sometimes it doesn't. He is un
 ## Stack vs Heap: The Return Trap
 
 
-
 In a pthread-based C program, your teammate  writes a thread function that returns a pointer to a local character variable. The main thread retrieves this pointer via `pthread_join` and tries to dereference it. Sometimes it works, but sometimes it results in garbage or even a segmentation fault.
 
 Here’s a simplified version of the code:
@@ -600,9 +678,18 @@ int main() {
 
 He wants to know why the behavior is inconsistent, and whether there's a better way to return values from threads.
 
+### Background
+
+In C programs, memory is typically managed using two primary regions: the **stack** and the **heap**. These regions serve different purposes and have distinct lifetimes and allocation behaviors.
+
+The **stack** is used for automatic storage. When a function is called, its local variables are allocated on the stack. This memory is automatically reclaimed when the function returns. In multithreaded programs, each thread receives its own stack. Once a thread terminates, its stack memory is deallocated. Accessing this memory after the thread has exited leads to undefined behavior, such as segmentation faults or stale data. This a common source of <span class="orange-bold">dangling pointer bugs</span>.
+
+The **heap**, by contrast, is a region of memory used for dynamic allocation. Memory allocated on the heap (e.g., via `malloc`) persists until it is explicitly freed by the program. Heap memory is shared across threads and is not tied to the lifetime of any particular function or thread. This makes it the appropriate choice for returning data from a thread after it has terminated.
+
+### Task
+
 
 **Answer the following questions:**
-
 1. Why is returning a pointer to a stack variable from a thread unsafe?
 2. What happens to the thread’s stack after it exits?
 3. How does returning a heap-allocated pointer fix the problem?
@@ -654,7 +741,6 @@ You're reviewing a performance-critical application that uses a large number of 
 After profiling, you discover that the thread library in use implements a **many-to-one** mapping model, where all user threads are managed in user space and mapped onto a single kernel thread. Despite having multiple cores available, the threads do not run in parallel.
 
 **Answer the following questions:**
-
 1. What are the differences between **many-to-one**, **one-to-one**, and **many-to-many** thread mapping models?
 2. Why does a many-to-one model prevent true parallelism on multicore systems?
 3. What are the trade-offs between these models in terms of system calls, scalability, and overhead?
@@ -688,15 +774,13 @@ After profiling, you discover that the thread library in use implements a **many
 
 
 
-## Faulty Isolation
+## Fault Isolation
 
 You're comparing two server implementations: one uses multiple **threads**, and the other uses multiple **processes**. Both handle client connections concurrently.
 
 In the threaded version, a bug in one handler causes a buffer overflow and crashes the entire server. In the process-based version, the same bug only crashes a single client handler,  the server remains alive and continues serving other clients.
 
-This prompts a deeper investigation into how threads and processes isolate faults differently, and what trade-offs come with each approach.
-
-
+This prompts a *deeper* investigation into how threads and processes isolate faults differently, and what trade-offs come with each approach.
 
 **Answer the following questions:**
 1. Why does a crash in one thread typically bring down the entire process?
@@ -743,7 +827,6 @@ You decide to dig into the architectural differences that affect performance.
 
 
 **Answer the following questions:**
-
 1. Why is switching between processes more expensive than switching between threads?
 2. How do threads achieve faster communication compared to processes?
 3. What happens during a process context switch that doesn't occur with thread switching?
@@ -752,7 +835,7 @@ You decide to dig into the architectural differences that affect performance.
 
 {:.highlight}
 > **Hints:**
-> * Thread switching is lighter — no need to flush TLB or change address space.
+> * Thread switching is lighter,  no need to flush TLB or change address space.
 > * Process switching involves MMU updates, cache invalidation, and system calls.
 > * Threads share memory; processes require IPC mechanisms like pipes or shared memory.
 > * Thread APIs may run in user space, while process control always involves the kernel.
@@ -771,7 +854,7 @@ You decide to dig into the architectural differences that affect performance.
 
 <p>In contrast, thread switching is lighter because threads within the same process share the same memory space. Only the CPU registers, program counter, and stack pointer need to be saved and restored. No virtual memory remapping is required, and in many implementations, thread context switching can happen entirely in user space without a system call.</p>
 
-<p>When it comes to communication, <strong>threads share memory</strong> by default, enabling direct access to shared variables or buffers. In contrast, <strong>processes must use IPC mechanisms</strong> like pipes, message queues, or shared memory segments, which require coordination and system calls — adding latency and overhead.</p>
+<p>When it comes to communication, <strong>threads share memory</strong> by default, enabling direct access to shared variables or buffers. In contrast, <strong>processes must use IPC mechanisms</strong> like pipes, message queues, or shared memory segments, which require coordination and system calls,  adding latency and overhead.</p>
 
 <p>These differences make <strong>threads ideal for high-throughput, fine-grained parallelism</strong>, while processes are better suited for fault isolation and secure compartmentalization. System designers must weigh these trade-offs when building scalable, concurrent applications.</p>
 </p></div><br>

@@ -105,7 +105,7 @@ This firmware contains just enough logic to:
 * Transfer control to the OS kernel
 * This first step is called bootstrapping, and it’s designed to break the “chicken-and-egg” cycle of needing a program to load the program.
 
-Answer the following questions: 
+**Answer the following questions:** 
 1. Why is this called a paradox in OS design?
 2. What is the role of the firmware (or BIOS) in the boot process?
 3. What exactly does the kernel do after it gets loaded into RAM?
@@ -145,7 +145,7 @@ Drivers can be:
 Modern OSes use a *modular* approach, keeping the kernel minimal and extensible, while allowing drivers to be updated or swapped without rebuilding the whole OS. 
 
 
-Answer the following questions:
+**Answer the following questions:**
 1. Why aren’t all drivers just compiled permanently into the kernel?
 2. What are the trade-offs between running drivers in user mode vs kernel mode?
 3. What could go wrong if a buggy driver runs in kernel mode?
@@ -258,7 +258,7 @@ These behaviors are controlled by terminal flags (like `ECHO` and `ICANON`) usin
 
 Understanding these modes is crucial when writing low-level programs that use `read()` and `write()` instead of high-level input/output libraries like `printf` and `scanf`.
 
-Answer the following questions:
+**Answer the following questions:**
 1. The program uses only `read()` and `write()`. Why might the terminal appear completely silent: no input shown, no output printed?
 2. What system components are involved in this behavior? Name at least 2 things inside the OS kernel that participate.
 3. How does the terminal know whether or not to display typed characters?
@@ -299,7 +299,7 @@ But something’s wrong. Sometimes documents get:
 * Or overwritten halfway.
 
 
-Answer the following questions;
+**Answer the following questions:**
 * Why can’t multiple processes write directly to the printer, even if it uses interrupt-driven I/O?
 * What role is the kernel supposed to play as a resource allocator in this scenario?
 * What kind of data structure would help the kernel manage this correctly?
@@ -345,7 +345,7 @@ You notice that **sometimes**, during large or repeated writes, the system **cra
 * The driver is compiled with interrupts **enabled**.
 * The device uses an **interrupt** handler to send the next byte when the device is ready.
 
-Answer the following questions:
+**Answer the following questions:**
 1. What could go wrong if the interrupt handler calls `write_to_device()` again (**reentrantly**) while the original call hasn’t finished? See Atomicity Assumption below.
 2. How does preemption make the issue worse, even if the interrupt handler is simple?
 3. What makes a function reentrant, and is `write_to_device()` reentrant in this case?
@@ -386,7 +386,7 @@ This example illustrates a classic systems bug: assuming a function is safe to c
 
 Device drivers can either run in kernel mode (where they have direct access to hardware and privileged instructions) or user mode (isolated from critical system resources). Some operating systems like Linux run most drivers in kernel mode, while others like certain versions of Windows or microkernel-based systems (e.g., QNX, MINIX) allow or even require user-mode drivers.
 
-Answer the following questions:
+**Answer the following questions:**
 1. Name two operating systems that run most device drivers in kernel mode, and one OS that prefers or supports user-mode drivers. You need to search the internet for answers.
 2. Explain three benefits of running device drivers in kernel mode.
 3. Explain three potential risks or drawbacks of kernel-mode drivers compared to user-mode drivers.
