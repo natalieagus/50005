@@ -281,7 +281,7 @@ Here’s what’s happening in this example:
 
 ## Parameter Passing {#system-call-parameter-passing}
 
-System call service <span style="color:#f77729;"><b>routines</b></span> are just like common functions, implemented in the kernel space. <span style="color:#f77729;"><b>We will do a little exercise with BSim soon to understand better.</b></span> They require <span style="color:#f77729;"><b>parameters</b></span> to run. For example, if we request a `write`, one of the most obvious parameters required are the bytes to write.
+System call service <span style="color:#f77729;"><b>routines</b></span> are just like common functions, implemented in the kernel space. They require <span style="color:#f77729;"><b>parameters</b></span> to run. For example, if we request a `write`, one of the most obvious parameters required are the bytes to write.
 
 There are three general ways to pass the parameters required for system calls to the OS Kernel.
 
