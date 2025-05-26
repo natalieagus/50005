@@ -200,12 +200,51 @@ Imagine that at first, the CPU is busy executing process instructions in user mo
 The I/O device then proceeds on responding to the request and **transfers** the data from the **device** to the **local buffer** of the device controller.
 {:.info}
 
-When I/O transfer is <span style="color:#f7007f;"><b>complete</b></span>, the device controller makes an **<span style="color:#f7007f;"><b>hardware interrupt</b></span> request** to signal that the transfer is done (and data needs to be fetched). The CPU may respond to it by saving the states of the currently interrupted process, handle the interrupt, and resume the execution of the interrupted process.
+When I/O transfer is <span style="color:#f7007f;"><b>complete</b></span>, the device controller makes a **<span style="color:#f7007f;"><b>hardware interrupt</b></span> request** to signal that the transfer is done (and data needs to be fetched). The CPU may respond to it by saving the states of the currently interrupted process, handle the interrupt, and resume the execution of the interrupted process.
+* The interrupt handler simply migrates the data from controller into the RAM (Kernel space)
+* It does not *directly* notify the requesting process, but instead the step is more complex (see [next](#requesting-resource-process) section), depending on the **type** resource (data) requested. 
 
 **Note**:
 
 1. SVC <span style="color:#f77729;"><b>delay</b></span> and IRQ <span style="color:#f77729;"><b>delay</b></span>: time elapsed between when the request is invoked until when the request is first executed by the CPU.
 2. Before the user program is resumed, its state must be <span style="color:#f77729;"><b>restored</b></span>. Saving of state during the switch between User to Kernel mode is implied although it is not drawn.
+
+
+### When Will the Requesting Process Gets the Resource? {#requesting-resource-process}
+
+When a user program performs a blocking system call like `read()` or `recv()`, it often ends up waiting for an external event such as keyboard input, network data, or disk I/O to become available. Behind the scenes, the operating system handles these events <span class="orange-bold">asynchronously</span> as explained above via hardware interrupts. However, it’s not the interrupt handler itself that **directly resumes** the process. 
+
+Instead, each type of resource (e.g., [TTYs](#tty), sockets, files) is managed by a specific kernel subsystem that takes responsibility for buffering the data, **tracking** which processes are waiting, and waking them up when the event completes. This design allows the kernel to efficiently manage many concurrent I/O operations, each linked to its own wait queue and triggered by different types of interrupts or internal signals. 
+
+The table below summarizes the type of data and Kernel subsystem responsible to *wake* the requesting process: 
+
+{:.highlight}
+This is FYI only, there's no need to memorize this table. It is not put into appendix because we would want you to understand the notion of interrupt-driven system by example. 
+
+
+| **Asynchronous Event Source**     | **Example Blocking Syscall**  | **Who Handles the Interrupt/Event**            | **Who Wakes Up the Blocked Process**              | **Typical Wait Queue Owner**                  |
+| --------------------------------- | ----------------------------- | ---------------------------------------------- | ------------------------------------------------- | --------------------------------------------- |
+| **Keyboard**                      | `read(0, buf, n)` (TTY stdin) | IRQ1 → Keyboard Interrupt Handler              | TTY Line Discipline (e.g., `n_tty.c`)             | TTY device struct / line discipline           |
+| **Mouse/Touchpad**                | `read()` on input device      | Input device IRQ → input subsystem             | Input handler                                     | Input device driver                           |
+| **Disk I/O Completion (HDD/SSD)** | `read()` from file            | Block device IRQ → block layer                 | VFS / I/O scheduler / bio completion              | File / page cache / inode                     |
+| **Socket Data Arrival (TCP/UDP)** | `recv()`, `read()`            | NIC IRQ → network stack                        | Socket layer (e.g., `tcp_recvmsg()`)              | Socket struct                                 |
+| **Pipe/FIFO Write**               | `read()` from pipe            | No IRQ, this is user-level `write()` call             | Pipe driver (e.g., `pipe_read()`, `pipe_write()`) | Pipe buffer (anon inode)                      |
+| **Child Process Exit**            | `wait()` / `waitpid()`        | No IRQ, process exit triggers internal signal | `do_wait()` subsystem in `kernel/exit.c`          | Parent process wait queue                     |
+| **Timer Expiry (alarm, sleep)**   | `sleep()`, `nanosleep()`      | APIC / timer IRQ → timer subsystem             | Timerfd or kernel timer list handler              | Timer wait queue / scheduler’s internal queue |
+| **File Descriptor Ready (epoll)** | `epoll_wait()`                | Varies (underlying fd event)                   | `ep_poll_callback()` in `fs/eventpoll.c`          | Epoll instance’s internal wait queue          |
+| **Signal Delivery**               | `pause()`, `sigsuspend()`     | Hardware or software signal (e.g., Ctrl+C)     | Signal handling logic in `signal.c`               | Task’s signal wait queue                      |
+| **Eventfd**                       | `read()` on eventfd           | Another thread writes to eventfd               | Eventfd subsystem (`fs/eventfd.c`)                | Eventfd struct                                |
+| **Inotify/Fanotify**              | `read()` on inotify fd        | File system triggers internal event            | Inotify handler                                   | Inotify watch struct                          |
+| **USB Device Event**              | `read()` or device open       | USB IRQ → USB core                             | USB class driver (e.g., HID, storage)             | USB device driver                             |
+| **GPU Event / VBlank**            | `poll()` on DRM/KMS fd        | GPU IRQ → DRM subsystem                        | DRM event queue manager                           | DRM file-private object                       |
+| **Audio Input/Output Ready**      | ALSA read/write               | Audio device IRQ                               | ALSA PCM layer                                    | ALSA runtime struct                           |
+| **Serial Port Data**              | `read()` on `/dev/ttyS*`      | UART IRQ → serial driver                       | TTY serial line discipline                        | Serial TTY driver                             |
+
+
+
+{:.note}
+The key takeaway is that **interrupt handlers** to not wake processes directly. They **signal the appropriate subsystem** who tracks which processes **are waiting** and performs `wake_up()` when conditions are met (data ready, EOF, etc.). Each resource (socket, tty, pipe, etc) maintains its own **wait queue** and the syscall handler (`read()`, `recv()`, etc.) puts the process to sleep on it. We will learn more about this in the next chapter (Processes).
+
 
 ## Exceptions {#exceptions}
 
@@ -683,6 +722,17 @@ In this example, `reentrant_syscall` operates on a local buffer passed as an arg
 In an operating system, reentrant kernel functions are <span class="orange-bold">crucial</span> for handling multiple processes or threads safely, ensuring that shared resources are not corrupted and system stability is maintained.
 <hr>
 
+
+## TTY 
+
+A TTY device, originally short for "teletypewriter," refers to a character-oriented device **interface** used to facilitate text-based input and output between user-space programs and the operating system. In contemporary systems, TTY devices encompass physical terminals, virtual consoles, and pseudoterminals. Physical terminals include hardware serial interfaces such as `/dev/ttyS0`, while virtual terminals refer to interfaces like `/dev/tty1` through `/dev/tty6`, commonly accessed via keyboard shortcuts on local machines. Pseudoterminals, such as those represented by `/dev/pts/*`, are typically used by terminal emulators and remote sessions (e.g., SSH or tmux).
+
+The TTY subsystem in the kernel is responsible for processing character input and output through these devices. It manages buffering, line editing, signal generation (such as Ctrl+C translating to `SIGINT`), and echo functionality via a component called the line discipline. When a user program performs a blocking `read()` call on a TTY device, the kernel places the process in a wait queue until sufficient input (e.g., a newline-terminated line) becomes available. Input events, typically triggered by keyboard interrupts, are processed by the input subsystem and forwarded to the TTY layer, which then wakes up any blocked processes when their input criteria are satisfied.
+
+{:.note}
+<span class="orange-bold">Not all processes interact with a TTY.</span> Graphical user interface (GUI) applications, background daemons, and many automated system services operate independently of TTY devices. These processes do not rely on text-based standard input or output, and therefore do not require a controlling terminal. In fact, processes without an associated TTY cannot receive terminal-generated signals and typically redirect their input and output to other interfaces such as pipes, sockets, or log files. This separation allows modern operating systems to support both interactive and non-interactive process models efficiently.
+
+In summary, TTY devices provide a standardized interface for interactive, text-based communication between the user and the system, primarily used by shell sessions and terminal-based applications. However, many user-space processes, particularly those in graphical or headless environments, operate without any reliance on TTY infrastructure.
 
 [^5]: Interrupt-driven I/O is fine for moving small amounts of data but can produce high overhead when used for bulk data movement such as disk I/O. To solve this problem, direct memory access (DMA) is used. After setting up buffers, pointers, and counters for the I/O device, the device controller transfers an entire block of data directly to or from its own buffer storage to memory, with no intervention by the CPU.
 [^6]: The CPU cache is a hardware cache: performing optimization that’s unrelated to the functionality of the software. It handles each and every access between CPU cache and main memory as well. They need to work fast, too fast to be under software control, and _are entirely built into the hardware._
