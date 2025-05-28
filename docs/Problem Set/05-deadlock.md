@@ -44,7 +44,10 @@ sem_post(&full);
 sem_post(&mutex);
 ```
 
-At runtime, the system works for a while. But occasionally, when the buffer becomes full, all producers block indefinitely, even though consumers are still running.
+{:.warning-title}
+> Problem
+> 
+> At runtime, the system works for a while. But occasionally, when the buffer becomes full, all producers block indefinitely, even though consumers are still running.
 
 
 **Answer the following questions:**
