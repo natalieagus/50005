@@ -406,7 +406,7 @@ As you've learned from 50.004, hashing is the process of using a hash function t
 - **Use Cases**: Encryption is used when data needs to be hidden and securely transmitted or stored. Hashing is used for creating digital signatures, verifying the integrity of data, and ensuring data has not been altered (tamper evidence).
 
 ### Not Cryptography?
-While hashing is not used for concealing data (as traditional encryption is), it is still considered a *part* of cryptography because it deals with the principles of data security—specifically integrity and authenticity. It's a fundamental tool in the cryptographic toolbox, used to support encryption and digital signatures, ensure data integrity, and authenticate information or identities.
+While hashing is not used for concealing data (as traditional encryption is), it is still considered a *part* of cryptography because it deals with the principles of data security, <span class="orange-bold">specifically</span> integrity and authenticity. It's a fundamental tool in the cryptographic toolbox, used to support encryption and digital signatures, ensure data integrity, and authenticate information or identities.
 
 However, a hash function as a method of encryption is <span class="orange-bold">not appropriate</span> or effective for several reasons. Here’s why:
 

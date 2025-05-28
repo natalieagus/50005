@@ -73,7 +73,7 @@ Remember that this is a <span style="color:#f7007f;"><b>hardware interrupt</b></
 This forces the CPU to **transfer** control to the **interrupt handler**. This switch the currently running user-program to enter the <span style="color:#f77729;"><b>kernel mode</b></span>. The interrupt handler will do the following routine:
 
 1. **<span style="color:#f7007f;"><b>Save</b></span> the register states** first (the interrupted program instruction) into the process table
-2. And then transferring control to the appropriate interrupt service routine — depending on the device controller that made the request.
+2. And then transferring control to the appropriate interrupt service routine, depending on the device controller that made the request.
 
 ### Vectored Interrupt System
 
@@ -457,7 +457,7 @@ A program is a _passive entity_, just lines of instructions while a process is a
 A program resides on _disk_ and isn’t currently used. It <span style="color:#f7007f;"><b>does not</b></span> take up <span style="color:#f77729;"><b>resources</b></span>: CPU cycles, RAM, I/O, etc while a process need these resources to run.
 
 - When a process is <span style="color:#f77729;"><b>created</b></span>, the kernel allocate these resources so that it can begin to execute.
-- When it <span style="color:#f77729;"><b>terminates</b></span>, the resources are freed by the kernel — such as RAM space is freed, so that other processes may use the resources.
+- When it <span style="color:#f77729;"><b>terminates</b></span>, the resources are freed by the kernel, such as RAM space is freed, so that other processes may use the resources.
 - A typical general-purpose computer runs multiple processes at a time.
 
 If you are interested to find the list of processes in your Linux system, you can type `top` in your terminal to see all of them in real time. A single CPU achieves concurrency by <span style="color:#f77729;"><b>multiplexing</b></span> (perform rapid context switching) the executions of many processes.
@@ -524,7 +524,7 @@ Multiprocessor systems have three main advantages:
 
 ### Symmetric Architecture
 
-There are different architectures for multiprocessor system, such as a <span style="color:#f77729;"><b>symmetric</b></span> architecture — we have multiple CPU chips in a computer system:
+There are different architectures for multiprocessor system, such as a <span style="color:#f77729;"><b>symmetric</b></span> architecture where we have multiple CPU chips in a computer system:
 
 <img src="{{ site.baseurl }}/assets/images/week1/15.png"  class="center_fourty"/>
 

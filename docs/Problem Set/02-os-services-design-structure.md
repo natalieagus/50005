@@ -153,7 +153,7 @@ Initially, this structure allowed kernel developers to debug each layer separate
 > **Hints**:
 > * How does isolating responsibilities simplify error tracking?
 > * Consider how many steps it takes to reach hardware in a layered system.
-> * Think concretely about I/O requests or interrupts—what must happen in each kernel architecture?
+> * Think concretely about I/O requests or interrupts: what must happen in each kernel architecture?
 > * Could selectively collapsing some layers or using a hybrid model help?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -178,7 +178,7 @@ This separation allows flexibility: the OS provides general tools (mechanisms), 
 For example:
 1. **In CPU scheduling**, the **mechanism** is the context switch (the ability to save and restore process states). The **policy** is the scheduling algorithm, such as round-robin, shortest job first, or multilevel feedback queues, which decides which process to run next.
 2. **In memory management**, the **mechanism** includes paging and virtual memory mapping. The **policy** determines which page to evict on a page fault. For instance, using Least Recently Used (LRU) or First-In-First-Out (FIFO).
-3. **In file systems**, the **mechanism** is the ability to set permissions (e.g., read, write, execute). The **policy** decides who gets what access — for example, based on user roles or security levels.
+3. **In file systems**, the **mechanism** is the ability to set permissions (e.g., read, write, execute). The **policy** decides who gets what access. For example, based on user roles or security levels.
 
 
 By separating mechanisms from policies, OSes like Linux and Windows allow different strategies to be applied without changing the core implementation. This makes the system more adaptable to diverse use cases.
@@ -240,9 +240,9 @@ This design lets the user *switch memory allocation strategies* by changing the 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 In this code, the function `allocate(`) represents the **mechanism**. It performs the actual memory allocation by marking a block as used and updating relevant system state. The functions `first_fit()` and `best_fit()` are **policies**; they define different *strategies* for selecting which memory block to allocate but do not modify system state themselves.
 <br><br>
-This design demonstrates good separation between policy and mechanism because the decision-making logic (**policy**) is completely decoupled from the execution logic (**mechanism**). The `malloc_sim()` function <span class="orange-bold">doesn’t care</span> how the block was chosen—it only invokes the chosen policy to get a block, then delegates allocation to a fixed mechanism. This modularity improves clarity and prevents accidental entanglement of concerns.
+This design demonstrates good separation between policy and mechanism because the decision-making logic (**policy**) is completely decoupled from the execution logic (**mechanism**). The `malloc_sim()` function <span class="orange-bold">doesn’t care</span> how the block was chosen. It only invokes the chosen policy to get a block, then delegates allocation to a fixed mechanism. This modularity improves clarity and prevents accidental entanglement of concerns.
 <br><br>
-If the developer had hardcoded the best-fit logic directly into `malloc_sim()`, any future attempt to use a different strategy—such as first-fit or worst-fit—would require modifying the core allocator itself. This tightly couples the decision logic with the core mechanism, reducing flexibility and increasing the risk of introducing bugs during changes. It also makes testing and experimentation with different policies much harder.
+If the developer had hardcoded the best-fit logic directly into `malloc_sim()`, any future attempt to use a different strategy (such as first-fit or worst-fit) would require modifying the core allocator itself. This tightly couples the decision logic with the core mechanism, reducing flexibility and increasing the risk of introducing bugs during changes. It also makes testing and experimentation with different policies much harder.
 <br><br>
 This approach is highly beneficial for experimentation and tuning, especially in real-world OS memory allocation, where the best allocation strategy may vary by workload or system configuration. Developers or researchers can easily **swap** or **test** new allocation policies by providing alternative functions, without touching or risking the integrity of the core allocator mechanism. This allows for rapid prototyping and cleaner optimization workflows.
 </p></div><br>
@@ -339,7 +339,7 @@ void schedule(ProcessQueue* q, Process* (*policy)(ProcessQueue*)) {
 > * What happens if you want to test **SJF** without modifying existing low-level code?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-In this code, the `context_switch()` function is the mechanism—it carries out the low-level task of switching from the currently running process to the next one, handling CPU state and control structures. The functions `round_robin()` and `priority_based()` are <span class="orange-bold">policies</span>; they implement strategies for selecting which process to run next based on different scheduling criteria.
+In this code, the `context_switch()` function <span class="orange-bold">is the mechanism</span>. It carries out the low-level task of switching from the currently running process to the next one, handling CPU state and control structures. The functions `round_robin()` and `priority_based()` are <span class="orange-bold">policies</span>; they implement strategies for selecting which process to run next based on different scheduling criteria.
 <br><br>
 This refactoring improves maintainability and flexibility because it isolates the decision-making logic from the execution mechanism. The scheduling policy can be changed simply by passing a different function to `schedule()` without modifying the underlying context-switching logic. This reduces code duplication, minimizes the risk of introducing errors, and allows developers to update or optimize scheduling strategies independently from core system operations.
 <br><br>
@@ -360,7 +360,7 @@ Instead, they must **request** these services from the operating system through 
 Under the hood, the API triggers a software interrupt or trap instruction that switches the CPU from user mode to kernel mode, allowing the kernel to safely perform the requested operation before returning control. 
 
 {:.highlight}
-Understanding this interface is critical, especially in cases where responsiveness and efficient resource handling are essential—such as in a logging program that waits for user input.
+Understanding this interface is critical, especially in cases where responsiveness and efficient resource handling are essential, such as in a logging program that waits for user input.
 
 ### Scenario 
 You wrote a simple C application to log user activities in real-time. It reads user inputs from the terminal and records the input along with timestamps into a log file. However, you notice the application hangs whenever users stop providing input for extended periods.
@@ -401,12 +401,12 @@ int main() {
 
 {:.highlight}
 > **Hints**:
-> * How does API connect to OS kernel? Think about how user programs typically request services from the OS kernel—do they call the kernel directly, or is there something in between?
+> * How does API connect to OS kernel? Think about how user programs typically request services from the OS kernel. Do they call the kernel directly, or is there something in between?
 > * Parameter passing strategies:
 >   * **Registers**: CPU registers are very fast but limited in number.
->   * **Stack**: Remember function calls—how do you usually pass parameters to regular functions in C?
+>   * **Stack**: Remember function calls: how do you usually pass parameters to regular functions in C?
 >   * **Block or Table**: Useful when you have many parameters. Can you think of a structure that could hold these parameters in memory?
-> * Blocking system call: Look carefully at your provided code snippet—where exactly could the code become stuck waiting indefinitely for input?
+> * Blocking system call: Look carefully at your provided code snippet: where exactly could the code become stuck waiting indefinitely for input?
 > * Making it non-blocking: Consider system calls or methods in POSIX C that help you check if input is ready before trying to read it. Is there a way to ask the OS, "Hey, is there anything to read yet?" before actually reading?
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -452,7 +452,7 @@ You install a new version of Python using a third-party installer (e.g., from py
 {:.highlight}
 > **Hints:**
 > * `$PATH` is searched left to right for the first matching executable name.
-> * `env -i` wipes the environment — the shell won't have the usual config.
+> * `env -i` wipes the environment (`-i` stands for ignore environment). Consult the `man` for further details.
 > * Try using `ls`, `echo`, or `pwd` inside the clean shell to observe limitations.
 > * Consider how `exec()` family functions use `$PATH`.
 

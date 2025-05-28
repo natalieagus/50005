@@ -128,7 +128,7 @@ The one **program** that is running at all times in the computer is the kernel.
 The Kernel is the **<span style="color:#f7007f;"><b>heart</b></span>** of an operating system.
 
 - For example, Ubuntu OS is about 2.7GB, but its Kernel (Linux) size is only about 70MB).
-- It operates on the <span style="color:#f7007f;"><b>physical space</b></span> — meaning that it has full knowledge of all <span style="color:#f7007f;"><b>physical</b></span> addresses instead of <span style="color:#f77729;"><b>virtual</b></span> addresses, and has the <span style="color:#f7007f;"><b>complete privilege</b></span> over all the hardware of the computer system.
+- It operates on the <span style="color:#f7007f;"><b>physical space</b></span>, meaning that it has full knowledge of all <span style="color:#f7007f;"><b>physical</b></span> addresses instead of <span style="color:#f77729;"><b>virtual</b></span> addresses, and has the <span style="color:#f7007f;"><b>complete privilege</b></span> over all the hardware of the computer system.
 - The only way to access the kernel code is when a process runs in the Kernel mode, via very specific <span style="color:#f7007f;"><b>controlled entry points</b></span>.
 
 You have learned this before: for instance via `ILLOP`, `IRQ`, and `RESET`.
@@ -179,12 +179,12 @@ User programs have to perform **system calls** (supervisor call) when they requi
 
 # Booting {#booting}
 
-Booting is the process of starting up a computer. **It is usually hardware initiated** — (by the start button that users press) — meaning that users physically initiate simple hardwired procedures to kickstart the chain of events that loads the firmware (BIOS) and eventually the entire OS to the main memory to be executed by the CPU. This process of loading basic software to help kickstart operation of a computer system after a hard reset or power on is called **bootstrapping**.
+Booting is the process of starting up a computer. **It is usually hardware initiated** (by the start button that users press) meaning that users physically initiate simple hardwired procedures to kickstart the chain of events that loads the firmware (BIOS) and eventually the entire OS to the main memory to be executed by the CPU. This process of loading basic software to help kickstart operation of a computer system after a hard reset or power on is called **bootstrapping**.
 
 Recall that programs (including the operating system kernel) must **load** into the main memory before it can be executed. However, at the instance when the start button is pressed, there’s no program that resides in the RAM yet and therefore nothing can be executed in the CPU.
 
-We require a software to load another software into the RAM — this results in a <span style="color:#f7007f;"><b>paradox</b></span>.
 {:.info}
+We require a software to load another software into the RAM -- this results in a <span style="color:#f7007f;"><b>paradox</b></span>.
 
 ## The Booting Paradox
 
@@ -193,7 +193,7 @@ To solve this paradox, the bare minimum that should be done in the hardware leve
 After the firmware is loaded onto the main memory through hardwired procedures, the CPU may execute it and **initialise all aspects of the system, such as:**
 
 1. <span style="color:#f77729;"><b>Prepare</b></span> all attached devices in a state that is ready to be used by the OS
-2. <span style="color:#f77729;"><b>Loads</b></span> other programs — which in turn loads more and more complex programs,
+2. <span style="color:#f77729;"><b>Loads</b></span> other programs which in turn loads more and more complex programs,
 3. <span style="color:#f77729;"><b>Loads</b></span> the Kernel from disk
 4. When the system boots, the hardware starts in the **kernel mode**. After being loaded, the Kernel will perform the majority of system setups (driver init, memory management, interrupts, etc). Afterwards, the rest of the OS is loaded and then user processes are started in _<span style="color:#f77729;"><b>user mode</b></span>_.
 
@@ -241,8 +241,8 @@ One should only install drivers from <span style="color:#f77729;"><b>trusted</b>
 
 Device controllers are **<span style="color:#f7007f;"><b>electronic components</b></span>** inside a computer that are in charge of specific types of devices. Components that make up the **device controllers:**
 
-1. <span style="color:#f77729;"><b>Registers</b></span> — contains instructions that can be read by an appropriate **device driver program at the CPU**
-2. Local memory <span style="color:#f77729;"><b>buffer</b></span> — contains instructions and data that will be fetched by the CPU when executing the device driver program, and ultimately loaded onto the RAM.
+1. <span style="color:#f77729;"><b>Registers</b></span>: contains instructions that can be read by an appropriate **device driver program at the CPU**
+2. Local memory <span style="color:#f77729;"><b>buffer</b></span>: contains instructions and data that will be fetched by the CPU when executing the device driver program, and ultimately loaded onto the RAM.
 3. A <span style="color:#f77729;"><b>simple</b></span> program to _communicate_ with the device driver
 
 ### I/O

@@ -226,7 +226,7 @@ A local DNS server provided by an ISP typically supports **recursive** queries r
 ### Who decides whether a query should be iterative or recursive? 
 
 {:.important}
-The type of DNS query—whether iterative or recursive—is determined by the **client** making the query <span class="orange-bold">and</span> the **configuration** of the DNS server receiving the query.
+The type of DNS query (whether iterative or recursive) is determined by the **client** making the query <span class="orange-bold">and</span> the **configuration** of the DNS server receiving the query.
 
 DNS Client need to specify whether the query is iterative or recursive. DNS server will then respond **depending** on its configuration. Hence DNS resolution behavior **depends** on **both** the configuration of the DNS server and the **type** of query received from the client. 
 

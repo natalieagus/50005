@@ -93,7 +93,7 @@ Typically, both the directory structure and the files themselves reside on disk 
 
 <img src="{{ site.baseurl }}/assets/images/week6/6.png"  class="center_fifty"/>
 
-Each <span style="color:#f77729;"><b>volume/partition</b></span> that contains a file system must also contain information about the files in the system. This information is kept as <span style="color:#f77729;"><b>entries</b></span> in the device directory (a.k.a volume table of contents). The device directory (more commonly known simply as the directory) records some <span style="color:#f77729;"><b>important</b></span> information such as name, location, size, and type—for all files _in that volume_.
+Each <span style="color:#f77729;"><b>volume/partition</b></span> that contains a file system must also contain information about the files in the system. This information is kept as <span style="color:#f77729;"><b>entries</b></span> in the device directory (a.k.a volume table of contents). The device directory (more commonly known simply as the directory) records some <span style="color:#f77729;"><b>important</b></span> information such as name, location, size, and type for all files _in that volume_.
 
 ## Purpose
 

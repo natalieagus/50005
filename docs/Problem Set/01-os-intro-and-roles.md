@@ -244,7 +244,7 @@ Nothing appears. There is no output. No error. Just silence. **The program exits
 When you type into a terminal, you're **interacting** with a terminal device driver: part of the OS that manages how keyboard input is processed.
 
 By default, terminals operate in **canonical** (or cooked) mode:
-* Input is line-buffered — characters are collected until Enter is pressed.
+* Input is line-buffered. Characters will be collected until Enter is pressed.
 * Special characters like backspace, Ctrl-C, and Ctrl-D are handled automatically.
 * The terminal echoes every character you type back to the screen.
 
@@ -398,5 +398,5 @@ An operating system that supports or prefers user-mode drivers is MINIX 3, which
 
 Running drivers in kernel mode offers **performance** benefits since drivers can directly access hardware and memory without costly user-kernel transitions. It also allows **tighter integration** with OS subsystems and avoids the overhead of inter-process communication. However, this approach has serious drawbacks. **Bugs** in kernel-mode drivers can **crash** the entire system, posing a major stability risk. It also increases the attack surface for security vulnerabilities and makes debugging more difficult due to limited tooling and lack of isolation.
 
-For a critical real-time system like a <span class="orange-bold">medical device</span>, user-mode drivers should be preferred wherever possible. **Reliability** and **fault isolation** are more **important** than raw performance in such systems. A user-mode driver crash would only affect the specific device, not the whole system, and updates or debugging can be done more safely. However, for timing-critical components, kernel-mode may still be necessary if latency becomes a bottleneck. A hybrid approach—with clear justification for any kernel-mode drivers—offers the best balance between safety and performance.
+For a critical real-time system like a <span class="orange-bold">medical device</span>, user-mode drivers should be preferred wherever possible. **Reliability** and **fault isolation** are more **important** than raw performance in such systems. A user-mode driver crash would only affect the specific device, not the whole system, and updates or debugging can be done more safely. However, for timing-critical components, kernel-mode may still be necessary if latency becomes a bottleneck. A hybrid approach (with clear justification for any kernel-mode drivers) offers the best balance between safety and performance.
 </p></div><br> 
