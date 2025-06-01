@@ -577,7 +577,7 @@ Then, the main loop is repeated <span style="color:#f77729;"><b>until</b></span>
    3. `NEWFILE=`ls -l /etc/shadow`: check the file **info** (not <span class="orange-bold">content</span>!) of `/etc/shadow`and store it into variable `NEWFILE`; to be used in the <span style="color:#f77729;"><b>next</b></span> loop check
 4. It terminates the moment the metadata of the new file `NEWFILE` differs from `OLDFILE`: this means `/etc/shadow` has been **recently** modified which indicates that our attack is successful (assuming no other process is currently changing `/etc/shadow`)
 
-Two processes from step (3.1) and (3.2) above are <span class="orange-bold">racing</span>, and the script terminates when `/etc/shadow` has been successfully changed.
+Two processes from step (3a) and (3b) above are <span class="orange-bold">racing</span>, and the script terminates when `/etc/shadow` has been successfully changed.
 
 # Preventing the TOCTOU Bug
 Preventing TOCTOU vulnerabilities involves strategies that either <span class="orange-bold">minimize</span> the window between the "check" and the "use" or <span class="orange-bold">avoid</span> the need for separate check and use steps altogether. Here are some general strategies for mitigating TOCTOU bugs:
