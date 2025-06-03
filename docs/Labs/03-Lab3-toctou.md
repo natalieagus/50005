@@ -74,13 +74,11 @@ git clone https://github.com/natalieagus/lab_toctou
 ```
 
 You should find that the following files are given to you:
-<img src="{{ site.baseurl }}//docs/Labs/images/03-Lab3-toctou/2025-05-22-13-51-24.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/03-Lab3-toctou/2025-06-03-18-44-12.png"  class="center_seventy no-invert"/>
 
-Now go to the `User/` directory and call `make`. You should find these files in the end.
-<img src="{{ site.baseurl }}/assets/images/lab2/2.png"  class="center_full no-invert"/>
 
-Do <span class="orange-bold">NOT</span> used a shared drive with your Host machine, or a shared external drive with other OS. You will NOT be able to create root files in this case. Clone the above file in `/home/<user>` directory instead.
 {:.error}
+Do <span class="orange-bold">NOT</span> used a shared drive with your Host machine (e.g: do not clone these files in `/mnt/*`), or a shared external drive with other OS. You will NOT be able to create root files in this case. Clone the above file in `/home/<user>` directory instead.
 
 ## Login as Root User
 
@@ -121,6 +119,13 @@ While logged in as `root`, navigate to `/FilesForRoot`, and type `make`. You sho
 <img src="{{ site.baseurl }}/assets/images/lab2/4.png"  class="center_full no-invert"/>
 
 It is <span style="color:#f7007f;"><b>important</b></span> to check that the newly created files belong to the user root as shown in yellow above (beside the date is the `owner` of the file).
+
+If `make` is not installed, you can install it using `apt`:
+
+```
+sudo apt update
+sudo apt install build-essential
+```
 
 ## Add other Users
 

@@ -703,6 +703,14 @@ binary.o: binary.c functions.h
    - `make clean`
    - `make clean1`
 
+
+If `make` is not installed, you can install it using your package manager, for instance using `apt` (Ubuntu / Debian) :
+
+```
+sudo apt update
+sudo apt install build-essential
+```
+
 ## Recompilation
 
 Run this command consecutively:
