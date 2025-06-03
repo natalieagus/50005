@@ -119,3 +119,898 @@ sem_post(&full);
 </p>
 
 </p></div><br>
+
+
+
+## Dining Philosphers: Not So Hungery After All 
+### Background
+
+The **Dining Philosophers Problem** is a classic illustration of deadlock and resource contention. Five philosophers sit around a table. Between each pair of philosophers is a single fork. To eat, a philosopher needs to pick up both the left and right fork. Philosophers alternate between thinking and eating.
+
+In the naïve solution, each philosopher:
+
+1. Picks up the left fork.
+2. Picks up the right fork.
+3. Eats.
+4. Puts down both forks.
+
+<img src="{{ site.baseurl }}/docs/Problem Set/images/an_illustration_of_the_dining_philosophers_problem.png"  class="center_seventy no-invert"/>
+
+If all philosophers pick up their left fork at the same time, <span class="orange-bold">no one can pick up their right fork</span>, and **deadlock** occurs.
+
+Deadlock arises when four conditions are met: 
+
+* **Mutual exclusion** (forks cannot be shared)
+* **Hold and wait** (each philosopher holds one fork while waiting for the other)
+* **No preemption** (forks are only released voluntarily)
+* **Circular wait** (each philosopher waits on the next in a cycle)
+
+
+### Scenario
+
+You are given a C-like pseudocode implementation of the philosophers’ behavior. Each philosopher runs the following:
+
+```c
+while (true) {
+    think();
+    pick_up(left_fork);
+    pick_up(right_fork);
+    eat();
+    put_down(left_fork);
+    put_down(right_fork);
+}
+```
+
+{:.note}
+Forks are represented as mutexes. All philosophers start simultaneously. Deadlock sometimes occurs during execution.
+
+Several alternate designs are proposed:
+* **Design A:** Allow at most four philosophers to sit at the table at once.
+* **Design B:** Impose a resource hierarchy by requiring philosophers to always pick up the lower-numbered fork first.
+* **Design C:** Use a waiter (monitor) who grants permission to pick up forks only if both are available.
+* **Design D:** Replace blocking `pick_up()` with try-lock. If the second fork is unavailable, release the first and retry after thinking.
+
+
+**Answer the following questions:**
+1. Identify which of the four Coffman deadlock conditions are satisfied in the original code.
+2. For each of the proposed designs (A–D), explain how they address the deadlock problem.
+3. Which designs also improve fairness or avoid starvation? Why?
+4. What are the trade-offs between centralized (Design C) and decentralized (Design D) control?
+
+
+{:.highlight}
+> **Hints:**
+> * Think about how each design breaks one or more deadlock conditions.
+> * Consider whether philosophers may starve even if deadlock is avoided.
+> * For resource hierarchy, assume fork numbers range from 0 to 4 clockwise.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> The original implementation satisfies all four Coffman conditions:</p>
+<ul>
+  <li><strong>Mutual exclusion:</strong> Forks are mutexes, only one philosopher can hold each.</li>
+  <li><strong>Hold and wait:</strong> Each philosopher holds one fork and waits for the other.</li>
+  <li><strong>No preemption:</strong> Forks are only released voluntarily.</li>
+  <li><strong>Circular wait:</strong> Each philosopher waits for the fork held by their neighbor.</li>
+</ul>
+
+<p><strong>2.</strong></p>
+<ul>
+  <li><strong>Design A:</strong> By limiting access to four philosophers, at least one can eat, preventing a full circular wait. This breaks the circular wait condition.</li>
+  <li><strong>Design B:</strong> Enforcing a global resource ordering (always pick lower-numbered fork first) ensures there can be no cycles in the wait-for graph. This breaks circular wait.</li>
+  <li><strong>Design C:</strong> A waiter grants both forks or none, so no philosopher holds one fork while waiting for the other. This breaks hold and wait.</li>
+  <li><strong>Design D:</strong> Philosophers do not hold one fork while waiting for the other. If they fail to acquire both, they release and retry later. This breaks hold and wait.</li>
+</ul>
+
+<p><strong>3.</strong></p>
+<ul>
+  <li><strong>Design B:</strong> Can cause starvation if unlucky philosophers always have higher-numbered forks.</li>
+  <li><strong>Design C:</strong> Can be made fair if the waiter uses a queue to grant forks.</li>
+  <li><strong>Design D:</strong> May lead to starvation if some philosophers retry too often without success.</li>
+</ul>
+
+<p><strong>4.</strong></p>
+<ul>
+  <li><strong>Design C (centralized):</strong> Easier to enforce fairness, but adds a single point of failure and potential bottleneck.</li>
+  <li><strong>Design D (decentralized):</strong> More scalable and avoids central coordination, but harder to analyze for starvation and fairness.</li>
+</ul>
+
+</p></div><br>
+
+
+## Circular Wait in Print Spooler and Scanner
+
+### Background
+
+**Deadlock** is a state where a group of processes is unable to proceed because each is waiting for a resource held by another. Four conditions we learned in class (mutex, circular wait, no-preemption, hold-and-wait) must hold simultaneously for a deadlock to occur. If all four conditions are present, the system can reach a deadlocked state.
+
+{:.note}
+These are formally known as the **Coffman conditions**. 
+
+### Scenario
+
+A user launches two applications at the same time:
+
+* **App A** locks the **scanner** first, then tries to lock the **printer**.
+* **App B** locks the **printer** first, then tries to lock the **scanner**.
+
+Each device is protected by a mutex. Sometimes, both applications stop responding and remain blocked forever.
+
+The system has only one printer and one scanner. The simplified pseudocode for both apps is shown below.
+
+```c
+// App A
+lock(scanner);
+sleep(1);  // simulate time gap
+lock(printer);
+... // scan and print
+unlock(printer);
+unlock(scanner);
+
+// App B
+lock(printer);
+sleep(1);  // simulate time gap
+lock(scanner);
+... // print and scan
+unlock(scanner);
+unlock(printer);
+```
+
+
+**Answer the following questions:**
+1. Identify how each of the Coffman conditions is satisfied in this system.
+2. Provide a step-by-step explanation of how the two applications could enter a deadlock.
+3. Suggest two alternative designs that could prevent this deadlock and explain why they work.
+4. Suppose the printer driver is updated to include a log message before allowing access, which adds a short delay. How could this change affect the likelihood of deadlock?
+
+
+{:.highlight}
+> **Hints**:
+> * Consider how timing affects the acquisition order.
+> * Draw a resource allocation graph if needed.
+> * Use the Coffman conditions to reason through both cause and prevention.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> All four Coffman conditions are satisfied:</p>
+<ul>
+  <li><strong>Mutual exclusion:</strong> The printer and scanner are mutex-protected, so only one application can hold each at a time.</li>
+  <li><strong>Hold and wait:</strong> App A holds the scanner and waits for the printer. App B holds the printer and waits for the scanner.</li>
+  <li><strong>No preemption:</strong> Once an app holds a device, it will not release it unless it finishes its task. The OS does not forcibly take resources away.</li>
+  <li><strong>Circular wait:</strong> App A is waiting for the printer held by App B, and App B is waiting for the scanner held by App A. This forms a cycle.</li>
+</ul>
+
+<p><strong>2.</strong> Deadlock sequence:</p>
+<ol>
+  <li>App A locks the scanner.</li>
+  <li>App B locks the printer.</li>
+  <li>App A attempts to lock the printer but is blocked since App B holds it.</li>
+  <li>App B attempts to lock the scanner but is blocked since App A holds it.</li>
+  <li>Neither app can proceed. A deadlock occurs.</li>
+</ol>
+
+<p><strong>3.</strong> Two alternative designs:</p>
+<ul>
+  <li><strong>Global resource ordering:</strong> Require all applications to acquire resources in a fixed order. For example, always lock the printer before locking the scanner. This prevents circular wait.</li>
+  <li><strong>Try-lock and backoff:</strong> Use a non-blocking attempt to lock the second device. If the second lock fails, release the first and retry later after sleeping. This prevents hold and wait.</li>
+</ul>
+
+<p><strong>4.</strong> If the printer driver introduces a delay due to logging, App B may take longer to acquire the printer. During that delay, App A is more likely to acquire the scanner and reach the point of attempting to acquire the printer. This increases the window in which both applications hold one device each and wait for the other, raising the chance of deadlock.</p>
+
+
+</p></div><br>
+
+
+## Banker's Algorithm: Approve or Deny?
+
+### Background
+
+In operating systems, **Banker's Algorithm** is used to avoid deadlocks by checking whether a resource request will leave the system in a **safe state**. A safe state is one in which all processes can finish in some order, even if they do not finish immediately.
+
+The algorithm works with four matrices or vectors:
+
+* **Available** — the number of free instances of each resource.
+* **Max** — the maximum demand each process may eventually request.
+* **Allocation** — the number of resources currently held by each process.
+* **Need** — the remaining resources needed, calculated as `Max - Allocation`.
+
+Before granting a request, the system simulates the allocation and checks whether a **safe sequence** of completion exists for all processes. If so, the request is granted. If not, it is denied to avoid the risk of entering an **unsafe** state that could lead to deadlock.
+
+
+### Scenario
+
+A system has three resource types: A, B, and C. The total number of instances for each resource is:
+
+* A: 10
+* B: 5
+* C: 7
+
+There are five processes (P0 to P4). The current state of the system is as follows:
+
+#### Allocation Matrix
+
+| Process | A | B | C |
+| ------- | - | - | - |
+| P0      | 0 | 1 | 0 |
+| P1      | 2 | 0 | 0 |
+| P2      | 3 | 0 | 2 |
+| P3      | 2 | 1 | 1 |
+| P4      | 0 | 0 | 2 |
+
+#### Max Matrix
+
+| Process | A | B | C |
+| ------- | - | - | - |
+| P0      | 7 | 5 | 3 |
+| P1      | 3 | 2 | 2 |
+| P2      | 9 | 0 | 2 |
+| P3      | 2 | 2 | 2 |
+| P4      | 4 | 3 | 3 |
+
+The **Available** vector is:
+
+* A: 3
+* B: 3
+* C: 2
+
+Now, process **P1** makes a request for resources: **(1, 0, 2)**.
+
+
+**Answer the following questions:**
+1. Compute the **Need** matrix for each process.
+2. Should the system grant P1's request? Show your reasoning using the Banker's safety check.
+3. If the request is granted and P1 finishes and releases all its resources, what will the new Available vector be?
+4. Explain why entering an unsafe state does not immediately cause deadlock but is still dangerous.
+
+{:.highlight}
+> **Hints**:
+> * A safe state guarantees at least one execution order where all processes can finish.
+> * An unsafe state does *not* guarantee deadlock but makes it *possible*.
+> * Holding resources without a guaranteed finish path creates future risk.
+> * The number of requested units doesn't determine safety — the global state does.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> Need matrix is computed as Max - Allocation:</p>
+<table border="1">
+<tr><th>Process</th><th>A</th><th>B</th><th>C</th></tr>
+<tr><td>P0</td><td>7</td><td>4</td><td>3</td></tr>
+<tr><td>P1</td><td>1</td><td>2</td><td>2</td></tr>
+<tr><td>P2</td><td>6</td><td>0</td><td>0</td></tr>
+<tr><td>P3</td><td>0</td><td>1</td><td>1</td></tr>
+<tr><td>P4</td><td>4</td><td>3</td><td>1</td></tr>
+</table>
+
+<p><strong>2.</strong> First check if P1's request is valid:</p>
+<ul>
+  <li>Request ≤ Need: (1 ≤ 1, 0 ≤ 2, 2 ≤ 2) — valid</li>
+  <li>Request ≤ Available: (1 ≤ 3, 0 ≤ 3, 2 ≤ 2) — valid</li>
+</ul>
+
+<p>Simulate granting the request:</p>
+<ul>
+  <li>New Available: (3 - 1, 3 - 0, 2 - 2) = (2, 3, 0)</li>
+  <li>New Allocation for P1: (2 + 1, 0 + 0, 0 + 2) = (3, 0, 2)</li>
+  <li>New Need for P1: (1 - 1, 2 - 0, 2 - 2) = (0, 2, 0)</li>
+</ul>
+
+<p>Now check for a safe sequence:</p>
+<ul>
+  <li>P3: Need (0, 1, 1) — cannot proceed, needs 1 unit of C but C = 0</li>
+  <li>P1: Need (0, 2, 0) — can proceed, gets resources and finishes</li>
+  <li>Updated Available: (2 + 3, 3 + 0, 0 + 2) = (5, 3, 2)</li>
+  <li>P3: Now has enough, finishes and adds (2, 1, 1) → (7, 4, 3)</li>
+  <li>P0: Need (7, 4, 3) — fits, finishes → Available becomes (7, 5, 3)</li>
+  <li>P2: Need (6, 0, 0) — fits, finishes → (10, 5, 5)</li>
+  <li>P4: Need (4, 3, 1) — fits, finishes → all processes done</li>
+</ul>
+
+<p><strong>Conclusion:</strong> Yes, the system remains in a safe state. The request should be granted.</p>
+
+<p><strong>3.</strong> If P1 finishes, it releases (3, 0, 2), so Available becomes:<br>
+(3 + 3, 3 + 0, 2 + 2) = <strong>(6, 3, 4)</strong></p>
+
+<p><strong>4.</strong> Entering an unsafe state means the system cannot guarantee that all processes will finish. A deadlock may not happen immediately, but if future requests are made and the wrong process proceeds, the system may become stuck with no way to satisfy some processes. Banker's Algorithm avoids this by rejecting requests that lead to this uncertainty.</p>
+
+
+</p></div><br>
+
+### The Unsafe Shortcut
+
+**Background**
+Deadlock avoidance techniques prevent the system from entering states where deadlock *could* happen. One such approach is the Banker's Algorithm, which checks whether a resource request leaves the system in a "safe state". 
+
+{:.note}
+**Safe state**: a state where all processes can eventually finish.
+
+**Scenario**
+A system uses the Banker's Algorithm to approve resource requests. To optimize performance under load, a developer modifies the algorithm to skip the safe-state check for requests that appear "small" (e.g., requesting only one unit). At first, the system continues to run fine. But under heavy load, it freezes entirely. Post-mortem analysis shows multiple unfinished processes holding resources and waiting ***indefinitely***.
+
+**Example**
+Suppose the system has 2 identical units of a resource and 3 processes:
+
+* P1 may request up to 2
+* P2 may request up to 1
+* P3 may request up to 1
+
+The current allocation is:
+
+* P1 has 0
+* P2 has 1
+* P3 has 0
+
+If P3 now requests 1, the system has only 1 unit left. Granting it would leave 0 free units, and no process can finish.
+This is **unsafe**, but <span class="orange-bold">not yet deadlocked</span>. If P3 finishes quickly and releases its resource, the system can recover.
+
+{:.highlight}
+However, if P1 then requests 2, and P2 is still holding its 1 unit, **no one can proceed**.
+This is a **deadlock**.
+
+**Answer the following questions**
+1. What is the difference between an *unsafe state* and a *deadlocked state*?
+2. Explain how entering an unsafe state can eventually lead to deadlock.
+3. In the scenario above, why is skipping the safety check dangerous even if the request seems small?
+4. Suppose the system grants a request and enters an unsafe state. Describe one possible sequence of events that leads to deadlock.
+5. Suggest one modification to improve performance *without* removing the safety check.
+
+{:.highlight}
+> **Hints**:
+> * A safe state guarantees at least one execution order where all processes can finish.
+> * An unsafe state does *not* guarantee deadlock but makes it *possible*.
+> * Holding resources without a guaranteed finish path creates future risk.
+> * The number of requested units doesn't determine safety — the global state does.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<h2>1. Difference between unsafe and deadlocked state</h2>
+<p>
+An <strong>unsafe state</strong> means that the system cannot guarantee that all processes can complete; however, it may still be possible to avoid deadlock through careful scheduling. A <strong>deadlocked state</strong> means that a set of processes are waiting on each other in a cycle and none can proceed.
+</p>
+
+<h2>2. How unsafe state leads to deadlock</h2>
+<p>
+If the system enters an unsafe state and future resource requests do not arrive in a favorable order, it can lead to a situation where some processes hold resources and wait indefinitely, completing the conditions for deadlock.
+</p>
+
+<h2>3. Why skipping the safety check is dangerous</h2>
+<p>
+Even small requests can cause the system to enter an unsafe state. The Banker's Algorithm considers the entire system state, not just the size of an individual request. Skipping the check removes the guarantee of safety.
+</p>
+
+<h2>4. Sequence leading to deadlock</h2>
+<p>
+Suppose Process A is granted a request without a safety check. The system enters an unsafe state. Later, Process B requests resources, but they are held by A. A is now waiting on resources held by Process C. If this forms a wait cycle and no process can finish, a deadlock occurs.
+</p>
+
+<h2>5. Safe optimization strategy</h2>
+<p>
+One approach is to cache safe-state results for common request patterns or to parallelize the safety check itself. Another strategy is to batch requests and analyze them in bulk while still performing safety checks before granting.
+</p>
+
+
+</p></div><br>
+
+
+
+## Hidden Cycles in Resource Allocation Graph
+
+### Background
+
+A **Resource Allocation Graph (RAG)** is a <span class="orange-bold">directed</span> graph used to visualize how processes and resources interact in a system. It consists of:
+
+* **Processes** (circles)
+* **Resources** (squares)
+* **Request edges** from a process to a resource
+* **Assignment edges** from a resource to a process
+
+In a system where each resource has exactly one instance, a **cycle** in the graph implies a deadlock. However, if a resource has multiple instances, a cycle does <span class="orange-bold">**not necessarily**</span> mean deadlock. 
+
+{:.important}
+The graph must be analyzed more carefully to distinguish between **true deadlocks** and **safe but cyclic** states.
+
+
+### Scenario
+
+You are given the following snapshot of a system. It includes three processes (P1, P2, P3) and two resource types:
+* **R1** has 2 instances
+* **R2** has 1 instance
+
+Current graph state:
+* P1 holds 1 instance of R1 and is requesting R2
+* P2 holds R2 and is requesting 1 instance of R1
+* P3 holds 1 instance of R1 and is not requesting anything
+
+Graphically, this forms a cycle:
+
+* P1 → R2 → P2 → R1 → P1
+
+> But R1 has 2 instances, and one is held by P3.
+
+
+**Answer the following questions:**
+1. Draw the resource allocation graph based on the description. Label request and assignment edges clearly.
+2. Does this graph represent a deadlock? Justify your answer using resource instance counts.
+3. What is the key difference in reasoning when resources have multiple instances compared to when each has only one?
+4. How would adding another instance of R2 affect the potential for deadlock in this graph?
+
+{:.highlight}
+> **Hints**:
+>
+> * A cycle in a resource allocation graph is only sufficient to prove deadlock when all resources have one instance.
+> * If a resource has multiple instances, you must check whether the processes can eventually proceed.
+> * Track how many units are held and whether a process’s request can be fulfilled with the remaining instances.
+> * Just because a cycle exists does not mean the system is stuck.
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> The resource allocation graph has the following structure:</p>
+<ul>
+  <li>P1 holds 1 instance of R1 → R1 has an assignment edge to P1</li>
+  <li>P1 is requesting R2 → request edge from P1 to R2</li>
+  <li>P2 holds R2 → R2 has an assignment edge to P2</li>
+  <li>P2 is requesting R1 → request edge from P2 to R1</li>
+  <li>P3 holds 1 instance of R1 → R1 has an assignment edge to P3</li>
+</ul>
+<p>This forms a cycle: P1 → R2 → P2 → R1 → P1</p>
+
+<p><strong>2.</strong> No, this graph does not represent a deadlock. Although a cycle exists, R1 has two instances. One is held by P1 and one is held by P3. P2 is requesting one instance of R1. If P3 releases its R1 instance, then P2 can proceed, finish, and release R2, allowing P1 to continue. Therefore, progress is still possible, and the system is not deadlocked.</p>
+
+<p><strong>3.</strong> When each resource has only one instance, any cycle in the graph means a deadlock. With multiple instances, a cycle is not sufficient. You must analyze whether resource demands can be satisfied. The system may still be able to progress if at least one process can complete and release its resources.</p>
+
+<p><strong>4.</strong> If R2 had one more instance, then the request by P1 for R2 could be satisfied immediately. P1 would proceed, finish, and release R1. This would allow P2’s request for R1 to be granted next. Adding another instance of R2 therefore reduces the risk of deadlock and may eliminate the cycle altogether depending on timing.</p>
+
+
+</p></div><br>
+
+## Dining Savages with Broken Pot Semaphore-
+
+### Background
+
+The **Dining Savages Problem** is a *classic* concurrency scenario involving a group of threads (savages) sharing a common pot of food. A **cook** thread refills the pot when it is empty. To coordinate correctly, synchronization primitives such as **mutexes** and **semaphores** are used.
+
+Each savage must:
+
+1. Acquire a lock to check the pot.
+2. If food is available, take one serving.
+3. If the pot is empty, signal the cook to refill it.
+4. Wait until food becomes available again.
+
+{:.note}
+If the synchronization is incorrect; for example, if a **semaphore is missing or misused** then the system can enter a **deadlock** where savages wait indefinitely and the cook is never notified.
+
+
+### Scenario
+
+Consider the following buggy implementation:
+
+```c
+// Shared variables
+int servings = 0;
+mutex pot_mutex;
+semaphore empty = 0;     // used to wake up cook
+semaphore full = 0;      // used to wake up savages
+
+// Savage thread
+while (true) {
+    wait(pot_mutex);
+    if (servings == 0) {
+        signal(empty);   // notify cook
+        wait(full);      // wait for refill
+    }
+    servings--;
+    signal(pot_mutex);
+    eat();
+}
+
+// Cook thread
+while (true) {
+    wait(empty);         // wait until pot is empty
+    cook();
+    servings = N;        // refill pot
+    signal(full);        // notify savage
+}
+```
+
+However, after several refills, the program sometimes <span class="orange-bold">deadlocks</span>. All savage threads are **blocked**, and the cook is **idle**.
+
+
+
+**Answer the following questions:**
+1. Explain the purpose of each semaphore and **how** they coordinate between the savages and the cook.
+2. Describe what can go wrong in this implementation. **Under what condition does the system deadlock**?
+3. Modify the synchronization so that the cook is only signaled once per refill and all savages can continue safely afterward.
+4. Why is it incorrect to simply call `signal(full)` once, even though there are multiple savages?
+
+{:.highlight}
+> **Hints**:
+>
+> * Only one savage should signal the cook, or multiple signals will be lost.
+> * Semaphores do not queue extra signals if no one is waiting.
+> * The cook only wakes one savage after refilling — the others remain blocked.
+> * Think about whether full should count the number of available servings.
+
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> The <code>empty</code> semaphore is used by savages to notify the cook when the pot is empty. The <code>full</code> semaphore is used by the cook to signal back to the waiting savage that the pot has been refilled.</p>
+
+<p><strong>2.</strong> The deadlock occurs because only one savage is woken after the pot is refilled. That savage proceeds and takes one serving, but no other savage is signaled. If that savage consumes the only <code>full</code> signal and more savages find the pot empty again, they each signal <code>empty</code>, but the cook is already asleep. Since semaphores do not count signals when no thread is waiting, the cook remains idle and all savages are blocked.</p>
+
+<p><strong>3.</strong> To fix this, <code>full</code> should represent the number of servings in the pot. The cook should <code>signal(full)</code> N times after refilling. Each savage then <code>wait(full)</code> before taking a serving. This ensures that N servings can be consumed by N savages, one per signal. Also, only one savage should be allowed to signal <code>empty</code> to prevent duplicate cook notifications. This can be done with an additional flag or semaphore to indicate that a refill is already in progress.</p>
+
+<p><strong>4.</strong> It is incorrect to call <code>signal(full)</code> only once because there are multiple savages. Semaphores are counters. If only one <code>full</code> signal is given, only one savage can proceed. The others will block indefinitely on <code>wait(full)</code>. The correct behavior is to post <code>full</code> once for each serving refilled, allowing one savage per serving to proceed.</p>
+
+</p></div><br>
+
+## Preemption and Priority Inversion in Lock Acquisition
+
+
+
+### Background
+
+In preemptive operating systems with **priority scheduling**, a high-priority process can interrupt a low-priority one to ensure timely execution. However, if a **low-priority thread holds a lock** needed by a **high-priority thread**, and medium-priority threads keep preempting the low-priority one, the high-priority thread gets blocked. This scenario is called **priority inversion**.
+
+<span class="orange-bold">Priority inversion violates scheduling expectations</span>. It may not cause a classical deadlock, but it leads to **indefinite blocking** of higher-priority threads. In real-time systems, this can cause serious issues. Some systems implement **priority inheritance** to solve the problem.
+
+
+### Scenario
+
+Three threads are running with the following priorities:
+* **Low-priority T1** holds a lock `L` and is in its critical section.
+* **High-priority T2** tries to acquire `L` and is blocked.
+* **Medium-priority T3** does not need `L` but frequently runs and preempts T1.
+
+{:.important}
+Because T1 never gets CPU time, it <span class="orange-bold">cannot</span> release the lock. T2 remains blocked even though it has higher priority. This behavior is observed in some real-time systems like [Mars Pathfinder](https://en.wikipedia.org/wiki/Mars_Pathfinder).
+
+
+**Answer the following questions:**
+1. Why does T2 not proceed, even though it has higher priority than T1 and T3?
+2. Does this situation meet the four Coffman conditions for deadlock? Why or why not?
+3. How does **priority inheritance** help resolve this issue?
+4. Suppose priority inheritance is not available. Suggest an alternate way to prevent such inversion scenarios.
+
+{:.highlight}
+> **Hints**:
+> * Deadlock requires circular wait. Is that happening here?
+> * T1 is not waiting for a resource, but still blocks T2 indirectly.
+> * Inheritance temporarily boosts T1’s priority to match T2’s.
+> * Consider how resource access policies can be redesigned to avoid this.
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> T2 cannot proceed because it is blocked waiting for lock <code>L</code>, which is held by T1. T1 is unable to run because it has the lowest priority and gets preempted by T3. Although T2 has the highest priority, it depends on T1 to release the lock, and T1 never gets CPU time to do so.</p>
+
+<p><strong>2.</strong> This situation does not satisfy all Coffman conditions. Specifically:</p>
+<ul>
+  <li><strong>Mutual exclusion:</strong> The lock is non-sharable — satisfied.</li>
+  <li><strong>Hold and wait:</strong> T2 is waiting for the lock — satisfied.</li>
+  <li><strong>No preemption:</strong> Locks are only released voluntarily — satisfied.</li>
+  <li><strong>Circular wait:</strong> Not present. T1 is not waiting for anything. Therefore, this is not a classical deadlock, but it is a form of indefinite blocking.</li>
+</ul>
+
+<p><strong>3.</strong> Priority inheritance allows T1 to temporarily inherit the higher priority of T2. This ensures that T1 will get CPU time and release the lock quickly. Once it does, T2 can proceed, and T1 reverts to its original priority. This eliminates the priority inversion.</p>
+
+<p><strong>4.</strong> If priority inheritance is unavailable, an alternative is to use a **priority ceiling protocol**, where any thread acquiring a lock temporarily runs at the highest priority of any thread that may need it. Another option is to design systems such that low-priority threads do not hold locks required by high-priority ones, or to avoid holding locks for extended periods. Using non-blocking data structures or message-passing models may also help avoid this situation entirely.</p>
+
+</p></div><br>
+
+
+## The Ostrich Algorithm
+
+### Background
+
+A **deadlock prevention strategy** often taught in operating systems is the **Ostrich Algorithm**, which simply ignores the problem (what a wonderful strategy!). The idea is that if deadlocks are *rare*, it may not be worth the overhead of avoiding or detecting them. This approach is named after the ostrich's supposed habit of "burying its head in the sand" when facing danger.
+
+In practice, many general-purpose operating systems adopt this strategy for certain types of locks or resources. The assumption is that users or programs will avoid mistakes, or that occasional restarts are acceptable.
+
+However, ignoring deadlocks is only safe when the cost of failure is low and the system can recover *gracefully*. In long-running systems or mission-critical applications, even a rare deadlock can be catastrophic.
+
+
+### Scenario
+
+A file server uses a multi-threaded model where threads acquire read and write locks on files. Occasionally, two threads acquire locks in different orders:
+
+* **Thread A** locks File X and then requests File Y.
+* **Thread B** locks File Y and then requests File X.
+
+The system does not enforce lock ordering and does not use any deadlock detection. After a long uptime, the server becomes unresponsive. Investigation reveals that Thread A and Thread B are both blocked, each waiting on the other's lock.
+
+The server does not crash but <span class="orange-bold">stops</span> processing requests. *This problem only happens once every few weeks*.
+
+
+**Answer the following questions:**
+1. Why is the Ostrich Algorithm sometimes chosen as a design strategy in operating systems?
+2. What are the risks of using the Ostrich Algorithm in the file server scenario described?
+3. Suggest one runtime strategy and one design-time strategy that could help reduce the likelihood of such deadlocks.
+4. In what types of systems is the Ostrich Algorithm a reasonable tradeoff, and when is it irresponsible?
+
+{:.highlight}
+> **Hints**:
+> * Think about the cost of prevention versus the cost of failure.
+> * Is the system interactive, recoverable, or mission-critical?
+> * Not all deadlocks are equally harmful — some are tolerable, others are fatal.
+> * Runtime fixes involve detection or recovery, while design-time fixes involve resource usage rules.
+
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p><strong>1.</strong> The Ostrich Algorithm is chosen when the probability of deadlock is low and the cost of preventing it is high. It avoids the complexity and overhead of prevention or detection mechanisms. This is common in systems where restarts are acceptable, such as desktop applications or non-critical services.</p>
+
+<p><strong>2.</strong> In the file server scenario, ignoring deadlock leads to a full system halt. Since threads can block each other indefinitely, the server becomes unresponsive without crashing. This is dangerous for a service expected to run continuously, as recovery requires manual intervention or automated restarts, which can lead to data inconsistency or service downtime.</p>
+
+<p><strong>3.</strong></p>
+<ul>
+  <li><strong>Runtime strategy:</strong> Implement a watchdog timer or deadlock detector that checks for threads blocked beyond a timeout and kills or resets them.</li>
+  <li><strong>Design-time strategy:</strong> Enforce a strict lock ordering policy where all threads must acquire resources in a predefined sequence, such as by file ID order. This eliminates circular wait.</li>
+</ul>
+
+<p><strong>4.</strong> The Ostrich Algorithm is reasonable in systems where failure is rare, recovery is easy, and data is not critical — for example, user interfaces or non-essential background processes. It is irresponsible in real-time systems, financial systems, or infrastructure services where reliability, uptime, and consistency are essential. In such systems, even rare deadlocks are unacceptable.</p>
+
+
+
+</p></div><br>
+
+
+
+
+## The Waiting Ring
+
+### Background
+One of the four necessary conditions for deadlock is *circular* wait: a set of processes each waiting for a resource held by the next. When this occurs and no process can proceed, the system enters a deadlocked state.
+
+### Scenario
+A messaging server uses five worker threads (T0 to T4) to handle tasks requiring two locks: one for input and one for output buffers. Due to legacy design, each thread acquires the input lock for its assigned buffer, processes some data, and then requests the output lock of the next thread in sequence.
+
+Under certain timing conditions, all five threads hold their input **locks** and are **blocked** waiting for the output lock held by the next thread. **The system halts with no progress**.
+
+**Answer the following questions**
+1. Which deadlock condition(s) are clearly satisfied in this scenario?
+2. Draw the wait-for graph involving the five threads and the two types of locks.
+3. How do we know this situation is a deadlock, and not merely contention?
+4. Describe a strategy to prevent this deadlock using lock acquisition ordering.
+
+{: .highlight}
+> **Hints**:
+> * Always remember that deadlock requires four conditions to hold <span class="orange-bold">simultaneously</span>.
+> * A wait-for graph shows who is waiting on whom.
+> * A cycle in the wait-for graph implies deadlock.
+> * Lock ordering is a common prevention strategy.
+
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<h2>1. Deadlock conditions satisfied</h2>
+<p>
+The system satisfies all four necessary conditions for deadlock:
+<ul>
+  <li><strong>Mutual exclusion</strong>: Locks are held exclusively by one thread.</li>
+  <li><strong>Hold and wait</strong>: Each thread holds an input lock while requesting an output lock.</li>
+  <li><strong>No preemption</strong>: Locks are not forcibly taken away.</li>
+  <li><strong>Circular wait</strong>: T0 waits on T1, T1 on T2, ..., T4 on T0, forming a cycle.</li>
+</ul>
+</p>
+
+<h2>2. Wait-for graph</h2>
+<p>
+Each thread Ti holds Lock Li (input) and waits for Lock L(i+1 mod 5) (output). The graph is a directed cycle:
+<ul>
+  <li>T0 → T1</li>
+  <li>T1 → T2</li>
+  <li>T2 → T3</li>
+  <li>T3 → T4</li>
+  <li>T4 → T0</li>
+</ul>
+This confirms a circular wait among all five threads.
+</p>
+
+<h2>3. Why this is deadlock, not just contention</h2>
+<p>
+Contention becomes deadlock when there is no possibility for any thread to proceed. In this case, each thread is waiting for a resource held by another, and none can make progress, which defines deadlock. The presence of a cycle in the wait-for graph confirms this.
+</p>
+
+<h2>4. Prevention strategy using lock ordering</h2>
+<p>
+To prevent deadlock, enforce a global lock acquisition order. For example, assign a consistent numeric ordering to all locks and require threads to always acquire locks in increasing order. If all threads acquire input and output locks in that global order, circular wait is impossible.
+</p>
+
+
+
+</p></div><br>
+
+
+
+## The Greedy Request
+
+### Background
+Deadlock can occur when processes hold resources while waiting for others. This is the *hold and wait* condition. Systems that allow incremental resource acquisition without constraints are particularly vulnerable under high contention.
+
+### Scenario
+A simulation engine uses thread pools to run batches of physics computations. Each thread requests resources for memory buffers, GPU time, and disk access — but requests them one by one, as needed.
+
+To improve throughput, the engine starts aggressively launching more threads. Each thread acquires whatever resource it needs immediately and continues execution. Under pressure, threads begin holding onto one resource while waiting for another. Eventually, the system locks up completely.
+
+**Answer the following questions**
+1. Which of the four necessary deadlock conditions are present in this scenario?
+2. Why does allowing threads to acquire resources incrementally make the system more prone to deadlock?
+3. Propose a method to eliminate the hold-and-wait condition. What are the tradeoffs?
+4. Suppose the system cannot eliminate hold-and-wait. What other mitigation options are available?
+
+{: .highlight}
+> **Hints**:
+> * Deadlock arises from mutual exclusion, hold and wait, no preemption, and circular wait.
+> * Acquiring resources one by one creates dependency chains.
+> * Forcing threads to request all resources upfront eliminates hold-and-wait.
+> * Timeout, ordering, or rollback may help reduce risk.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<h2>1. Deadlock conditions present</h2>
+<p>
+This system satisfies:
+<ul>
+  <li><strong>Mutual exclusion</strong>: Resources like GPU and disk cannot be shared.</li>
+  <li><strong>Hold and wait</strong>: Threads hold resources while requesting more.</li>
+  <li><strong>No preemption</strong>: Resources are only released voluntarily.</li>
+  <li><strong>Circular wait</strong>: With enough threads, cycles of dependency can form.</li>
+</ul>
+</p>
+
+<h2>2. Why incremental acquisition increases deadlock risk</h2>
+<p>
+When threads request resources one at a time, they may end up waiting for resources held by others who are also waiting. This forms chains of dependencies, which can close into cycles if not controlled.
+</p>
+
+<h2>3. Eliminating hold-and-wait</h2>
+<p>
+A common method is to require all resources to be requested <em>at once</em>. If any resource is unavailable, the thread releases all it has and retries. This prevents hold-and-wait entirely.
+<br><br>
+The tradeoff is reduced concurrency and potential starvation: threads may repeatedly fail to acquire all needed resources, even if some are free.
+</p>
+
+<h2>4. Alternative mitigation strategies</h2>
+<p>
+If hold-and-wait cannot be removed:
+<ul>
+  <li>Use <strong>lock ordering</strong> to prevent circular wait.</li>
+  <li>Apply <strong>timeouts</strong> or <strong>request denial</strong> policies.</li>
+  <li>Use <strong>deadlock detection</strong> and recover by killing or rolling back threads.</li>
+</ul>
+</p>
+
+</p></div><br>
+
+
+
+## The Banker’s Mistake
+### Background
+
+The Banker's Algorithm is used to avoid deadlock by simulating allocations and only approving those that leave the system in a safe state — a state where all processes can eventually finish. A mistake in the algorithm's logic can admit requests that appear harmless but eventually trap the system in a deadlock.
+
+### Scenario
+A system is managing three types of resources (A, B, C) and four running processes. To optimize speed, a developer modifies the safety check to only verify if **at least one process** can finish after each allocation. The system continues to run, but under a specific sequence of requests, all processes become blocked and hold some resources. The Banker's Algorithm did not catch this unsafe path because it didn’t simulate all possible finishing orders.
+
+### Answer the following questions
+1. What is the purpose of simulating the safety check in the Banker's Algorithm?
+2. Why is it incorrect to only check if one process can finish when evaluating safety?
+3. Give a small example (2–3 processes, 2–3 resources) where granting a request appears safe at first glance but results in an unsafe state.
+4. How can the Banker's Algorithm be modified to correctly detect unsafe allocations?
+
+{: .highlight}
+> **Hints**:
+> * A safe state guarantees <em>all</em> processes can eventually finish.
+> * Just one process finishing doesn't ensure overall safety.
+> * The algorithm simulates a possible sequence where every process can finish in some order.
+> * You must evaluate the system state <em>after</em> the hypothetical allocation before committing it.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<h2>1. Purpose of the safety check</h2>
+<p>
+The Banker's Algorithm simulates whether granting a resource request would leave the system in a <strong>safe state</strong> — meaning there exists at least one sequence of process completions where every process can finish. If no such sequence exists, the request is denied to avoid entering an unsafe (potentially deadlocked) state.
+</p>
+
+<h2>2. Why checking only one process is insufficient</h2>
+<p>
+Just because one process can finish does not mean the remaining system will remain safe. It may be that only that process can finish, and once it releases resources, the rest are still stuck — leading to an unsafe or deadlocked state.
+</p>
+
+<h2>3. Example of misleading allocation</h2>
+<p>
+Suppose we have:
+<ul>
+  <li><strong>Resources available:</strong> A: 3, B: 2</li>
+  <li><strong>P1</strong> – Max: A: 2 B:1, Allocated: A: 1 B:0 → Needs: A:1 B:1</li>
+  <li><strong>P2</strong> – Max: A: 1 B:1, Allocated: A: 1 B:1 → Needs: A:0 B:0</li>
+  <li><strong>P3</strong> – Max: A: 2 B:1, Allocated: A: 0 B:0 → Needs: A:2 B:1</li>
+</ul>
+
+Available = A:1, B:1
+
+If we grant P3’s request of A:1, B:1 → Available becomes A:0, B:0.  
+P2 can finish (needs 0), but after that:
+<ul>
+  <li>P1 still needs A:1 B:1 (unavailable)</li>
+  <li>P3 still needs A:1 B:0 (A is still unavailable)</li>
+</ul>
+Now the system is stuck. Granting the request led to an <strong>unsafe state</strong>.
+</p>
+
+<h2>4. Correct implementation</h2>
+<p>
+The Banker's Algorithm must simulate the full system:
+<ul>
+  <li>Start from the available vector after the hypothetical allocation.</li>
+  <li>Find a process that can finish given current availability.</li>
+  <li>Release its resources and repeat until all processes finish.</li>
+</ul>
+If no such sequence exists, the request must be denied.
+</p>
+
+
+</p></div><br>
+
+
+
+## The Forgotten Detector
+
+### Background
+
+Not all systems prevent deadlock. Some detect it after the fact and try to recover. This works **well** if detection runs frequently enough. But if detection is delayed or misconfigured, the system can enter a deadlocked state and remain frozen <span class="orange-bold">until manual intervention</span>.
+
+### Scenario
+
+A database engine manages read/write locks using a resource allocation graph. It relies on a background thread to detect cycles every 60 seconds.
+
+During a high-load batch import, several transactions begin holding read locks while requesting write locks. A cycle forms among four transactions, but the detection thread is delayed due to CPU starvation. No queries complete for several minutes, and the monitoring system marks the service as unhealthy.
+
+### Answer the following questions
+
+1. Why does the system deadlock in this scenario even though detection is enabled?
+2. How does the delay in detection affect system reliability?
+3. Suppose the detection thread uses the following code. What flaw might cause it to miss cycles under load?
+
+```c
+// simplified detector logic
+while (1) {
+    sleep(60);
+    if (load_average() < 5.0) {
+        check_for_cycles();  // scans graph for wait cycles
+    }
+}
+```
+
+4. Propose **two** improvements to make deadlock detection more robust in this kind of system.
+
+{: .highlight}
+> **Hints**:
+> * Deadlock detection requires timely and accurate cycle checking.
+> * Sleeping too long or skipping detection under high load makes it worse.
+> * A cycle in the wait-for graph means no process in the cycle can proceed.
+> * Starvation of the detector thread can delay resolution.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<h2>1. Why the system deadlocks despite detection</h2>
+<p>
+Detection only works if it runs frequently enough. In this case, a deadlock forms between transactions, but the detector thread is delayed or suppressed due to high CPU usage. While detection is configured, it is not timely, so the system remains deadlocked.
+</p>
+
+<h2>2. Impact of delayed detection</h2>
+<p>
+Delayed detection increases downtime and affects system availability. During this period, all transactions involved in the cycle are stuck. If the detector doesn’t run promptly, the system may appear unresponsive to users or monitoring tools.
+</p>
+
+<h2>3. Flaw in the detection thread</h2>
+<p>
+The condition <code>if (load_average() &lt; 5.0)</code> causes the detector to skip checks under high load — which is <em>precisely</em> when deadlocks are more likely to occur. This creates a blind spot in the system during peak usage, defeating the purpose of detection.
+</p>
+
+<h2>4. Improvements</h2>
+<p>
+Two possible improvements:
+<ul>
+  <li><strong>Run detection at fixed intervals regardless of load</strong>. Instead of checking load average, always perform the cycle detection every fixed time (e.g. every 10s).</li>
+  <li><strong>Use event-based triggers</strong>. Instead of polling every interval, detect when transactions block for unusually long durations and trigger a graph analysis immediately.</li>
+</ul>
+</p>
+
+</p></div><br>
