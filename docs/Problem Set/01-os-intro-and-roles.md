@@ -56,7 +56,7 @@ RISC-V processors run code at different privilege levels, which are enforced by 
 * Machine mode (M-mode): The most privileged mode. Firmware runs here.
 * Supervisor mode (S-mode): The operating system kernel runs here.
 * User mode (U-mode): Normal applications run here with restricted access.
-* When an application runs in User mode, it can only execute non-privileged instructions and access memory marked as user-accessible. Any attempt to execute a privileged instruction (like modifying page tables) or jump to a protected kernel address (e.g. `0x80000000`) will trigger a trap (hardware exception).
+* When an application runs in User mode, it can only execute non-privileged instructions and access memory marked as user-accessible. Any attempt to execute a privileged instruction (like modifying page tables) or jump to a protected kernel address (e.g. `0x80000000`) will trigger a trap (supervisor call/software interrupt).
 
 The kernel sets up page tables to define which parts of memory are visible and accessible to each process. Kernel memory (including address ranges like `0x80000000`) is typically not mapped in the user process’s address space, or is marked as inaccessible.
 
