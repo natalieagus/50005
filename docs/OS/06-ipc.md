@@ -578,7 +578,7 @@ Both message queues and sockets can handle messages in a first-in, first-out (FI
 
 
 {:.note}
-The analogy is as follows: imagine two people trying to talk. Socket is like a **phone call**: both people must pick up the phone and talk in real time. Both must be connected at the same time. The kernel passes *bytes* through a pipe, not full messages. Message queue is like a **mailbox**: each person can write a note and drop it in a box. Both don't need to be available at the same time, and the box acts like a queue. Kernel stores, orders, and delivers each *message* (as a whole, not byte by byte).
+The analogy is as follows: imagine two people trying to talk. Socket is like a **phone call**: both people must pick up the phone and talk in real time. Both must be connected at the same time. The kernel passes *bytes* through a pipe, not full messages. Message queue is like a **mailbox**: each person can write a note and drop it in a box. Both don't need to be available at the same time, and the box acts like a queue. Kernel stores, orders, and delivers each *message* (as a whole, not byte by byte). Each `msgsnd() `sends *one complete message*, and each `msgrcv()` receives exactly one full message.
 
 ### Message Queue
 
