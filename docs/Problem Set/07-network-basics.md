@@ -292,3 +292,192 @@ A machine switches from a campus network to a mobile hotspot. It maintains an ac
 
 
 </p></div><br>
+
+
+
+
+
+## The Unknown Middleman
+
+### Background
+
+Internet traffic often passes through shared infrastructure known as *Internet Exchange Points (IXPs)*. These are physical facilities where multiple networks, including ISPs and content providers, interconnect to exchange traffic. While the logical view of the Internet may suggest a direct connection between source and destination, actual traffic paths depend on routing agreements, geography, and cost. Packets may travel through distant or unexpected locations before reaching their target. This routing behavior is invisible to end users unless explicitly traced.
+
+### Scenario
+
+A device in Singapore connects to a nearby cloud server, expecting a low-latency path. However, measurements show the traffic is routed through Tokyo before returning to Singapore. The application experiences lag despite both endpoints being in the same country.
+
+**Answer the following questions**:
+* Why might traffic between two nearby devices be routed through a distant location?
+* What is the role of IXPs in shaping Internet paths?
+* How do ISP agreements influence routing decisions?
+* Why does the physical location of a server not always guarantee the shortest path?
+* What tools can be used to observe or confirm the path taken?
+
+{: .highlight}
+> **Hints**:
+> * Routing decisions depend on ISP policies and peering
+> * IXPs serve as connection hubs between networks
+> * Some paths are chosen for cost or reliability, not distance
+> * Traceroute reveals actual packet hops
+> * Traffic paths may not match geographic expectations
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p>Traffic between two nearby devices can be routed through a distant location due to the structure of ISP interconnections. The routing decision is not always based on physical distance, but on peering relationships and network policies.</p>
+
+<p>IXPs are physical exchange points where multiple networks connect and hand off traffic. They help optimize routes and reduce latency, but are only effective if the involved ISPs participate in the same exchange point.</p>
+
+<p>ISP agreements — including peering, transit, and pricing — heavily influence which path traffic takes. ISPs may prefer cheaper or more stable routes over shorter geographic ones.</p>
+
+<p>Even if a server is physically nearby, its traffic may enter a different network that does not peer locally with the user’s ISP. This forces packets to take a longer international detour before reaching the destination.</p>
+
+<p>Tools such as `traceroute` can show each hop a packet takes to reach its destination, helping users understand why traffic might appear indirect or experience unexpected latency.</p>
+
+
+
+
+</p></div><br>
+
+
+## The Borrowed Address
+
+### Background
+
+Every device on a network must have a unique *IP address* to communicate. These addresses are divided into public and private ranges. *Public IP addresses* are globally unique and routable on the Internet. *Private IP addresses* are reserved for local use within private networks (such as homes or offices) and are not routable over the Internet. To connect private devices to the wider Internet, routers use *Network Address Translation (NAT)*, which rewrites packet headers so many internal devices can share one public IP. If two networks assign the same private IP range without coordination, conflicts can occur when connecting between them.
+
+
+#### IP Addresses Details 
+IP addresses are numerical labels assigned to devices in a network. The most common format is IPv4, which uses **32 bits** divided into four 8-bit sections called *octets*, written in *dot-decimal notation* (e.g., `192.168.1.5`). Each octet ranges from 0 to 255, allowing for about 4.3 billion unique combinations globally. IP addresses identify both a device and the *network* it belongs to. This is done using a *subnet mask*, which separates the **network portion** (the higher-order bits) from the **host portion** (the lower-order bits). For example, the address `192.168.1.5/24` means the first 24 bits (`192.168.1`) identify the network, and the last 8 bits identify the host within that network. The `/24` is called *CIDR (Classless Inter-Domain Routing)* notation. Devices must have unique IP addresses within the same network to avoid address conflicts.
+
+
+### Scenario
+
+Two machines on different networks are both assigned the same private IP address range. When one machine connects to the other through a VPN, neither can reach the other by IP, and routing fails silently.
+
+**Answer the following questions**:
+* Why must IP addresses be unique for reliable communication?
+* What is the difference between public and private IP ranges?
+* Why does address duplication cause problems across networks?
+* How does NAT interact with private address spaces?
+* What strategies can prevent this kind of IP conflict?
+
+{: .highlight}
+> **Hints**:
+> * Private addresses are reused in many networks
+> * NAT hides private IPs behind one public IP
+> * Overlapping private ranges confuse routing tables
+> * VPNs may use address translation or reallocation to avoid conflict
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p>IP communication relies on each device having a unique address so that packets can be routed correctly. If two devices on different networks use the same address, routing becomes ambiguous and can fail.</p>
+
+<p>Public IP addresses are globally assigned and reachable from any Internet-connected network. Private IP ranges, such as 192.168.0.0/16 or 10.0.0.0/8, are meant only for internal use and are not visible on the global Internet.</p>
+
+<p>When two connected networks use the same private IP space, the system cannot determine which device is meant when routing to a given IP. This results in dropped packets or misrouted traffic.</p>
+
+<p>NAT allows many devices in a private network to share one public IP address. It works by rewriting addresses and tracking connections. However, NAT cannot resolve conflicts when two networks have overlapping internal addresses.</p>
+
+<p>To avoid such conflicts, VPNs often use distinct address pools or reassign IPs during connection. Network administrators can also coordinate to ensure different sites use non-overlapping private ranges.</p>
+```
+
+Let me know if you're ready to continue with **#9 – The Shrinking Mask** (subnetting).
+
+</p></div><br>
+
+
+## The Shrinking Mask
+
+### Background
+
+Subnetting is the process of dividing a larger IP network into smaller segments. This is controlled using a *subnet mask*, which specifies how many bits of an IP address represent the network and how many bits represent the host. Subnet masks are written using CIDR notation, such as `/24`, which means the **first 24 bits define the network** and the remaining **8 bits define individual hosts**. A larger subnet (like `/22`) supports more hosts, but requires all devices to agree on the boundary between network and host bits. If subnet masks are misconfigured or inconsistent, devices may misclassify peers as being “outside” the network and fail to communicate directly.
+
+{:.note}
+It does <span class="orange-bold">not</span> create more IP addresses. The total number of addresses is fixed by the IP version and network assignment. 
+
+Instead, subnetting changes how those addresses are *grouped* and *interpreted*. The subnet mask defines the boundary between the network and host portions of an address. For example, the address block `192.168.0.0/22` contains 1024 IP addresses, from `192.168.0.0` to `192.168.3.255`. This same range could also be split into four smaller `/24` subnets (`192.168.0.0/24`, `192.168.1.0/24`, etc.), each with 256 addresses. Whether grouped as one large subnet or several smaller ones, the total number of IPs remains the same. 
+
+This example should illustrate clearly how changing the mask from `/24` to `/22` does <span class="orange-bold">not</span> generate more addresses it just combines what was previously segmented.
+
+Mismatched subnetting leads to misclassification of peers, causing communication failures.
+
+### Scenario
+
+A device is reconfigured to use a `/22` subnet mask instead of the original `/24`, to "expand the network." After the change, some hosts become unreachable and local communication fails unexpectedly.
+
+**Answer the following questions**:
+* What does a subnet mask control in IP addressing?
+* How does changing from `/24` to `/22` affect address assignment?
+* Why would inconsistent masks across devices cause communication issues?
+* What types of problems can arise from overlapping or misaligned subnets?
+* How can subnetting be verified and corrected?
+
+{: .highlight}
+> **Hints**:
+> * The subnet mask defines the boundary between network and host
+> * Larger subnets include more IPs but require coordination
+> * Devices may disagree on whether an IP is “local” or “remote”
+> * Routing tables depend on correct mask interpretation
+> * Tools like `ip addr`, `ip route`, and ping can help diagnose
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p>A subnet mask determines which portion of an IP address represents the network and which portion identifies a host within that network. It controls how devices interpret address ranges.</p>
+
+<p>Changing from `/24` to `/22` expands the addressable range from 256 to 1024 possible hosts. This allows more devices to be grouped under the same network, but only if all devices agree on the new mask.</p>
+
+<p>If subnet masks are inconsistent, devices may treat the same IP address differently — one may think it is on the local network, while another believes it requires routing. This causes miscommunication and failed local delivery.</p>
+
+<p>Misaligned subnets can lead to unreachable hosts, incorrect routing, or silent packet drops. These problems are difficult to detect without examining subnet configurations closely.</p>
+
+<p>To resolve these issues, ensure all hosts in the same subnet use the same CIDR mask. Use diagnostic tools to confirm interface settings and test connectivity within the expected address range.</p>
+</p></div><br>
+
+
+
+## The Misrouted Reply
+
+### Background
+
+NAT (Network Address Translation) is commonly performed by a **router** or gateway that connects a private network to the public Internet. 
+
+In most homes and offices, the *Wi-Fi router acts as the NAT device*. It allows **multiple** internal devices using private IP addresses to share a **single** public IP. When a device on the private network sends data to the Internet, the NAT router *rewrites* the source IP and port to its own public address and remembers the mapping in a connection table. When the reply comes back, the NAT uses this mapping to forward the response to the correct internal machine. This only works if the reply returns through the same device that created the mapping. If the reply comes back through a different NAT router that does not have the entry, it cannot forward the packet, and the reply is silently dropped. This failure is caused by asymmetric routing, where the outgoing and incoming paths do not match.
+
+{:.note}
+Unlike subnetting, which only restructures how IP addresses are grouped, NAT allows many devices to share a single public IP, effectively **increasing** the number of usable addresses for everyday use. For example, most home routers assign internal devices addresses like `192.168.0.x`, which belong to a private IP range. Every house can reuse the same `192.168.0.1` to `192.168.0.254` addresses without conflict, because NAT **hides** these private IPs behind the router’s one public IP. The router keeps track of each connection and rewrites addresses as needed, making it appear to the Internet as if all the traffic came from one source. 
+
+This makes NAT a practical solution for conserving the limited pool of IPv4 (32-bits) addresses.
+
+
+### Scenario
+
+A private network connects to the Internet using two NAT gateways for redundancy. A packet is sent through one gateway, but the reply is routed through the second gateway. Although the external server sends a valid reply, the original sender never receives it.
+
+**Answer the following questions**:
+* How does NAT track and forward reply traffic correctly?
+* Why does asymmetric routing confuse NAT behavior?
+* What happens to a packet that arrives at a NAT without a mapping?
+* Why are replies dropped even if the destination IP looks correct?
+* What solutions exist to handle redundant NAT setups safely?
+
+{: .highlight}
+> **Hints**:
+> * NAT uses connection tracking tables for each outbound packet
+> * Replies must return through the same gateway
+> * Unrecognized replies are dropped for security
+> * Load balancing across gateways must preserve session state
+> * Symmetric routing ensures NAT consistency
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p>NAT tracks outbound connections by storing a mapping between the internal IP and port and their translated public equivalents. This mapping lets the NAT device recognize incoming replies and forward them to the correct internal host.</p>
+
+<p>Asymmetric routing confuses NAT behavior because the reply returns through a different gateway than the one that created the original mapping. The second gateway does not recognize the connection and cannot forward the packet properly.</p>
+
+<p>When a NAT device receives a reply for which it has no corresponding entry in its translation table, it drops the packet. This protects the network from unsolicited or mismatched traffic.</p>
+
+<p>Even if the destination IP in the reply matches the public address, NAT requires more information to identify the correct internal device. Without the original source port and connection context, the reply cannot be routed correctly.</p>
+
+<p>To prevent this issue, network administrators can enforce symmetric routing using source-based routing rules or configure state sharing between NAT gateways. This ensures all packets for a session enter and exit through the same device.</p>
+
+</p></div><br>
+
+
