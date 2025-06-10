@@ -55,7 +55,7 @@ Your shell should <span class="orange-bold">never</span> abruptly terminate, eve
   }
 ```
 
-
+The starter code didn't include this cleanup because the program was meant to run just one command and terminate. Since the shell program is now looping and never terminates, you should do proper cleanup (garbage collection) as stated above. 
 
 
 ## Inspect Child Process Exit Status 
