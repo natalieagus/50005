@@ -190,17 +190,6 @@ Proper error checking is performed for critical operations like reading from std
 
 ```
 
-### Memory Management
-Dynamically allocates memory for each argument parsed in `read_command` using `strdup`. It's important to free this memory at the end of `main` to prevent memory leaks.
-```c
-  // Free the allocated memory for the command arguments before exiting
-  for (int i = 0; cmd[i] != NULL; i++)
-  {
-    free(cmd[i]);
-  }
-  memset(cwd, '\0', sizeof(cwd)); // clear the cwd array
-
-```
 
 ### Portability
 Uses preprocessor directives to clear the screen in a way that is compatible with both Windows (`cls`) and Unix-like systems (`clear`).
