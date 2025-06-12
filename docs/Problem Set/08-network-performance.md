@@ -22,7 +22,7 @@ Singapore University of Technology and Design
 
 ## The Congested Curve
 
-### Background
+### Background: Components of Network Delay
 
 Recall that network delay is made up of four components:
 
@@ -73,15 +73,15 @@ A packet travels across four routers to reach a destination. The network include
 
 ## The Hidden Layer
 
-### Background
+### Background: The 5 Layers
 
 Network performance depends not only on bandwidth and propagation, but also on **which layers of the system** introduce delay. The Internet is modeled as a 5-layer architecture:
 
-1. **Application** – protocols like HTTP, FTP
-2. **Transport** – TCP, UDP
-3. **Network** – IP
-4. **Link** – Ethernet, Wi-Fi
-5. **Physical** – cables, signals
+1. **Application**: protocols like HTTP, FTP
+2. **Transport**: TCP, UDP
+3. **Network**: IP
+4. **Link**: Ethernet, Wi-Fi
+5. **Physical**: cables, signals
 
 The operating system is responsible for parts of layers 2–4. The **transport layer**, including socket buffers and TCP congestion control, is implemented inside the OS kernel. The **network layer** is handled by routing logic and packet forwarding. The **link layer** involves device drivers and network interface queues. Delays at these OS-managed layers — such as socket buffering or driver queuing — contribute to total response time but are often overlooked by application developers.
 
@@ -120,7 +120,7 @@ An HTTP request from a user appears slow. A network diagnostic shows low propaga
 
 ## The Constrained Choice
 
-### Background
+### Background: Bottleneck Links
 
 In multi-hop networks, the **bottleneck link** (the one with the lowest bandwidth) determines the **maximum throughput** along a path. To choose the best path, we must compute:
 
@@ -206,7 +206,7 @@ Using the graph above:
 
 ## The Tradeoff Tunnel
 
-### Background
+### Background: Pipelined Transmission
 
 In pipelined transmission, packets are sent back-to-back while earlier ones are still in transit. This enables high link utilization but requires understanding both **transmission delay** and **propagation delay**. These two combine to form the **total time a packet takes to reach the destination**.
 
@@ -341,7 +341,7 @@ Below is a sample graph explaining the difference between transmission and propa
 
 ## The Sleepy Socket
 
-### Background
+### Background: Blocking SVC
 
 Network communication often involves blocking system calls like `read()` or `recv()`, which wait for data to arrive. If the data has not yet reached the local socket buffer (due to propagation, queuing, or slow sender) the process is put to **sleep** by the OS. This frees the CPU to run other processes while the kernel waits for incoming data. When the data finally arrives, an interrupt notifies the OS, which wakes the blocked process and schedules it to resume. This mechanism ensures CPU efficiency but introduces performance sensitivity to network delay.
 
@@ -384,7 +384,7 @@ A process issues `read(sockfd, buf, 100)` to receive 100 bytes from a remote ser
 
 ## The Queued Crossroad
 
-### Background
+### Background: Queueing Delay
 
 In real networks, intermediate routers often have **asymmetric bandwidth** between input and output links. When packets arrive faster than they can be forwarded, **queuing delay** occurs. This happens even if the arrival rate is brief or bursts: the bottleneck at the router determines throughput and latency.
 
@@ -608,7 +608,7 @@ A router with a 1 Mbps output link handles varying traffic loads. As the average
 
 ## The Idle Interface
 
-### Background
+### Background: Link Utilisation Rate
 
 Link utilization measures how effectively a network link is used. It is defined as the **fraction of time the link is actively transmitting data**, as opposed to being idle. Low utilization often means the link is underused, possibly due to long propagation delays, small packets, or bursty traffic. Even on high-bandwidth links, poor pipelining or application delays can cause the interface to spend most of its time waiting. Understanding utilization helps diagnose inefficiencies where the network is fast, but performance is still poor.
 

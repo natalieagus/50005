@@ -65,7 +65,7 @@ A student builds a program to send short messages between two devices across net
 
 ## The Disconnected Port
 
-### Background
+### Background: Ports
 
 Hosts communicate using logical *ports*, which identify services (like web or email) on a machine. However, being “online” doesn't mean others can reach you: routers, firewalls, and NATs (Network Address Translators) can block or hide traffic, especially for incoming connections.
 
@@ -117,7 +117,7 @@ A student runs a web server on their laptop and shares its IP address and port 8
 
 ## The Recursive Route
 
-### Background
+### Background: TTL in Network Packets
 
 Routers forward packets using routing tables that map destination IP ranges to next-hop addresses. Each router uses only local information. It does <span class="orange-bold">not</span> know the full end-to-end path. Misconfigured static routes or faulty dynamic updates can create loops, where a packet cycles indefinitely between routers. The Time-To-Live (TTL) field in the IP header prevents this from lasting forever by limiting the number of hops a packet can take.
 
@@ -202,7 +202,7 @@ During a regional ISP outage, you and your peers find that they cannot access th
 
 ## The Hijacked Handshake
 
-### Background
+### Background: Connection-Oriented Communication
 
 The Internet supports *connection-oriented* communication through protocols that perform handshakes before data transfer begins. A common example is a *three-step handshake*, where the sender and receiver exchange setup messages before a connection is established. Each server listens on a specific port number, which identifies the service it offers (for example, web servers use port 80). When a handshake begins, the operating system creates a temporary record of the connection in a half-open connection queue. This queue is managed by the OS, and has a fixed maximum size. If many handshakes are started but not completed, the queue fills up, preventing the server from accepting new connections. These incomplete attempts can come from unreachable clients or even malicious sources.
 
@@ -299,7 +299,7 @@ A machine switches from a campus network to a mobile hotspot. It maintains an ac
 
 ## The Unknown Middleman
 
-### Background
+### Background: IXPs
 
 Internet traffic often passes through shared infrastructure known as *Internet Exchange Points (IXPs)*. These are physical facilities where multiple networks, including ISPs and content providers, interconnect to exchange traffic. While the logical view of the Internet may suggest a direct connection between source and destination, actual traffic paths depend on routing agreements, geography, and cost. Packets may travel through distant or unexpected locations before reaching their target. This routing behavior is invisible to end users unless explicitly traced.
 
@@ -341,7 +341,7 @@ A device in Singapore connects to a nearby cloud server, expecting a low-latency
 
 ## The Borrowed Address
 
-### Background
+### Background: Public and Private IP Addresses
 
 Every device on a network must have a unique *IP address* to communicate. These addresses are divided into public and private ranges. *Public IP addresses* are globally unique and routable on the Internet. *Private IP addresses* are reserved for local use within private networks (such as homes or offices) and are not routable over the Internet. To connect private devices to the wider Internet, routers use *Network Address Translation (NAT)*, which rewrites packet headers so many internal devices can share one public IP. If two networks assign the same private IP range without coordination, conflicts can occur when connecting between them.
 

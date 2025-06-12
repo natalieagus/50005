@@ -23,7 +23,7 @@ Singapore University of Technology and Design
 
 ## Visual Trace Exercise: Deadlock When Full
 
-### Background
+### Background: Circular Wait with Semaphores
 
 In producer-consumer systems using semaphores, the **order in which semaphores are acquired** is critical. If a thread holds one semaphore while waiting on another, and other threads are waiting to acquire the first one, the system can enter a **deadlock**: a circular wait where no thread can proceed.
 

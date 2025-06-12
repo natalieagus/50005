@@ -22,7 +22,7 @@ Singapore University of Technology and Design
 
 ## The Missing Inode
 
-### Background
+### Background: Inode Recap
 
 In UNIX-like systems, files are represented by inodes, which store metadata and pointers to actual data blocks on disk. Hard links increase an inode’s reference count, allowing multiple directory entries to point to the same underlying file.
 
@@ -114,7 +114,7 @@ Hard links cannot be used to create directory loops in most modern UNIX systems.
 
 ## The Forgotten Mount
 
-### Background
+### Background: Volume
 
 In UNIX and Linux systems, a **volume** refers to a logical storage unit, often represented by a disk partition, device, or remote filesystem. The **mount** operation binds such a volume to a specific directory path—called a **mount point**—so its contents become accessible as part of the global filesystem tree.
 
@@ -213,7 +213,7 @@ To reduce risk, applications should explicitly call <code>fsync()</code> after w
 
 ## The Phantom File
 
-### Background
+### Background: Deleting with `unlink`
 
 In UNIX-like systems, deleting a file via `unlink()` removes the **name** from its directory, but the file’s data <span class="orange-bold">remains on disk</span> until its inode’s reference count drops to zero. If a process still holds an open file descriptor, the file persists invisibly and continues to consume disk space.
 
@@ -269,7 +269,7 @@ A safer approach is to let the program manage its own temporary files, deleting 
 
 ## The Alias Trap
 
-### Background
+### Background: Hard Links
 
 In UNIX-like systems, hard links allow multiple directory entries to point to the same inode. While useful for redundancy or organization, hard links can confuse users who mistakenly assume they’re working with independent copies of a file when they are in fact modifying shared data.
 
@@ -323,7 +323,7 @@ The safer alternative is to use <code>cp</code> to create a true copy of the fil
 
 ## The Shadow Directory
 
-### Background
+### Background: Directory Permission
 
 In UNIX-like systems, access to files is governed not only by file-level permissions, but also by the permissions on each directory in the path. A user may be denied access to a file even if the file itself is world-readable, simply because one of the parent directories restricts traversal (`x` permission).
 
@@ -425,9 +425,9 @@ To avoid leaks, developers should always close descriptors in error paths and no
 
 ## The Dangling Shortcut
 
-### Background
+### Background: The Insignificant Symlink Permission 
 
-In UNIX-like systems, symbolic links (symlinks) are special files that store a textual reference to another path. Created with `ln -s <target> <linkname>`, symlinks redirect file operations to the target path. Access to the **target** is governed by its own permissions — not the symlink’s. Symlink permissions (e.g., `lrwxrwxrwx`) are generally ignored during access. Importantly, modifying a symlink’s **target path** requires replacing the symlink, which involves writing to the directory where the symlink resides.
+In UNIX-like systems, symbolic links (symlinks) are special files that store a textual reference to another path. Created with `ln -s <target> <linkname>`, symlinks redirect file operations to the target path. Access to the **target** is governed by its own permissions, not the symlink’s. Symlink permissions (e.g., `lrwxrwxrwx`) are generally ignored during access. Importantly, modifying a symlink’s **target path** requires replacing the symlink, which involves writing to the directory where the symlink resides.
 
 ### Scenario
 
