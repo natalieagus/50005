@@ -1186,5 +1186,3 @@ A custom-designed secure file transfer system uses this protocol:
     To fix this, use a modern <strong>AEAD scheme</strong> like AES-GCM or ChaCha20-Poly1305, which ensures both encryption and integrity in one operation. Replace SHA-256 with an HMAC if separate integrity is needed. To add authentication, include client and server certificates or signed tokens as part of the handshake. The IV should be randomly generated for each encryption session and transmitted safely.
   </p>
 </div>
-
-
