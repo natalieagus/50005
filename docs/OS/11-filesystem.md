@@ -341,7 +341,7 @@ It is not a good idea to pass file name to every file system operation (e.g., `r
 A process <span style="color:#f77729;"><b>uses</b></span> file descriptor (“handle” to the file) instead of file name to manipulate that file. Using system call, it can translate file name to its corresponding file descriptor at the beginning of a usage session.
 {: .note}
 
-
+## File Descriptor
 File descriptor `fd` is an <span style="color:#f77729;"><b>index</b></span> (`int`) into a per-process file-descriptor (fd) table. Its numerical index has meaning only in the context of its process. You witness this in the above example.
 
 ```cpp
@@ -403,6 +403,44 @@ abcdefghijklmnopqrstuvwxyz
 Moved cursor to 13th byte:
 mnopqrstuvwxyz
 ```
+
+## Socket File Descriptor 
+
+Previously we have learned about **sockets** (as one of the means for IPC), and it is also identified **using a file descriptor**. Recall that each process has its own file descriptor table (like a private array). 
+
+In Unix-like systems, sockets are treated as file-like objects and are accessed using file descriptors too. 
+
+When a process creates a socket using the `socket()` system call, the kernel **allocates** a socket object in kernel space, places a <span class="orange-bold">pointer</span> to this object into the calling process’s file descriptor table, and returns the corresponding index (the file descriptor) to the process.
+
+Each process maintains its own file descriptor table, meaning the *numerical* value of a file descriptor is only meaningful within the context of that process. For example, multiple processes may have an fd `3`, but those refer to *different* underlying kernel objects unless the processes share them through inheritance (e.g., after a `fork()`).
+
+**Here's a socket example with three processes to enhance your understanding**: 
+
+Suppose three processes wish to communicate over TCP:
+
+* **Process A** creates a listening socket:
+  * `socket() → fd = 3` (in A’s table)
+  * `bind()`, `listen()`, and then waits on `accept()`
+
+* **Process B** and **Process C** each connect to Process A:
+  * Each calls `socket() → fd = 3` (in their own tables)
+  * Then `connect()` to A’s listening socket
+
+When A accepts connections:
+* The first `accept()` call returns a new socket FD, say `fd = 4` (pointing to a new kernel socket object for A-B connection)
+* The second `accept()` call returns another FD, e.g., `fd = 5` (for A-C connection)
+
+**Total socket objects created:**
+* 1 listening socket (in A)
+* 2 active sockets (in B and C)
+* 2 accepted sockets (in A)
+
+{:.important}
+Thus, 5 socket objects exist in the kernel, and each is referenced by a file descriptor in some process’s table.
+
+This illustrates how file descriptors act as handles to kernel-managed communication endpoints, and how multiple fds across different processes can refer to *different* or shared socket objects.
+
+
 
 # File System Mapping
 There are two cases of file system mapping. 

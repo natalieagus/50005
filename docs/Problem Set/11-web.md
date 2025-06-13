@@ -510,7 +510,7 @@ This scenario assumes **HTTPS**, where HTTP is layered on TLS. Although this cou
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
   <p>
-    <strong>1.</strong> Distinct domains:
+    These are the distinct domains:
     <br>• <code>www.campus.sg</code>  
     <br>• <code>cdn.campuscdn.com</code>  
     <br>• <code>ads.adprovider.net</code>  
@@ -522,7 +522,7 @@ This scenario assumes **HTTPS**, where HTTP is layered on TLS. Although this cou
   </p>
 
   <p>
-    <strong>2.</strong> Shared domains:
+    These are the shared domains:
     <br>• <code>img1.png</code> and <code>img5.png</code> → <code>www.campus.sg</code>  
     <br>• <code>img2.png</code> and <code>img4.png</code> → <code>cdn.campuscdn.com</code>
     <br><br>
@@ -530,16 +530,16 @@ This scenario assumes **HTTPS**, where HTTP is layered on TLS. Although this cou
   </p>
 
   <p>
-    <strong>3.</strong> Since all connections are opened in parallel, the **slowest image** determines total page latency. All successful images take the same time (400 ms), so:
+    Since all connections are opened in parallel, the **slowest image** determines total page latency. All successful images take the same time (400 ms), so:
     <br><strong>Total time = 400 ms</strong>
   </p>
 
   <p>
-    <strong>4.</strong> A DNS failure for <code>analytics.thirdparty.io</code> returns in 1 RTT. The image cannot load, but this does not delay other images. Overall page load time remains <strong>400 ms</strong>, though a browser warning may be shown for the missing object.
+    A DNS failure for <code>analytics.thirdparty.io</code> returns in 1 RTT. The image cannot load, but this does not delay other images. Overall page load time remains <strong>400 ms</strong>, though a browser warning may be shown for the missing object.
   </p>
 
   <p>
-    <strong>5.</strong> On a repeat visit:
+    On a repeat visit:
     <br>• DNS is cached → 0 RTT  
     <br>• TLS connections are reused → 0 RTT  
     <br>• Only 1 RTT per image for transfer
@@ -549,5 +549,630 @@ This scenario assumes **HTTPS**, where HTTP is layered on TLS. Although this cou
   </p>
 </div>
 
+
+
+
+## The Sticky Connection
+
+### Background: Persistent Connections and `keep-alive`
+
+In HTTP/1.0, each request-response pair required a **new TCP connection**. This was inefficient: every request incurred TCP (and possibly TLS) setup cost.
+
+HTTP/1.1 introduced **persistent connections** by default. Using the `Connection: keep-alive` header, clients and servers can reuse a TCP connection for multiple requests, avoiding repeated handshakes. The connection stays open until explicitly closed or timed out.
+
+**Reusing a connection saves RTTs**, but requires the client and server to agree to keep it open, and the server must support multiple sequential or pipelined requests on the same socket.
+
+Connection reuse is common in HTTPS, where each new connection setup costs **2 RTTs** (TCP + TLS 1.3), making reuse even more beneficial.
+
+### Scenario
+
+A user visits `www.sticky.sg`, which returns an HTML page referencing these five small objects from the **same domain**:
+
+* `logo.png`
+* `banner.jpg`
+* `style.css`
+* `script.js`
+* `font.woff`
+
+Assume:
+
+* RTT to server = **100 ms**
+* Each object is small and takes **1 RTT** to transfer
+* TLS 1.3 is used over TCP (i.e., HTTPS)
+* TCP setup = 1 RTT; TLS handshake = 1 RTT
+* No proxy or CDN involved
+* All requests are made **sequentially**, not pipelined
+* No caching or reuse unless specified
+
+
+**Answer the following questions**:
+1. If the browser opens a **new connection per object**, how many RTTs are required in total?
+2. If the browser reuses a **single TCP+TLS connection** for all 5 objects (with `Connection: keep-alive`), how many RTTs are required in total?
+3. Explain how `keep-alive` reduces latency in this scenario. Why does connection reuse matter more for HTTPS than for plain HTTP?
+4. Suppose the server times out the connection after the third object. What happens when the client tries to fetch the fourth object? What is the new total latency?
+5. Now assume the client pipelined the requests over the keep-alive connection. What effect would this have on latency, and why is pipelining rarely used in practice?
+
+{: .highlight}
+> **Hints**:
+> * Each new connection = 1 RTT (TCP) + 1 RTT (TLS) + 1 RTT (object)
+> * Reused connection = only 1 RTT per object after setup
+> * Pipelining lets the client send multiple requests before responses return
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+  <p>
+    When the browser opens a new connection for each object, it incurs 1 RTT for TCP, 1 RTT for TLS, and 1 RTT for the object transfer. That means 3 RTTs per object. Since there are five objects and no connection reuse, the total latency is 5 times 3, which is <strong>15 RTTs</strong> (1500 ms).
+  </p>
+
+  <p>
+    With a single persistent connection (enabled by the <code>Connection: keep-alive</code> header), the client performs the TCP and TLS handshake only once. That costs 2 RTTs in total. Each object then takes 1 RTT to transfer, assuming the requests are sent one after another. This results in a total of 2 RTTs for setup and 5 RTTs for transfer, giving <strong>7 RTTs</strong> (700 ms).
+  </p>
+
+  <p>
+    This reduction in latency is due to avoiding repeated connection setup. Each new connection would require a full TCP and TLS handshake, which adds 2 RTTs. In plain HTTP, the saving would be smaller, because only the TCP setup is needed. But in HTTPS, reusing the connection avoids more overhead and improves overall performance.
+  </p>
+
+  <p>
+    If the server closes the connection after sending the third object, the client must start new connections for the fourth and fifth objects. Each of these requires 2 RTTs for setup and 1 RTT for transfer. The total becomes 2 RTTs for the first setup, 3 RTTs for the first three transfers, and then 2 setups and 2 transfers for the last two objects. This gives <strong>11 RTTs</strong> in total (1100 ms).
+  </p>
+
+  <p>
+    If the client pipelines the requests over the keep-alive connection, it sends all five requests right after the TLS handshake. The server responds to them in order. This still results in 2 RTTs for setup and 5 RTTs to receive all responses, giving <strong>7 RTTs</strong> in total. The benefit is reduced idle time between requests, although it does not reduce total RTTs. In practice, pipelining is rarely used. Many servers do not handle it correctly, and because responses must come back in order, one slow response can block all the others. HTTP/2 addresses this by allowing multiplexing with independently scheduled streams.
+  </p>
+</div>
+
+
+### Conclusion 
+
+Here's an illustration to compare the three behaviors. Time flows from top to bottom. 
+
+#### TCP + TLS Setup and Object Transfer Timing
+
+```
+Client                          Server
+  |--- TCP + TLS Setup --------->|   RTTs 1–2
+  |--- GET img1 ---------------->|   RTT 3
+  |<-- img1 ---------------------|
+
+  |--- TCP + TLS Setup --------->|   RTTs 4–5
+  |--- GET img2 ---------------->|   RTT 6
+  |<-- img2 ---------------------|
+
+  |--- TCP + TLS Setup --------->|   RTTs 7–8
+  |--- GET img3 ---------------->|   RTT 9
+  |<-- img3 ---------------------|
+
+  |--- TCP + TLS Setup --------->|   RTTs 10–11
+  |--- GET img4 ---------------->|   RTT 12
+  |<-- img4 ---------------------|
+
+  |--- TCP + TLS Setup --------->|   RTTs 13–14
+  |--- GET img5 ---------------->|   RTT 15
+  |<-- img5 ---------------------|
+```
+
+**Total: 15 RTTs**
+
+#### Keep-alive with Sequential Requests 
+
+```
+Client                          Server
+  |--- TCP + TLS Setup --------->|   RTTs 1–2
+  |--- GET img1 ---------------->|   RTT 3
+  |<-- img1 ---------------------|
+
+  |--- GET img2 ---------------->|   RTT 4
+  |<-- img2 ---------------------|
+
+  |--- GET img3 ---------------->|   RTT 5
+  |<-- img3 ---------------------|
+
+  |--- GET img4 ---------------->|   RTT 6
+  |<-- img4 ---------------------|
+
+  |--- GET img5 ---------------->|   RTT 7
+  |<-- img5 ---------------------|
+```
+
+**Total: 7 RTTs**
+
+
+#### Keep-alive with Pipelining
+
+```
+Client                          Server
+  |--- TCP + TLS Setup --------->|   RTTs 1–2
+  |--- GET img1 ---------------->|
+  |--- GET img2 ---------------->|
+  |--- GET img3 ---------------->|
+  |--- GET img4 ---------------->|
+  |--- GET img5 ---------------->|
+
+                                   (Server responds in order)
+
+  |<-- img1 ---------------------|   RTT 3
+  |<-- img2 ---------------------|
+  |<-- img3 ---------------------|
+  |<-- img4 ---------------------|
+  |<-- img5 ---------------------|
+```
+
+**Total: still 7 RTTs because of bandwidth limitation**, but less client-side idle time.
+
+
+## The Port Mismatch
+
+### Background: Application Demultiplexing by Port Number
+
+On the internet, many services can run on the **same host** (same IP address) but be distinguished by their **transport-layer port number**. This is known as **application-layer demultiplexing**.
+
+When a TCP or UDP segment arrives at a host, the OS looks at the **destination port** to determine which process or application should receive the data. Each listening application binds to a specific port number using a socket.
+
+Some ports are standardized (e.g., 80 for HTTP, 443 for HTTPS, 53 for DNS), but a server can also use **custom ports** (e.g., 8080, 3000) if it wants to run multiple services or avoid conflicts.
+
+If two different applications attempt to bind to the **same port and protocol** on the same IP address, the operating system will reject the second bind. Each (IP, port, protocol) combination must be unique for active listeners.
+
+
+### Scenario
+
+You run the following two commands on your laptop, which has a single public IP:
+
+```bash
+python3 -m http.server 8080
+```
+
+and in another terminal:
+
+```bash
+nc -l 8080
+```
+
+You receive an error from the second command saying “address already in use.”
+
+Later, you instead try:
+
+```bash
+python3 -m http.server 8080
+```
+
+and in another terminal:
+
+```bash
+nc -l 9090
+```
+
+*Both servers run without issue.*
+
+
+**Answer the following questions**:
+1. Why did the second command fail when both attempted to use port 8080?
+2. What exactly is the role of the port number in directing traffic to the correct process?
+3. If a packet arrives at your machine on port 8080, how does the OS know which application to deliver it to?
+4. If two users connect from the same laptop to the same server IP and port (e.g., `http://website.com:80`), how are their return traffic flows kept separate?
+5. You run a web server on port 443 and a DNS server on port 53, both on the same machine. Why is this allowed? How does the OS distinguish between them?
+
+{: .highlight}
+> **Hints**:
+> * A port number, together with IP and protocol, identifies the destination socket.
+> * Servers listen on fixed ports; clients usually use ephemeral (random) source ports.
+> * TCP connections are identified by (source IP, source port, dest IP, dest port).
+
+{:.note-title}
+> Ephemeral Port
+>
+> An **ephemeral port** is a short-lived port number automatically assigned by the operating system when a client application initiates an outgoing TCP or UDP connection.
+> 
+> It acts as the **source port** for that connection and allows the OS to distinguish between different sockets, even if they’re all talking to the same server and port.
+> 
+> Ephemeral ports are usually chosen from a specific range (e.g., 49152–65535 on most systems) and are released when the connection ends. They are essential for enabling **multiple simultaneous client connections** without port conflicts, especially when connecting repeatedly to the same server.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+  <p>
+    The second command failed because the first command was *already* using TCP port 8080 on your IP address. Each application that wants to receive traffic must bind to a specific combination of protocol, IP address, and port number. If another process is already listening on that exact (IP, port, protocol) tuple, the OS will not allow a second one to do the same.
+  </p>
+
+  <p>
+    Port numbers serve as identifiers for application-layer services. When a segment arrives at the host, the transport layer checks the destination port to decide which application should receive the data. The port number acts like a delivery slot at the transport layer.
+  </p>
+
+  <p>
+    If a packet arrives at your machine destined for TCP port 8080, the OS looks for a socket that has bound to port 8080 over TCP. It will deliver the packet to the process associated with that socket. If no such socket exists, the OS will drop the packet or send back a TCP RST.
+  </p>
+
+  <p>
+    When two users on the same client machine connect to the same server IP and port, the OS keeps the connections separate by assigning each client connection a unique source port. For example, one might use port 51500 and the other 53000. Even though they connect to the same server and server port, the full connection is identified by the source IP, source port, destination IP, and destination port. The OS uses this 4-tuple to distinguish each flow.
+  </p>
+
+  <p>
+    Running a web server on port 443 and a DNS server on port 53 works fine because each uses a different port number. Even though they are on the same host and IP, they bind to different port numbers and may use different protocols (TCP for HTTPS, UDP for DNS). The OS keeps their sockets separate by port and protocol.
+  </p>
+</div>
+
+
+
+### Summary: Clients Connecting to the Same Server Port
+
+Here's a **Wireshark-style ladder diagram** to illustrate how the **operating system uses port numbers** to demultiplex traffic and how it handles multiple clients talking to the same server port. Given a server with two clients connecting to it, we assume that: 
+* Server IP: `203.0.113.1`
+* Server port: `80` (HTTP)
+* Client A IP: `10.0.0.1`, ephemeral port `51500`
+* Client B IP: `10.0.0.2`, ephemeral port `53000`
+
+
+{:.note}
+An ephemeral port is a **temporary** port number *automatically* assigned by the operating system to a client application **when it initiates an outgoing connection**.
+
+```
+Client A                          Server                        Client B
+  |                                |                              |
+  |--- SYN (10.0.0.1:51500 → 80) -->|                              |
+  |                                |                              |
+  |<-- SYN-ACK (80 → 10.0.0.1:51500)--|                            |
+  |--- ACK ------------------------>|                              |
+
+  |                                |                              |
+  |                                |<-- SYN (10.0.0.2:53000 → 80)--|
+  |                                |-- SYN-ACK (80 → 10.0.0.2:53000)-->
+  |                                |<-- ACK ------------------------|
+
+  |--- GET /index.html ----------->|                              |
+  |<-- HTTP Response -------------|                               |
+                                  |<-- GET /page.html ------------|
+                                  |--> HTTP Response ------------>|
+```
+
+
+
+**How the OS handles this**: 
+* On the **server**, the OS uses the full 4-tuple to distinguish connections:
+  `(src IP, src port, dst IP, dst port)`
+* Although both clients are connecting to the same **destination port 80**, the connections are **not the same**, because the source IP and port are different.
+* Each client can run its own web browser using its own ephemeral port.
+  The server keeps a separate socket entry for each active connection.
+
+
+**In short**: 
+* **Server port 80** is reused across many clients.
+* Each **client–server pair** is *uniquely* identified by the connection 4-tuple.
+* The OS routes incoming TCP segments to the correct socket using this 4-tuple.
+* The diagram and explanation provided earlier are <span class="orange-bold">specifically for TCP</span>.
+
+{:.important}
+If two servers on the same machine try to bind to port 80 with TCP, the OS will <span class="orange-bold">block</span> the second one, because the listening socket `(IP, port, protocol)` must be unique, as highlighted in this question. 
+
+
+
+
+## The Stateless Listener
+
+### Background: UDP and Demultiplexing
+
+UDP is a **connectionless transport protocol**. It does not perform a handshake or track connection state. Each UDP packet is treated independently and carries its own addressing information.
+
+When a UDP datagram arrives, the operating system looks only at the **destination port number** and **protocol** to decide which application should receive it. The OS finds a matching socket that has bound to that `(IP address, port number, protocol)` combination.
+
+Unlike TCP, there is no "established connection" and no 4-tuple for ongoing state. Applications that use UDP (like DNS or NTP) must implement their own logic to match replies to requests.
+
+
+### Scenario
+
+You start a DNS server on your laptop using:
+
+```bash
+sudo named -p 5353
+```
+
+Then you send a DNS query from a custom script:
+
+```bash
+dig @127.0.0.1 -p 5353 example.com
+```
+
+Your script opens a UDP socket on an ephemeral port and sends a datagram to 127.0.0.1 port 5353. The DNS server replies to the source IP and source port from your packet.
+
+Later, you try sending two DNS queries in rapid succession using different scripts. Both use UDP and send to port 5353, but only one gets a reply.
+
+
+**Answer the following questions**:
+1. How does the operating system decide which application should receive an incoming UDP datagram?
+2. Why is it possible for many clients to send datagrams to the same UDP port (e.g., 5353), but only one server process can bind to that port at a time?
+3. When the DNS server receives your request, how does it know where to send the reply?
+4. Why is there no concept of "connection reuse" in UDP?
+5. What happens if two client scripts on your laptop try to bind to the same UDP source port when sending requests? Can the replies get misrouted?
+
+{: .highlight}
+> **Hints**:
+> * UDP has no session state or handshake
+> * Replies go to (source IP, source port) in the request
+> * Multiple clients can send to the same destination port, but only one listener can bind to it
+
+
+
+### UDP Demultiplexing: No Connections, Just Packets
+
+The diagram below shows how UDP demux works:
+
+```
+Client A                      Server (DNS @ port 5353)                     Client B
+  |                                |                                        |
+  |-- UDP: 10.0.0.1:50001 → 5353 -->|                                        |
+  |                                |                                        |
+  |<-- UDP: 5353 → 10.0.0.1:50001 --|                                        |
+
+  |                                |<-- UDP: 10.0.0.2:50100 → 5353 ---------|
+  |                                |-- UDP: 5353 → 10.0.0.2:50100 --------->|
+```
+
+
+* Each **incoming UDP datagram** is matched by the OS using only:
+  * **Destination port**
+  * **Protocol (UDP)**
+  * **Local IP (optional)**
+
+The OS finds a **single matching socket** bound to UDP port 5353 and delivers the datagram to it. The DNS server sends replies by copying the **source IP and port** from the request into the **destination** of the response.
+
+{:.note}
+Unlike TCP, there is **no persistent connection**, no session tracking, and **no 3-way handshake**.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+  <p>
+    The operating system uses the destination UDP port number to decide which application should receive an incoming datagram. When a packet arrives, it looks for a socket bound to the specified port and protocol. If one is found, the packet is delivered to that socket. If no socket is listening on that port, the datagram is dropped.
+  </p>
+
+  <p>
+    Multiple clients can send UDP packets to the same destination port because that port is on the receiving side. The server listens on a fixed port (like 5353), and many different clients with unique source ports can send packets to it. However, only one server process can bind to a given port on the same IP at the same time. This ensures that there is no ambiguity about who should receive incoming packets.
+  </p>
+
+  <p>
+    When your DNS server receives the query, it inspects the source IP and source port fields in the UDP header. These fields tell the server where to send the reply. The response packet is constructed using the server’s own port 5353 as the source, and the client’s IP and port as the destination.
+  </p>
+
+  <p>
+    UDP does not have any built-in concept of connection reuse or session state. Each message is independent. There is no handshake, no teardown, and no timeout that marks the end of a connection. Applications that need to track ongoing interactions must implement that logic themselves.
+  </p>
+
+  <p>
+    If two client scripts try to bind to the same source UDP port on the same machine, the second one will likely fail unless the socket is opened in a special sharing mode. In most cases, only one process can bind to a particular port at a time. If both succeed using shared binding, there is a risk that incoming replies will be delivered nondeterministically, depending on how the OS distributes datagrams. This can cause one script to receive the other's response or for both to miss the reply entirely.
+  </p>
+</div>
+
+
+## The Tunnel That Talks
+
+### Background: UNIX Domain Sockets (Local Inter-Process Communication)
+
+Most networked applications use **INET sockets**, which communicate over IP using TCP or UDP. But not all socket-based communication leaves the machine. For processes on the **same host**, the operating system provides an efficient alternative called a **UNIX domain socket**.
+
+UNIX domain sockets are part of the socket API, just like TCP and UDP, but they do not use IP addresses or port numbers. Instead, they use **file system paths** to identify endpoints (e.g., `/var/run/docker.sock` or `/tmp/myapp.sock`).
+
+Key properties of UNIX domain sockets:
+
+* They are **used for local communication** only.
+* They provide **fast, low-latency IPC** (no IP stack overhead).
+* They use **the same system calls** (`socket()`, `bind()`, `listen()`, `accept()`, `connect()`) as TCP sockets.
+* Permissions are managed via the **file system**, using standard UNIX file permissions (read, write, owner).
+* They can operate in both **stream (SOCK\_STREAM)** and **datagram (SOCK\_DGRAM)** modes.
+
+UNIX domain sockets are widely used by background services, daemons, and system utilities that expose an API for local clients to access. For example, Docker CLI talks to the Docker daemon via a socket file like `/var/run/docker.sock`. No TCP port is involved.
+
+
+### Scenario
+
+A student runs a command to start a local development database:
+
+```bash
+pg_ctl -D /usr/local/var/postgres start
+```
+
+Then, they try to connect to it using:
+
+```bash
+psql
+```
+
+Surprisingly, it works — even though they haven’t specified a port or host.
+
+The student inspects the database log and sees:
+
+```
+connection received: host=[local]
+```
+
+Later, they explicitly run:
+
+```bash
+psql -h localhost
+```
+
+and the log now says:
+
+```
+connection received: host=127.0.0.1
+```
+
+This <span class="orange-bold">surprises</span> them. Both commands seem local, but the logs show different paths. They wonder what protocol is being used, and what exactly the difference is.
+
+
+**Answer the following questions**:
+1. How can a program like `psql` connect without specifying a host or port?
+2. What is a UNIX domain socket, and how does it differ from a regular TCP socket?
+3. When the log shows `host=[local]`, what does that imply about the transport layer?
+4. Why does explicitly specifying `-h localhost` cause it to switch to using IP instead?
+5. How does the OS determine which process should receive a message sent to a UNIX domain socket?
+6. Why might a system choose to use UNIX sockets instead of TCP sockets for local access?
+
+{: .highlight}
+> **Hints**:
+> * UNIX domain sockets are file-based, not port-based
+> * The socket file must already exist and be bound by the server process
+> * When using `-h localhost`, the program switches to TCP/IP loopback (127.0.0.1)
+> * IPC using UNIX sockets avoids the overhead of the IP stack
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+  <p>
+    The `psql` client is able to connect without specifying a host or port because it defaults to using a UNIX domain socket. PostgreSQL creates a special socket file (often at `/tmp/.s.PGSQL.5432` or a similar path) which acts as the communication endpoint. If no `-h` is provided, `psql` connects to that socket file directly.
+  </p>
+
+  <p>
+    A UNIX domain socket is a form of inter-process communication that stays entirely within the host machine. Unlike TCP sockets, which use IP addresses and port numbers, UNIX sockets are identified by file system paths. They use the same system calls and socket interface, but there is no network stack involved. As a result, they provide lower latency and tighter permission control.
+  </p>
+
+  <p>
+    When the log says `host=[local]`, it means the connection was made using a UNIX domain socket. There was no TCP handshake or IP address used. The PostgreSQL server is simply accepting local connections via the socket file it created.
+  </p>
+
+  <p>
+    When the user specifies `-h localhost`, the client uses the TCP/IP stack and connects to `127.0.0.1` on the standard PostgreSQL port (5432). This results in a real TCP connection, which is why the server log shows `host=127.0.0.1`. The presence of `-h` overrides the default UNIX socket behavior.
+  </p>
+
+  <p>
+    The operating system manages UNIX domain socket communication by using the file path to look up the listening socket. If the path exists and a process has bound to it, the OS routes incoming data directly to that process. The permissions on the socket file determine who is allowed to connect.
+  </p>
+
+  <p>
+    Systems often prefer UNIX domain sockets for local services because they avoid the overhead of TCP and IP, reduce attack surface, and support fine-grained permission control using standard UNIX file access rules. They also eliminate the need to reserve and manage TCP ports for local-only communication.
+  </p>
+</div>
+
+
+
+
+### 🔧 UNIX Domain Socket vs TCP Loopback
+
+Here is a **ladder diagram** that contrasts a **UNIX domain socket connection** with a **TCP loopback connection** for local database access.
+#### Example 1: `psql` connects using **UNIX domain socket** (no `-h`)
+
+```
+psql                              PostgreSQL Server
+  |                                     |
+  |-- connect(/tmp/.s.PGSQL.5432) ----->|   ← uses socket file
+  |                                     |
+  |<------------- ACK ------------------|   ← no handshake, local pipe
+  |-- query --------------------------->|
+  |<-- response ------------------------|
+```
+
+* No IP or port involved
+* OS checks permissions on the socket file
+* Low latency, stays within kernel
+
+
+#### Example 2: `psql -h localhost` connects using **TCP over loopback**
+
+```
+psql                              PostgreSQL Server
+  |                                     |
+  |-- SYN (127.0.0.1:50432 → 127.0.0.1:5432) -->
+  |<-- SYN-ACK (5432 → 50432) -------------|
+  |-- ACK -------------------------------->|
+  |-- TCP query -------------------------->|
+  |<-- TCP response -----------------------|
+```
+
+* Full TCP 3-way handshake
+* Uses the loopback network interface
+* Identified by IP and port
+
+
+In a nutshell:
+* UNIX domain sockets are used when no `-h` is given
+* TCP loopback is used when `localhost` or an IP is specified
+* Both allow local communication, but differ in transport layer and efficiency
+
+
+
+## The Unexpected SYN
+
+### Background: TCP Connection Lifecycle and State Transitions
+
+TCP is a **connection-oriented protocol**. Before data can be exchanged, both parties must perform a **3-way handshake**, which transitions the connection through states:
+
+1. **LISTEN** (server waiting for incoming connections)
+2. **SYN_SENT** (client sends initial SYN)
+3. **SYN_RECEIVED** (server received SYN, sends SYN-ACK)
+4. **ESTABLISHED** (both sides have acknowledged)
+
+After communication is done, both sides must **gracefully close** the connection. This leads through states like **FIN_WAIT**, **CLOSE_WAIT**, **TIME_WAIT**, and **CLOSED**.
+
+A TCP socket must track the **connection state**, including sequence numbers, expected ACKs, and timers. If a **SYN** (which is supposed to begin a new connection) is received when the socket is already in another state, this is treated as **unexpected** and may be dropped or responded to defensively.
+
+
+
+### Scenario
+
+A server is running an application that accepts TCP connections on port 9090. A client connects, exchanges some data, and closes the connection. The server enters **TIME_WAIT** state to ensure all stray packets are handled.
+
+Seconds later, the same client tries to reconnect quickly. The new SYN packet from the client reaches the server, but the server log shows:
+
+```
+[WARN] Dropped unexpected SYN from 192.0.2.5: disconnected state
+```
+
+This is puzzling. Isn’t SYN supposed to always start a new connection? Why would the server reject it?
+
+
+
+**Answer the following questions**:
+1. What does it mean for the server to be in TIME_WAIT, and why is it not ready to accept a new SYN from the same client?
+2. How can a SYN packet be considered unexpected?
+3. Why does TCP maintain the TIME_WAIT state after closing a connection?
+4. What happens if a duplicate SYN arrives while a previous connection to the same (IP, port) is still in TIME_WAIT?
+5. What would be different if the client used a new ephemeral port for the second connection?
+
+{: .highlight}
+> **Hints**:
+> * TIME_WAIT helps avoid confusion from delayed or duplicate packets
+> * The socket is identified by a 4-tuple: (src IP, src port, dst IP, dst port)
+> * Reusing the same 4-tuple before TIME_WAIT expires can trigger conflicts
+
+This is what actually happened:
+
+```
+Client (192.0.2.5:51000)       Server (203.0.113.10:9090)
+        |                                |
+        |-- SYN ------------------------>|
+        |<-- SYN-ACK --------------------|
+        |-- ACK ------------------------>|
+        |       [Connection ESTABLISHED] |
+        |-- FIN ------------------------>|
+        |<-- ACK ------------------------|
+        |       [Server enters TIME_WAIT]|
+        |                                |
+   [Client attempts reconnect using same ephemeral port]
+        |-- SYN ------------------------>|
+        |<-- (Dropped: port tuple still in TIME_WAIT) 
+        |                                |
+```
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+  <p>
+    The TIME_WAIT state exists to prevent old or duplicate TCP segments from interfering with new connections. When a connection is closed, the side that sends the final ACK enters TIME_WAIT for a period (typically 2 × Maximum Segment Lifetime, or about 60 seconds). During this time, the OS keeps the connection entry alive, even though the connection appears closed to the application.
+  </p>
+
+  <p>
+    When a SYN arrives during this period, it may appear to be a new connection attempt, but if it uses the same 4-tuple (source IP, source port, destination IP, destination port) as the one still in TIME_WAIT, the server may reject it or drop it silently. This prevents ambiguity between old segments from the previous connection and new segments from a reused connection.
+  </p>
+
+  <p>
+    TCP expects that sequence numbers from the old connection might still be floating in the network. If the server immediately accepts a new connection using the same 4-tuple, those old packets could be misinterpreted as part of the new session. The TIME_WAIT state ensures that any stray or duplicated packets from the previous session will be discarded before allowing reuse.
+  </p>
+
+  <p>
+    If the client reuses the same ephemeral port to reconnect too quickly, the server sees the same 4-tuple as before and refuses the SYN. This is why the SYN is considered unexpected — the OS is still holding state from the previous connection and cannot safely start a new one with the same identifiers.
+  </p>
+
+  <p>
+    If the client had instead selected a different ephemeral port, the new SYN would have a different 4-tuple. The server would treat it as a fresh connection unrelated to the one in TIME_WAIT and accept it normally. This is why most client OSes rotate ephemeral ports for each new outgoing connection.
+  </p>
+</div>
 
 
