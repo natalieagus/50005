@@ -47,7 +47,7 @@ Singapore University of Technology and Design
 > 
 > These objectives guide through understanding the theoretical concepts and practical implementations, emphasizing the importance of correct synchronization in concurrent programming to maintain data integrity and program stability.
 
-## Asynchrony vs Concurrency vs Parallelism
+## Background: Asynchrony vs Concurrency vs Parallelism
 
 {:.note}
 **Asynchronous** processing involves **non-blocking** tasks that run independently without waiting for others, **concurrent** processing manages <span class="orange-bold">multiple</span> tasks making progress over time without simultaneous execution, while **parallel** processing executes multiple tasks at the same time on multiple cores or processors.
@@ -55,12 +55,20 @@ Singapore University of Technology and Design
 ### Asynchronous Processing
 Asynchronous processing allows a program to perform tasks without waiting for others to complete. This is particularly useful in I/O operations where waiting for a resource could block other tasks. Instead, tasks can be started and the program can move on to other tasks while waiting for the initial tasks to complete.
 
-**Example**: Making an HTTP request. The program can initiate the request and then continue executing other code. When the response is received, a callback function can be executed to handle the response.
+**Example**: Making an HTTP request. The program can initiate the request and then continue executing other code. When the response is received, a <span class="orange-bold">callback</span> function can be executed to handle the response.
+
+{:.note}
+Asynchrony does <span class="orange-bold">not</span> necessarily require multi-threading. 
 
 ### Concurrent Processing
-Concurrent processing involves multiple tasks making progress over time, but not necessarily simultaneously. This can be achieved through various methods like time slicing, where each task is given a small time slot to execute before moving to the next one.
+Concurrent processing involves multiple tasks making progress over time, but not necessarily simultaneously. This can be achieved through various methods like time slicing, where each task is given a small time slot to execute before moving to the next one. In order to *achieve concurrency*, there has to be overlapping management, suspension, coordination, or scheduling (need task switching *or* interleaving).
 
 **Example**: Running multiple threads on a single-core processor. Each thread gets a time slice to run, and the operating system switches between them, creating the illusion of simultaneous execution.
+
+{:.note}
+> Asynchrony *enables* concurrency, but does **not** guarantee it because in the code we can still `await` to ensure one task runs after another, thus effectively disabling concurrency. Multithreading **also** enables concurrency but does not guarantee it because scheduler might just schedule these threads *in sequence*. 
+> 
+> However concurrency <span class="orange-bold">cannot</span> happen without either asynchrony or multithreading. 
 
 ### Parallel Processing
 Parallel processing involves performing multiple tasks simultaneously. This requires multiple processors or cores. Each core can execute a different task at the same time, leading to true simultaneous execution.
@@ -69,19 +77,19 @@ Parallel processing involves performing multiple tasks simultaneously. This requ
 
 ### Key Differences
 1. **Execution Style**:
-   - **Asynchronous**: Non-blocking, tasks are started and the program continues without waiting.
-   - **Concurrent**: Multiple tasks are in progress, but they may not be running at the exact same time.
-   - **Parallel**: Multiple tasks are executed simultaneously, requiring multiple cores or processors.
+   - **Asynchronous**: <span class="orange-bold">Non-blocking</span>, tasks are started and the program continues without waiting.
+   - **Concurrent**: Multiple tasks are in **progress**, but they may not be running at the exact same time.
+   - **Parallel**: Multiple tasks are executed **simultaneously**, requiring multiple cores or processors.
 
 2. **Typical Use Cases**:
    - **Asynchronous**: I/O-bound tasks, such as reading/writing files, network requests.
-   - **Concurrent**: Multithreading in applications, such as GUI applications where you don’t want the interface to freeze while performing background tasks.
+   - **Concurrent**: Multithreading in applications, such as GUI applications where you **don’t** want the interface to **freeze** while performing background tasks.
    - **Parallel**: CPU-bound tasks, such as scientific calculations, data processing on large datasets.
 
 3. **Hardware Requirements**:
    - **Asynchronous**: Does not necessarily require multiple cores or processors.
    - **Concurrent**: Can be achieved with a single-core processor through time slicing.
-   - **Parallel**: Requires multiple cores or processors.
+   - **Parallel**: Requires **multiple** cores or processors.
 
 ### Summary
 - **Asynchronous** processing allows tasks to be executed **without** blocking the main program flow, often used for I/O operations.
