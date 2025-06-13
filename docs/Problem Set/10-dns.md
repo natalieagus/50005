@@ -3,7 +3,7 @@ layout: default
 permalink: /ps/10-dns
 title: Internet Naming and Addressing 
 parent: Problem Set 
-nav_order:  9
+nav_order:  10
 ---
 * TOC
 {:toc}
@@ -181,7 +181,6 @@ Your goal:
 * Serve all DNS queries yourself using your personal DNS server
 
 **Answer the following questions**:
-
 1. What steps must you take on Namecheap to make your domain use your DNS server?
 2. Why must you provide a glue record for `ns1.pixelpeek.dev`?
 3. What entries must exist in your zone file for `pixelpeek.dev`?

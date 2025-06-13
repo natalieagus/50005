@@ -518,7 +518,7 @@ $$
 
 > Note: image for illustration purposes only, does not strictly accurately represent this current case study of O1 to O4 with this specific object size. 
 
-**Multiplexing via Frame Division Schediling**:
+**Multiplexing via Frame Division Scheduling**:
 - Allows multiple requests and responses to be sent concurrently over a single TCP connection.
 - Uses streams to interleave data, mitigating application-level HOL blocking.
 
