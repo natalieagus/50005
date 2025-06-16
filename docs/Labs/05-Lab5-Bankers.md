@@ -54,22 +54,15 @@ Once you have completed `Banker.py`, schedule a checkoff as a Team with your Lab
 
 ## Install Python 3.10.x or above
 
-If you don't have Python 3.10.x installed already, here's a list of commands you can enter to install:
+If you don't have Python 3.10.x installed already,  you can install it using whichever method you like. One of our students recommended [uv](https://docs.astral.sh/uv/), a cross-platform and exteremely fast Python package and project manager.  
 
 ```bash
-sudo apt update && sudo apt upgrade
-sudo apt install software-properties-common -y
-sudo add-apt-repository ppa:deadsnakes/ppa -y
-sudo apt update
-sudo apt install python3.10 -y
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv venv --python 3.10 
+source .venv/bin/activate
 ```
 
-When done, check that it is installed, and install pip as well:
-
-```bash
-python3.10 --version
-sudo apt install python3-pip
-```
+When you are done with the project, you can exit the virtual environment with the command `deactivate`. 
 
 ## Clone
 
@@ -211,7 +204,7 @@ In this example, no resources are available. So obviously we are met with the *s
 You can run the algorithm using the command:
 
 ```
-python3.10 banker.py test_files/q0.txt
+python3 banker.py test_files/q0.txt
 ```
 
 The output is as such as expected, with `allocation` matrix remaining at 0.
@@ -247,11 +240,11 @@ Need:
 Experiment with the other 5 files as well. Try them one by one and study the result.
 
 ```
-python3.10 banker.py test_files/q1.txt
-python3.10 banker.py test_files/q2.txt
-python3.10 banker.py test_files/q3.txt
-python3.10 banker.py test_files/q4.txt
-python3.10 banker.py test_files/q5.txt
+python3 banker.py test_files/q1.txt
+python3 banker.py test_files/q2.txt
+python3 banker.py test_files/q3.txt
+python3 banker.py test_files/q4.txt
+python3 banker.py test_files/q5.txt
 ```
 
 ## Resource Request Algorithm
@@ -299,7 +292,7 @@ The resource allocation algorithm goes as follows:
 
 ### Example 1
 
-You may run: `python3.10 banker.py test_files/q1.txt` and study the output.
+You may run: `python3 banker.py test_files/q1.txt` and study the output.
 
 Initially, we know that `allocation` was initialised as 0 and that `available=[5,5,5]` from the third line in `test_files/q1.txt`. The first 3 requests are <span style="color:#f77729;"><b>granted</b></span>:
 
@@ -366,7 +359,7 @@ Need:
 
 ### Example 2
 
-You may run: `python3.10 banker.py test_files/q2.txt` and study the output.
+You may run: `python3 banker.py test_files/q2.txt` and study the output.
 
 This time round, we have `N=5` processes and `M=3` different types of resources, and `available=[10,5,7]`.
 
@@ -429,7 +422,7 @@ Right now the variable `safe` is always set to `True`, hence we <span style="col
 However, if you try running the program with `q3`, you will notice that the printed output is not the same as the answer: `test_files/q3_answer.txt`. We need to <span style="color:#f77729;"><b>implement and call</b></span> the `check_safe` algorithm to ensure that we get the right answer.
 
 ```
-python3.10 banker.py test_files/q3.txt
+python3 banker.py test_files/q3.txt
 ```
 
 
@@ -534,7 +527,7 @@ The algorithm goes as follows:
 Run the Banker algorithm with `q3`:
 
 ```
-python3.10 banker.py test_files/q3.txt
+python3 banker.py test_files/q3.txt
 ```
 
 At first, P0 is making the request `[1,0,3]` and it is <span style="color:#f77729;"><b>granted</b></span> as shown in the `allocation` matrix:
@@ -698,7 +691,7 @@ We guard the <span style="color:#f77729;"><b>critical sections</b></span> with `
 When you're confident that your Task 1 and Task 2 are correct, you can run the tester file:
 
 ```
-python3.10 banker_test.py
+python3 banker_test.py
 ```
 
 This will run your `banker.py` against all 6 test cases: q0 to q5. If all goes well, the following message will be printed:
