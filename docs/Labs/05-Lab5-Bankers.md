@@ -640,7 +640,7 @@ def check_safe(self, customer_index, request, available, need, allocation):
   return safe
 ```
 
-Again, do <span class="orange-bold">NOT</span> print any other stuffs as part of your answer when submitting the files.
+Again, do <span class="orange-bold">NOT</span> print any other stuffs as part of your answer when running the autograder for the files.
 {:.error}
 
 ## Further Notes
