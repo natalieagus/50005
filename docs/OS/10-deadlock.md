@@ -98,7 +98,9 @@ Deadlock is a situation whereby a set of <span style="color:#f7007f;"><b>blocked
 {:.info}
 
 The critical section solutions we learned in the previous chapter _prevents_ race condition, but if not implemented properly it can cause <span style="color:#f7007f;"><b>deadlock</b></span>.
-{:.warning}
+ 
+{:.important}
+It is **important** to understand that deadlock is a <span class="orange-bold">system-level property</span>, not a *flaw* in the primitive (CS solution like Semaphore, spinlocks, or mutex) itself.
 
 ## A Simple Deadlock Example
 
