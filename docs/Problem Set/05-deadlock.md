@@ -394,16 +394,18 @@ Now, process **P1** makes a request for resources: **(1, 0, 2)**.
   <li>New Need for P1: (1 - 1, 2 - 0, 2 - 2) = (0, 2, 0)</li>
 </ul>
 
-<p>Now check for a safe sequence:</p>
+<p>Now check for a **safe** sequence:</p>
 <ul>
-  <li>P3: Need (0, 1, 1) — cannot proceed, needs 1 unit of C but C = 0</li>
-  <li>P1: Need (0, 2, 0) — can proceed, gets resources and finishes</li>
-  <li>Updated Available: (2 + 3, 3 + 0, 0 + 2) = (5, 3, 2)</li>
+  <li>P3: Need (0, 1, 1) - **cannot** proceed, needs 1 unit of C but C = 0</li>
+  <li>P1: Need (0, 2, 0) - fits, gets resources and finishes</li>
+  <li>**Updated** Available: (2 + 3, 3 + 0, 0 + 2) = (5, 3, 2)</li>
   <li>P3: Now has enough, finishes and adds (2, 1, 1) → (7, 4, 3)</li>
-  <li>P0: Need (7, 4, 3) — fits, finishes → Available becomes (7, 5, 3)</li>
-  <li>P2: Need (6, 0, 0) — fits, finishes → (10, 5, 5)</li>
-  <li>P4: Need (4, 3, 1) — fits, finishes → all processes done</li>
+  <li>P0: Need (7, 4, 3) - fits, finishes → Available becomes (7, 5, 3)</li>
+  <li>P2: Need (6, 0, 0) - fits, finishes → (10, 5, 5)</li>
+  <li>P4: Need (4, 3, 1) - fits, finishes → all processes done</li>
 </ul>
+
+<p>The **safe** sequence is therefore: P1, P3, P0, P2, P4.</p>
 
 <p><strong>Conclusion:</strong> Yes, the system remains in a safe state. The request should be granted.</p>
 
@@ -556,7 +558,7 @@ Graphically, this forms a cycle:
 
 </p></div><br>
 
-## Dining Savages with Broken Pot Semaphore-
+## Dining Savages with Broken Pot Semaphore
 
 ### Background
 
@@ -576,6 +578,71 @@ If the synchronization is incorrect; for example, if a **semaphore is missing or
 ### Scenario
 
 Consider the following buggy implementation:
+
+```c
+semaphore serving_available = 0; 
+semaphore empty = 1; // used to wake up cook 
+mutex mtx = 1; // used by savages to protect servings_eaten 
+int servings_eaten = 0; // shared resource among savages
+
+// savage code
+while (true) {
+    wait(serving_available);
+    eat();
+
+    wait(mtx);
+    servings_eaten++;
+    if (servings_eaten == N) {
+        servings_eaten = 0;
+        signal(empty);
+    }
+    signal(mtx);
+}
+
+// cook code
+while (true) {
+    wait(empty);
+    cook();
+    signal(serving_available);
+}
+```
+
+
+However, after some time, the program <span class="orange-bold">deadlocks</span>. All savage threads are **blocked**, and the cook is **idle**.
+
+
+
+**Answer the following questions:**
+1. Explain the purpose of each semaphore and **how** they coordinate between the savages and the cook.
+2. Describe the condition (scenario) that leads the system into a deadlock. 
+3. Why is it incorrect to simply call `signal(serving_available)` once?
+4. Modify the synchronization so that deadlock is mitigated. The modification should be as minimal as possible. 
+
+{:.highlight}
+> **Hints**:
+>
+> * Only **one** savage should signal the cook when the pot is empty.
+> * Semaphores do not queue extra signals if no one is waiting.
+> * The cook only wakes one savage after refilling and the others remain blocked with the current implementation.
+> * Think about whether `serving_available` should count the number of available servings.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p>The <code>empty</code> semaphore is used by savages to notify the cook when the pot is empty. The <code>full</code> semaphore is used by the cook to signal back to the waiting savage that the pot has been refilled.</p>
+
+<p>The deadlock occurs because only one savage is woken after the pot is refilled. That savage proceeds and takes one serving, but no other savage is signaled. If that savage consumes the only <code>serving_available</code> signal and more savages find the pot empty again, they each signal <code>empty</code>, but the cook is already asleep. Since semaphores do not count signals when no thread is waiting, the cook remains idle and all savages are blocked.</p>
+
+<p>It is incorrect to call <code>signal(serving_available)</code> only once because there are **multiple** savages. Semaphores are counters. If only one <code>full</code> signal is given, only one savage can proceed. The others will block indefinitely on <code>wait(serving_available)</code>. 
+
+<p>To fix this, <code>full</code> should represent the number of servings in the pot. The cook should <code>signal(serving_available)</code> **N** times after refilling. Each savage then <code>wait(serving_available)</code> before taking a serving. This ensures that N servings can be consumed by N savages, one per signal. Also, only one savage should be allowed to signal <code>empty</code> to prevent duplicate cook notifications. This can be done with an additional `mtx` semaphore to indicate that a refill is already in progress.</p>
+
+
+</p></div><br>
+
+### Epilogue 
+
+The above solution to the dining savages problem *works*, but it requires you to `signal` many times as the semaphore `servings_available` represents the number of servings available for each savage. Below is an alternative solution that uses `int servings` variable instead of using the semaphore to **count** the servings. Either solution works. 
+
 
 ```c
 // Shared variables
@@ -604,37 +671,6 @@ while (true) {
     signal(full);        // notify savage
 }
 ```
-
-However, after several refills, the program sometimes <span class="orange-bold">deadlocks</span>. All savage threads are **blocked**, and the cook is **idle**.
-
-
-
-**Answer the following questions:**
-1. Explain the purpose of each semaphore and **how** they coordinate between the savages and the cook.
-2. Describe what can go wrong in this implementation. **Under what condition does the system deadlock**?
-3. Modify the synchronization so that the cook is only signaled once per refill and all savages can continue safely afterward.
-4. Why is it incorrect to simply call `signal(full)` once, even though there are multiple savages?
-
-{:.highlight}
-> **Hints**:
->
-> * Only one savage should signal the cook, or multiple signals will be lost.
-> * Semaphores do not queue extra signals if no one is waiting.
-> * The cook only wakes one savage after refilling — the others remain blocked.
-> * Think about whether full should count the number of available servings.
-
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<p>The <code>empty</code> semaphore is used by savages to notify the cook when the pot is empty. The <code>full</code> semaphore is used by the cook to signal back to the waiting savage that the pot has been refilled.</p>
-
-<p>The deadlock occurs because only one savage is woken after the pot is refilled. That savage proceeds and takes one serving, but no other savage is signaled. If that savage consumes the only <code>full</code> signal and more savages find the pot empty again, they each signal <code>empty</code>, but the cook is already asleep. Since semaphores do not count signals when no thread is waiting, the cook remains idle and all savages are blocked.</p>
-
-<p>To fix this, <code>full</code> should represent the number of servings in the pot. The cook should <code>signal(full)</code> N times after refilling. Each savage then <code>wait(full)</code> before taking a serving. This ensures that N servings can be consumed by N savages, one per signal. Also, only one savage should be allowed to signal <code>empty</code> to prevent duplicate cook notifications. This can be done with an additional flag or semaphore to indicate that a refill is already in progress.</p>
-
-<p>It is incorrect to call <code>signal(full)</code> only once because there are multiple savages. Semaphores are counters. If only one <code>full</code> signal is given, only one savage can proceed. The others will block indefinitely on <code>wait(full)</code>. The correct behavior is to post <code>full</code> once for each serving refilled, allowing one savage per serving to proceed.</p>
-
-</p></div><br>
 
 ## Preemption and Priority Inversion in Lock Acquisition
 
