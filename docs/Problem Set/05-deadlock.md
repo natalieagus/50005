@@ -230,6 +230,50 @@ In Java, `wait()` and `notify()` are used within `synchronized(lock)` blocks to 
 {:.note}
 This means if a thread calls `wait()` **after** a `notify()` has already occurred, it will block **forever**.
 
+### Recap: Java Monitors and Intrinsic Synchronization
+
+In Java, a **monitor** is a high-level concurrency construct that provides both **mutual exclusion** and **condition synchronization**. Java monitors are implemented as an intrinsic part of every object in the Java Virtual Machine (JVM), meaning that **every object implicitly supports monitor-based coordination**.
+
+
+#### Mutex
+From the lecture notes, recall that Java achieves mutual exclusion through the use of the `synchronized` keyword. When a thread enters a `synchronized` block or method, it must acquire the monitor associated with the target object or class.
+* For instance methods, the monitor is associated with the instance (`this`).
+* For static methods, the monitor is associated with the class object (`ClassName.class`).
+* For `synchronized(obj)` blocks, the monitor is associated with the specific object `obj`.
+
+{:.note}
+Only one thread may hold a given monitor at a time. All other threads attempting to enter a synchronized region guarded by that monitor are **blocked** until the monitor is released.
+
+#### Condition Synchronization
+
+Java monitors also support condition synchronization through the methods `wait()`, `notify()`, and `notifyAll()`: all of which must be called while holding the monitor (i.e., within a synchronized block or method).
+
+* `wait()` causes the current thread to **release the monitor** and suspend execution until another thread invokes `notify()` or `notifyAll()` on the same object.
+* `notify()` wakes up **one** thread waiting on that monitor.
+* `notifyAll()` wakes up **all** threads waiting on that monitor.
+
+The typical pattern for condition synchronization involves a shared predicate variable and a `while` loop guarding a `wait()` call:
+
+```java
+synchronized (lock) {
+    while (!condition) {
+        lock.wait();
+    }
+    // Proceed when condition is true
+}
+```
+
+This usage ensures correctness in the presence of **spurious wakeups**, where a thread may return from `wait()` even if it was not explicitly notified.
+
+**It has the following key properties**:
+* A thread must hold the monitor before calling `wait()`, `notify()`, or `notifyAll()`. Otherwise, a `java.lang.IllegalMonitorStateException` is thrown.
+* The monitor’s condition queue is shared for all waiting threads. `notify()` does not distinguish which thread to wake; it may wake a thread that cannot proceed, leading to inefficiencies or stalling unless `notifyAll()` is used appropriately.
+* Unlike semaphores, `notify()` does **not persist**. If no thread is waiting when `notify()` is called, the signal is lost.
+
+
+While Java monitors provide a simple and safe mechanism for concurrency control, they are limited to **a single condition queue per object**. For more advanced control (e.g., multiple condition queues, fine-grained control), Java provides the `java.util.concurrent.locks.Condition` interface in conjunction with `ReentrantLock`.
+
+
 
 ### Scenario
 
