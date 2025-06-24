@@ -83,7 +83,7 @@ For each use of a <span style="color:#f77729;"><b>kernel</b></span>-managed reso
 > 
 > A typical OS manages some kind of system table (data structure) that records whether each resource is <span style="color:#f77729;"><b>free</b></span> or <span style="color:#f77729;"><b>allocated</b></span>. For each resource that is allocated, the table also records the process to which it is allocated. If a process requests a resource that is currently allocated to another process, it can be added to a <span style="color:#f7007f;"><b>queue</b></span> of processes waiting for this resource.
 
-Developers who simply write programs needing kernel-managed resources will simply make the necessary system calls and need not care about _how_ Kernel manages these resources. This is called <span class="orange-bold">abstraction</span>. 
+Developers who write user programs that need kernel-managed resources will simply make the necessary system calls and need not care about _how_ Kernel manages these resources. This is called <span class="orange-bold">abstraction</span>. 
 {: .note}
 
 ### User Managed Resources
