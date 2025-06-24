@@ -218,6 +218,246 @@ Several alternate designs are proposed:
 </p></div><br>
 
 
+
+
+
+## Missed Notify with Separate Lock and Premature Signal
+
+### Background
+
+In Java, `wait()` and `notify()` are used within `synchronized(lock)` blocks to allow threads to coordinate using an object's monitor. However, unlike semaphores, `notify()` does **not persist**. If no thread is currently waiting on the monitor when `notify()` is called, the signal is **lost**.
+
+{:.note}
+This means if a thread calls `wait()` **after** a `notify()` has already occurred, it will block **forever**.
+
+### Recap: Java Monitors and Intrinsic Synchronization
+
+In Java, a **monitor** is a high-level concurrency construct that provides both **mutual exclusion** and **condition synchronization**. Java monitors are implemented as an intrinsic part of every object in the Java Virtual Machine (JVM), meaning that **every object implicitly supports monitor-based coordination**.
+
+
+#### Mutex
+From the lecture notes, recall that Java achieves mutual exclusion through the use of the `synchronized` keyword. When a thread enters a `synchronized` block or method, it must acquire the monitor associated with the target object or class.
+* For instance methods, the monitor is associated with the instance (`this`).
+* For static methods, the monitor is associated with the class object (`ClassName.class`).
+* For `synchronized(obj)` blocks, the monitor is associated with the specific object `obj`.
+
+{:.note}
+Only one thread may hold a given monitor at a time. All other threads attempting to enter a synchronized region guarded by that monitor are **blocked** until the monitor is released.
+
+#### Condition Synchronization
+
+Java monitors also support condition synchronization through the methods `wait()`, `notify()`, and `notifyAll()`: all of which must be called while holding the monitor (i.e., within a synchronized block or method).
+
+* `wait()` causes the current thread to **release the monitor** and suspend execution until another thread invokes `notify()` or `notifyAll()` on the same object.
+* `notify()` wakes up **one** thread waiting on that monitor.
+* `notifyAll()` wakes up **all** threads waiting on that monitor.
+
+The typical pattern for condition synchronization involves a shared predicate variable and a `while` loop guarding a `wait()` call:
+
+```java
+synchronized (lock) {
+    while (!condition) {
+        lock.wait();
+    }
+    // Proceed when condition is true
+}
+```
+
+This usage ensures correctness in the presence of **spurious wakeups**, where a thread may return from `wait()` even if it was not explicitly notified.
+
+**It has the following key properties**:
+* A thread must hold the monitor before calling `wait()`, `notify()`, or `notifyAll()`. Otherwise, a `java.lang.IllegalMonitorStateException` is thrown.
+* The monitor’s condition queue is shared for all waiting threads. `notify()` does not distinguish which thread to wake; it may wake a thread that cannot proceed, leading to inefficiencies or stalling unless `notifyAll()` is used appropriately.
+* Unlike semaphores, `notify()` does **not persist**. If no thread is waiting when `notify()` is called, the signal is lost.
+
+
+While Java monitors provide a simple and safe mechanism for concurrency control, they are limited to **a single condition queue per object**. For more advanced control (e.g., multiple condition queues, fine-grained control), Java provides the `java.util.concurrent.locks.Condition` interface in conjunction with `ReentrantLock`.
+
+
+
+### Scenario
+
+The following class models a one-shot event between a producer and a consumer. The producer sets a flag and calls `notify()` to wake the consumer.
+
+```java
+class OneShotEvent {
+    private boolean ready = false;
+    private final Object lock = new Object();
+
+    public void produce() {
+        System.out.println("Producer's running")
+        synchronized (lock) {
+            ready = true;
+            lock.notify(); // signal consumer
+        }
+    }
+
+    public void consume()  {
+    
+        System.out.println("Consumer's running")
+        while (!ready){
+            synchronized(lock){
+              lock.wait(); // wait for signal
+            }
+        }
+        System.out.println("Consumed");
+
+    }
+}
+```
+
+This test is run:
+
+```java
+OneShotEvent event = new OneShotEvent();
+new Thread(() -> {
+    try {
+        event.consume();
+    } catch (InterruptedException e) {}
+}).start();
+
+
+System.out.println("Producer Begins")
+event.produce();
+```
+
+**Observation**: Sometimes the program **hangs** and the message `"Consumed"` is never printed.
+
+
+**Answer the following questions:**
+1. Why does the `consume()` method sometimes block forever?
+2. What happens if `produce()` calls `notify()` before `consume()` reaches `wait()`?
+3. How does this differ from a semaphore-based approach?
+4. Modify the code **minimally** so that no missed signal occurs, using only Java synchronization.
+
+{:.highlight}
+> **Hints**:
+> * `notify()` only works if a thread is already waiting.
+> * Always use `while`, not `if`, with `wait()`.
+> * Semaphores **store** permits, condition variables do not.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+
+<p>The <code>consume()</code> method may block forever because it checks <code>ready</code>, sees it is false, and calls <code>wait()</code>. But if the <code>produce()</code> method is in the middle of execution and was about to set the <code>ready</code> flag, <span class="orange-bold">that signal is lost</span> as the consumer was not waiting yet. The consumer then goes to **sleep** with no one left to wake it up.</p>
+
+<p>So in this scenario: a **race condition** that occur on the `ready` flag, interleaved with producer's <code>produce()</code>: consumer checks for `ready` and it's falls, then producer sets `ready` to true and calls <code>notify()</code>, then switched back to consumer that now enters <code>wait()</code>. The `signal` does not get stored or queued. The monitor simply ignores it if no threads are waiting. In short, when consumer does call <code>wait()</code>, it sleeps forever because the one chance to wake it was already missed.</p>
+
+<p>Semaphores behave differently. If a thread calls <code>release()</code> (or <code>signal()</code>) before another thread calls <code>acquire()</code> (or <code>wait()</code>), the signal is **saved** by incrementing a counter. When another thread eventually calls <code>acquire()</code>, it will proceed immediately. This persistent state <span class="orange-bold">prevents</span> missed signals.</p>
+
+<p><strong>4.</strong> The minimal fix is to protect the entire code inside a `syncrhonized` method. This ensures that there's no race condition with the flag `ready`. When `notify()` is called, it will wake up a consumer thread **or** prevent a consumer thread from waiting using `ready` flag.</p>
+
+<pre><code>
+  public synchronized void consume() {
+        System.out.println("Consumer's running")
+        while (!ready) 
+            lock.wait();
+        System.out.println("Consumed");
+
+  }
+</code></pre>
+
+<p>This guarantees correctness even if <code>notify()</code> is called before <code>wait()</code>, because the condition <code>ready == true</code> will skip the wait. The <code>while</code> also handles spurious wakeups correctly.</p>
+
+</div><br>
+
+
+
+
+
+## Can This Bounded Buffer Deadlock?
+
+### Background
+
+A classic bounded buffer allows multiple producers and consumers to share access to a fixed-size queue. In this Java implementation, threads use `wait()` and `notify()` to coordinate access.
+
+Important properties:
+
+* `wait()` suspends the current thread until it is notified.
+* `notify()` wakes one thread waiting on the same monitor.
+* All threads synchronize on a single shared `lock` object.
+* There is no explicit condition variable: all threads wait on the same monitor.
+
+
+### Scenario
+
+The following implementation runs with multiple producer and consumer threads:
+
+```java
+class BoundedBuffer {
+    private final Queue<Integer> buffer = new LinkedList<>();
+    private final int CAPACITY = 5;
+    private final Object lock = new Object();
+
+    public void produce(int item) throws InterruptedException {
+        synchronized (lock) {
+            while (buffer.size() == CAPACITY)
+                lock.wait();
+
+            buffer.add(item);
+            lock.notify(); // wake up one thread
+        }
+    }
+
+    public int consume() throws InterruptedException {
+        synchronized (lock) {
+            while (buffer.isEmpty())
+                lock.wait();
+
+            int item = buffer.remove();
+            lock.notify(); // wake up one thread
+            return item;
+        }
+    }
+}
+```
+
+At first glance, using `notify()` (not `notifyAll()`) seems risky: it wakes an arbitrary thread, even if that thread can’t make progress. **What if** producer mistakenly wake up *another producer thread* instead of a consumer thread? 
+
+
+
+
+**Answer the following question:**
+Is it possible for this program to enter a **deadlock** where no thread makes progress, despite threads being alive and correctly synchronized?
+
+{:.note}
+> To make a clear answer, either:
+> * Provide a concrete example of a buffer state and thread state that causes deadlock, **or**
+> * Give a convincing **proof** that no such deadlock is possible, explaining why progress is always guaranteed.
+
+{:.highlight}
+> **Hint**:
+> * What condition causes a thread to block?
+> * Who can unblock it?
+> * Can `notify()` ever wake the “wrong” thread?
+> * Does that matter if only one kind of thread is waiting at a time?
+
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+
+<p><strong>No, this program cannot deadlock.</strong></p>
+
+<p><strong>Proof by invariant and exclusion:</strong></p>
+
+<ul>
+  <li>A <strong>producer</strong> only blocks if the buffer is <strong>full</strong> (size == CAPACITY).</li>
+  <li>A <strong>consumer</strong> only blocks if the buffer is <strong>empty</strong> (size == 0).</li>
+  <li>Therefore, both types of threads <strong>cannot be blocked at the same time</strong> — the buffer cannot be both full and empty.</li>
+  <li>When a consumer removes an item, it calls <code>notify()</code>. Since at that point, only producers can be waiting (because buffer was full), the <code>notify()</code> wakes one producer, which can now proceed (buffer has space).</li>
+  <li>Likewise, when a producer adds an item and calls <code>notify()</code>, only consumers may be waiting (buffer was empty), and the consumer can now proceed.</li>
+</ul>
+
+<p>Thus, even though <code>notify()</code> wakes an arbitrary thread, the only threads that will be waiting are those that <strong>can make progress</strong> once notified.</p>
+
+<p><strong>Therefore, no combination of buffer state and thread state leads to deadlock.</strong> The system always makes progress, and deadlock is impossible under this design.</p>
+
+</div><br>
+
+
+
 ## Circular Wait in Print Spooler and Scanner
 
 ### Background
@@ -394,16 +634,18 @@ Now, process **P1** makes a request for resources: **(1, 0, 2)**.
   <li>New Need for P1: (1 - 1, 2 - 0, 2 - 2) = (0, 2, 0)</li>
 </ul>
 
-<p>Now check for a safe sequence:</p>
+<p>Now check for a **safe** sequence:</p>
 <ul>
-  <li>P3: Need (0, 1, 1) — cannot proceed, needs 1 unit of C but C = 0</li>
-  <li>P1: Need (0, 2, 0) — can proceed, gets resources and finishes</li>
-  <li>Updated Available: (2 + 3, 3 + 0, 0 + 2) = (5, 3, 2)</li>
+  <li>P3: Need (0, 1, 1) - **cannot** proceed, needs 1 unit of C but C = 0</li>
+  <li>P1: Need (0, 2, 0) - fits, gets resources and finishes</li>
+  <li>**Updated** Available: (2 + 3, 3 + 0, 0 + 2) = (5, 3, 2)</li>
   <li>P3: Now has enough, finishes and adds (2, 1, 1) → (7, 4, 3)</li>
-  <li>P0: Need (7, 4, 3) — fits, finishes → Available becomes (7, 5, 3)</li>
-  <li>P2: Need (6, 0, 0) — fits, finishes → (10, 5, 5)</li>
-  <li>P4: Need (4, 3, 1) — fits, finishes → all processes done</li>
+  <li>P0: Need (7, 4, 3) - fits, finishes → Available becomes (7, 5, 3)</li>
+  <li>P2: Need (6, 0, 0) - fits, finishes → (10, 5, 5)</li>
+  <li>P4: Need (4, 3, 1) - fits, finishes → all processes done</li>
 </ul>
+
+<p>The **safe** sequence is therefore: P1, P3, P0, P2, P4.</p>
 
 <p><strong>Conclusion:</strong> Yes, the system remains in a safe state. The request should be granted.</p>
 
@@ -556,7 +798,7 @@ Graphically, this forms a cycle:
 
 </p></div><br>
 
-## Dining Savages with Broken Pot Semaphore-
+## Dining Savages with Broken Pot Semaphore
 
 ### Background
 
@@ -576,6 +818,71 @@ If the synchronization is incorrect; for example, if a **semaphore is missing or
 ### Scenario
 
 Consider the following buggy implementation:
+
+```c
+semaphore serving_available = 0; 
+semaphore empty = 1; // used to wake up cook 
+mutex mtx = 1; // used by savages to protect servings_eaten 
+int servings_eaten = 0; // shared resource among savages
+
+// savage code
+while (true) {
+    wait(serving_available);
+    eat();
+
+    wait(mtx);
+    servings_eaten++;
+    if (servings_eaten == N) {
+        servings_eaten = 0;
+        signal(empty);
+    }
+    signal(mtx);
+}
+
+// cook code
+while (true) {
+    wait(empty);
+    cook();
+    signal(serving_available);
+}
+```
+
+
+However, after some time, the program <span class="orange-bold">deadlocks</span>. All savage threads are **blocked**, and the cook is **idle**.
+
+
+
+**Answer the following questions:**
+1. Explain the purpose of each semaphore and **how** they coordinate between the savages and the cook.
+2. Describe the condition (scenario) that leads the system into a deadlock. 
+3. Why is it incorrect to simply call `signal(serving_available)` once?
+4. Modify the synchronization so that deadlock is mitigated. The modification should be as minimal as possible. 
+
+{:.highlight}
+> **Hints**:
+>
+> * Only **one** savage should signal the cook when the pot is empty.
+> * Semaphores do not queue extra signals if no one is waiting.
+> * The cook only wakes one savage after refilling and the others remain blocked with the current implementation.
+> * Think about whether `serving_available` should count the number of available servings.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+<p>The <code>empty</code> semaphore is used by savages to notify the cook when the pot is empty. The <code>full</code> semaphore is used by the cook to signal back to the waiting savage that the pot has been refilled.</p>
+
+<p>The deadlock occurs because only one savage is woken after the pot is refilled. That savage proceeds and takes one serving, but no other savage is signaled. If that savage consumes the only <code>serving_available</code> signal and more savages find the pot empty again, they each signal <code>empty</code>, but the cook is already asleep. Since semaphores do not count signals when no thread is waiting, the cook remains idle and all savages are blocked.</p>
+
+<p>It is incorrect to call <code>signal(serving_available)</code> only once because there are **multiple** savages. Semaphores are counters. If only one <code>full</code> signal is given, only one savage can proceed. The others will block indefinitely on <code>wait(serving_available)</code>. 
+
+<p>To fix this, <code>full</code> should represent the number of servings in the pot. The cook should <code>signal(serving_available)</code> **N** times after refilling. Each savage then <code>wait(serving_available)</code> before taking a serving. This ensures that N servings can be consumed by N savages, one per signal. Also, only one savage should be allowed to signal <code>empty</code> to prevent duplicate cook notifications. This can be done with an additional `mtx` semaphore to indicate that a refill is already in progress.</p>
+
+
+</p></div><br>
+
+### Epilogue 
+
+The above solution to the dining savages problem *works*, but it requires you to `signal` many times as the semaphore `servings_available` represents the number of servings available for each savage. Below is an alternative solution that uses `int servings` variable instead of using the semaphore to **count** the servings. Either solution works. 
+
 
 ```c
 // Shared variables
@@ -604,37 +911,6 @@ while (true) {
     signal(full);        // notify savage
 }
 ```
-
-However, after several refills, the program sometimes <span class="orange-bold">deadlocks</span>. All savage threads are **blocked**, and the cook is **idle**.
-
-
-
-**Answer the following questions:**
-1. Explain the purpose of each semaphore and **how** they coordinate between the savages and the cook.
-2. Describe what can go wrong in this implementation. **Under what condition does the system deadlock**?
-3. Modify the synchronization so that the cook is only signaled once per refill and all savages can continue safely afterward.
-4. Why is it incorrect to simply call `signal(full)` once, even though there are multiple savages?
-
-{:.highlight}
-> **Hints**:
->
-> * Only one savage should signal the cook, or multiple signals will be lost.
-> * Semaphores do not queue extra signals if no one is waiting.
-> * The cook only wakes one savage after refilling — the others remain blocked.
-> * Think about whether full should count the number of available servings.
-
-
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-<p>The <code>empty</code> semaphore is used by savages to notify the cook when the pot is empty. The <code>full</code> semaphore is used by the cook to signal back to the waiting savage that the pot has been refilled.</p>
-
-<p>The deadlock occurs because only one savage is woken after the pot is refilled. That savage proceeds and takes one serving, but no other savage is signaled. If that savage consumes the only <code>full</code> signal and more savages find the pot empty again, they each signal <code>empty</code>, but the cook is already asleep. Since semaphores do not count signals when no thread is waiting, the cook remains idle and all savages are blocked.</p>
-
-<p>To fix this, <code>full</code> should represent the number of servings in the pot. The cook should <code>signal(full)</code> N times after refilling. Each savage then <code>wait(full)</code> before taking a serving. This ensures that N servings can be consumed by N savages, one per signal. Also, only one savage should be allowed to signal <code>empty</code> to prevent duplicate cook notifications. This can be done with an additional flag or semaphore to indicate that a refill is already in progress.</p>
-
-<p>It is incorrect to call <code>signal(full)</code> only once because there are multiple savages. Semaphores are counters. If only one <code>full</code> signal is given, only one savage can proceed. The others will block indefinitely on <code>wait(full)</code>. The correct behavior is to post <code>full</code> once for each serving refilled, allowing one savage per serving to proceed.</p>
-
-</p></div><br>
 
 ## Preemption and Priority Inversion in Lock Acquisition
 
@@ -993,3 +1269,157 @@ Two possible improvements:
 </p>
 
 </p></div><br>
+
+
+
+
+## Deadlock in Bounded Buffer with Split Locks
+
+### Background
+
+A **deadlock** occurs when threads acquire locks in a <span class="orange-bold">circular dependency</span>, where each thread is holding a lock that another thread needs. This happens when:
+
+* Two or more locks are used.
+* Threads acquire the locks in different orders.
+* There is no enforced lock acquisition protocol.
+
+The safest way to avoid deadlocks is to **impose a consistent global lock order**, so all threads acquire multiple locks in the same sequence.
+
+
+### Scenario
+
+The following implementation splits the synchronization responsibilities across **two lock objects**, intending to separate producer and consumer paths:
+
+```java
+class BoundedBuffer {
+    private final Queue<Integer> buffer = new LinkedList<>();
+    private final int CAPACITY = 5;
+
+    private final Object producerLock = new Object();
+    private final Object consumerLock = new Object();
+
+    public void produce(int item) throws InterruptedException {
+        synchronized (producerLock) {
+            while (true) {
+                synchronized (consumerLock) {
+                    if (buffer.size() < CAPACITY) {
+                        buffer.add(item);
+                        consumerLock.notify(); // wake a consumer
+                        return;
+                    }
+                }
+                producerLock.wait(); // wait until space available
+            }
+        }
+    }
+
+    public int consume() throws InterruptedException {
+        synchronized (consumerLock) {
+            while (true) {
+                synchronized (producerLock) {
+                    if (!buffer.isEmpty()) {
+                        int item = buffer.remove();
+                        producerLock.notify(); // wake a producer
+                        return item;
+                    }
+                }
+                consumerLock.wait(); // wait until item available
+            }
+        }
+    }
+}
+```
+
+This runs with **multiple** producer and consumer threads **concurrently**.
+
+
+**Answer the following questions:**
+1. Can this program deadlock? If yes, describe a concrete interleaving and lock state that leads to a deadlock.
+2. Why does this happen, even though both `wait()` and `notify()` are used correctly?
+3. What is a **lock ordering protocol**, and how does it prevent this deadlock?
+4. Modify the code **minimally** to implement a lock ordering protocol. Assume both `producerLock` and `consumerLock` must still be used.
+
+{:.highlight}
+> **Hints**:
+> * Focus on the order in which each method acquires the two locks.
+> * Consider always locking one before the other, regardless of role.
+> * You may refactor each method to acquire both locks together before any critical section.
+
+
+<div cursor="pointer" class="collapsible">Show Answer</div>
+<div class="content_answer">
+
+<p>Yes, the program can deadlock.<strong>Example interleaving:</strong></p>
+<ul>
+  <li>Producer thread enters <code>produce()</code> and acquires <code>producerLock</code>.</li>
+  <li>At the same time, consumer thread enters <code>consume()</code> and acquires <code>consumerLock</code>.</li>
+  <li>Producer tries to acquire <code>consumerLock</code> but it’s held by the consumer.</li>
+  <li>Consumer tries to acquire <code>producerLock</code> but it’s held by the producer.</li>
+</ul>
+<p>Now each thread waits for the other to release a lock, resulting in a deadlock.</p>
+
+<p>This happens because the locks are acquired in **opposite orders**:  
+Producers acquire <code>producerLock</code> → <code>consumerLock</code>,  
+Consumers acquire <code>consumerLock</code> → <code>producerLock</code>.  
+This creates the potential for circular wait.</p>
+
+<p>A <strong>lock ordering protocol</strong> means enforcing that all threads always acquire locks in the same order.  
+For example, always lock <code>consumerLock</code> before <code>producerLock</code> (or vice versa) in <em>both</em> methods.  
+This prevents circular wait and guarantees deadlock freedom.</p>
+
+<p><strong>4.</strong> Minimal fix using a lock ordering protocol (always acquire <code>consumerLock</code> before <code>producerLock</code>):</p>
+
+<pre><code>
+class BoundedBuffer {
+    private final Queue<Integer> buffer = new LinkedList<>();
+    private final int CAPACITY = 5;
+
+    private final Object producerLock = new Object();
+    private final Object consumerLock = new Object();
+
+    public void produce(int item) throws InterruptedException {
+        // Always acquire consumerLock before producerLock
+        while (true) {
+            synchronized (consumerLock) {
+                synchronized (producerLock) {
+                    if (buffer.size() < CAPACITY) {
+                        buffer.add(item);
+                        consumerLock.notify(); // signal a waiting consumer
+                        return;
+                    }
+                }
+                // Only wait while holding consumerLock
+                consumerLock.wait(); // wait until consumer removes an item
+            }
+        }
+    }
+
+    public int consume() throws InterruptedException {
+        while (true) {
+            synchronized (consumerLock) {
+                synchronized (producerLock) {
+                    if (!buffer.isEmpty()) {
+                        int item = buffer.remove();
+                        producerLock.notify(); // signal a waiting producer
+                        return item;
+                    }
+                }
+                // Only wait while holding consumerLock
+                consumerLock.wait(); // wait until producer adds an item
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>This version:
+<ul>
+  <li>Always locks <code>consumerLock</code> before <code>producerLock</code>.</li>
+  <li>Avoids holding both locks during <code>wait()</code>.</li>
+  <li>Eliminates circular wait: hence prevents deadlock.</li>
+</ul></p>
+
+<p>Note that using two locks like this is <span class="orange-bold">inefficient</span>, but the question is just made for exercise purposes.</p>
+</div><br>
+
+

@@ -83,7 +83,7 @@ For each use of a <span style="color:#f77729;"><b>kernel</b></span>-managed reso
 > 
 > A typical OS manages some kind of system table (data structure) that records whether each resource is <span style="color:#f77729;"><b>free</b></span> or <span style="color:#f77729;"><b>allocated</b></span>. For each resource that is allocated, the table also records the process to which it is allocated. If a process requests a resource that is currently allocated to another process, it can be added to a <span style="color:#f7007f;"><b>queue</b></span> of processes waiting for this resource.
 
-Developers who simply write programs needing kernel-managed resources will simply make the necessary system calls and need not care about _how_ Kernel manages these resources. This is called <span class="orange-bold">abstraction</span>. 
+Developers who write user programs that need kernel-managed resources will simply make the necessary system calls and need not care about _how_ Kernel manages these resources. This is called <span class="orange-bold">abstraction</span>. 
 {: .note}
 
 ### User Managed Resources
@@ -98,7 +98,9 @@ Deadlock is a situation whereby a set of <span style="color:#f7007f;"><b>blocked
 {:.info}
 
 The critical section solutions we learned in the previous chapter _prevents_ race condition, but if not implemented properly it can cause <span style="color:#f7007f;"><b>deadlock</b></span>.
-{:.warning}
+ 
+{:.important}
+It is **important** to understand that deadlock is a <span class="orange-bold">system-level property</span>, not a *flaw* in the primitive (CS solution like Semaphore, spinlocks, or mutex) itself.
 
 ## A Simple Deadlock Example
 
@@ -315,6 +317,14 @@ Before we can run the algorithm, we need to have the following information at ha
 1. Number of processes (consumers) in the system (denoted as `N`)
 2. Number of resource <span style="color:#f77729;"><b>types</b></span> in the system (denoted as `M`), along with _initial instances_ of each resource type at the start.
 3. The <span style="color:#f77729;"><b>maximum</b></span> number of resources required by each process (consumers).
+
+{:.note}
+> In code, a resource can be:
+> 
+> * A mutex lock (Java: synchronized, Python: threading.Lock())
+> * A file handle
+> * A GPU/CPU core if there are quotas
+> * A limited pool of connections or threads
 
 ### The System State
 

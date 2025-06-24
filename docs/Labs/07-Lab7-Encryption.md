@@ -90,6 +90,27 @@ Then, cd to `nslab2` and install the required modules:
 python3 -m pip install -r requirements.txt
 ```
 
+If you use [`uv`](https://docs.astral.sh/uv/), you can do:
+
+```bash
+cd [project-path]
+source .venv/bin/activate
+uv pip install -r requirements.txt
+```
+
+### Using project manager and virtual environment 
+
+If you don't have python installed, simply do the following to install Python using [`uv`](https://docs.astral.sh/uv/) and activate a virtual environment: 
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+uv venv --python 3.10 
+source .venv/bin/activate
+```
+
+When you are done with the project, you can exit the virtual environment with the command `deactivate`. 
+
+{:.note}
 In this lab, you're only required to modify the 3 python files in the starter code. There are areas labeled as `TODO` in the `.py` files, complete it. 
 
 ## Test the Starter Code
@@ -113,7 +134,7 @@ SyntaxError: invalid syntax
 
 That's because your `python3` <span style="color:#f7007f;"><b>is NOT aliased</b></span> to `python3.10` or that you don't have `python3.10` installed. <span style="color:#f7007f;"><b>Fix this on your own.</b></span> You're a CS major student. Not knowing how to install Python and manage its libraries is _a really really bad thing_; it's like as if the entire 50.002 and the first 6 weeks of CSE doesn't mean anything to you.
 
-In this handout, we assume that `python3` is <span style="color:#f77729;"><b>always aliased</b></span> to `python3.10`.
+In this handout, we assume that `python3` is <span style="color:#f77729;"><b>always aliased</b></span> to `python3.10` or above.
 {:.note}
 
 That is, if you type `python3` in the terminal, you'll see at least version 3.10 printed out:
@@ -130,6 +151,13 @@ python3 -m pip install -r requirements.txt
 ```
 
 
+If you use [`uv`](https://docs.astral.sh/uv/), you shall do:
+
+```bash
+cd [project-path]
+source .venv/bin/activate
+uv pip install -r requirements.txt
+```
 
 
 # Text Encryption
@@ -555,6 +583,13 @@ Then look at all `CBC` outputs:
 2. Why do you think the outputs have the "smearing" effect?
 3. Does it still have some kind of security vulnerabilities?
 4. Do we want to prioritise `top-down` or `bottom-up` encryption, or will it depend on the image?
+
+{:.note}
+> If you're working on a headless Ubuntu server (i.e., no GUI environment), you cannot view images directly using graphical viewers. To inspect or view image files, you might want to transfer it to your local machine. You can use the following command on your local machine: `scp username@server-ip:/path/to/image.jpg .`, and that will transfer the image to your current working directory in your local machine. 
+>
+> You can use the command `readlink -f [FILENAME]` in the file's working directory to print out its full path. 
+
+<img src="{{ site.baseurl }}//docs/Labs/images/07-Lab7-Encryption/2025-06-16-11-50-36.png"  class="center_seventy no-invert"/>
 
 # Message Digest 
 

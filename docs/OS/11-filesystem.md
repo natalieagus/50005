@@ -257,6 +257,12 @@ Whenever a process `open()` or `dup()` a file, the opened file is associated wit
 - A file descriptor is a number that <span style="color:#f77729;"><b>uniquely</b></span> (unique in that process) identifies an open file in a computer's operating system
 - A file descriptor has a file `pointer` field, that is a pointer to the <span style="color:#f7007f;"><b>system wide open-file-table</b></span>.
 
+{:.note}
+> What is a file descriptor under the hood? 
+>
+> In Unix-like systems, many system calls return file descriptors: <span class="orange-bold">integers</span> that <span class="orange-bold">represent</span> access to file-like resources. These are used with functions like `read()`, `write()`, `close()`, `poll()`, and others. This shows the power of the “everything is a file” abstraction in Unix. Read the [appendix](#file-descriptor-deep-dive) section for more info. 
+
+
 ## System-Wide Open File Table (SWOFT)
 
 The SWOFT is managed by the Kernel, contains a list of opened files and its entries created by `open()`.
@@ -805,3 +811,81 @@ df -i
 <img src="{{ site.baseurl }}//docs/OS/images/11-filesystem/2024-06-19-12-45-41.png"  class="center_seventy"/>
 
 This command will display the number of inodes: iused for inode used and ifree for inode free) for each mounted filesystem.
+
+## File Descriptor Deep Dive 
+
+In Unix-like systems, many system calls return file descriptors: integers that represent access to file-like resources. These are used with functions like `read()`, `write()`, `close()`, `poll()`, and others. The following categories summarize where file descriptors commonly originate.
+
+### System Calls That Return File Descriptors
+
+#### 1. **File Operations**
+
+* **`open(pathname, flags)`**
+  Opens a file and returns a file descriptor.
+
+* **`creat(pathname, mode)`**
+  A simplified wrapper to create a file, returns a file descriptor.
+
+* **`dup(fd)` / `dup2(oldfd, newfd)` / `dup3(oldfd, newfd, flags)`**
+  Duplicates an existing file descriptor, returning a new one that refers to the same file description.
+
+
+#### 2. **Pipes and Interprocess Communication (IPC)**
+
+* **`pipe(fd[2])`**
+  Creates a unidirectional pipe; returns two file descriptors—one for reading, one for writing.
+
+* **`socketpair(domain, type, protocol, sv[2])`**
+  Creates a pair of connected sockets; useful for bidirectional communication.
+
+#### 3. **Sockets and Networking**
+
+* **`socket(domain, type, protocol)`**
+  Creates a socket endpoint and returns a file descriptor.
+
+* **`accept(sockfd, addr, addrlen)`**
+  Accepts an incoming connection on a listening socket and returns a new file descriptor for the client socket.
+
+
+#### 4. **Event Notification Interfaces**
+
+* **`epoll_create(size)` / `epoll_create1(flags)`**
+  Returns a file descriptor for an epoll instance used in event-driven I/O.
+
+* **`inotify_init()` / `inotify_init1(flags)`**
+  Returns a file descriptor for watching changes to the filesystem.
+
+* **`signalfd(fd, mask, flags)`**
+  Returns a file descriptor that can receive signals via polling or reading.
+
+* **`eventfd(initval, flags)`**
+  Returns a file descriptor that can be used as a counter-based event notification mechanism.
+
+* **`timerfd_create(clockid, flags)`**
+  Returns a file descriptor that delivers timer expirations.
+
+
+#### 5. **Memory and Shared Memory**
+
+* **`memfd_create(name, flags)`**
+  Creates an anonymous memory-backed file and returns a file descriptor.
+
+* **`shm_open(name, oflag, mode)`**
+  Opens a POSIX shared memory object and returns a file descriptor.
+
+
+#### 6. **Terminal and Pseudo-Terminal Devices**
+
+* **`openpty(&amaster, &aslave, name, termp, winp)`**
+  Allocates a pseudo-terminal pair and returns file descriptors for both master and slave.
+
+#### 7. **Special Cases**
+
+* **`fcntl(fd, F_DUPFD)`**
+  Returns a new file descriptor greater than or equal to a specified minimum.
+
+* **`accept4()`**
+  Like `accept()`, but can set flags such as `O_NONBLOCK` and `O_CLOEXEC` atomically.
+
+
+This design illustrates the Unix philosophy: *many resources are abstracted as files*, and file descriptors offer a <span class="orange-bold">uniform</span> interface to operate on them.

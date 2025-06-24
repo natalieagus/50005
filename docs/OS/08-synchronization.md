@@ -835,7 +835,7 @@ By right, the grade of student `I` should be 91. However, since the database is 
 3. Professor B update the MSB `9`, grade of the student is `91` now.
 4. Professor A update the MSB: `7`, grade of the student is `71` now.
 
-Student `I` end up having a grade of 71 instead of 91 (got a C instead of an A!). This grade 9` _does not belong to anybody_, it's just a catastrophe resulted from non-atomic store made by Professor A.
+Student `I` end up having a grade of 71 instead of 91 (got a C instead of an A!). This grade `71`  _does not belong to anybody_, it's just a catastrophe resulted from non-atomic store made by Professor A.
 
 ### Torn Write
 
