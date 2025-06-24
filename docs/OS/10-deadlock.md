@@ -318,6 +318,14 @@ Before we can run the algorithm, we need to have the following information at ha
 2. Number of resource <span style="color:#f77729;"><b>types</b></span> in the system (denoted as `M`), along with _initial instances_ of each resource type at the start.
 3. The <span style="color:#f77729;"><b>maximum</b></span> number of resources required by each process (consumers).
 
+{:.note}
+> In code, a resource can be:
+> 
+> * A mutex lock (Java: synchronized, Python: threading.Lock())
+> * A file handle
+> * A GPU/CPU core if there are quotas
+> * A limited pool of connections or threads
+
 ### The System State
 
 Using the above prior known information, the banker's algorithm maintains these four data structures representing the <span style="color:#f7007f;"><b>system state</b></span>: 
