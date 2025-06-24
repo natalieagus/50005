@@ -50,6 +50,14 @@ Singapore University of Technology and Design
 
 ## Java Object Mutex Lock
 
+
+{:. important-title}
+> Java Monitor
+> 
+> In Java, every object acts as a **monitor** that provides built-in **mutual exclusion** and **condition synchronization** using `synchronized`, `wait()`, and `notify()`. A thread must hold the object's monitor (via `synchronized`) to call `wait()` or `notify()`, which allows it to coordinate access and signal other threads waiting on shared conditions.
+
+
+
 The Java programming language provides two basic synchronization idioms: synchronized <span style="color:#f77729;"><b>methods</b></span> and synchronized <span style="color:#f77729;"><b>statements</b></span>.
 
 Each Java <span style="color:#f77729;"><b>object</b></span> has an associated binary <span style="color:#f77729;"><b>lock</b></span>:
