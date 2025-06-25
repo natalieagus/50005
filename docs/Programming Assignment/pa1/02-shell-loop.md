@@ -39,7 +39,7 @@ The `main()` function should have the following **functionality**:
 - Handles process creation errors and command not found errors.
 - Cleans up by freeing allocated memory for the command arguments.
 
-{.error}
+{:.error}
 Your shell should <span class="orange-bold">never</span> abruptly terminate, even when we give commands that don't exist or simply pressing enter multiple times. Your shell should also be able to execute commands as-given, it should <span class="orange-bold">not</span> accidentally access garbage input values from uncleared buffers in any way. Failure to do this results in 1% grade penalty. 
 
 
@@ -80,7 +80,7 @@ You can inspect the child process' exit status by passing a pointer to an intege
 ```
 
 {:.note}
-After `waitpid()` returns, the macro `WIFEXITED(status)` can be used to check if the child process terminated normally (e.g., by calling `exit()` or returning from `main()`). If ` ` returns true, it means the child terminated **normally**.
+After `waitpid()` returns, the macro `WIFEXITED(status)` can be used to check if the child process terminated normally (e.g., by calling `exit()` or returning from `main()`). If `waitpid()` returns true, it means the child terminated **normally**.
 
 # Expected Output
 
