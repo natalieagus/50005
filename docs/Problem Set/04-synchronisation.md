@@ -788,10 +788,10 @@ void* producer(void* arg) {
 }
 
 void* consumer(void* arg) {
-    pthread_mutex_lock(&mutex);
     if (ready == 0) {
         pthread_cond_wait(&cond, &mutex); // wait for signal
     }
+    pthread_mutex_lock(&mutex);
     // consume
     pthread_mutex_unlock(&mutex);
     return NULL;
@@ -819,22 +819,16 @@ void* consumer(void* arg) {
 ```text
 Missed Wakeup Scenario:
 
-T1 (Producer): LOCK → ready = 1 → SIGNAL cond → UNLOCK
-T2 (Consumer): LOCK → if (ready == 0) → WAIT cond → blocks forever
+T1 (Producer): LOCK → (CONTEXT SWITCHED)
+T2 (Consumer): if (ready == 0) → (CONTEXT SWITCHED)
+T1 (Producer) :ready = 1 → SIGNAL cond → UNLOCK 
+T2 (Consumer): WAIT cond → blocks forever
 
 Explanation:
 - Consumer calls wait *after* signal was sent.
 - Condition is already true, but signal is gone.
 - Since wait is inside an "if", the condition is never rechecked.
 - Consumer sleeps forever.
-
-Corrected Flow (Using while):
-
-T2 (Consumer): LOCK
-               while (ready == 0)
-                   WAIT cond
-               // proceed
-               UNLOCK
 ```
 
 
@@ -844,7 +838,7 @@ If the producer signals the condition variable before the consumer begins waitin
 </p>
 
 <p>
-<code>pthread_cond_wait()</code> must always be used inside a <code>while</code> loop that checks the predicate (e.g., <code>while (ready == 0)</code>). This ensures the thread waits only if the condition is false and rechecks after waking up.
+<code>pthread_cond_wait()</code> must always be used inside a <code>while</code> loop that checks the predicate (e.g., <code>while (ready == 0)</code>). This ensures the thread waits only if the condition is false and rechecks after waking up. It also must be called inside the critical section (protected by mutex).
 </p>
 
 <p>
@@ -852,7 +846,7 @@ A spurious wakeup is when <code>pthread_cond_wait()</code> returns even though n
 </p>
 
 <p>
-In the broken interleaving, the producer sets <code>ready = 1</code> and signals <code>cond</code> before the consumer starts waiting. Since the consumer uses an <code>if</code> check and misses the signal, it blocks forever.
+In the broken interleaving, the producer sets <code>ready = 1</code> and signals <code>cond</code> before the consumer starts waiting. Since the consumer checks for the condition outside of a mutex, it checked a stale value and misses the signal so it blocks forever. The <code>if</code> check will also cause incorrect behavior due to spurious wakeup
 </p>
 
 <p>
@@ -869,7 +863,7 @@ pthread_mutex_unlock(&mutex);
 </pre>
 
 <p>
-This ensures the consumer only waits when needed and always rechecks the shared condition after being woken up, handling both missed signals and spurious wakeups correctly.
+This ensures that `ready` is not stale and consumer only waits when needed. It also always rechecks the shared condition after being woken up, handling both missed signals and spurious wakeups correctly.
 </p>
 
 
