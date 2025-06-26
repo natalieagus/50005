@@ -657,15 +657,15 @@ Now, process **P1** makes a request for resources: **(1, 0, 2)**.
 
 </p></div><br>
 
-### The Unsafe Shortcut
+## The Unsafe Shortcut
 
-**Background**
+### Background 
 Deadlock avoidance techniques prevent the system from entering states where deadlock *could* happen. One such approach is the Banker's Algorithm, which checks whether a resource request leaves the system in a "safe state". 
 
 {:.note}
 **Safe state**: a state where all processes can eventually finish.
 
-**Scenario**
+### Scenario
 A system uses the Banker's Algorithm to approve resource requests. To optimize performance under load, a developer modifies the algorithm to skip the safe-state check for requests that appear "small" (e.g., requesting only one unit). At first, the system continues to run fine. But under heavy load, it freezes entirely. Post-mortem analysis shows multiple unfinished processes holding resources and waiting ***indefinitely***.
 
 **Example**

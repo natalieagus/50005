@@ -356,13 +356,22 @@ Curious, the student begins experimenting with multiple background jobs and noti
 > * The OS handles scheduling, but shells **manage job control signals** (e.g. `SIGTSTP`, `SIGCONT`).
 > * CPU usage can depend on I/O blocking or whether the process yields control.
 
-### Job Control
+<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
+Foreground and background jobs differ mainly in how the shell manages them. A **foreground process** is given access to the terminal’s input and output. The shell waits for it to finish before accepting new commands. A **background process**, invoked with `&`, runs concurrently, and the shell <span class="orange-bold">immediately</span> returns control to the user, allowing them to type further commands.
+<br><br>
+While both types are scheduled by the operating system’s scheduler (not the shell), background processes are often **disallowed from reading input** from the terminal. If they attempt to, they may be stopped by the shell. This distinction can affect how responsive or CPU-heavy the process appears, especially if one blocks on I/O while the other does not.
+<br><br>
+The shell does not schedule CPU time, that's the kernel’s job. However, the shell **does manage job control**, including signals like `SIGINT`, `SIGTSTP`, and `SIGCONT`, which affect whether jobs run or pause based on user actions like `Ctrl+Z` or `fg`. As a result, background jobs may appear to behave differently depending on how they're managed, even though from the OS perspective, they’re all just processes.
+</p></div><br>
+
+
+### Epilogue: Job Control
 
 In Unix-like systems, **job control signals** allow the shell and users to manage how processes run within a terminal session. These signals enable suspending (`SIGTSTP`), resuming (`SIGCONT`), or terminating (`SIGINT`) jobs. For example, when a user presses `Ctrl+Z`, the foreground process is sent `SIGTSTP`, which causes it to pause (or "stop") execution. The user can then run `bg` to resume the process in the background, or `fg` to bring it back to the foreground. Both commands send `SIGCONT`, which tells the stopped process to continue running.
 
 The shell plays a key role in **managing these signals**. It tracks process groups and forwards appropriate signals to foreground or background jobs. It also uses system calls like `waitpid()` to detect when jobs stop or exit, enabling the shell to update job status and provide interactive control. This system enables a single terminal session to juggle multiple processes efficiently and safely.
 
-### Common UNIX Job Control Signals
+#### Common UNIX Job Control Signals
 
 
 | **Signal** | **Name**             | **Description**                                    | **Typically Sent By**      |
@@ -401,22 +410,6 @@ int main() {
 {:.important}
 In a real terminal, `SIGTSTP` normally stops the process regardless of handlers. To truly override this behavior, you need terminal control and job control logic, which is typically managed by the shell. This example only **prints a message** when the signal is caught (and may not work depending on terminal settings).
 
-
-### Task 
-
-**Answer the following questions:**
-1. What is the difference between a foreground and background job in the shell?
-2. Who is responsible for scheduling background jobs: the shell or the operating system?
-3. Why do background jobs sometimes get stopped when they try to read from the terminal?
-4. What role does the shell play in job control, especially in managing job-related signals?
-
-<div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
-Foreground and background jobs differ mainly in how the shell manages them. A **foreground process** is given access to the terminal’s input and output. The shell waits for it to finish before accepting new commands. A **background process**, invoked with `&`, runs concurrently, and the shell <span class="orange-bold">immediately</span> returns control to the user, allowing them to type further commands.
-<br><br>
-While both types are scheduled by the operating system’s scheduler (not the shell), background processes are often **disallowed from reading input** from the terminal. If they attempt to, they may be stopped by the shell. This distinction can affect how responsive or CPU-heavy the process appears, especially if one blocks on I/O while the other does not.
-<br><br>
-The shell does not schedule CPU time, that's the kernel’s job. However, the shell **does manage job control**, including signals like `SIGINT`, `SIGTSTP`, and `SIGCONT`, which affect whether jobs run or pause based on user actions like `Ctrl+Z` or `fg`. As a result, background jobs may appear to behave differently depending on how they're managed, even though from the OS perspective, they’re all just processes.
-</p></div><br>
 
 
 
@@ -490,11 +483,6 @@ A process can get stuck in **Ready** if the scheduler never selects it, possibly
 
 ## The Phantom Thread
 
-### Background
-
-Certainly. Here is the revised **background section** without hyphens:
-
----
 
 ### Background
 
@@ -778,13 +766,21 @@ After profiling, you discover that the thread library in use implements a **many
 
 You're comparing two server implementations: one uses multiple **threads**, and the other uses multiple **processes**. Both handle client connections concurrently.
 
-In the threaded version, a bug in one handler causes a buffer overflow and crashes the entire server. In the process-based version, the same bug only crashes a single client handler,  the server remains alive and continues serving other clients.
+In the threaded version, a bug in one handler causes a <span class="orange-bold">buffer overflow</span> and crashes the entire server. In the process-based version, the same bug only crashes a single client handler,  the server remains alive and continues serving other clients.
+
+
+{:.note-title}
+> Buffer Overflow
+>
+> A buffer overflow happens when a program tries to *store* more data in a buffer (a pre-allocated block of memory) than it was designed to hold, causing data to **spill** over into adjacent memory locations. This overflow can corrupt nearby variables, alter control flow (e.g. by overwriting return addresses on the stack).
+> 
+> Attackers leverage on this by injecting and executing malicious code, making it a common vector for exploits in low-level languages like C or C++.
 
 This prompts a *deeper* investigation into how threads and processes isolate faults differently, and what trade-offs come with each approach.
 
 **Answer the following questions:**
 1. Why does a crash in one thread typically bring down the entire process?
-2. How do protection boundaries differ between threads and processes?
+2. How do <span class="orange-bold">protection boundaries</span> differ between threads and processes? You might want to search online about this. 
 3. What are the trade-offs between using threads and processes in terms of fault isolation, performance, and resource overhead?
 4. In what scenarios might processes be preferred over threads despite their higher overhead?
 
@@ -811,7 +807,15 @@ This prompts a *deeper* investigation into how threads and processes isolate fau
 <p>In systems where robustness and fault tolerance are critical,  such as servers handling untrusted or independent clients,  using separate processes may be preferred, even with added resource costs. This model ensures that a single handler crash doesn’t compromise the entire service.</p>
 </p></div><br>
 
+### Epilogue: Protection Boundaries
 
+Protection boundaries separate parts of a program or system so they can’t accidentally or maliciously interfere with each other.
+* **Between processes**: Each process has its own private memory. One process cannot read or write another process's variables or code. The OS enforces this using virtual memory.
+* **Between threads**: Threads within the same process share the same memory. There are no protection boundaries between threads, so one thread can read or overwrite another thread’s variables, which is why synchronization (e.g., locks) is needed.
+* **Between global and local variables**: Local variables live on the **stack** and are private to a function. Global variables live in a ***shared*** data section, accessible from anywhere in the program. There's <span class="orange-bold">no protection boundary here</span>, functions can overwrite global data if not careful.
+* **Between user code and runtime library**: User code and the C runtime (e.g., `malloc`, `printf`) run in the **same** process. If your code misuses them (like writing to freed memory), it can <span class="orange-bold">corrupt</span> internal data structures. There's no hard protection, only conventions and careful coding.
+
+Without protection, a bug in one part (e.g., a wild pointer in a thread) could crash the whole program or corrupt data silently (the infamous `segfault`). Protection boundaries limit the damage and help isolate faults.
 
 
 
@@ -827,10 +831,10 @@ You decide to dig into the architectural differences that affect performance.
 
 
 **Answer the following questions:**
-1. Why is switching between processes more expensive than switching between threads?
-2. How do threads achieve faster communication compared to processes?
-3. What happens during a process context switch that doesn't occur with thread switching?
-4. How do these differences impact system design choices for parallel workloads?
+1. Why is **switching** between processes more <span class="orange-bold">expensive</span> than switching between threads?
+2. How do threads achieve *faster* communication compared to processes?
+3. What happens during a process context switch that <span class="orange-bold">doesn't occur</span> with thread switching?
+4. How do these differences impact system design choices for **parallel** workloads?
 
 
 {:.highlight}
@@ -852,7 +856,7 @@ You decide to dig into the architectural differences that affect performance.
   <li>Execute a system call, involving mode switch between user and kernel space</li>
 </ul>
 
-<p>In contrast, thread switching is lighter because threads within the same process share the same memory space. Only the CPU registers, program counter, and stack pointer need to be saved and restored. No virtual memory remapping is required, and in many implementations, thread context switching can happen entirely in user space without a system call.</p>
+<p>In contrast, thread switching is lighter because threads within **the same process share the same memory space**. Only the CPU registers, program counter, and stack pointer need to be saved and restored. No virtual memory remapping is required, and in many implementations, thread context switching can happen entirely in user space without a system call.</p>
 
 <p>When it comes to communication, <strong>threads share memory</strong> by default, enabling direct access to shared variables or buffers. In contrast, <strong>processes must use IPC mechanisms</strong> like pipes, message queues, or shared memory segments, which require coordination and system calls,  adding latency and overhead.</p>
 
