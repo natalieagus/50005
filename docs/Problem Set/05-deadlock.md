@@ -704,19 +704,19 @@ Just because one process can finish does not mean the remaining system will rema
 Suppose we have:
 <ul>
   <li><strong>Resources available:</strong> A: 3, B: 2</li>
-  <li><strong>P1</strong> – Max: A: 2 B:1, Allocated: A: 1 B:0 → Needs: A:1 B:1</li>
+  <li><strong>P1</strong> – Max: A: 2 B:2, Allocated: A: 1 B:0 → Needs: A:1 B:2</li>
   <li><strong>P2</strong> – Max: A: 1 B:1, Allocated: A: 1 B:1 → Needs: A:0 B:0</li>
-  <li><strong>P3</strong> – Max: A: 2 B:1, Allocated: A: 0 B:0 → Needs: A:2 B:1</li>
+  <li><strong>P3</strong> – Max: A: 3 B:1, Allocated: A: 0 B:0 → Needs: A:3 B:1</li>
 </ul>
 
 Available = A:1, B:1
 
-If we grant P3’s request of A:1, B:1 → Available becomes A:0, B:0.  
-P2 can finish (needs 0), but after that:
+If we grant P3’s request of A:1, B:1 → Available (work) becomes A:0, B:0.  
+P2 can finish (needs 0) and release its resources, so *work* becomes A:1 and B:1, but after that:
 <ul>
-  <li>P1 still needs A:1 B:1 (unavailable)</li>
-  <li>P3 still needs A:1 B:0 (A is still unavailable)</li>
-</ul>
+  <li>P1 still needs A:1 B:2 (unavailable)</li>
+  <li>P3 still needs A:2 B:0 (unavailable)</li>
+</ul> 
 Now the system is stuck. Granting the request led to an <strong>unsafe state</strong>.
 </p>
 
@@ -1087,18 +1087,15 @@ The server does not crash but <span class="orange-bold">stops</span> processing 
 
 <p>In the file server scenario, ignoring deadlock leads to a full system halt. Since threads can block each other indefinitely, the server becomes unresponsive without crashing. This is dangerous for a service expected to run continuously, as recovery requires manual intervention or automated restarts, which can lead to data inconsistency or service downtime.</p>
 
-<p>Here's one runtime strategy suggestion:/p>
+<p>Here's one runtime strategy suggestion:</p>
 <ul>
   <li><strong>Runtime strategy:</strong> Implement a watchdog timer or deadlock detector that checks for threads blocked beyond a timeout and kills or resets them.</li>
   <li><strong>Design-time strategy:</strong> Enforce a strict lock ordering policy where all threads must acquire resources in a predefined sequence, such as by file ID order. This eliminates circular wait.</li>
 </ul>
 
 <p>The Ostrich Algorithm is reasonable in systems where failure is rare, recovery is easy, and data is not critical — for example, user interfaces or non-essential background processes. It is irresponsible in real-time systems, financial systems, or infrastructure services where reliability, uptime, and consistency are essential. In such systems, even rare deadlocks are unacceptable.</p>
-
-
-
-</p></div><br>
-
+</p>
+</div><br>
 
 
 
