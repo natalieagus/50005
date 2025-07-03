@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 
 
-## The Missing Inode
+## Where is the Inode?  
 
 ### Background: Inode Recap
 
@@ -112,7 +112,7 @@ Hard links cannot be used to create directory loops in most modern UNIX systems.
 
 
 
-## The Forgotten Mount
+## Wasted Space and Forgotten Mount
 
 ### Background: Volume
 
@@ -161,7 +161,7 @@ To avoid this, it's good practice to ensure that any directory used as a mount p
 
 
 
-## The Incomplete Flush
+## Incomplete Flush Filled with Garbage
 
 ### Background
 
@@ -211,7 +211,7 @@ To reduce risk, applications should explicitly call <code>fsync()</code> after w
 
 
 
-## The Phantom File
+## Phantom of the File
 
 ### Background: Deleting with `unlink`
 
@@ -321,7 +321,7 @@ The safer alternative is to use <code>cp</code> to create a true copy of the fil
 
 
 
-## The Shadow Directory
+## Restricting Directory Access
 
 ### Background: Directory Permission
 
@@ -423,7 +423,7 @@ To avoid leaks, developers should always close descriptors in error paths and no
 
 
 
-## The Dangling Shortcut
+## Shortcut that Leads to Nowhere
 
 ### Background: The Insignificant Symlink Permission 
 
