@@ -115,7 +115,7 @@ A student runs a web server on their laptop and shares its IP address and port 8
 
 
 
-## The Recursive Route
+## A Recursive Route
 
 ### Background: TTL in Network Packets
 
@@ -162,7 +162,7 @@ A student sets up two routers in a lab to connect three subnets. They accidental
 </p></div><br>
 
 
-## The Phantom ISP
+## Phantom ISP
 
 ### Background
 
@@ -200,7 +200,7 @@ During a regional ISP outage, you and your peers find that they cannot access th
 
 
 
-## The Hijacked Handshake
+## Incomplete Handshake Leads to Wasted Resources
 
 ### Background: Connection-Oriented Communication
 
@@ -208,8 +208,6 @@ The Internet supports *connection-oriented* communication through protocols that
 
 {:.note}
 In short, if the handshake is never completed, these resources can remain **occupied**. Repeated incomplete handshakes from forged or unreachable sources can exhaust a server’s connection queue and make it unavailable to legitimate users.
-
-
 
 ### Scenario
 
@@ -297,7 +295,7 @@ A machine switches from a campus network to a mobile hotspot. It maintains an ac
 
 
 
-## The Unknown Middleman
+## An Unknown Middleman
 
 ### Background: IXPs
 
@@ -339,7 +337,7 @@ A device in Singapore connects to a nearby cloud server, expecting a low-latency
 </p></div><br>
 
 
-## The Borrowed Address
+## Let Me Borrow Your Address
 
 ### Background: Public and Private IP Addresses
 
@@ -385,7 +383,7 @@ Let me know if you're ready to continue with **#9 – The Shrinking Mask** (subn
 </p></div><br>
 
 
-## The Shrinking Mask
+## When Subnets don't Match 
 
 ### Background
 
@@ -433,7 +431,7 @@ A device is reconfigured to use a `/22` subnet mask instead of the original `/24
 
 
 
-## The Misrouted Reply
+## Lost in Translation 
 
 ### Background
 

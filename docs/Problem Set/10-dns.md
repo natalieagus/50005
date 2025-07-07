@@ -94,7 +94,7 @@ This diagram ends at the point the final IP address is returned. You are told th
 
 
 
-## The Misleading Alias
+## A Misleading Alias
 
 ### Background: CNAME Resolution
 
@@ -219,7 +219,7 @@ Your goal:
 
 
 
-## The Lonely Authority
+## Lonely Authority
 
 ### Background: SOA Record
 
@@ -287,7 +287,7 @@ They ask:
 
 
 
-## The Silent Switch
+## Silent Switch
 
 ### Background: Indirection and Late Binding
 
@@ -341,7 +341,7 @@ Yet, when you run `dig library.univ.edu`, you get the new IP.
 
 
 
-## The Fragmented Campus
+## A Fragmented Campus
 
 ### Background: Zone Delegation and Glue Records
 
@@ -460,7 +460,7 @@ The student says, "Now we know where to send email." But your team replies, "Not
 
 
 
-## The Fast Response Lie
+## Fastest Response Lie
 
 ### Background: DNS Caching and Recursion
 
@@ -521,7 +521,7 @@ The student is surprised.
 
 
 
-## The Authoritative Dilemma
+## Authoritative Enough for You?
 
 ### Background: Authoritative vs. Non-Authoritative Responses
 
@@ -588,7 +588,7 @@ A student asks, “Why are the answers different? Aren’t they both correct?”
 
 
 
-## The Disconnected Domain
+## Hollow Zones 
 
 ### Background: Missing Records and Incomplete Zones
 
@@ -653,7 +653,7 @@ But there is no A record, and the response seems incomplete.
 </div>
 
 
-## The Hijacked Reply
+## Looks Legit yet Totally Fake 
 
 ### Background: DNS Spoofing and Cache Poisoning
 
@@ -709,7 +709,7 @@ You get a completely different IP address.
 </div>
 
 
-## The Phantom Email Server
+## Phantom Email Server
 
 ### Background: Mail Delivery and Nonexistent Targets
 
@@ -778,7 +778,7 @@ And the response is:
 
 
 
-## The Expired Authority
+## Still Not Found 
 
 ### Background: TTL and Negative Caching
 
@@ -845,7 +845,7 @@ company.biz.  86400  IN  SOA  ns1.company.biz. admin.company.biz. ...
 
 
 
-## DNS Resolution Timing
+## Timing a DNS Resolution 
 
 ### Background: Recursive Query and Time-Space Diagram
 
@@ -907,7 +907,7 @@ Client         Resolver       Root Server     TLD Server      moviehub.net NS
   </p>
 </div>
 
-## The Diagrammed Delay
+## A Deep Dive to Space and Time
 
 ### Background: Recursive Queries and Time-Space Behavior
 
@@ -982,7 +982,7 @@ For simplicity, we omit the "slantness" of each query/response. There's still ne
 
 
 
-## The Circular Trap
+## Who Resolves the Resolver?  
 
 ### Background: Delegation and Glue Records
 
@@ -1052,7 +1052,7 @@ No A record is returned. No glue record exists either.
 
 
 
-## The Hidden Channel
+## TXT Me If You Can
 
 {:.info}
 This question combines knowledge from network security and DNS. 

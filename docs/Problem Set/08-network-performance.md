@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 {: .no_toc}
 
 
-## The Congested Curve
+## Stuck in the Queue 
 
 ### Background: Components of Network Delay
 
@@ -118,7 +118,7 @@ An HTTP request from a user appears slow. A network diagnostic shows low propaga
 </p></div><br>
 
 
-## The Constrained Choice
+## Battle of the Bandwidth 
 
 ### Background: Bottleneck Links
 
@@ -204,7 +204,7 @@ Using the graph above:
 
 
 
-## The Tradeoff Tunnel
+## A Packet's Journey
 
 ### Background: Pipelined Transmission
 
@@ -339,7 +339,7 @@ Below is a sample graph explaining the difference between transmission and propa
 
 
 
-## The Sleepy Socket
+## Sleepy Socket
 
 ### Background: Blocking SVC
 
@@ -382,7 +382,7 @@ A process issues `read(sockfd, buf, 100)` to receive 100 bytes from a remote ser
 
 
 
-## The Queued Crossroad
+## Fast-in Slow-out 
 
 ### Background: Queueing Delay
 
@@ -474,7 +474,7 @@ The Sender sends 4 packets back-to-back at 10 Mbps. The Router receives them and
 
 
 
-## The Overcommitted Buffer
+## Packets Keep Coming, But Nobody’s Home (Yet)
 
 ### Background
 
@@ -517,7 +517,7 @@ A server receives high-throughput traffic over a fast link. However, due to CPU 
 
 
 
-## The Ticking Timeout
+## Bits on the Move with a Ticking Timeout
 
 ### Background
 
@@ -566,7 +566,7 @@ Two identical packets are sent: one across a 1 Mbps Wi-Fi link spanning 100 mete
 
 
 
-## The Buffered Bottleneck
+## The Calm Before the Queue 
 
 ### Background
 

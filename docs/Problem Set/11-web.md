@@ -414,7 +414,7 @@ Client                          Server
 
 
 
-## The Split Page
+## Split Page, Fragmented Journey
 
 ### Background: Multiple Origins and DNS Overhead
 
@@ -552,7 +552,7 @@ This scenario assumes **HTTPS**, where HTTP is layered on TLS. Although this cou
 
 
 
-## The Sticky Connection
+## Reuse or Regret
 
 ### Background: Persistent Connections and `keep-alive`
 
@@ -701,7 +701,7 @@ Client                          Server
 **Total: still 7 RTTs because of bandwidth limitation**, but less client-side idle time.
 
 
-## The Port Mismatch
+## A Tale of a Mismatched Port 
 
 ### Background: Application Demultiplexing by Port Number
 
@@ -846,7 +846,7 @@ If two servers on the same machine try to bind to port 80 with TCP, the OS will 
 
 
 
-## The Stateless Listener
+## No Strings Attached 
 
 ### Background: UDP and Demultiplexing
 
@@ -1044,7 +1044,7 @@ This <span class="orange-bold">surprises</span> them. Both commands seem local, 
 
 
 
-### 🔧 UNIX Domain Socket vs TCP Loopback
+### UNIX Domain Socket vs TCP Loopback
 
 Here is a **ladder diagram** that contrasts a **UNIX domain socket connection** with a **TCP loopback connection** for local database access.
 #### Example 1: `psql` connects using **UNIX domain socket** (no `-h`)
@@ -1088,7 +1088,7 @@ In a nutshell:
 
 
 
-## The Unexpected SYN
+## Hello There, an Unexpected SYN
 
 ### Background: TCP Connection Lifecycle and State Transitions
 
