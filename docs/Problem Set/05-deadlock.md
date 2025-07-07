@@ -660,7 +660,7 @@ Now, process **P1** makes a request for resources: **(1, 0, 2)**.
 <p><strong>Conclusion:</strong> Yes, the system remains in a safe state. The request should be granted.</p>
 
 <p>If P1 finishes, it releases (3, 0, 2), so Available becomes:<br>
-(3 + 3, 3 + 0, 2 + 2) = <strong>(6, 3, 4)</strong></p>
+(2 + 3, 3 + 0, 0 + 2) = <strong>(5, 3, 2)</strong></p>
 
 <p>Entering an unsafe state means the system cannot guarantee that all processes will finish. A deadlock may not happen immediately, but if future requests are made and the wrong process proceeds, the system may become stuck with no way to satisfy some processes. Banker's Algorithm avoids this by rejecting requests that lead to this uncertainty.</p>
 

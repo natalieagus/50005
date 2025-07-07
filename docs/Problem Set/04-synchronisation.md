@@ -803,7 +803,7 @@ void* consumer(void* arg) {
 1. What happens if the producer signals before the consumer starts waiting?
 2. Why must `pthread_cond_wait()` always be used inside a `while` loop, not an `if`?
 3. What is a **spurious wakeup** and how does the loop guard handle it?
-4. Construct a timeline where the consumer blocks forever due to a missed signal.
+4. Construct a visual timeline where the consumer blocks forever due to a missed signal.
 5. **Rewrite** the consumer code to be safe against missed signals and spurious wakeups.
 
 
@@ -814,27 +814,25 @@ void* consumer(void* arg) {
 > * Always recheck the condition after waking up.
 
 
-### Visual Timeline Example
-
-```text
-Missed Wakeup Scenario:
-
-T1 (Producer): LOCK → (CONTEXT SWITCHED)
-T2 (Consumer): if (ready == 0) → (CONTEXT SWITCHED)
-T1 (Producer) :ready = 1 → SIGNAL cond → UNLOCK 
-T2 (Consumer): WAIT cond → blocks forever
-
-Explanation:
-- Consumer calls wait *after* signal was sent.
-- Condition is already true, but signal is gone.
-- Since wait is inside an "if", the condition is never rechecked.
-- Consumer sleeps forever.
-```
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <p>
-If the producer signals the condition variable before the consumer begins waiting, and <code>pthread_cond_wait()</code> is not yet called, the signal is lost. The consumer then calls wait and blocks forever because the condition is already true, but no thread will signal again.
+If the producer signals the condition variable before the consumer begins waiting, and <code>pthread_cond_wait()</code> is not yet called, the signal is lost. The consumer then calls wait and blocks forever because the condition is already true, but no thread will signal again. The visual trace is as follows: 
+</p>
+
+<pre><code>T1 (Producer): LOCK → (CONTEXT SWITCHED)
+T2 (Consumer): if (ready == 0) → (CONTEXT SWITCHED)
+T1 (Producer): ready = 1 → SIGNAL cond → UNLOCK 
+T2 (Consumer): WAIT cond → blocks forever</code></pre>
+
+<p><strong>Explanation:</strong>
+<ul>
+    <li>The variable "ready" changes after consumer checks it, just before it calls Wait </li>
+    <li>There's a gap between time-of-check and time-of-use </li>
+    <li>When consumer calls wait, the condition is already true and SIGNAL is already sent</li>
+    <li>Consumer sleeps forever</li>
+</ul>
 </p>
 
 <p>
@@ -846,7 +844,7 @@ A spurious wakeup is when <code>pthread_cond_wait()</code> returns even though n
 </p>
 
 <p>
-In the broken interleaving, the producer sets <code>ready = 1</code> and signals <code>cond</code> before the consumer starts waiting. Since the consumer checks for the condition outside of a mutex, it checked a stale value and misses the signal so it blocks forever. The <code>if</code> check will also cause incorrect behavior due to spurious wakeup
+In the broken interleaving, the producer sets <code>ready = 1</code> and signals <code>cond</code> before the consumer starts waiting. Since the consumer checks for the condition outside of a mutex, it checked a stale value and misses the signal so it blocks forever. The <code>if</code> check will also cause incorrect behavior due to spurious wakeup.
 </p>
 
 <p>
