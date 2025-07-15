@@ -156,7 +156,7 @@ For more information about `traceroute`, you can look up its manual page by runn
 
 ## Route Asymmetries
 
-The route taken to send a packet from your machine to the remote host machine is <span style="color:#f77729;"><b>not always the same</b></span> with the route taken to send a packet from the remote machine _back_ to you.
+The route taken to send a packet from your machine to the remote host machine is <span style="color:#f77729;"><b>not always the same</b></span> as the route taken to send a packet from the remote machine _back_ to you.
 
 In this exercise, you will run traceroute in two <span style="color:#f77729;"><b>opposite</b></span> directions. First, you will run `traceroute` on a remote host to see the route taken <span style="color:#f77729;"><b>to your network</b></span>. Then, you will also run `traceroute` from your computer to see the route taken to that host.
 
