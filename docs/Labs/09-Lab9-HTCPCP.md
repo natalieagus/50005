@@ -497,7 +497,7 @@ When you try to access the webpage on your browser, e.g: `https://127.0.0.1:5031
 
 <img src="{{ site.baseurl }}//assets/images/lab4_4-https/2023-06-28-14-52-39.png"  class="center_seventy no-invert"/>
 
-**Think!** Why is that so?
+**Think!** Why does this warning come about? What does it mean by *This server could not prove that it is 127.0.0.1*? 
 {:.error}
 
 You can just click **proceed** anyway, and you should be able to view your webpage as per normal. However this time round, when you open Wireshark and sniff your loopback channel while loading the CoffeePot homepage, all packets are **encrypted** and wireshark will not be able to decode `https` packets. It will all appear as `TLS` packets, with encrypted application data:
