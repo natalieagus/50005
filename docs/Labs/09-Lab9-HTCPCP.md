@@ -349,7 +349,10 @@ TIME_STRING_FORMAT = "%a, %d %b %Y %H:%M:%S"
 
 When we start both processes: the webserver and the coffee server, both servers are binding itself to port `5031` and port `5030` respectively to listen and wait for connection requests. Once a client attempts to `connect` to the socket, a **new** TCP socket is created using 4 identifiers: client IP, client port, server IP and server port.
 
-The web browser is a client to the Flask app (the webserver part), and the Flask app is a client to our coffee webserver. Open `sample_capture/homepage_coffee.pcapng` in Wireshark and apply `htcpcp or (tcp.port == 5031)` filter. You will something like this, and use it to answer a few questions on eDimension.
+The web browser is a client to the Flask app (the webserver part), and the Flask app is a client to our coffee webserver. 
+
+Open `sample_capture/homepage_coffee.pcapng` in Wireshark and apply `htcpcp or (tcp.port == 5031)` filter. You will something like this, and use it to answer a few questions on eDimension.
+
 
 <img src="{{ site.baseurl }}//assets/images/lab4_2-inspect/2023-06-27-17-46-02.png"  class="center_full no-invert"/>
 
