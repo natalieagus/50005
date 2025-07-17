@@ -332,7 +332,7 @@ Head to eDimension to answer a few questionnaire pertaining to this task.
 
 ### Task 3
 
-`TASK 3:` Inspecting transport layer protocl (TCP) and TCP ports used
+`TASK 3:` Inspecting transport layer protocol (TCP) and TCP ports used
 {:.task}
 
 The file `config/config.py` states the ports used for the webserver and coffee server:
