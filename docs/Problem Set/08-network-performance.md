@@ -153,10 +153,11 @@ Using the graph above:
 
 {: .highlight}
 > **Hints**:
-> * Transmission delay = (packet size × 8) ÷ link bandwidth
+> * Transmission delay = (packet size in bytes × 8) ÷ link bandwidth
 > * Total transmission delay = sum of all link delays
 > * Bottleneck = min(link bandwidths in path)
-> * Pipelined time = 1st packet delay + (999 × bottleneck link delay)
+> * Pipelined time = 1st packet delay + (N-1 packets × bottleneck link delay)
+> * The formula arises from overlapping transmissions. After the first packet finishes the full route, subsequent packets follow in a steady rhythm defined by the slowest link, just like cars exiting a car wash every X seconds after the first.
 > * Prefer paths with higher bottleneck and lower total delay
 
 
@@ -227,7 +228,7 @@ This format helps visualize packet timing in a way that aligns with packet captu
 
 ### Scenario
 
-A host sends 5 packets (each 1000 bytes = 8000 bits) over a 1 Mbps link with 6 ms one-way propagation delay. The packets are sent back-to-back with no gaps.
+A host sends 5 packets (each 1000 bytes = 8000 bits) over a 1 Mbps link with 24 ms one-way propagation delay. The packets are sent back-to-back with no gaps.
 
 > **Refer to the space-time diagram** above for packet timing.
 
@@ -253,27 +254,24 @@ A host sends 5 packets (each 1000 bytes = 8000 bits) over a 1 Mbps link with 6 m
 
 <p>The first packet finishes transmission at 8 ms and takes 6 ms to propagate, so it arrives at:</p>
 <ul>
-  <li><strong>8 + 6 = 14 ms</strong></li>
+  <li><strong>8 + 24 = 32 ms</strong></li>
 </ul>
 
 <p>The fifth packet starts at 32 ms, finishes transmission at 40 ms, and arrives at:</p>
 <ul>
-  <li><strong>40 + 6 = 46 ms</strong></li>
+  <li><strong>40 + 24 = 64 ms</strong></li>
 </ul>
 
-<p>The total time to transmit and receive all 5 packets is from t = 0 ms to t = 46 ms:</p>
-<ul>
-  <li><strong>46 ms</strong></li>
-</ul>
+<p>The total time to transmit and receive all 5 packets is from t = 0 ms to t = 64ms.</p>
 
-<p>After the third packet is sent (at t = 24 ms), all three packets are in flight and have not yet arrived. So:</p>
+<p>After the third packet is sent (at t = 24 ms), all three packets are in flight and have not yet arrived. The first bit of the first packet will arrive just after 24 ms. So:</p>
 <ul>
   <li>3 × 8000 = <strong>24,000 bits</strong> in flight</li>
 </ul>
 
 <p>Alternatively, you can compute the bandwidth-delay product:</p>
 <ul>
-  <li>1 Mbps × 6 ms = <strong>6000 bits</strong> — this is the <em>maximum bits per packet</em> in flight due to propagation</li>
+  <li>1 Mbps × 24 ms = <strong>24000 bits</strong>. This is the <em>maximum bits per packet</em> in flight due to propagation</li>
 </ul>
 
 </p></div><br>
