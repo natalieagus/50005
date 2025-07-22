@@ -241,7 +241,7 @@ RSA involves a set of algorithms for key generation, encryption, and decryption:
    - Using the private key,  the digital signature $$ S $$ is computed as $$ S = M^d \mod n $$, using the **private** key. 
 
 6. **Verification**:
-   - To verify a given digital signature $$ S $$, we can compute $$ M = C^e \mod n$$, using the **public** key. 
+   - To verify a given digital signature $$ S $$, we can compute $$ M = S^e \mod n$$, using the **public** key. 
 
 {:.info-title}
 > Coprime
