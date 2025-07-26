@@ -177,7 +177,7 @@ You are analyzing traffic between a legacy client and a server. Messages are enc
 
 Public Key Infrastructure (PKI) allows users to verify the authenticity of entities using **digital certificates**. At the top of the hierarchy sits a **Certificate Authority (CA)**, whose public key is trusted implicitly. Every certificate issued by the CA (or by another entity with delegated signing rights) creates a **chain of trust**.
 
-This can be modeled as a **directed graph**, where each node represents a public key, and an edge from A to B means "A has signed B’s public key." A public key is considered trusted if there exists a path from the root CA to that key. If no such path exists, the key and the identity it belongs to is not trusted by the system.
+This can be modeled as a **directed graph**, where each node represents a public key, and an edge from A to B means "A has signed B’s public key." A public key is considered trusted if there exists a path from the root CA to that key. A path means that all certificates of intermediary nodes are available. If no such path exists, the key and the identity it belongs to is not trusted by the system.
 
 For example, in the graph below:
 
@@ -214,12 +214,12 @@ You are given the following trust graph extracted from a distributed certificate
 {:.note}
 Each edge means the upper node **digitally signed the public key** of the lower node.
 
-A client only trusts the **Root CA** initially. Your task is to evaluate which keys are trusted and which are not.
+A client only trusts the **Root CA** initially and given the certificates of A, B, C, and D. Your task is to evaluate which keys are trusted and which are not.
 
 **Answer the following questions**:
 1. Which of the nodes' public keys are trusted from the client's perspective?
 2. Can the client verify a message signed by F? Why or why not?
-3. Suppose a new signature is added: D signs C. How does this change the trust graph? Is C now trusted?
+3. Suppose a new signature is added: D signs F. How does this change the trust graph? Is F now trusted?
 4. What is the risk of relying solely on this graph-based trust model in open networks?
 5. How does a compromised node like A or C affect the rest of the graph?
 
@@ -233,13 +233,13 @@ A client only trusts the **Root CA** initially. Your task is to evaluate which k
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
   <p>
-    The trusted keys are those with a valid signature path from the Root CA. These include A (signed by Root CA), B and C (signed by A), D (signed by B), and E (signed by C). F is <strong>not</strong> trusted because although E signed F, the client has no way to verify E’s key unless it trusts C, which it does.
+    The trusted keys are those with a valid signature path from the Root CA. These include A (signed by Root CA), B and C (signed by A), D (signed by B), and E (signed by C). F is <strong>not</strong> trusted because although E signed F, the client has no way to verify E’s key because the client does not have E's certificate.
   </p>
   <p>
-    The client cannot verify a message signed by F, because there is no complete chain of signatures from the Root CA down to F. Although F’s key is signed by E and E by C, the client does not necessarily trust C unless the full path is valid and known.
+    The client cannot verify a message signed by F, because there is no complete chain of signatures from the Root CA down to F. Although F’s key is signed by E and E by C, the client does not necessarily trust E because the client does not have E's certificate.
   </p>
   <p>
-    If D signs C, and D is already trusted via Root → A → B → D, then there exists a new path: Root → A → B → D → C. This makes C trusted by transitivity. Consequently, E and F would also become trusted, as they now fall within a trusted path.
+    If D signs F, and D is already trusted via Root → A → B → D, and the since the Client has D's certificate, then there exists a new path: Root → A → B → D → F. This makes F trusted by transitivity. 
   </p>
   <p>
     In open networks, relying only on transitive trust graphs poses risks. An attacker could insert fake keys or trick trusted nodes into signing unverified keys. Without strict policy enforcement or revocation mechanisms, the trust model can be exploited to elevate untrusted entities.
