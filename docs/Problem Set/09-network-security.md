@@ -191,9 +191,13 @@ For example, in the graph below:
 ```
 If the client trusts only the Root CA, it can also trust X (because Root signed X) and Y (because X signed Y). But if a key is not reachable from the Root CA, the client cannot *verify* it and must treat it as **untrusted**.
 
-{:.info}
-In modern operating systems and browsers, a **chain of trust** is established through a built-in list of **trusted root certificate authorities (CAs)**. These root CAs are <span class="orange-bold">hardcoded</span> or <span class="orange-bold">bundled</span> with the **OS** or **browser** and are **implicitly trusted**. When a user connects to a website over HTTPS, the browser receives a digital certificate issued to that website, along with intermediate certificates if needed. The browser then verifies that this certificate was signed by a trusted CA or by an intermediate CA that itself has **a valid signature chain back to a trusted root**. If such a valid path exists, the certificate is considered trustworthy, and the connection proceeds securely. If the chain is broken or unverifiable, the browser warns the user or blocks the connection entirely.
 
+In modern operating systems and browsers, a **chain of trust** is established through a built-in list of **trusted root certificate authorities (CAs)**. These root CAs are <span class="orange-bold">hardcoded</span> or <span class="orange-bold">bundled</span> with the **OS** or **browser** and are **implicitly trusted**. When a user connects to a website over HTTPS, the browser receives a digital certificate issued to that website, along with <span class="orange-bold">intermediate certificates</span>. The browser then verifies that this certificate was signed by a trusted CA or by an intermediate CA that itself has **a valid signature chain back to a trusted root**. If such a valid path exists, the certificate is considered trustworthy, and the connection proceeds securely. If the chain is broken or unverifiable, the browser warns the user or blocks the connection entirely.
+
+{:.note-title}
+> Network of trust 
+>
+> A node’s public key is trusted if there’s a valid chain of signatures to the Root CA, and the client possesses the certificates for all nodes along that chain, **including** the node itself.
 
 ### Scenario
 
@@ -212,14 +216,14 @@ You are given the following trust graph extracted from a distributed certificate
 ```
 
 {:.note}
-Each edge means the upper node **digitally signed the public key** of the lower node.
+Each edge means the upper node is *supposedly* **digitally signed the public key** of the lower node. 
 
-A client only trusts the **Root CA** initially and given the certificates of A, B, C, and D. Your task is to evaluate which keys are trusted and which are not.
+A client only trusts the **Root CA** initially and given the certificates of A, B, C, D, and E. Your task is to evaluate *which* keys are trusted and which are not.
 
 **Answer the following questions**:
 1. Which of the nodes' public keys are trusted from the client's perspective?
 2. Can the client verify a message signed by F? Why or why not?
-3. Suppose a new signature is added: D signs F. How does this change the trust graph? Is F now trusted?
+3. Suppose a new signature is added: D signs F and the client is provided F's certificate (signed by D). How does this change the trust graph? Is F now trusted?
 4. What is the risk of relying solely on this graph-based trust model in open networks?
 5. How does a compromised node like A or C affect the rest of the graph?
 
@@ -233,19 +237,22 @@ A client only trusts the **Root CA** initially and given the certificates of A, 
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
   <p>
-    The trusted keys are those with a valid signature path from the Root CA. These include A (signed by Root CA), B and C (signed by A), D (signed by B), and E (signed by C). F is <strong>not</strong> trusted because although E signed F, the client has no way to verify E’s key because the client does not have E's certificate.
+    A node’s key is trusted if there’s a valid chain of signatures to the Root CA, <span class="orange-bold">and</span> the client possesses the certificates for every node in that chain, including the node whose key is being validated. These include A (signed by Root CA), B and C (signed by A), D (signed by B), and E (signed by C). F is <strong>not</strong> trusted because although E signed F, the client has no way to verify E’s key because the client does not have E's certificate.
   </p>
   <p>
-    The client cannot verify a message signed by F, because there is no complete chain of signatures from the Root CA down to F. Although F’s key is signed by E and E by C, the client does not necessarily trust E because the client does not have E's certificate.
+    The client <span class="orange-bold">cannot</span> verify a message signed by F, because there is no complete chain of signatures from the Root CA down to F. Although F’s key is signed by E and E by C, the client does not necessarily trust F because the client does not have F's certificate and cannot *verify* if F's signature is legitimate or not.
   </p>
   <p>
-    If D signs F, and D is already trusted via Root → A → B → D, and the since the Client has D's certificate, then there exists a new path: Root → A → B → D → F. This makes F trusted by transitivity. 
+    If D signs F, and D is already trusted via Root → A → B → D, and the since the Client now has F's newly signed certificate (by D), then there exists a new path: Root → A → B → D → F. This makes F trusted by transitivity. 
   </p>
   <p>
-    In open networks, relying only on transitive trust graphs poses risks. An attacker could insert fake keys or trick trusted nodes into signing unverified keys. Without strict policy enforcement or revocation mechanisms, the trust model can be exploited to elevate untrusted entities.
+    In open networks that rely solely on transitive trust graphs, significant security risks arise because trust is automatically extended through chains of signatures. One common attack involves compromising a trusted intermediate node. For example, if an attacker manages to obtain the **private** key of an intermediary such as node A, they can then generate and sign new public keys for **fake** entities. Since the clients trust node A and follow the transitive signature chain, they will also trust these newly signed malicious keys without realizing they are not legitimate. This allows the attacker to introduce entire branches of untrusted nodes into the trust graph, which can then be used for impersonation, phishing, or distributing malware.
   </p>
   <p>
-    If a node like A is compromised, then all entities it signed (B and C), and those signed downstream (D, E, F), become potentially untrustworthy. This is called <strong>trust propagation</strong>. A single compromised node can corrupt the integrity of a large subtree of the trust graph.
+    Another way the trust graph can be exploited is through social engineering. An attacker might trick a trusted node’s operator into signing a key for an unverified or malicious party. This can happen if a trusted node does not strictly verify the identities of the parties whose keys it signs or if it is manipulated through phishing or deceptive requests. Once a trusted node signs an attacker’s key, the attacker immediately gains all the privileges and trust associated with the legitimate signature path, allowing them to masquerade as a trusted entity.
+  </p>
+  <p>
+    If a node like A is compromised, then all entities it signed (B and C), and those signed downstream (D, E, F), become potentially <span class="orange-bold">untrustworthy</span>. This is called <strong>trust propagation</strong>. A single compromised node can corrupt the integrity of a **large** subtree of the trust graph.
   </p>
 </div>
 
