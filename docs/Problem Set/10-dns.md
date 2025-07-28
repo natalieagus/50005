@@ -28,7 +28,7 @@ DNS resolution can happen in two main query types:
 * **Recursive Query**: The client asks a DNS server to resolve the full query and return the final answer. The contacted DNS server does all the querying work.
 * **Iterative Query**: The server returns the best answer it has, typically a referral to a more authoritative DNS server. The client must continue the resolution process.
 
-Clients like browsers typically send **recursive** queries to a **local DNS server**, which then performs **iterative** queries on their behalf. Understanding who queries whom — and in what order — is key to debugging DNS resolution issues.
+Clients like browsers typically send **recursive** queries to a **local DNS server**, which then performs **iterative** queries on their behalf. Understanding who queries whom (and in what order) is key to debugging DNS resolution issues.
 
 ### Scenario
 
@@ -84,7 +84,7 @@ This diagram ends at the point the final IP address is returned. You are told th
   </p>
 
   <p>
-    If the local DNS server does not support recursion, then the client — in this case, the browser — must take over the resolution process. It would receive referrals instead of final answers, and would need to send its own queries to each DNS server along the path. The flow would look like this: the browser queries the root server for the TLD, receives the address of the TLD server, then queries the TLD server for the domain, receives the authoritative server’s name, and finally queries that server for the IP address of the hostname.
+    If the local DNS server does not support recursion, then the client (in this case, the browser) must take over the resolution process. It would receive referrals instead of final answers, and would need to send its own queries to each DNS server along the path. The flow would look like this: the browser queries the root server for the TLD, receives the address of the TLD server, then queries the TLD server for the domain, receives the authoritative server’s name, and finally queries that server for the IP address of the hostname.
   </p>
 
   <p>
@@ -165,7 +165,7 @@ To make a domain like `pixelpeek.dev` point to your own home-hosted website, you
 1. **A domain registrar**: to buy a domain name **and** inform the TLD (`.dev`) which DNS server is authoritative for it.
 2. **An authoritative DNS server**: running somewhere publicly reachable, to respond to queries about your domain.
 
-You can run a DNS server from your home network — but that requires a **public static IP address** and port forwarding. Otherwise, DNS resolvers won't be able to find or reach your name server.
+You can run a DNS server from your home network but that requires a **public static IP address** and port forwarding. Otherwise, DNS resolvers won't be able to find or reach your name server.
 
 ### Scenario
 
@@ -345,7 +345,7 @@ Yet, when you run `dig library.univ.edu`, you get the new IP.
 
 ### Background: Zone Delegation and Glue Records
 
-In the Domain Name System (DNS), large organizations can divide their domain into **zones** for easier administration. A **zone delegation** allows subdomains to be handled by different teams or servers, each managing their own records. For this to work globally, the parent zone must provide **NS records** pointing to the child zone's authoritative servers, and sometimes also include **glue records** — A or AAAA records that provide IP addresses for those name servers.
+In the Domain Name System (DNS), large organizations can divide their domain into **zones** for easier administration. A **zone delegation** allows subdomains to be handled by different teams or servers, each managing their own records. For this to work globally, the parent zone must provide **NS records** pointing to the child zone's authoritative servers, and sometimes also include **glue records**  (A or AAAA records) that provide IP addresses for those name servers.
 
 {:.note}
 If glue records are missing, DNS resolution may fail due to circular dependencies or the inability to contact the authoritative server.
@@ -385,7 +385,7 @@ SUTD's IT department delegates `research.sutd.edu.sg` to a separate research uni
   </p>
 
   <p>
-    This can be fixed by inserting a glue record — specifically, the A record for <code>ns.research.sutd.edu.sg</code> — directly into the <code>sutd.edu.sg</code> zone, alongside the NS record. This gives resolvers the IP address they need to proceed with querying the subdomain’s authoritative server.
+    This can be fixed by inserting a <span class="orange-bold">glue</span> record, specifically, the A record for <code>ns.research.sutd.edu.sg</code> directly into the <code>sutd.edu.sg</code> zone, alongside the NS record. This gives resolvers the IP address they need to proceed with querying the subdomain’s authoritative server.
   </p>
 
   <p>
@@ -438,7 +438,7 @@ The student says, "Now we know where to send email." But your team replies, "Not
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
   <p>
-    Although the MX record was successfully retrieved, it only provides a hostname — in this case, <code>mail.protection.outlook.com</code>. This is not an IP address, so additional steps are required. The client must perform another DNS query to resolve this hostname to one or more IP addresses using A or AAAA records before any email connection can be established.
+    Although the MX record was successfully retrieved, it only provides a hostname, in this case, <code>mail.protection.outlook.com</code>. This is not an IP address, so additional steps are required. The client must perform another DNS query to resolve this hostname to one or more IP addresses using A or AAAA records before any email connection can be established.
   </p>
 
   <p>
@@ -454,7 +454,7 @@ The student says, "Now we know where to send email." But your team replies, "Not
   </p>
 
   <p>
-    This design reinforces the modularity of DNS. Each part of the system is responsible for a specific mapping — names to other names, and eventually names to IPs. Indirection helps DNS remain scalable, flexible, and easy to maintain across independent administrative domains.
+    This design reinforces the modularity of DNS. Each part of the system is responsible for a specific mapping (names to other names) and eventually names to IPs. Indirection helps DNS remain scalable, flexible, and easy to maintain across independent administrative domains.
   </p>
 </div>
 
@@ -657,7 +657,7 @@ But there is no A record, and the response seems incomplete.
 
 ### Background: DNS Spoofing and Cache Poisoning
 
-DNS responses are not always secure. In traditional DNS, the resolver accepts the first valid-looking response it receives. Attackers can exploit this by sending a fake DNS reply faster than the real one — a method known as **DNS spoofing** or **cache poisoning**. Once poisoned, a resolver may serve incorrect answers to all users relying on it.
+DNS responses are not always secure. In traditional DNS, the resolver accepts the first valid-looking response it receives. Attackers can exploit this by sending a fake DNS reply faster than the real one. This is a method known as **DNS spoofing** or **cache poisoning**. Once poisoned, a resolver may serve incorrect answers to all users relying on it.
 
 To prevent this, DNSSEC (DNS Security Extensions) allows resolvers to verify the authenticity of responses using cryptographic signatures.
 
@@ -696,7 +696,7 @@ You get a completely different IP address.
   </p>
 
   <p>
-    Querying a public resolver like <code>1.1.1.1</code> returns the correct address because it uses a separate, unpoisoned DNS path. This confirms that the poisoning is local — it affects the user’s resolver, not the global DNS infrastructure.
+    Querying a public resolver like <code>1.1.1.1</code> returns the correct address because it uses a separate, unpoisoned DNS path. This confirms that the poisoning is local: it affects the user’s resolver, not the global DNS infrastructure.
   </p>
 
   <p>
@@ -758,7 +758,7 @@ And the response is:
   </p>
 
   <p>
-    The critical missing piece is the A record for <code>mail.paperlaunch.ai</code>. The DNS setup has declared that this is the mail server, but has not told anyone where that server is — essentially naming a destination that does not exist.
+    The critical missing piece is the A record for <code>mail.paperlaunch.ai</code>. The DNS setup has declared that this is the mail server, but has not told anyone where that server is, essentially naming a destination that does not exist.
   </p>
 
   <p>
@@ -827,7 +827,7 @@ company.biz.  86400  IN  SOA  ns1.company.biz. admin.company.biz. ...
   </p>
 
   <p>
-    The SOA record plays a crucial role here — it defines the “negative TTL,” which tells resolvers how long to cache the absence of a record. In this case, the <code>86400</code> value means the system may remember the domain as missing for up to 24 hours.
+    The SOA record plays a crucial role here. It defines the “negative TTL,” which tells resolvers how long to cache the absence of a record. In this case, the <code>86400</code> value means the system may remember the domain as missing for up to 24 hours.
   </p>
 
   <p>
@@ -967,11 +967,11 @@ For simplicity, we omit the "slantness" of each query/response. There's still ne
   </p>
 
   <p>
-    The `.net` TLD server provides a **referral** — it does not return the final answer, but points the resolver to the authoritative name server for the `moviehub.net` domain. It is one of the steps in the recursive path.
+    The `.net` TLD server provides a **referral**. It does not return the final answer, but points the resolver to the authoritative name server for the `moviehub.net` domain. It is one of the steps in the recursive path.
   </p>
 
   <p>
-    If the local resolver does **not support recursion**, the browser or client must handle each referral manually — first querying the root, then the TLD, then the authoritative server. This is called **iterative resolution** and places more burden on the client.
+    If the local resolver does **not support recursion**, the browser or client must handle each referral manually: first querying the root, then the TLD, then the authoritative server. This is called **iterative resolution** and places more burden on the client.
   </p>
 
   <p>
@@ -1083,7 +1083,7 @@ The following are common DNS records that you've seen so far.
 
 * **SOA Record**: Stores metadata about the zone, including admin contact, serial number, and TTL rules.
 
-* **TXT Record**: Stores arbitrary text, often for domain verification or service configuration — and sometimes misused for covert communication.
+* **TXT Record**: Stores arbitrary text, often for domain verification or service configuration and sometimes misused for covert communication.
 
 ### What is a TXT record?
 

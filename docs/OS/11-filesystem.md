@@ -709,7 +709,7 @@ All systems have a <span style="color:#f77729;"><b>root</b></span> partition, wh
 
 <span style="color:#f77729;"><b>The mount procedure:</b></span>
 
-1. The operating system is given the name of the <span style="color:#f77729;"><b>device</b></span> and the <span style="color:#f77729;"><b>mount point</b></span> — the location within the file structure where the file system is to be attached.
+1. The operating system is given the name of the <span style="color:#f77729;"><b>device</b></span> and the <span style="color:#f77729;"><b>mount point</b></span>, the location within the file structure where the file system is to be attached.
 
 2. Typically, a mount point is an _empty directory._ For instance, on a UNIX system, a file system containing a user’s home directories might be mounted as `/home`; then, to access the directory structure within that file system, we could precede the directory names with `/home`,for example, `/home/alice`.
 
@@ -833,7 +833,7 @@ In Unix-like systems, many system calls return file descriptors: integers that r
 #### 2. **Pipes and Interprocess Communication (IPC)**
 
 * **`pipe(fd[2])`**
-  Creates a unidirectional pipe; returns two file descriptors—one for reading, one for writing.
+  Creates a unidirectional pipe; returns two file descriptors: one for reading, one for writing.
 
 * **`socketpair(domain, type, protocol, sv[2])`**
   Creates a pair of connected sockets; useful for bidirectional communication.

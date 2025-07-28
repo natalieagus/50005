@@ -325,7 +325,7 @@ A device in Singapore connects to a nearby cloud server, expecting a low-latency
 
 <p>IXPs are physical exchange points where multiple networks connect and hand off traffic. They help optimize routes and reduce latency, but are only effective if the involved ISPs participate in the same exchange point.</p>
 
-<p>ISP agreements — including peering, transit, and pricing — heavily influence which path traffic takes. ISPs may prefer cheaper or more stable routes over shorter geographic ones.</p>
+<p>ISP agreements (including peering, transit, and pricing) heavily influence which path traffic takes. ISPs may prefer cheaper or more stable routes over shorter geographic ones.</p>
 
 <p>Even if a server is physically nearby, its traffic may enter a different network that does not peer locally with the user’s ISP. This forces packets to take a longer international detour before reaching the destination.</p>
 
@@ -422,7 +422,7 @@ A device is reconfigured to use a `/22` subnet mask instead of the original `/24
 
 <p>Changing from `/24` to `/22` expands the addressable range from 256 to 1024 possible hosts. This allows more devices to be grouped under the same network, but only if all devices agree on the new mask.</p>
 
-<p>If subnet masks are inconsistent, devices may treat the same IP address differently — one may think it is on the local network, while another believes it requires routing. This causes miscommunication and failed local delivery.</p>
+<p>If subnet masks are inconsistent, devices may treat the same IP address differently. One may think it is on the local network, while another believes it requires routing. This causes miscommunication and failed local delivery.</p>
 
 <p>Misaligned subnets can lead to unreachable hosts, incorrect routing, or silent packet drops. These problems are difficult to detect without examining subnet configurations closely.</p>
 

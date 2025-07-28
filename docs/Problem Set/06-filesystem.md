@@ -58,7 +58,7 @@ Disk usage tools like <code>du</code> typically perform recursive traversal from
 If the user had created a symbolic link instead, it would have stored the pathname `/data/project/file1` as its target. Once the original file was deleted, the symlink would become broken, resulting in a “No such file or directory” error when accessed.
 </p>
 <p>
-Hard links can lead to confusion when users assume files in different locations are independent, even though they modify the same underlying data. Relying solely on hard links for backup is risky because it doesn't create a true copy — it simply adds another pointer. A mistaken edit or deletion could affect the data across all links.
+Hard links can lead to confusion when users assume files in different locations are independent, even though they modify the same underlying data. Relying solely on hard links for backup is risky because it doesn't create a true copy. It simply adds another pointer. A mistaken edit or deletion could affect the data across all links.
 </p>
 
 </p></div><br>
@@ -116,7 +116,7 @@ Hard links cannot be used to create directory loops in most modern UNIX systems.
 
 ### Background: Volume
 
-In UNIX and Linux systems, a **volume** refers to a logical storage unit, often represented by a disk partition, device, or remote filesystem. The **mount** operation binds such a volume to a specific directory path—called a **mount point**—so its contents become accessible as part of the global filesystem tree.
+In UNIX and Linux systems, a **volume** refers to a logical storage unit, often represented by a disk partition, device, or remote filesystem. The **mount** operation binds such a volume to a specific directory path (called a **mount point**) so its contents become accessible as part of the global filesystem tree.
 
 When a volume is mounted on a directory (e.g. `mount /dev/sdb1 /data`), the original contents of `/data` are hidden and replaced by the new volume’s namespace. This **mount namespace** remaps the visible contents of `/data` to those of the mounted volume, without deleting the underlying files. These hidden files remain on disk, consuming space, and can reappear after unmounting the volume.
 
@@ -143,7 +143,7 @@ An engineer configures a persistent storage volume and mounts it at `/data` to s
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <p>
-When a filesystem is mounted onto a directory like <code>/data</code>, the mount point acts as an entry into the new filesystem, and the original contents of <code>/data</code> are hidden—not removed. They continue to exist on the underlying disk but are no longer visible in the current namespace until the mount is unmounted.
+When a filesystem is mounted onto a directory like <code>/data</code>, the mount point acts as an entry into the new filesystem, and the original contents of <code>/data</code> are hidden, not removed. They continue to exist on the underlying disk but are no longer visible in the current namespace until the mount is unmounted.
 </p>
 <p>
 Disk usage tools such as <code>du</code> operate by walking through the visible directory structure. If a mount overlays a directory, these tools only see the contents of the mounted filesystem, not the underlying files. This can lead to an illusion that <code>/data</code> has very little usage when, in reality, hidden files beneath the mount point still occupy disk space.
@@ -192,7 +192,7 @@ The <code>write()</code> system call places data into the kernel’s page cache 
 </p>
 
 <p>
-The file size appears correct because the inode metadata—such as size and timestamps—may have already been flushed to disk before the crash. However, the actual file data might still have been sitting in volatile memory buffers and never committed to disk, resulting in empty or corrupted content.
+The file size appears correct because the inode metadata (such as size and timestamps) may have already been flushed to disk before the crash. However, the actual file data might still have been sitting in volatile memory buffers and never committed to disk, resulting in empty or corrupted content.
 </p>
 
 <p>
@@ -220,7 +220,7 @@ In UNIX-like systems, deleting a file via `unlink()` removes the **name** from i
 {:.note-title}
 > Recap
 >
-> In UNIX-like systems, each file is associated with an inode, which stores metadata and pointers to data blocks. The inode reference count tracks how many directory entries (i.e., filenames) or open file descriptors refer to that inode. When a file is deleted via `unlink()`, the reference count is decremented. The inode and its data blocks are only reclaimed when the count reaches zero—meaning no directory entry and no open file descriptor still points to it. This mechanism ensures safe deletion only when no process can access the file anymore.
+> In UNIX-like systems, each file is associated with an inode, which stores metadata and pointers to data blocks. The inode reference count tracks how many directory entries (i.e., filenames) or open file descriptors refer to that inode. When a file is deleted via `unlink()`, the reference count is decremented. The inode and its data blocks are only reclaimed when the count reaches zero, meaning no directory entry and no open file descriptor still points to it. This mechanism ensures safe deletion only when no process can access the file anymore.
 
 ### Scenario
 
@@ -300,7 +300,7 @@ A hard link creates an additional directory entry that points to the same inode 
 </p>
 
 <p>
-Changes made to <code>backup.conf</code> were reflected in <code>original.conf</code> because both filenames point to the same underlying file structure. Any edits modify the shared data blocks since there is no duplication of content—just an alias at the directory level.
+Changes made to <code>backup.conf</code> were reflected in <code>original.conf</code> because both filenames point to the same underlying file structure. Any edits modify the shared data blocks since there is no duplication of content, just an alias at the directory level.
 </p>
 
 <p>
@@ -347,7 +347,7 @@ A system contains a folder `/secure/data/reports.txt` which is readable by every
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <p>
-Even if a file like <code>reports.txt</code> is world-readable, users must be able to traverse every parent directory to reach it. The <code>x</code> (execute) permission on a directory allows traversal—i.e., the ability to access files within it. If a user lacks execute permission on <code>/secure</code>, they cannot access anything inside it, regardless of file-level permissions.
+Even if a file like <code>reports.txt</code> is world-readable, users must be able to traverse every parent directory to reach it. The <code>x</code> (execute) permission on a directory allows traversal, i.e., the ability to access files within it. If a user lacks execute permission on <code>/secure</code>, they cannot access anything inside it, regardless of file-level permissions.
 </p>
 
 <p>
@@ -379,7 +379,7 @@ In UNIX-like operating systems, file descriptors are small integers used by a pr
 
 ### Scenario
 
-A long-running server application begins failing sporadically after several days, with errors like “Too many open files.” Debugging reveals that each time a client connects, the server opens a file to log the session—but never closes it. Eventually, the server becomes unable to accept new clients, despite having enough memory and CPU.
+A long-running server application begins failing sporadically after several days, with errors like “Too many open files.” Debugging reveals that each time a client connects, the server opens a file to log the session but never closes it. Eventually, the server becomes unable to accept new clients, despite having enough memory and CPU.
 
 **Answer the following questions**:
 * What are file descriptors, and how are they managed?
@@ -410,7 +410,7 @@ When an application fails to close descriptors, each new open call consumes a sl
 </p>
 
 <p>
-Descriptor leaks can be detected using <code>lsof -p &lt;pid&gt;</code> or by inspecting <code>/proc/&lt;pid&gt;/fd/</code> to see all open handles. A continuously growing number of descriptors—especially pointing to the same file or socket type—is a clear sign of a leak. Some languages or runtimes provide leak detection utilities or hooks.
+Descriptor leaks can be detected using <code>lsof -p &lt;pid&gt;</code> or by inspecting <code>/proc/&lt;pid&gt;/fd/</code> to see all open handles. A continuously growing number of descriptors (especially pointing to the same file or socket type) is a clear sign of a <span class="orange-bold">leak</span>. Some languages or runtimes provide leak detection utilities or hooks.
 </p>
 
 <p>

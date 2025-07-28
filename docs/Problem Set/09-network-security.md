@@ -598,7 +598,7 @@ The server decrypts the message using its private key and checks the SHA-256 has
     Authentication is not required in this use case because the goal is anonymous reporting. The system is designed to protect the reporter’s identity, not verify it.
   </p>
   <p>
-    However, the system is vulnerable to abuse — anyone (including attackers or bots) can submit fake reports or spam the server. The server also cannot trace repeated reports from the same source or limit malicious use.
+    However, the system is vulnerable to abuse anyone (including attackers or bots) can submit fake reports or spam the server. The server also cannot trace repeated reports from the same source or limit malicious use.
   </p>
   <p>
     If this system were used for sensitive actions like issuing commands or submitting transactions, authentication would be essential. In that case, each client should authenticate using a digital signature or client-side certificate, and integrity should be enforced using HMAC or AEAD rather than plain hashes.
@@ -653,7 +653,7 @@ The attacker now presents the signed message in court, claiming it is legally bi
     The signature proves that the service's private key was used to sign the hash of the document. It confirms the document existed in that exact form at the time of signing. However, it does not prove that the service agrees with or endorses the content.
   </p>
   <p>
-    This is dangerous because third parties — including courts — may interpret a digital signature as an endorsement or approval. If the service does not verify the contents, it can be tricked into signing malicious, misleading, or fraudulent claims.
+    This is dangerous because third parties (including courts) may interpret a digital signature as an endorsement or approval. If the service does not verify the contents, it can be tricked into signing malicious, misleading, or fraudulent claims.
   </p>
   <p>
     An attacker could repeatedly submit documents with deceptive claims or forged declarations, obtaining valid signatures that appear to come from a legitimate authority. These can then be used for impersonation, contract fraud, or misinformation.
@@ -761,7 +761,7 @@ The team is evaluating the following combinations:
 1. Which option satisfies the system’s needs without over-protecting?
 2. Which option is **cryptographically insufficient**? Why?
 3. If option C is used, how can the server verify that a message was not replayed?
-4. Suppose the message includes a timestamp and device ID — how does that affect security?
+4. Suppose the message includes a timestamp and device ID. How does that affect security?
 5. What tradeoffs would justify choosing option A over option C?
 
 {: .highlight}
@@ -783,7 +783,7 @@ The team is evaluating the following combinations:
     To prevent replays in option C, each message can include a <strong>monotonic timestamp or nonce</strong>. The server can keep track of recently seen values to reject duplicates.
   </p>
   <p>
-    Including a timestamp and device ID helps the server trace events and prevent replay attacks, but the timestamp must be signed — otherwise, an attacker could forge a message with fake timing.
+    Including a timestamp and device ID helps the server trace events and prevent replay attacks, but the timestamp must be signed, otherwise, an attacker could forge a message with fake timing.
   </p>
   <p>
     Option <strong>A (HMAC-SHA256)</strong> is also valid but uses a symmetric key. It's suitable when both parties share a secret key securely. It’s slightly slower but more efficient on constrained devices that can't do public-key cryptography. It would be chosen if the signer must be very lightweight or if key rotation is tightly managed.
@@ -1032,7 +1032,7 @@ A startup employee connects to the company’s internal admin dashboard over HTT
 
 > ⚠ Your connection is not private. Proceed anyway?
 
-The employee clicks "Proceed" to get their work done. Unbeknownst to them, a disgruntled IT manager has set up a rogue server with a **self-signed certificate** and is intercepting all requests. Because the employee **skipped certificate validation**, all login credentials, internal configs, and messages are now exposed — despite the use of HTTPS.
+The employee clicks "Proceed" to get their work done. Unbeknownst to them, a disgruntled IT manager has set up a rogue server with a **self-signed certificate** and is intercepting all requests. Because the employee **skipped certificate validation**, all login credentials, internal configs, and messages are now exposed despite the use of HTTPS.
 
 **Answer the following questions**:
 1. Why did encryption fail to protect the user’s credentials?
@@ -1148,7 +1148,7 @@ Your team is reviewing a proposed design for an encrypted messaging protocol use
 > 2. Messages are encrypted using **AES-CBC with PKCS#7 padding**.
 > 3. The **same key `K`** is also used to compute **HMAC-SHA1** over the ciphertext.
 > 4. IVs are generated using the system time in seconds.
-> 5. Devices cache a signed “firmware OK” certificate from the server — signed using **RSA with SHA-1**.
+> 5. Devices cache a signed “firmware OK” certificate from the server, signed using **RSA with SHA-1**.
 > 6. Devices accept the certificate as long as the signature is valid, even if it's **expired or revoked**.
 
 You’re asked to comment on the design before deployment.
@@ -1174,13 +1174,13 @@ You’re asked to comment on the design before deployment.
     First, using the <strong>same key</strong> `K` for both AES-CBC encryption and HMAC violates key separation. An attacker who collects enough ciphertext-MAC pairs may mount forgery or chosen-ciphertext attacks, especially if padding oracles are present.
   </p>
   <p>
-    Second, generating IVs from the <strong>system time</strong> makes them predictable. If two messages are sent within the same second, they may reuse the IV — breaking semantic security and potentially revealing patterns in the ciphertext.
+    Second, generating IVs from the <strong>system time</strong> makes them predictable. If two messages are sent within the same second, they may reuse the IV. This breaks semantic security and potentially revealing patterns in the ciphertext.
   </p>
   <p>
     Third, the use of <strong>SHA-1 for HMAC and RSA signatures</strong> is deprecated due to collision vulnerabilities. An attacker might craft multiple inputs with the same hash, potentially forging a signature or a MAC.
   </p>
   <p>
-    Fourth, the system <strong>does not check certificate revocation or expiry</strong. Even if a key is compromised or a certificate is outdated, the device continues trusting it — opening the door to persistent attacks or firmware forgery.
+    Fourth, the system <strong>does not check certificate revocation or expiry</strong>. Even if a key is compromised or a certificate is outdated, the device continues trusting it; opening the door to persistent attacks or firmware forgery.
   </p>
   <p>
     These flaws reinforce each other: predictable IVs make ciphertext patterns visible; reused keys make forged ciphertexts more likely; and missing certificate checks allow the attacker to persist in the system once any part is compromised.
@@ -1200,7 +1200,7 @@ This question is challenging. It requires knowledge from various domains of cybe
 
 ### Background
 
-Designing a secure protocol is difficult. Even if you use standard crypto primitives like RSA or AES, incorrect sequencing, missing authentication, or assumptions about trust can make the system vulnerable. Many real-world attacks exploit these flaws — not broken algorithms, but **broken glue**.
+Designing a secure protocol is difficult. Even if you use standard crypto primitives like RSA or AES, incorrect sequencing, missing authentication, or assumptions about trust can make the system vulnerable. Many real-world attacks exploit these flaws. Not broken algorithms, but **broken glue**.
 
 Being able to spot and repair insecure protocols is a key skill in applied cryptography.
 
@@ -1237,7 +1237,7 @@ The goal is to establish a shared symmetric key using the server’s public RSA 
     A second issue is the lack of key confirmation. The client sends an encrypted session key and assumes the server received it, but there’s no handshake step where the server proves it possesses the private key or the session key.
   </p>
   <p>
-    An attacker could intercept the "Hello" message, substitute their own key, and forward the rest of the protocol as a proxy — fully decrypting and re-encrypting traffic. This is a textbook MITM attack.
+    An attacker could intercept the "Hello" message, substitute their own key, and forward the rest of the protocol as a proxy, fully decrypting and re-encrypting traffic. This is a textbook MITM attack.
   </p>
   <p>
     To fix the protocol, the server should send an <strong>X.509 certificate</strong> signed by a trusted CA to prove its identity. The client should verify this certificate before encrypting anything. Even better, use an ephemeral key exchange (like ECDHE), with both parties contributing randomness, and include signatures to authenticate the exchange.

@@ -455,7 +455,7 @@ At first glance, using `notify()` (not `notifyAll()`) seems risky: it wakes an a
 <ul>
   <li>A <strong>producer</strong> only blocks if the buffer is <strong>full</strong> (size == CAPACITY).</li>
   <li>A <strong>consumer</strong> only blocks if the buffer is <strong>empty</strong> (size == 0).</li>
-  <li>Therefore, both types of threads <strong>cannot be blocked at the same time</strong> — the buffer cannot be both full and empty.</li>
+  <li>Therefore, both types of threads <strong>cannot be blocked at the same time</strong>, the buffer cannot be both full and empty.</li>
   <li>When a consumer removes an item, it calls <code>notify()</code>. Since at that point, only producers can be waiting (because buffer was full), the <code>notify()</code> wakes one producer, which can now proceed (buffer has space).</li>
   <li>Likewise, when a producer adds an item and calls <code>notify()</code>, only consumers may be waiting (buffer was empty), and the consumer can now proceed.</li>
 </ul>
@@ -617,7 +617,7 @@ Now, process **P1** makes a request for resources: **(1, 0, 2)**.
 > * A safe state guarantees at least one execution order where all processes can finish.
 > * An unsafe state does *not* guarantee deadlock but makes it *possible*.
 > * Holding resources without a guaranteed finish path creates future risk.
-> * The number of requested units doesn't determine safety — the global state does.
+> * The number of requested units doesn't determine safety. The global state does.
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -693,11 +693,11 @@ A system is managing three types of resources (A, B, C) and four running process
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <p>
-The Banker's Algorithm simulates whether granting a resource request would leave the system in a <strong>safe state</strong> — meaning there exists at least one sequence of process completions where every process can finish. If no such sequence exists, the request is denied to avoid entering an unsafe (potentially deadlocked) state.
+The Banker's Algorithm simulates whether granting a resource request would leave the system in a <strong>safe state</strong>; meaning there exists at least one sequence of process completions where every process can finish. If no such sequence exists, the request is denied to avoid entering an unsafe (potentially deadlocked) state.
 </p>
 
 <p>
-Just because one process can finish does not mean the remaining system will remain safe. It may be that only that process can finish, and once it releases resources, the rest are still stuck — leading to an unsafe or deadlocked state.
+Just because one process can finish does not mean the remaining system will remain safe. It may be that only that process can finish, and once it releases resources, the rest are still stuck, leading to an unsafe or deadlocked state.
 </p>
 
 <p>
@@ -780,7 +780,7 @@ However, if all processes: P1, P2, and P3 request for 1 more instance of the res
 > * A safe state guarantees at least one execution order where all processes can finish.
 > * An unsafe state does *not* guarantee deadlock but makes it *possible*.
 > * Holding resources without a guaranteed finish path creates future risk.
-> * The number of requested units doesn't determine safety — the global state does.
+> * The number of requested units doesn't determine safety. The global state does.
 
 
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
@@ -1077,7 +1077,7 @@ The server does not crash but <span class="orange-bold">stops</span> processing 
 > **Hints**:
 > * Think about the cost of prevention versus the cost of failure.
 > * Is the system interactive, recoverable, or mission-critical?
-> * Not all deadlocks are equally harmful — some are tolerable, others are fatal.
+> * Not all deadlocks are equally harmful. Some are tolerable, others are fatal.
 > * Runtime fixes involve detection or recovery, while design-time fixes involve resource usage rules.
 
 
@@ -1093,7 +1093,7 @@ The server does not crash but <span class="orange-bold">stops</span> processing 
   <li><strong>Design-time strategy:</strong> Enforce a strict lock ordering policy where all threads must acquire resources in a predefined sequence, such as by file ID order. This eliminates circular wait.</li>
 </ul>
 
-<p>The Ostrich Algorithm is reasonable in systems where failure is rare, recovery is easy, and data is not critical — for example, user interfaces or non-essential background processes. It is irresponsible in real-time systems, financial systems, or infrastructure services where reliability, uptime, and consistency are essential. In such systems, even rare deadlocks are unacceptable.</p>
+<p>The Ostrich Algorithm is reasonable in systems where failure is rare, recovery is easy, and data is not critical. For example, user interfaces or non-essential background processes. It is irresponsible in real-time systems, financial systems, or infrastructure services where reliability, uptime, and consistency are essential. In such systems, even rare deadlocks are unacceptable.</p>
 </p>
 </div><br>
 
@@ -1269,7 +1269,7 @@ Delayed detection increases downtime and affects system availability. During thi
 </p>
 
 <p>
-The condition <code>if (load_average() &lt; 5.0)</code> causes the detector to skip checks under high load — which is <em>precisely</em> when deadlocks are more likely to occur. This creates a blind spot in the system during peak usage, defeating the purpose of detection.
+The condition <code>if (load_average() &lt; 5.0)</code> causes the detector to skip checks under high load, which is <em>precisely</em> when deadlocks are more likely to occur. This creates a blind spot in the system during peak usage, defeating the purpose of detection.
 </p>
 
 <p>

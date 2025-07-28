@@ -552,7 +552,7 @@ This chapter explores the **concept** of processes within operating systems, **d
 
 Key learning points include:
 - **Process vs. Program**: A process is an active entity with executing code and resources, while a program is a static set of instructions on disk.
-- **Process Lifecycle and States**: Detailed descriptions of process states—new, running, waiting, ready, and terminated—and their transitions.
+- **Process Lifecycle and States**: Detailed descriptions of process states: new, running, waiting, ready, and terminated, and their transitions.
 - **Process Management and Scheduling**: Discusses how the operating system manages and schedules processes, including the use of the Process Control Block (PCB) and context switching to handle multiple processes efficiently.
 - **Process Creation and Termination**: Explores mechanisms for process creation using `fork()` and process termination, including handling orphaned and zombie processes.
 

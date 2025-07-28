@@ -83,7 +83,7 @@ Network performance depends not only on bandwidth and propagation, but also on *
 4. **Link**: Ethernet, Wi-Fi
 5. **Physical**: cables, signals
 
-The operating system is responsible for parts of layers 2–4. The **transport layer**, including socket buffers and TCP congestion control, is implemented inside the OS kernel. The **network layer** is handled by routing logic and packet forwarding. The **link layer** involves device drivers and network interface queues. Delays at these OS-managed layers — such as socket buffering or driver queuing — contribute to total response time but are often overlooked by application developers.
+The operating system is responsible for parts of layers 2–4. The **transport layer**, including socket buffers and TCP congestion control, is implemented inside the OS kernel. The **network layer** is handled by routing logic and packet forwarding. The **link layer** involves device drivers and network interface queues. Delays at these OS-managed layers (such as socket buffering or driver queuing) contribute to total response time but are often overlooked by application developers.
 
 ### Scenario
 
@@ -284,7 +284,7 @@ A host sends 5 packets (each 1000 bytes = 8000 bits) over a 1 Mbps link with 24 
 ### Background
 
 **Transmission delay** is the time it takes to push all bits of a packet onto the wire. It depends on the **packet size** and **link bandwidth**.
-**Propagation delay** is the time it takes for bits to **physically travel** through the medium (like fiber or copper) from sender to receiver. It depends on **distance** and the **speed of signal propagation** — not on packet size.
+**Propagation delay** is the time it takes for bits to **physically travel** through the medium (like fiber or copper) from sender to receiver. It depends on **distance** and the **speed of signal propagation**, not on packet size.
 
 {:.warning}
 A common misconception is to confuse these two. In reality, a tiny packet sent across the globe has nearly zero transmission delay but significant propagation delay. Conversely, a large packet on a slow link may experience long transmission delay even over a very short distance.
@@ -478,7 +478,7 @@ The Sender sends 4 packets back-to-back at 10 Mbps. The Router receives them and
 
 When a network interface card (NIC) receives packets, it transfers them into a fixed-size area in memory called a ring buffer. This buffer is managed by the operating system kernel and the NIC driver. The ring buffer works like a **circular** queue: each new packet is placed in the next available slot, wrapping around when it reaches the end. The OS must process and remove packets from this buffer before it fills. If the OS is delayed (for example, due to high CPU load or competing processes), the buffer can overflow, and new packets will be dropped.
 
-The OS is notified of incoming packets using hardware interrupts, which trigger the driver to begin processing. To reduce overhead, the OS may use interrupt coalescing or polling mechanisms (like NAPI in Linux) that batch multiple packets before handling them. While this improves CPU efficiency, it can increase delay under bursty or high-throughput conditions. Even if the physical network link has plenty of capacity, performance can degrade if the OS cannot keep up with packet arrival — turning a fast network into a bottleneck.
+The OS is notified of incoming packets using hardware interrupts, which trigger the driver to begin processing. To reduce overhead, the OS may use interrupt coalescing or polling mechanisms (like NAPI in Linux) that batch multiple packets before handling them. While this improves CPU efficiency, it can increase delay under bursty or high-throughput conditions. Even if the physical network link has plenty of capacity, performance can degrade if the OS cannot keep up with packet arrival, hence turning a fast network into a bottleneck.
 
 ### Scenario
 

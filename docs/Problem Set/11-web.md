@@ -418,7 +418,7 @@ Client                          Server
 
 ### Background: Multiple Origins and DNS Overhead
 
-Modern webpages often include content from **multiple domains** — for example, images from a CDN, analytics scripts from a third-party, and ads from an ad network. Each of these domains requires a **separate DNS resolution** and typically a **separate HTTPS connection** unless a prior one is cached or reused.
+Modern webpages often include content from **multiple domains**. For example, images from a CDN, analytics scripts from a third-party, and ads from an ad network. Each of these domains requires a **separate DNS resolution** and typically a **separate HTTPS connection** unless a prior one is cached or reused.
 
 DNS resolution usually takes **1 RTT**, and HTTPS connection setup (TCP + TLS 1.3) takes **2 RTTs**. When objects come from multiple domains, the browser may issue DNS queries and open connections **in parallel**, but each object can only be fetched once its own connection is ready.
 
@@ -975,7 +975,7 @@ Then, they try to connect to it using:
 psql
 ```
 
-Surprisingly, it works — even though they haven’t specified a port or host.
+Surprisingly, it works! -- even though they haven’t specified a port or host.
 
 The student inspects the database log and sees:
 
@@ -1167,7 +1167,7 @@ Client (192.0.2.5:51000)       Server (203.0.113.10:9090)
   </p>
 
   <p>
-    If the client reuses the same ephemeral port to reconnect too quickly, the server sees the same 4-tuple as before and refuses the SYN. This is why the SYN is considered unexpected — the OS is still holding state from the previous connection and cannot safely start a new one with the same identifiers.
+    If the client reuses the same ephemeral port to reconnect too quickly, the server sees the same 4-tuple as before and refuses the SYN. This is why the SYN is considered **unexpected**: the OS is still holding state from the previous connection and cannot safely start a new one with the same identifiers.
   </p>
 
   <p>
