@@ -256,7 +256,113 @@ A client only trusts the **Root CA** initially and given the certificates of A, 
   </p>
 </div>
 
+### Epilogue
 
+This question is meant to highlight that the trust is **only** **established** when the client is able to construct and verify the full signature chain from the root CA down to C, with all necessary certificates in hand. Merely observing a trust graph or being told about a chain is insufficient. This is why browsers and other secure systems always require the actual certificate files and perform verification steps locally for every link in the chain.
+
+For example, if A is a trusted root CA, and A signs B's certificate, and B sign's C certificate, a client can only trust C if:
+1. **The client explicitly trusts A** as a root CA (i.e., A’s public key is in the client’s trusted root store).
+2. **The client possesses B’s certificate** (which is signed by A). This allows the client to cryptographically verify that B’s public key is legitimate, using A’s public key.
+3. **The client possesses C’s certificate** (which is signed by B). This allows the client to verify that C’s public key is legitimate, using B’s public key.
+4. **Each verification is performed locally**: The client must actually perform the cryptographic verification (e.g., running `.verify()` on each certificate’s signature), not simply trust the existence of the chain on paper or in a diagram.
+
+
+#### How does this work in practice?
+
+When we visit an HTTPS website, your browser receives the server’s certificate chain (usually the server cert + intermediates).
+
+The **browser checks** the following: 
+  1. Is the certificate chain anchored in a root CA that the browser already trusts (its “root store”)?
+  2. Can each certificate in the chain be cryptographically verified, link by link, from the root to the leaf?
+  3. Are any of the certificates revoked or expired?
+  4. Are the certificate details (domain name, usage, etc.) appropriate for the connection?
+
+The browser performs all of these checks **locally** before establishing a secure connection.
+
+**Other applications that run `verify`:**
+
+* **Operating Systems:** For system-level trust (e.g., S/MIME email, code signing).
+* **Email clients:** When verifying S/MIME or PGP-signed messages.
+* **Command-line tools:** Like `openssl verify`, `curl`, `wget`, `git`, etc., when connecting to servers over TLS/SSL.
+* **APIs and SDKs:** Any app using SSL/TLS libraries (like OpenSSL, GnuTLS, Windows SChannel) will usually call verification routines when connecting securely.
+
+But for almost everyone, the browser is the most visible and important example of automatic, local certificate verification. 
+
+#### Technical Example
+
+Here's a simple example on how to verify a certificate on your own computer. Suppose you have:
+
+* `rootCA.pem` (Root CA certificate, trusted by client)
+* `intermediate.pem` (Intermediate cert, signed by Root CA)
+* `server.pem` (Leaf certificate, signed by intermediate)
+
+**Method 1:** **Manual Verification with OpenSSL (command-line)**
+
+```bash
+openssl verify -CAfile rootCA.pem -untrusted intermediate.pem server.pem
+```
+This verifies that `server.pem` is valid, using `rootCA.pem` as the root trust anchor and `intermediate.pem` as the intermediate.
+
+
+**Method 2:** **Python Example with `cryptography` Library**
+
+```python
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
+from cryptography.x509 import Certificate
+from cryptography.x509.oid import NameOID
+from cryptography.x509 import CertificateRevocationList
+
+from cryptography.hazmat.primitives import serialization
+
+def load_cert(filename):
+    with open(filename, 'rb') as f:
+        return x509.load_pem_x509_certificate(f.read(), default_backend())
+
+# Load certificates
+root_cert = load_cert('rootCA.pem')
+intermediate_cert = load_cert('intermediate.pem')
+server_cert = load_cert('server.pem')
+
+# To actually build and verify a chain, you’d use a library that supports path validation.
+# cryptography (as of July 2025) does not provide a full path builder.
+# You can, however, check the signature "by hand" for illustration:
+
+# Step 1: Verify that intermediate was signed by root
+root_public_key = root_cert.public_key()
+try:
+    root_public_key.verify(
+        intermediate_cert.signature,
+        intermediate_cert.tbs_certificate_bytes,
+        intermediate_cert.signature_hash_algorithm
+    )
+    print("Intermediate signed by Root: VALID")
+except Exception as e:
+    print(f"Intermediate signed by Root: INVALID: {e}")
+
+# Step 2: Verify that server was signed by intermediate
+intermediate_public_key = intermediate_cert.public_key()
+try:
+    intermediate_public_key.verify(
+        server_cert.signature,
+        server_cert.tbs_certificate_bytes,
+        server_cert.signature_hash_algorithm
+    )
+    print("Server signed by Intermediate: VALID")
+except Exception as e:
+    print(f"Server signed by Intermediate: INVALID: {e}")
+
+# Note: This example is over-simplified. Real-world applications require revocation checking, path constraints, and more.
+
+```
+
+
+In summary:
+* Browsers and secure apps automatically perform these steps for every link in the certificate chain, not just visually trusting a diagram.
+* Tools like `openssl verify` or libraries like Python’s `cryptography` let us perform the same verification locally.
+
+{:.highlight}
+You will have hands-on experience on verifying certificates before establishing a secure connection in your programming assignment. 
 
 
 ## RSA in Action
