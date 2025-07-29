@@ -259,8 +259,8 @@ We can compute: $$n=p \times q =3233$$, $$z=60 \times 52 = 3120$$. Choose $$e=17
 One possible value for $$d$$ is $$2753$$.  
 
 Hence:
-1. Public key is $$(35, 17)$$ 
-2. Private key is $$(35, 2753)$$
+1. Public key is $$(3233, 17)$$ 
+2. Private key is $$(3233, 2753)$$
 
 Let's say we have `m=01000001` (the letter 'A' in UTF-8 encoding). This corresponds to 65 in decimal. 
 * **Encryption**: $$c = 65^{17} \mod 3233 = 2790 $$ 
