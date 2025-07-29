@@ -216,7 +216,7 @@ You are given the following trust graph extracted from a distributed certificate
 ```
 
 {:.note}
-Each edge means the upper node is *supposedly* **digitally signed the public key** of the lower node. 
+Each edge represents a digital signature, where the upper node has signed the public key of the lower node.
 
 A client only trusts the **Root CA** initially and given the certificates of A, B, C, D, and E. Your task is to evaluate *which* keys are trusted and which are not.
 
