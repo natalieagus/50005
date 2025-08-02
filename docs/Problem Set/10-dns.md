@@ -133,23 +133,23 @@ The student is confused. They believe the DNS worked, since the name resolved to
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
   <p>
-    The presence of the SOA record shows that <code>mystuff.xyz</code> is a valid DNS zone. This record provides essential administrative details about how the zone is maintained, including which server is considered the primary authority and who is responsible for managing the domain.
+After receiving a CNAME record, the client’s DNS resolver must perform another DNS query to resolve the **canonical** name, in this case `internal.campusnet.sg`, to an IP address. A CNAME record does <span class="orange-bold">not</span> provide an IP address directly but rather tells the resolver that the original name is just an *alias*. The client will continue resolving until it finds an A or AAAA record that gives the actual IP address.
   </p>
 
   <p>
-    In this specific record, <code>ns1.registrar.com.</code> is the primary authoritative DNS server, and <code>admin.mystuff.xyz.</code> is the zone administrator's contact email (formatted with a dot in place of the @ symbol). The number <code>2025061201</code> is the serial number, which increases each time the zone file is updated. This helps secondary DNS servers detect changes and trigger a zone transfer when needed.
+The browser might still fail to load the page for a few reasons even if the initial DNS query returned a CNAME. One possibility is that the canonical name `internal.campusnet.sg` does not have a valid A record, so the chain of resolution ends without an IP address. Another reason could be that even if it resolves, the server at that IP address is unreachable due to network restrictions, firewalls, or the service itself not running.
   </p>
 
   <p>
-    The values <code>7200</code>, <code>3600</code>, and <code>1209600</code> represent the refresh interval, retry interval, and expiry time for secondary servers. These control how frequently secondaries check for updates, how long they wait before retrying after failure, and how long they retain data if the primary becomes unreachable. The final number, <code>300</code>, is the negative TTL, which tells resolvers how long they may cache a negative (non-existent domain) response.
+    If `internal.campusnet.sg` does not have an A record but instead has another CNAME pointing to yet another name, the resolver will follow the chain and continue querying until it **eventually** finds an A or AAAA record. There is no strict protocol limit to how many CNAMEs can be chained, but most resolvers impose a practical limit (often around 8 to 10 lookups) to avoid infinite loops or excessive resolution delays.
   </p>
 
   <p>
-    Even when a subdomain does not exist, DNS responses often include the SOA record of the zone. This allows clients to cache the “not found” result for the duration specified by the negative TTL, which reduces repeated unnecessary queries.
+    When someone off-campus tries to access `news.campusnet.sg` and `internal.campusnet.sg` is an internal-only hostname, the external DNS resolver will <span class="orange-bold">not</span> be able to resolve it. The query will fail once it tries to resolve the internal name, resulting in an error like “Server Not Found,” since the canonical name cannot be translated into an IP address outside the campus network.
   </p>
 
   <p>
-    The SOA record is always placed at the beginning of a DNS zone file because it defines the zone's identity and controls how other DNS servers interact with it. Without an SOA record, the zone would not support replication, change tracking, or coordinated administration.
+    Network administrators often use CNAME records *instead* of duplicating A records because they simplify maintenance. If the IP address of a server changes, only the A record of the canonical name needs to be updated, and all aliases (CNAMEs) will automatically point to the new address. This reduces the risk of inconsistent DNS entries and makes managing multiple subdomains much easier.
   </p>
 </div>
 
