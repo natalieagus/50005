@@ -417,10 +417,10 @@ A client sends the encrypted message `c = 55`.
     First, compute φ(n) = (13 - 1)(17 - 1) = 12 × 16 = 192. We want to find d such that 11 × d ≡ 1 (mod 192). Testing small values, we find d = 35, because 11 × 35 = 385 and 385 mod 192 = 1.
   </p>
   <p>
-    To decrypt c = 55, compute m = 55^35 mod 221. Using modular exponentiation, we find m = 48. This is the original plaintext.
+    To decrypt c = 55, compute m = 55<sup>35</sup> mod 221. Modular exponentiation efficiently computes this large exponentiation by repeatedly squaring and reducing modulo 221 at each step, resulting in m = 217. This is the original plaintext.
   </p>
   <p>
-    To sign m = 25, compute s = 25^35 mod 221. This results in s = 104. This is the digital signature.
+    To sign m = 25, compute s = 25<sup>35</sup> mod 221. Using the same efficient modular exponentiation method, we obtain s = 155. This is the digital signature.
   </p>
   <p>
     RSA is inefficient for large files because encryption and decryption involve expensive exponentiation with large numbers. Also, RSA can only operate on messages smaller than the modulus n. In practice, RSA is used to encrypt small secrets like symmetric keys, and the rest of the data is encrypted with a faster symmetric cipher.
@@ -430,6 +430,37 @@ A client sends the encrypted message `c = 55`.
   </p>
 </div>
 
+### Epilogue
+
+The following python code solves the questions above efficiently. Note that during exam, we will give you small values of p and q such that it is doable manually or with a simple calculator. 
+
+```python
+
+from sympy import mod_inverse # install sympy for this test code
+
+p = 13
+q = 17
+n = p * q
+e = 11
+c = 55
+m_to_sign = 25
+
+# compute Euler's totient
+phi_n = (p - 1) * (q - 1)
+
+# compute private exponent d
+d = mod_inverse(e, phi_n)
+
+# decrypt the ciphertext c with private key (d,n)
+m = pow(c, d, n)
+
+# compute signature with private key (d,n)
+# note that computation of both ciphertext and signature uses private key (d, n)
+signature = pow(m_to_sign, d, n)
+
+print(d, m, signature)
+
+```
 
 ## The Compromised Broadcast
 
