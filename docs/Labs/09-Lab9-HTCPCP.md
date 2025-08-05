@@ -189,9 +189,9 @@ There are three `TODO` sections in total to complete.
 ```
 
 The HTCPCP response header `headers_to_send` should contain the following <span class="orange-bold">list</span> of string:
-1. The **status line**: `HTCPCP/1.1 Status-Code Reason-Phrase`. At this point of our code, our `Status-Code` should be `200`. Find out what `Reason-Phrase` should `200` has 
+1. The **status line**: `HTCPCP/1.1 Status-Code Reason-Phrase`. At this point of our code, our `Status-Code` should be `200`. Find out what `Reason-Phrase` `200` should have. 
 2. Subsequent strings: **header fields**. It should have the following header fields: 
-   1. `Server` field name with CoffeePot as its value 
+   1. `Server` field name with `CoffeePot` as its value 
    2. `Content-Type` field name with the [appropriate media type](https://datatracker.ietf.org/doc/html/rfc2324#section-4) as its value
    3. `Date` field name with `current_date` as its value 
 3. Add a line break (`\r\n`) at the end to mark the end of the header and the beginning of the body
