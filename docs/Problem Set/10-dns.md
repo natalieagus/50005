@@ -37,17 +37,25 @@ You are shown the following partial time-space diagram of DNS query resolution f
 ```
 Time ↓
 
-User's Browser        Local DNS         Root DNS        .net TLD        ns1.moviehub.net
+User's Browser        Local DNS         Root DNS         .net TLD         ns1.moviehub.net
+     |                   |                  |                 |                   |
+ 1.  |------------------>|                  |                 |                   |
+     |   Query: moviehub.net                |                 |                   |
+ 2.  |                   |----------------->|                 |                   |
+     |                   |  Query: .net?    |                 |                   |
+ 3.  |                   |<-----------------|                 |                   |
+     |                   |  Response: .net NS = 192.0.2.2     |                   |
+ 4.  |                   |----------------------------------->|                   |
+     |                   |   Query: moviehub.net              |                   |
+ 5.  |                   |<-----------------------------------|                   |
+     |                   |   Response: NS = ns1.moviehub.net  |                   |
+ 6.  |                   |------------------------------------------------------->|
+     |                   |   Query: www.moviehub.net                             |
+ 7.  |                   |<-------------------------------------------------------|
+     |                   |   Response: IP = 203.0.113.77                          |
+ 8.  |<------------------|                                    |                   |
+     |   Response: IP = 203.0.113.77                          |                   |
 
-    |                     |                 |               |                   |
-1.  |--- Query: www.moviehub.net ---------->|               |                   |
-2.  |                     |--- Query: .net? --------------->|                   |
-3.  |                     |                (Responds .net NS: 192.0.2.2)        |
-4.  |                     |--- Query: moviehub.net ------->|                   |
-5.  |                     |                (Responds with NS: ns1.moviehub.net)|
-6.  |                     |--- Query: www.moviehub.net ------------------------>|
-7.  |                     |<-- IP: 203.0.113.77 --------------------------------|
-8.  |<-- IP: 203.0.113.77 ------------------|               |                   |
 ```
 
 {: .note}
