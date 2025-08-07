@@ -231,7 +231,7 @@ Construct `final_response` string to complete this `TODO`. It should contain app
 
 This method is called once at `main()` to ensure that the request format is valid and follows a proper `HTCPCP` protocol.  Complete its implementation. 
 
-If all checks pass, this method should return `True`, otherwise, it should call `send_error_message` which sends the appropriate HTCPCP response back to the client. The first check is done for you, where we check that the message contains accepted coffee schemes:
+If all checks pass, this method should return `True`, otherwise, it should call `send_error_message` which sends the appropriate HTCPCP response back to the client. 
 
 ```py
 def ensure_request_is_valid(url, content_type, method, connection, requested_pot,
@@ -252,6 +252,10 @@ def ensure_request_is_valid(url, content_type, method, connection, requested_pot
     """
     return True
 ```
+
+{:.note}
+Consult `config.py` file for accepted schemes (protocols) and available pots. The correct URL should anything that conforms to `<SCHEME>://<HOST>`, where `HOST` is `ducky`. 
+ 
 #### Test Invalid Requests
 
 The file `webapp/coffee_app.py` already contains some test routes for you to see if you have implemented `ensure_request_is_valid` properly. Utilize them by checking that your coffee pot server indeed returns the correct statuses given these scenarios.
