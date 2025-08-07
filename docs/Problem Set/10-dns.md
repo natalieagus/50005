@@ -207,8 +207,8 @@ Your goal:
   </p>
 
   <p>
-    Your zone file should include:
-    <code><br />
+    Your zone file should include:<br />
+    <code>
     pixelpeek.dev.         IN  NS   ns1.pixelpeek.dev.<br />
     ns1.pixelpeek.dev.     IN  A    203.0.113.42<br />
     www.pixelpeek.dev.     IN  A    203.0.113.42<br />
@@ -887,13 +887,12 @@ Client         Resolver       Root Server     TLD Server      moviehub.net NS
   |                |               |               |                 |
   |───────────────▶|               |               |                 |  (1) Query: moviehub.net
   |                |──────────────▶|               |                 |  (2) Ask root for .net
-  |                |               |◀──────────────|                 |  (3) Root replies with TLD info
-  |                |──────────────▶|               |                 |  (4) Ask TLD for moviehub.net
-  |                |               |               |◀─────────────── |  (5) TLD replies with NS info
-  |                |──────────────▶|               |                 |  (6) Ask NS for moviehub.net
-  |                |               |               |                 |◀───────────────|  (7) NS replies with A record
+  |                |◀──────────────|               |                 |  (3) Root replies with TLD info
+  |                |──────────────────────────────▶|                 |  (4) Ask TLD for moviehub.net
+  |                |◀──────────────────────────────|                 |  (5) TLD replies with NS info
+  |                |────────────────────────────────────────────────▶|  (6) Ask NS for moviehub.net
+  |                |◀────────────────────────────────────────────────|  (7) NS replies with A record
   |◀───────────────|               |               |                 |  (8) Resolver returns IP to client
-  |                |               |               |                 |
 ```
 
 <div cursor="pointer" class="collapsible">Show Answer</div>
@@ -936,15 +935,12 @@ Client         Resolver       Root Server     TLD Server      moviehub.net NS
   |                |               |               |                 |
   |───────────────▶|               |               |                 |  (1) Query: moviehub.net
   |                |──────────────▶|               |                 |  (2) Ask root for .net
-  |                |               |◀──────────────|                 |  (3) Root replies with TLD info
-  |                |──────────────▶|               |                 |  (4) Ask TLD for moviehub.net
-  |                |               |               |◀─────────────── |  (5) TLD replies with NS info
-  |                |──────────────▶|               |                 |  (6) Ask NS for moviehub.net
-  |                |               |               |                 |◀───────────────|  (7) NS replies with A record
+  |                |◀──────────────|               |                 |  (3) Root replies with TLD info
+  |                |──────────────────────────────▶|                 |  (4) Ask TLD for moviehub.net
+  |                |◀──────────────────────────────|                 |  (5) TLD replies with NS info
+  |                |────────────────────────────────────────────────▶|  (6) Ask NS for moviehub.net
+  |                |◀────────────────────────────────────────────────|  (7) NS replies with A record
   |◀───────────────|               |               |                 |  (8) Resolver returns IP to client
-  |                |               |               |                 |
-
-
 ```
 
 {:.note}
