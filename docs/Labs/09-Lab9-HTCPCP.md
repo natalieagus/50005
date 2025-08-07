@@ -254,8 +254,8 @@ def ensure_request_is_valid(url, content_type, method, connection, requested_pot
 ```
 
 {:.note}
-Consult `config.py` file for accepted schemes (protocols) and available pots. The correct URL should anything that conforms to `<SCHEME>://<HOST>`, where `HOST` is `ducky`. 
- 
+Consult `config.py` file for accepted schemes (protocols), hostname, and available pots. The correct URL should anything that conforms to `<SCHEME>://<HOSTNAME>`, where `HOSTNAME` is `ducky`. 
+
 #### Test Invalid Requests
 
 The file `webapp/coffee_app.py` already contains some test routes for you to see if you have implemented `ensure_request_is_valid` properly. Utilize them by checking that your coffee pot server indeed returns the correct statuses given these scenarios.
