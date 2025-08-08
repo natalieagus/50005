@@ -223,7 +223,7 @@ RSA involves a set of algorithms for key generation, encryption, and decryption:
      - $$\phi$$ is known as Euler's totient function (see [appendix](#eulers-totient-function) for more details).
    - **Choose an integer $$ e $$ such that $$ 1 < e < z $$ and $$ e $$ is <span class="orange-bold">coprime</span> to $$z$$**. 
      - This $$e$$ will be the <span class="orange-bold">public</span> exponent.
-   - **Determine $$ d $$ as the modular multiplicative inverse** of $$e \mod z$$, that is solve $$d$$ such that $$(ed) \mod z = 1$$. 
+   - **Determine $$ d $$ as the modular multiplicative inverse** of $$e \bmod z$$, that is solve $$d$$ such that $$(ed) \bmod z = 1$$. 
      - This can be calculated using the Extended Euclidean Algorithm (out of syllabus, see Appendix to find out more). 
      - This $$ d $$ is the <span class="orange-bold">private</span> exponent.
 
@@ -232,16 +232,16 @@ RSA involves a set of algorithms for key generation, encryption, and decryption:
    - The **private key** consists of $$(n, d)$$.
 
 3. **Encryption**:
-   - Given a plaintext message $$ M $$, the ciphertext $$ C $$ is computed as $$ C = M^e \mod n $$, using the **public** key. 
+   - Given a plaintext message $$ M $$, the ciphertext $$ C $$ is computed as $$ C = M^e \bmod n $$, using the **public** key. 
 
 4. **Decryption**:
-   - Using the private key, the original message $$ M $$ is recovered by computing $$ M = C^d \mod n$$, using the **private** key.  
+   - Using the private key, the original message $$ M $$ is recovered by computing $$ M = C^d \bmod n$$, using the **private** key.  
 
 5. **Signing**: 
-   - Using the private key,  the digital signature $$ S $$ is computed as $$ S = M^d \mod n $$, using the **private** key. 
+   - Using the private key,  the digital signature $$ S $$ is computed as $$ S = M^d \bmod n $$, using the **private** key. 
 
 6. **Verification**:
-   - To verify a given digital signature $$ S $$, we can compute $$ M = S^e \mod n$$, using the **public** key. 
+   - To verify a given digital signature $$ S $$, we can compute $$ M = S^e \bmod n$$, using the **public** key. 
 
 {:.info-title}
 > Coprime
@@ -254,7 +254,7 @@ RSA involves a set of algorithms for key generation, encryption, and decryption:
 
 Let's shoose 2 prime numbers (small, for illustration purposes), $$p=61$$, $$q=53$$.
 
-We can compute: $$n=p \times q =3233$$, $$z=60 \times 52 = 3120$$. Choose $$e=17$$ since $$e<z$$ and both $$e=17$$ and $$z=60$$ are **relatively prime (coprime)**. Then, calculate $$d$$ such that $$(d*17) \mod 3120 = 1$$. 
+We can compute: $$n=p \times q =3233$$, $$z=60 \times 52 = 3120$$. Choose $$e=17$$ since $$e<z$$ and both $$e=17$$ and $$z=60$$ are **relatively prime (coprime)**. Then, calculate $$d$$ such that $$(d*17) \bmod 3120 = 1$$. 
 
 One possible value for $$d$$ is $$2753$$.  
 
@@ -263,8 +263,8 @@ Hence:
 2. Private key is $$(3233, 2753)$$
 
 Let's say we have `m=01000001` (the letter 'A' in UTF-8 encoding). This corresponds to 65 in decimal. 
-* **Encryption**: $$c = 65^{17} \mod 3233 = 2790 $$ 
-* **Decryption**: $$m = 2790^{2753} \mod 3233 = 65$$ (original value)
+* **Encryption**: $$c = 65^{17} \bmod 3233 = 2790 $$ 
+* **Decryption**: $$m = 2790^{2753} \bmod 3233 = 65$$ (original value)
 
 ### Message Segmentation
 {:.important}
@@ -471,7 +471,7 @@ The value of $$ \phi(n) $$ can be calculated in different ways depending on the 
 ### Importance in Cryptography
 Euler's totient function is critical in cryptography, especially in the RSA encryption algorithm. It is used to:
 - **Determine the public exponent $$ e $$**: In RSA, $$ e $$ must be chosen such that $$ 1 < e < \phi(n) $$ and $$ e $$ and $$ \phi(n) $$ are coprime.
-- **Calculate the private exponent $$ d $$**: The private key $$ d $$ in RSA is calculated as the modular multiplicative inverse of $$ e $$ modulo $$ \phi(n) $$, meaning $$ d $$ is the number such that $$ ed \equiv 1 \mod \phi(n) $$.
+- **Calculate the private exponent $$ d $$**: The private key $$ d $$ in RSA is calculated as the modular multiplicative inverse of $$ e $$ modulo $$ \phi(n) $$, meaning $$ d $$ is the number such that $$ ed \equiv 1 \bmod \phi(n) $$.
 
 This function allows for the creation of a public and a private key in RSA that work with modular arithmetic to enable secure encryption and decryption processes.
 
@@ -479,7 +479,7 @@ This function allows for the creation of a public and a private key in RSA that 
 
 The Extended Euclidean Algorithm is an extension of the Euclidean Algorithm, which is used to find the greatest common divisor (GCD) of two integers. The Extended Euclidean Algorithm not only finds the GCD of two numbers but also finds the coefficients of Bézout's identity, which are used to express the GCD as a linear combination of the two numbers.
 
-In the context of RSA, the Extended Euclidean Algorithm is used to find the modular multiplicative inverse of two numbers modulo $$ \phi(n) $$. This modular inverse is required to compute the private exponent $$ d $$ such that $$ (d \times e) \mod \phi(n) = 1 $$.
+In the context of RSA, the Extended Euclidean Algorithm is used to find the modular multiplicative inverse of two numbers modulo $$ \phi(n) $$. This modular inverse is required to compute the private exponent $$ d $$ such that $$ (d \times e) \bmod \phi(n) = 1 $$.
 
 Here's how the Extended Euclidean Algorithm works:
 
@@ -501,13 +501,13 @@ Once the Extended Euclidean Algorithm finds the GCD and the coefficients, the mo
 
 ## RSA Proof of Correctness
 To understand the math behind RSA, you need to know the following modular arithmetic properties:
-1. Addition and subtraction modulo: $$[(a \mod n) \pm (b \mod n)]$$ $$\mod n$$ $$= (a \pm b) mod n$$ 
-2. Multiplication modulo: $$[(a \mod n) \times (b \mod n)]$$ $$\mod n$$ $$= (a \times b) mod n$$ 
-3. Exponentiation modulo: $$[(a \mod n)^d] \mod n$$ $$= a^d \mod n$$
+1. Addition and subtraction modulo: $$[(a \bmod n) \pm (b \bmod n)]$$ $$\bmod n$$ $$= (a \pm b) mod n$$ 
+2. Multiplication modulo: $$[(a \bmod n) \times (b \bmod n)]$$ $$\bmod n$$ $$= (a \times b) mod n$$ 
+3. Exponentiation modulo: $$[(a \bmod n)^d] \bmod n$$ $$= a^d \bmod n$$
 
 Then, in order to prove that RSA is correct, two more <span class="orange-bold">important</span> properties are required:
-1. If $$k = m^d \mod n$$ and $$m = c^d \mod n$$, then  $$k^e \mod n = m$$.
-2. $$x^y \mod n = x^{y \mod z} \mod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$ (or in other words, gcd(x,n) = 1, that is n is **coprime** with x) This can be proved by deduction. 
+1. If $$k = m^d \bmod n$$ and $$m = c^d \bmod n$$, then  $$k^e \bmod n = m$$.
+2. $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$ (or in other words, gcd(x,n) = 1, that is n is **coprime** with x) This can be proved by deduction. 
 
 {:.note}
 The second expression can be used to find equivalence of x^y mod n as long as gcd(x,n) = 1, with smaller values of y to speed up computation.
@@ -515,23 +515,23 @@ The second expression can be used to find equivalence of x^y mod n as long as gc
 Let's go through the deduction:
 
 1. **Initial Observation**:
-   - The Euler's theorem states that if $$x$$ and $$n$$ are coprime (i.e., $$\text{gcd}(x, n) = 1$$), then $$x^{\phi(n)} \equiv 1 \mod n$$, where $$\phi(n)$$ is Euler's totient function.
+   - The Euler's theorem states that if $$x$$ and $$n$$ are coprime (i.e., $$\text{gcd}(x, n) = 1$$), then $$x^{\phi(n)} \equiv 1 \bmod n$$, where $$\phi(n)$$ is Euler's totient function.
    - If $$n = pq$$ and $$z = (p-1)(q-1)$$, then $$\phi(n) = (p-1)(q-1) = z$$.
 
 2. **Substitute**:
-   - Given $$x^y \mod n$$, we can substitute $$y$$ as $$y = qk + r$$ where $$k$$ is an integer quotient and $$r = y \mod q$$. This is due to the fact that $$y$$ can be expressed as a multiple of $$q$$ plus a remainder.
-   - Substitute $$y$$ into the expression: $$x^y \mod n = x^{(qk + r)} \mod n$$.
+   - Given $$x^y \bmod n$$, we can substitute $$y$$ as $$y = qk + r$$ where $$k$$ is an integer quotient and $$r = y \bmod q$$. This is due to the fact that $$y$$ can be expressed as a multiple of $$q$$ plus a remainder.
+   - Substitute $$y$$ into the expression: $$x^y \bmod n = x^{(qk + r)} \bmod n$$.
 
 3. **Using Euler's Theorem**:
-   - Since $$x$$ and $$n$$ are coprime, we can apply Euler's theorem: $$x^{\phi(n)} \equiv 1 \mod n$$.
-   - Therefore, $$x^z \equiv 1 \mod n$$, where $$z = (p-1)(q-1)$$.
+   - Since $$x$$ and $$n$$ are coprime, we can apply Euler's theorem: $$x^{\phi(n)} \equiv 1 \bmod n$$.
+   - Therefore, $$x^z \equiv 1 \bmod n$$, where $$z = (p-1)(q-1)$$.
 
 4. **Further Substitution**:
-   - Substitute $$x^{(qk + r)} \mod n$$ as $$x^{(qk + r) \mod z} \mod n$$ since $$x^z \equiv 1 \mod n$$ (powers of x mod n repeats every z)
-   - So, $$x^{(qk + r)} \mod n = x^{(qk + r) \mod z} \mod n$$.
+   - Substitute $$x^{(qk + r)} \bmod n$$ as $$x^{(qk + r) \bmod z} \bmod n$$ since $$x^z \equiv 1 \bmod n$$ (powers of x mod n repeats every z)
+   - So, $$x^{(qk + r)} \bmod n = x^{(qk + r) \bmod z} \bmod n$$.
 
 5. **Conclusion**:
-   - This proves that $$x^y \mod n = x^{y \mod z} \mod n$$ for any $$x, y$$ where $$n = pq$$ and $$z = (p-1)(q-1)$$ or gcd(x,n) = 1 (x and n are coprime).
+   - This proves that $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x, y$$ where $$n = pq$$ and $$z = (p-1)(q-1)$$ or gcd(x,n) = 1 (x and n are coprime).
 
 This deduction demonstrates the <span class="orange-bold">relationship</span> between modular exponentiation and Euler's theorem, which is <span class="orange-bold">fundamental</span> to the RSA algorithm.
 
@@ -539,10 +539,10 @@ To prove the correctness of RSA, we need to demonstrate that the encryption and 
 
 1. **Encryption**:
    - Let $$ m $$ be the plaintext message.
-   - The ciphertext $$ c $$ is computed as $$ c = m^e \mod n $$, where $$ e $$ is the public exponent and $$ n $$ is the modulus.
+   - The ciphertext $$ c $$ is computed as $$ c = m^e \bmod n $$, where $$ e $$ is the public exponent and $$ n $$ is the modulus.
    
 2. **Decryption**:
-   - To decrypt the ciphertext $$ c $$, we compute $$ m' = c^d \mod n $$, where $$ d $$ is the private exponent.
+   - To decrypt the ciphertext $$ c $$, we compute $$ m' = c^d \bmod n $$, where $$ d $$ is the private exponent.
    
 3. **Proof of Correctness**:
    - We need to show that $$ m' = m $$, i.e., the original message is recovered after decryption.
@@ -551,13 +551,13 @@ Let's verify this:
 
 $$
 \begin{align*}
-c^d \mod n &= (m^e)^d \mod n \\
-&= m^{ed} \mod n \\
-&= m^{k\phi(n) + 1} \mod n \quad (\text{where } k \text{ is an integer}) \\
-&= (m^{\phi(n)})^k \cdot m \mod n \\
-& (\text{by Euler's theorem (see below): } m^{\phi(n)} \equiv 1 \mod n) \\
-&= 1^k \cdot m \mod n  \\
-&= m \mod n
+c^d \bmod n &= (m^e)^d \bmod n \\
+&= m^{ed} \bmod n \\
+&= m^{k\phi(n) + 1} \bmod n \quad (\text{where } k \text{ is an integer}) \\
+&= (m^{\phi(n)})^k \cdot m \bmod n \\
+& (\text{by Euler's theorem (see below): } m^{\phi(n)} \equiv 1 \bmod n) \\
+&= 1^k \cdot m \bmod n  \\
+&= m \bmod n
 \end{align*}
 $$
 
@@ -567,9 +567,9 @@ This proof shows that RSA encryption and decryption work correctly under the ass
 
 ### Euler's Theorem
 
-Euler's theorem provides a crucial relationship between exponentiation and modular arithmetic. It states that if $$a$$ and $$n$$ are coprime integers (i.e., they have no common factors other than 1), then $$a^{\phi(n)} \equiv 1 \mod n$$, where $$\phi(n)$$ is Euler's totient function.
+Euler's theorem provides a crucial relationship between exponentiation and modular arithmetic. It states that if $$a$$ and $$n$$ are coprime integers (i.e., they have no common factors other than 1), then $$a^{\phi(n)} \equiv 1 \bmod n$$, where $$\phi(n)$$ is Euler's totient function.
 
-To understand why $$a^{\phi(n)} \equiv 1 \mod n$$, we can break it down into a few steps:
+To understand why $$a^{\phi(n)} \equiv 1 \bmod n$$, we can break it down into a few steps:
 
 1. **Coprime Property**:
    - If $$a$$ and $$n$$ are coprime, it means that they have no common factors other than 1. This property is essential for Euler's theorem to hold.
@@ -584,7 +584,7 @@ To understand why $$a^{\phi(n)} \equiv 1 \mod n$$, we can break it down into a f
    - Because of the cyclical nature of residues, $$a^{\phi(n)}$$ will produce the same residue as $$a^0 = 1$$ modulo $$n$$. In other words, $$a^{\phi(n)}$$ "wraps around" to produce the residue 1 modulo $$n$$.
 
 5. **Modular Congruence**:
-   - Since $$a^{\phi(n)}$$ produces the same residue as 1 modulo $$n$$, we can express this as $$a^{\phi(n)} \equiv 1 \mod n$$.
+   - Since $$a^{\phi(n)}$$ produces the same residue as 1 modulo $$n$$, we can express this as $$a^{\phi(n)} \equiv 1 \bmod n$$.
 
 Thus, Euler's theorem establishes that when $$a$$ and $$n$$ are coprime, $$a^{\phi(n)}$$ is congruent to 1 modulo $$n$$. This property is fundamental in RSA cryptography, as it forms the basis for correctness and security in the RSA algorithm.
 
