@@ -473,6 +473,11 @@ Euler's totient function is critical in cryptography, especially in the RSA encr
 - **Determine the public exponent $$ e $$**: In RSA, $$ e $$ must be chosen such that $$ 1 < e < \phi(n) $$ and $$ e $$ and $$ \phi(n) $$ are coprime.
 - **Calculate the private exponent $$ d $$**: The private key $$ d $$ in RSA is calculated as the modular multiplicative inverse of $$ e $$ modulo $$ \phi(n) $$, meaning $$ d $$ is the number such that $$ ed \equiv 1 \bmod \phi(n) $$.
 
+{:.highlight-title}
+> Congruence
+>
+> Equivalence (congruence $$ \equiv $$) does not mean equality. $$ a \equiv b \bmod n $$ if  the difference $$ a - b $$ is **divisible** by $$ n $$. 
+
 This function allows for the creation of a public and a private key in RSA that work with modular arithmetic to enable secure encryption and decryption processes.
 
 ## The Extended Eucledian Algorithm
@@ -510,7 +515,7 @@ Then, in order to prove that RSA is correct, two more <span class="orange-bold">
 2. $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$ (or in other words, gcd(x,n) = 1, that is n is **coprime** with x) This can be proved by deduction. 
 
 {:.note}
-The second expression can be used to find equivalence of x^y mod n as long as gcd(x,n) = 1, with smaller values of y to speed up computation.
+The second expression can be used to find equivalence (congruence $$\equiv$$) of x^y mod n as long as gcd(x,n) = 1, with smaller values of y to speed up computation.
 
 Let's go through the deduction:
 
