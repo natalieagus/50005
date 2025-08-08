@@ -505,9 +505,12 @@ To understand the math behind RSA, you need to know the following modular arithm
 2. Multiplication modulo: $$[(a \mod n) \times (b \mod n)]$$ $$\mod n$$ $$= (a \times b) mod n$$ 
 3. Exponentiation modulo: $$[(a \mod n)^d] \mod n$$ $$= a^d \mod n$$
 
-Then, in order to prove that RSA is correct, two more important properties are required:
+Then, in order to prove that RSA is correct, two more <span class="orange-bold">important</span> properties are required:
 1. If $$k = m^d \mod n$$ and $$m = c^d \mod n$$, then  $$k^e \mod n = m$$.
-2. $$x^y \mod n = x^{y \mod z} \mod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$. This can be proved by deduction. 
+2. $$x^y \mod n = x^{y \mod z} \mod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$ (or in other words, gcd(x,n) = 1, that is n is **coprime** with x) This can be proved by deduction. 
+
+{:.note}
+The second expression can be used to find equivalence of x^y mod n as long as gcd(x,n) = 1, with smaller values of y to speed up computation.
 
 Let's go through the deduction:
 
@@ -524,13 +527,13 @@ Let's go through the deduction:
    - Therefore, $$x^z \equiv 1 \mod n$$, where $$z = (p-1)(q-1)$$.
 
 4. **Further Substitution**:
-   - Substitute $$x^{(qk + r)}$$ as $$x^{(qk + r) \mod z}$$ since $$x^z \equiv 1 \mod n$$.
+   - Substitute $$x^{(qk + r)} \mod n$$ as $$x^{(qk + r) \mod z} \mod n$$ since $$x^z \equiv 1 \mod n$$ (powers of x mod n repeats every z)
    - So, $$x^{(qk + r)} \mod n = x^{(qk + r) \mod z} \mod n$$.
 
 5. **Conclusion**:
-   - This proves that $$x^y \mod n = x^{y \mod z} \mod n$$ for any $$x, y$$ where $$n = pq$$ and $$z = (p-1)(q-1)$$.
+   - This proves that $$x^y \mod n = x^{y \mod z} \mod n$$ for any $$x, y$$ where $$n = pq$$ and $$z = (p-1)(q-1)$$ or gcd(x,n) = 1 (x and n are coprime).
 
-This deduction demonstrates the <span class="orange-bold">relationship</span> between modular exponentiation and Euler's theorem, which is fundamental to the RSA algorithm.
+This deduction demonstrates the <span class="orange-bold">relationship</span> between modular exponentiation and Euler's theorem, which is <span class="orange-bold">fundamental</span> to the RSA algorithm.
 
 To prove the correctness of RSA, we need to demonstrate that the encryption and decryption operations are indeed **inverses** of each other, meaning that encrypting a message and then decrypting it using the corresponding keys will yield the original message. Here's the proof:
 
