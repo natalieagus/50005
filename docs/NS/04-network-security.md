@@ -512,7 +512,7 @@ To understand the math behind RSA, you need to know the following modular arithm
 
 Then, in order to prove that RSA is correct, two more <span class="orange-bold">important</span> properties are required:
 1. If $$k = m^d \bmod n$$ and $$m = c^d \bmod n$$, then  $$k^e \bmod n = m$$.
-2. $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$ (or in other words, gcd(x,n) = 1, that is n is **coprime** with x) This can be proved by deduction. 
+2. $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x,y$$ where $$n = pq$$, $$z = (p-1)(q-1)$$ and $$gcd(x,n) = 1$$, that is n is **coprime** with x. This can be proved by deduction. 
 
 {:.note}
 The second expression can be used to find equivalence (congruence $$\equiv$$) of x^y mod n as long as gcd(x,n) = 1, with smaller values of y to speed up computation.
@@ -536,7 +536,7 @@ Let's go through the deduction:
    - So, $$x^{(qk + r)} \bmod n = x^{(qk + r) \bmod z} \bmod n$$.
 
 5. **Conclusion**:
-   - This proves that $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x, y$$ where $$n = pq$$ and $$z = (p-1)(q-1)$$ or gcd(x,n) = 1 (x and n are coprime).
+   - This proves that $$x^y \bmod n = x^{y \bmod z} \bmod n$$ for any $$x, y$$ where $$n = pq$$ and $$z = (p-1)(q-1)$$ **and** $$gcd(x,n) = 1$$ (x and n are coprime).
 
 This deduction demonstrates the <span class="orange-bold">relationship</span> between modular exponentiation and Euler's theorem, which is <span class="orange-bold">fundamental</span> to the RSA algorithm.
 
