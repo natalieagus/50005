@@ -345,17 +345,15 @@ To aid your understanding, here's a simple diagram showing how each RTT is deriv
 Client                          Server
   |                                |
   |--- TCP SYN ------------------->|   
-  |                                |
-  |<-- SYN-ACK -------------------|    ← RTT 1 ends
-  |--- ACK + TLS ClientHello ---->|   ← TCP + TLS piggybacked
+  |<-- SYN-ACK --------------------|   ← RTT 1 ends
+  |--- ACK + TLS ClientHello ----->|   ← TCP + TLS piggybacked
 
   |                                |
-  |<-- TLS EncryptedExtensions ---|   
-  |    TLS ServerCert, Finished   |    ← RTT 2 ends
-  |--- TLS Finished + HTTP GET -->|   ← TLS finish + HTTP request piggybacked
+  |<-- TLS EncryptedExtensions ----|   ← RTT 2 ends
+  |    TLS ServerCert, Finished    |    
+  |--- TLS Finished + HTTP GET --->|   ← TLS finish + HTTP request piggybacked
 
-  |                                |
-  |<-- HTTP Response -------------|    ← RTT 3 ends
+  |<-- HTTP Response --------------|    ← RTT 3 ends
 ```
 
 **Piggybacking**:
@@ -371,45 +369,43 @@ Client                          Server
 
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
-  <p>
-    <strong>1.</strong> In HTTP/1.1, connection setup includes 1 RTT for TCP and 1 RTT for the TLS 1.3 handshake. Requests are sent right after setup. However, the server must respond in order. Since <code>img1</code> takes 4 RTTs, the small images must wait. Each of <code>img2</code> to <code>img5</code> takes 1 RTT but cannot begin until <code>img1</code> finishes. So we have:
-    <br>• 2 RTTs (setup)  
-    <br>• 4 RTTs for <code>img1</code>  
-    <br>• 4 RTTs for <code>img2–5</code> (1 each, sequential)  
-    <br><strong>Total = 10 RTTs = 1000 ms</strong>
-  </p>
+  <p><strong>1.</strong> In HTTP/1.1, connection setup includes 1 RTT for TCP and 1 RTT for the TLS 1.3 handshake. Requests are sent right after setup. However, the server must respond in order. Since <code>img1</code> takes 4 RTTs, the small images must wait. Each of <code>img2</code> to <code>img5</code> takes 1 RTT but cannot begin until <code>img1</code> finishes. So we have:</p>
+  <ul>
+    <li>2 RTTs (setup)</li>
+    <li>4 RTTs for <code>img1</code></li>
+    <li>4 RTTs for <code>img2–5</code> (1 each, sequential)</li>
+  </ul>
+  <p><strong>Total = 10 RTTs = 1000 ms</strong></p>
 
-  <p>
-    <strong>2.</strong> In HTTP/2, setup is the same (TCP + TLS = 2 RTTs). But once the connection is ready, all streams are multiplexed over one TCP connection. The server can interleave data. <code>img2</code> to <code>img5</code> each need 1 RTT’s worth of data, but since they are sent in parallel with <code>img1</code>, they *do not add time*.  This is not “magic parallelism”, it's a model where the network can carry the total load in 4 RTTs **as per our assumption** (read questions carefully in exams). The dominant transfer time is that of the largest object:
-    <br>• 2 RTTs (setup)  
-    <br>• 4 RTTs (total transmission window, parallel)  
-    <br><strong>Total = 6 RTTs = 600 ms</strong>
-  </p>
+  <p><strong>2.</strong> In HTTP/2, setup is the same (TCP + TLS = 2 RTTs). But once the connection is ready, all streams are multiplexed over one TCP connection. The server can interleave data. <code>img2</code> to <code>img5</code> each need 1 RTT’s worth of data, but since they are sent in parallel with <code>img1</code>, they <em>do not add time</em>. This is not “magic parallelism”, it's a model where the network can carry the total load in 4 RTTs <strong>as per our assumption</strong> (read questions carefully in exams). The dominant transfer time is that of the largest object:</p>
+  <ul>
+    <li>2 RTTs (setup)</li>
+    <li>4 RTTs (total transmission window, parallel)</li>
+  </ul>
+  <p><strong>Total = 6 RTTs = 600 ms</strong>. If the bandwidth per RTT is technically higher than what the big image uses, then the fact that img1 still takes 4 RTT <span class="orange-bold">isn’t</span> because the link is “full” it’s because of how much data the server sends per RTT for that image given the protocol’s pacing and congestion window. </p>
 
-  <p>
-    <strong>3.</strong> HTTP/3 uses QUIC, which merges transport and crypto handshake into 1 RTT. Object transfers begin immediately after. Streams are independent, so small images are unaffected by delays in large objects:
-    <br>• 1 RTT (setup)  
-    <br>• 4 RTTs (parallel transmission, dominated by <code>img1</code>)  
-    <br><strong>Total = 5 RTTs = 500 ms</strong>
-    <br>
-    With 0-RTT, the requests are sent together with the handshake. This overlaps the first RTT of transfer with setup. So only 4 RTTs are needed from start to finish:
-    <br><strong>Total = 4 RTTs = 400 ms</strong>
-  </p>
+  <p><strong>3.</strong> HTTP/3 uses QUIC, which merges transport and crypto handshake into 1 RTT. Object transfers begin immediately after. Streams are independent, so small images are unaffected by delays in large objects:</p>
+  <ul>
+    <li>1 RTT (setup)</li>
+    <li>4 RTTs (parallel transmission, dominated by <code>img1</code>)</li>
+  </ul>
+  <p><strong>Total = 5 RTTs = 500 ms</strong></p>
 
-  <p>
-    <strong>4.</strong> Total times:
-    <br>• HTTP/1.1 = 1000 ms  
-    <br>• HTTP/2 = 600 ms  
-    <br>• HTTP/3 (1-RTT) = 500 ms  
-    <br>• HTTP/3 (0-RTT) = 400 ms  
-    <br><br>
-    HTTP/3 with 0-RTT is fastest because it overlaps handshake with data transfer and avoids blocking entirely.
-  </p>
+  <p>With 0-RTT, the requests are sent together with the handshake. This overlaps the first RTT of transfer with setup. So only 4 RTTs are needed from start to finish:</p>
+  <p><strong>Total = 4 RTTs = 400 ms</strong></p>
 
-  <p>
-    <strong>5.</strong> HTTP/1.1 suffers from both setup delay and forced response ordering. HTTP/2 fixes application-layer head-of-line blocking by multiplexing streams, allowing early delivery of small objects. However, it still incurs 2 RTTs of setup. HTTP/3 further reduces latency with a faster handshake and independent stream recovery. With 0-RTT, requests begin immediately, improving perceived page load time, especially on repeat visits.
-  </p>
+  <p><strong>4.</strong> Total times:</p>
+  <ul>
+    <li>HTTP/1.1 = 1000 ms</li>
+    <li>HTTP/2 = 600 ms</li>
+    <li>HTTP/3 (1-RTT) = 500 ms</li>
+    <li>HTTP/3 (0-RTT) = 400 ms</li>
+  </ul>
+  <p>HTTP/3 with 0-RTT is fastest because it overlaps handshake with data transfer and avoids blocking entirely.</p>
+
+  <p><strong>5.</strong> HTTP/1.1 suffers from both setup delay and forced response ordering. HTTP/2 fixes application-layer head-of-line blocking by multiplexing streams, allowing early delivery of small objects. However, it still incurs 2 RTTs of setup. HTTP/3 further reduces latency with a faster handshake and independent stream recovery. With 0-RTT, requests begin immediately, improving perceived page load time, especially on repeat visits.</p>
 </div>
+
 
 
 
@@ -506,47 +502,46 @@ This scenario assumes **HTTPS**, where HTTP is layered on TLS. Although this cou
 > * Parallel actions don’t sum in time
 > * Shared domains can reuse connections, but this scenario assumes they do not
 
-
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
-  <p>
-    These are the distinct domains:
-    <br>• <code>www.campus.sg</code>  
-    <br>• <code>cdn.campuscdn.com</code>  
-    <br>• <code>ads.adprovider.net</code>  
-    <br>• <code>analytics.thirdparty.io</code>
-    <br><br>
-    Each domain requires:  
-    • 1 RTT (DNS) + 1 RTT (TCP) + 1 RTT (TLS) + 1 RTT (image) = <strong>4 RTTs = 400 ms</strong>  
-    Images from each domain take 400 ms to load if no caching is used.
-  </p>
+  <p><strong>Distinct domains:</strong></p>
+  <ul>
+    <li><code>www.campus.sg</code></li>
+    <li><code>cdn.campuscdn.com</code></li>
+    <li><code>ads.adprovider.net</code></li>
+    <li><code>analytics.thirdparty.io</code></li>
+  </ul>
+  <p>Each domain requires:</p>
+  <ul>
+    <li>1 RTT (DNS)</li>
+    <li>1 RTT (TCP)</li>
+    <li>1 RTT (TLS)</li>
+    <li>1 RTT (image)</li>
+  </ul>
+  <p><strong>Total = 4 RTTs = 400 ms</strong><br>
+  Images from each domain take 400 ms to load if no caching is used.</p>
 
-  <p>
-    These are the shared domains:
-    <br>• <code>img1.png</code> and <code>img5.png</code> → <code>www.campus.sg</code>  
-    <br>• <code>img2.png</code> and <code>img4.png</code> → <code>cdn.campuscdn.com</code>
-    <br><br>
-    In this scenario, each image is fetched using a **separate connection**, so no reuse is applied. Even if domains are the same, handshakes and transfers are repeated.
-  </p>
+  <p><strong>Shared domains:</strong></p>
+  <ul>
+    <li><code>img1.png</code> and <code>img5.png</code> → <code>www.campus.sg</code></li>
+    <li><code>img2.png</code> and <code>img4.png</code> → <code>cdn.campuscdn.com</code></li>
+  </ul>
+  <p>In this scenario, each image is fetched using a <strong>separate connection</strong>, so no reuse is applied. Even if domains are the same, handshakes and transfers are repeated.</p>
 
-  <p>
-    Since all connections are opened in parallel, the **slowest image** determines total page latency. All successful images take the same time (400 ms), so:
-    <br><strong>Total time = 400 ms</strong>
-  </p>
+  <p>Since all connections are opened in parallel, the <strong>slowest image</strong> determines total page latency. All successful images take the same time (400 ms), so:</p>
+  <p><strong>Total time = 400 ms</strong></p>
 
-  <p>
-    A DNS failure for <code>analytics.thirdparty.io</code> returns in 1 RTT. The image cannot load, but this does not delay other images. Overall page load time remains <strong>400 ms</strong>, though a browser warning may be shown for the missing object.
-  </p>
+  <p><strong>DNS failure case:</strong></p>
+  <p>A DNS failure for <code>analytics.thirdparty.io</code> returns in 1 RTT. The image cannot load, but this does not delay other images. Overall page load time remains <strong>400 ms</strong>, though a browser warning may be shown for the missing object.</p>
 
-  <p>
-    On a repeat visit:
-    <br>• DNS is cached → 0 RTT  
-    <br>• TLS connections are reused → 0 RTT  
-    <br>• Only 1 RTT per image for transfer
-    <br><br>
-    Since transfer can begin immediately, and requests can be sent in parallel:
-    <br><strong>Total page load time = 1 RTT = 100 ms</strong>
-  </p>
+  <p><strong>Repeat visit:</strong></p>
+  <ul>
+    <li>DNS is cached → 0 RTT</li>
+    <li>TLS connections are reused → 0 RTT</li>
+    <li>Only 1 RTT per image for transfer</li>
+  </ul>
+  <p>Since transfer can begin immediately, and requests can be sent in parallel:</p>
+  <p><strong>Total page load time = 1 RTT = 100 ms</strong></p>
 </div>
 
 
