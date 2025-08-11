@@ -54,7 +54,7 @@ Once you have completed all tasks, schedule a checkoff as a Team with your Lab T
 
 ### System requirements
 
-You need Python 3.10 (it won't work with Python 3.12) and `pipenv` to run this project, and Wireshark (or equivalent) installed in your system. You are free to use any CLI or GUI based network protocol analyser. The latter is recommended for beginners. The rest of this lab is written with the assumption that you used **Wireshark**. Other equivalent network protocol analyser should have similar functionalities.
+You need Python 3.10 (it won't work with Python 3.12) and `uv` to run this project, and Wireshark (or equivalent) installed in your system. You are free to use any CLI or GUI based network protocol analyser. The latter is recommended for beginners. The rest of this lab is written with the assumption that you used **Wireshark**. Other equivalent network protocol analyser should have similar functionalities.
 
 ### Source Code
 
@@ -64,17 +64,13 @@ Clone the repository for this lab:
 git clone https://github.com/natalieagus/lab_htcpcp
 ```
 
-Then, install the requirements and launch `pipenv`: 
+Then, install the requirements and launch the venv:
 
 ```
-pipenv install
-pipenv shell
+uv sync
+source .venv/bin/activate
 ```
 
-If you don't have `pipenv`, install it using `pip` (assuming `python3` is aliased to `python 3.10`)
-```
-python3 -m pip install pipenv
-```
 
 There are two main processes to run:
 
