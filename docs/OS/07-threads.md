@@ -141,7 +141,7 @@ The first way is by implementing a <span style="color:#f77729;"><b>runnable inte
 
 **Step 1**: Implement a runnable interface and its `run()` function:
 
-```cpp
+```java
 public class MyRunnable implements Runnable {
    public void run(){
       System.out.println("MyRunnable running");
@@ -151,7 +151,7 @@ public class MyRunnable implements Runnable {
 
 **Step 2**: Create a new Thread instance and pass the runnable onto its constructor. Call the `start() `function to begin the execution of the thread:
 
-```cpp
+```java
 Runnable runnable = new MyRunnable();
 Thread thread = new Thread(runnable);
 thread.start();
@@ -162,7 +162,7 @@ thread.start();
 
 The second way is to create a <span style="color:#f77729;"><b>subclass</b></span> of `Thread` and override the method `run()`. For example,
 
-```cpp
+```java
 public class CustomThread extends Thread {
    public void run(){
       System.out.println("CustomThread running");
@@ -172,7 +172,7 @@ public class CustomThread extends Thread {
 
 Then, create and start CustomThread instance to start the thread:
 
-```cpp
+```java
 CustomThread ct = new CustomThread();
 ct.start();
 
@@ -192,7 +192,7 @@ We can pass <span style="color:#f77729;"><b>arguments</b></span> to a thread, <s
 
 Threads from the same process share heap and data. A global variable like `shared_integer` in the example below is <span style="color:#f77729;"><b>visible</b></span> to both main thread and created thread.
 
-```cpp
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -252,47 +252,46 @@ However, if we <span style="color:#f77729;"><b>return</b></span> a pointer to va
 
 # Types of Threads {#thread-types}
 
-We can create two types of threads, <span style="color:#f77729;"><b>kernel</b></span> level threads and <span style="color:#f77729;"><b>user</b></span> level threads.
+We can create two types of threads, <span style="color:#f77729;"><b>kernel-level</b></span> threads and <span style="color:#f77729;"><b>user-level</b></span> threads.
 
-## User level threads
+## User-level threads
 
-User level threads (sometimes known as green threads) are threads that are:
+User-level threads (sometimes known as _green threads_) are threads that are:
 
-1. Scheduled by a <span style="color:#f77729;"><b>runtime library</b></span> or virtual environment instead of by the Kernel.
+1. Scheduled by a <span style="color:#f77729;"><b>runtime library</b></span> or virtual environment instead of by the kernel.
 2. They are <span style="color:#f77729;"><b>managed in user space</b></span> instead of kernel space, enabling them to work in OS that do not have native thread support.
-3. <span style="color:#f7007f;"><b>This is what programmers typically use. </b></span> (e.g when we create Thread in C or Java above).
+3. Depending on the programming language, they may be exposed under mechanisms called couroutines, virtual threads, tasks, or futures. The C programming language does not support user-level threads directly, but a user-level threading model can be implemented through third-party libraries (e.g. libtask).
 
-## Kernel level threads
+## Kernel-level threads
 
-{:.info-title}
-> Background
-> 
-> The kernel is the core part of the operating system. It manages system resources, hardware, and provides essential services such as process management, memory management, and I/O operations. The kernel itself does not have a context because it is not an executable entity; rather, it is a collection of code and data structures that manage the system.
-> 
-> A kernel thread is an individual execution unit within the kernel. It is schedulable and can perform tasks on behalf of the kernel, such as handling system calls, managing hardware interrupts, and executing kernel-level functions. Kernel threads do have contexts because they need to maintain their own execution states.
+Kernel-level threads (sometimes known as _OS-level threads_) are threads that are:
 
-To augment the need for running background operations, the kernel spawns **threads**, similar to regular processes in that they are represented by a `task_struct` and assigned a PID. Unlike user processes, they do not have any address space mapped, and run exclusively in kernel mode, which makes them non-interactive.
+1. Scheduled by the kernel, having its own stack and register values, but may share data with other threads.
+2. <span style="color:#f7007f;"><b>This is what programmers typically use. </b></span> (e.g. when we create threads with C or Java).
+3. Can be viewed as <span style="color:#f77729;"><b>lightweight processes</b></span>, which perform a certain task asynchronously.for an event to occur.
 
-Kernel level threads (sometimes known as OS-level threads) are threads that are:
+All modern operating systems support kernel-level threads, allowing the operating system to perform multiple simultaneous tasks and/or to <span style="color:#f77729;"><b>service</b></span> multiple kernel system calls simultaneously.
 
-1. Scheduled by the Kernel, having its own stack and register values, but share data with other Kernel threads.
-2. Can be viewed as <span style="color:#f77729;"><b>lightweight processes</b></span>, which perform a certain task asynchronously.
-3. A kernel-level thread need not be associated with a process; a kernel can create them whenever it needs to perform a particular task.
-4. Kernel threads cannot execute in user mode.
-   - Processes that create kernel-level threads use it to <span style="color:#f7007f;"><b>implement background tasks in the kernel</b></span>.
-   - E.g: handling <span style="color:#f7007f;"><b>asynchronous</b></span> events or <span style="color:#f7007f;"><b>waiting</b></span> for an event to occur.
+Most programming languages will provide the <span style="color:#f77729;"><b>interface</b></span> to create kernel-level threads, and the API for kernel-level threads are system-dependent. For example, the Linux kernel offers two types of kernel-level threads: `pthread` and `kthread`.
 
-All modern operating systems support kernel level threads, allowing the kernel to perform multiple simultaneous tasks and/or to <span style="color:#f77729;"><b>service</b></span> multiple kernel system calls simultaneously.
+Threads `pthread` are user-space threads compatible with the POSIX standard interface. They use kernel-level implementation, and they are meant for application processes, where a thread shares the virtual memory space of its process. The C-API for creating `pthread` threads in Linux is the following:
 
-Most programming languages will provide an <span style="color:#f77729;"><b>interface</b></span> to create kernel-level threads, and the API for kernel-level threads are system-dependent. The C-API for creating kernel threads in Linux:
-
-```cpp
-#include <kthread.h>
-kthread_create(int (*function)(void *data), void *data, const char name[], ...)
+```c
+#include <pthread.h>
+int pthread_create(pthread_t *restrict thread,
+                   const pthread_attr_t *restrict attr,
+                   void *(*start_routine)(void *),
+                   void *restrict arg);
 ```
 
+Threads `kthread` are kernel-space threads operating solely within the kernel virtual address space. They use kernel-level implementation, and they are meant for background kernel tasks, where each such thread has own kernel stack and full access to the kernel memory space. They are not compatible with the POSIX standard as the standard only defines behaviour of the user space. The C-API for creating `kthread` threads in Linux is the following:
 
-All kernel threads are descendants of `kthreadd` (pid 2), which is spawned by the kernel (pid 0) during boot. The `kthreadd` is a perpetually running thread that looks into a list called `kthread_create_list` for data on new kthreads to be created.
+```c
+#include <kthread.h>
+kthread_create(int (*function)(void *), void *data, const char name[], ...)
+```
+
+All `kthread` threads are descendants of `kthreadd` (pid 2), which is spawned by the kernel (pid 0) during boot. The `kthreadd` is a perpetually running thread that looks into a list called `kthread_create_list` for data on new kthreads to be created.
 {: .new}
 
 You can view it via `ps -ef` command, they are shown within square brackets `[]`:
@@ -303,9 +302,9 @@ They each have a specific task, for instance `[migration/0]` handles distributes
 ## Use case
 
 ### System Monitoring
-Many device drivers utilize the services of kernel threads to implement **assistant** or **helper** tasks. Suppose you would like the Kernel to asynchronously invoke a **user** mode program to send you an email alert whenever it senses that the health of certain key kernel data structures is deteriorating. For instance, free space in network receive buffers has dipped below a certain healthy threshold, risking losing incoming packets.
+Many device drivers utilize the services of kernel threads to implement **assistant** or **helper** tasks. Suppose you would like the kernel to asynchronously invoke a **user** mode program to send you an email alert whenever it senses that the health of certain key kernel data structures is deteriorating. For instance, free space in network receive buffers has dipped below a certain healthy threshold, risking losing incoming packets.
 
-This need warrants a creation of Kernel Thread because:
+This need warrants a creation of a kernel thread because:
 
 - It's a background task because it has to wait for asynchronous events (depending on the network buffer state).
 - It needs access to kernel data structures because the actual detection of events is done by other parts of the kernel.
@@ -356,11 +355,11 @@ Kernel threads are essential for performing background tasks like page swapping 
 
 
 
-## Kernel vs User Level Threads
+## Kernel-Level vs. User-Level Threads
 
-| <span style="color:#f7007f;"><b>Kernel</b></span> Level Threads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | <span style="color:#f77729;"><b>User</b></span> Level Threads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| <span style="color:#f7007f;"><b>Kernel</b></span> Level Threads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | <span style="color:#f77729;"><b>User-Level</b></span> Threads                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| <span style="color:#f7007f;"><b>Known to OS Kernel</b></span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | <span style="color:#f77729;"><b>Not known to OS Kernel</b></span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| <span style="color:#f7007f;"><b>Known to OS kernel</b></span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | <span style="color:#f77729;"><b>Not known to OS kernel</b></span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | <span style="color:#f7007f;"><b>Runs</b></span> in Kernel mode. All code and data structures for the Thread API exist in Kernel space.                                                                                                                                                                                                                                                                                                                                                                                                                                                          | <span style="color:#f7007f;"><b>Runs</b></span> entirely in User mode. All code and data structures for the Thread API exist in user space.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | If a user thread is mapped to a kernel thread (1 to 1 mapping), then invoking some functions in the API like create or join results in <span style="color:#f7007f;"><b>trap</b></span> (system call) to the Kernel Mode (requires a change of mode)                                                                                                                                                                                                                                                                                                                                                                                                                                          | Invoking a function in the API results in <span style="color:#f7007f;"><b>local</b></span> function call in user space.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | <span style="color:#f7007f;"><b>Scheduled directly by Kernel scheduler</b></span>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | <span style="color:#f77729;"><b>Managed and scheduled entirely by the run time system</b></span> (user level library).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
@@ -374,31 +373,31 @@ Kernel threads are essential for performing background tasks like page swapping 
 
 # Thread Mapping {#thread-mapping}
 
-Since there are two types of threads: kernel and user thread, there should exist some kind of mapping between the two. The mapping of user threads to kernel threads is done using virtual processors[^8]. We can think of kernel level threads as <span style="color:#f7007f;"><b>virtual processors</b></span> and user level threads as simply <span style="color:#f77729;"><b>threads</b></span>.
+Since there are two types of threads: kernel-level and user-level threads, there should exist some kind of mapping between the two. The mapping of user-level threads to kernel-level threads is done using virtual processors[^8]. We can think of kernel-level threads as <span style="color:#f7007f;"><b>virtual processors</b></span> and user-level threads as simply <span style="color:#f77729;"><b>threads</b></span>.
 
 There are three types of mapping.
 
 ## Many to One
 
-Maps <span style="color:#f77729;"><b>many</b></span> user-level threads to <span style="color:#f77729;"><b>one</b></span> kernel thread.
+Maps <span style="color:#f77729;"><b>many</b></span> user-level threads to <span style="color:#f77729;"><b>one</b></span> kernel-level thread.
 {:.note}
 
 <span style="color:#f77729;"><b>Advantage</b></span>:
 
 - Thread management is done by the thread library in user space, so it is more <span style="color:#f77729;"><b>efficient</b></span> as opposed to kernel thread management.
-- Developers may create as many threads as they want
-- Entire thread context-switching is maintained by the user-level thread library <span style="color:#f77729;"><b>entirely</b></span>
+- Developers may create as many threads as they want.
+- Entire thread context-switching is maintained by the user-level thread library <span style="color:#f77729;"><b>entirely</b></span>/
 
 <span style="color:#f77729;"><b>Disadvantage</b></span>:
 
-- <span style="color:#f77729;"><b>The entire process will block </b></span>if a thread makes a blocking system call since kernel isn’t aware of the presence of these user threads
-- Since only one thread can access the kernel at a time, multiple threads attached to the same kernel thread are unable to run in parallel on multicore systems
+- <span style="color:#f77729;"><b>The entire process will block </b></span>if a thread makes a blocking system call since kernel isn’t aware of the presence of these user threads.
+- Since only one thread can access the kernel at a time, multiple threads attached to the same kernel-level thread are unable to run in parallel on multicore systems.
 
 <img src="{{ site.baseurl }}/assets/images/week3/19.png"  class="center_fifty "/>
 
 ## One to One
 
-Maps <span style="color:#f77729;"><b>each</b></span> user thread to a kernel thread. You can simply think of this as process threads to be <span style="color:#f77729;"><b>managed</b></span> entirely by the Kernel.
+Maps <span style="color:#f77729;"><b>each</b></span> user-level thread to a kernel-level thread. You can simply think of this as process threads to be <span style="color:#f77729;"><b>managed</b></span> entirely by the kernel.
 {:.note}
 
 <span style="color:#f77729;"><b>Advantage</b></span>:
@@ -408,30 +407,30 @@ Maps <span style="color:#f77729;"><b>each</b></span> user thread to a kernel thr
 
 <span style="color:#f77729;"><b>Disadvantage</b></span>:
 
-- Creating a user thread requires creating the corresponding kernel thread (a lot of <span style="color:#f77729;"><b>overhead</b></span>, system call must be made)
-- <span style="color:#f77729;"><b>Limited</b></span> amount of threads can be created to not burden the system
-- <span style="color:#f77729;"><b>May</b></span> have to involve the kernel when there is a context switch between the threads (overhead)
+- Creating a user thread requires creating the corresponding kernel thread (a lot of <span style="color:#f77729;"><b>overhead</b></span>, system call must be made).
+- <span style="color:#f77729;"><b>Limited</b></span> amount of threads can be created to not burden the system.
+- <span style="color:#f77729;"><b>May</b></span> have to involve the kernel when there is a context switch between the threads (overhead).
 
-The modern Linux implementation of pthreads uses a 1:1 mapping between pthread threads and kernel threads, so you will always get a kernel-level thread with `pthread_create().`
+The modern Linux implementation of threads uses a 1:1 mapping between `pthread` threads and kernel-level threads, so you will always get a kernel-level thread with `pthread_create().`
 <img src="{{ site.baseurl }}/assets/images/week3/20.png"  class="center_fifty "/>
 
 ## Many to Many
 
-<span style="color:#f77729;"><b>Multiplexes</b></span> many user-level threads to a smaller or equal number of kernel threads.
+<span style="color:#f77729;"><b>Multiplexes</b></span> many user-level threads to a smaller or equal number of kernel-level threads.
 {:.note}
 
 This is the best of both worlds:
 
-- Developers can <span style="color:#f77729;"><b>create</b></span> as many user threads as necessary,
+- Developers can <span style="color:#f77729;"><b>create</b></span> as many user threads as necessary.
 - The corresponding kernel threads can run in <span style="color:#f77729;"><b>parallel</b></span> on a multiprocessor.
 
 <img src="{{ site.baseurl }}/assets/images/week3/21.png"  class="center_fifty "/>
 
-A variation of many-to-many mapping, the <span style="color:#f77729;"><b>two-level model</b></span>: both multiplexing user threads and allowing some user threads to be mapped to just one kernel thread.
+A variation of many-to-many mapping, the <span style="color:#f77729;"><b>two-level model</b></span>: both multiplexing user-level threads and allowing some user-level threads to be mapped to just one kernel-level thread.
 
 <img src="{{ site.baseurl }}/assets/images/week3/22.png"  class="center_fifty "/>
 
-In some systems, especially in many-to-many or two-level models, there is some way for the user threading library to communicate (coordinate) with kernel threads via scheduler activation, i.e: a mechanism whereby kernel can allocate more threads to the process <span style="color:#f7007f;"><b>on demand</b></span>.
+In some systems, especially in many-to-many or two-level models, there is some way for the user threading library to communicate (coordinate) with kernel-level threads via scheduler activation, i.e: a mechanism whereby kernel can allocate more kernel-level threads to the process <span style="color:#f7007f;"><b>on demand</b></span>.
 {:.warning}
 
 # Intel Hyper-Threading {#intel-hyper-threading}
