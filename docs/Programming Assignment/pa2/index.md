@@ -131,7 +131,7 @@ python3 source/ClientWithoutSecurity.py [port] [server-ip-address]
 ```
 
 {:.note}
-To get this to work, you most probably need to use <span style="color:#f77729;"><b>private</b></span> ip address instead of public one, unless you have set a static public IP. You might need to enable <span class="orange-bold">port forwarding</span> if you use a public IP, but if you aren't sure what you're doing then _dont_, you might expose yourself to a security vulnerability. If this is all to complicated for you, _skip_. You can totally just do the assignment in the same computer
+To get this to work, you most probably need to use <span style="color:#f77729;"><b>private</b></span> IP addresses. Just ensure that both machines are connected to the same WiFi and subnet. If you use SUTD WiFi, there's a chance that you are not in the same subnet. In that case, simply use your phone hotspot and both machines shall connect to it. 
 
 Consult the [Debug Notes](https://natalieagus.github.io/50005/pa2/debug-notes) page should you find any difficulties running the starter code. 
 
