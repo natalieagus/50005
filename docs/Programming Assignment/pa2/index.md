@@ -123,6 +123,7 @@ You can also host the Server file in another computer:
 ```sh 
 python3 source/ServerWithoutSecurity.py [port] 0.0.0.0 
 ```
+You can use any high port you want, e.g: 12345. 
 
 The client computer can connect to it using the command:
 
@@ -130,8 +131,37 @@ The client computer can connect to it using the command:
 python3 source/ClientWithoutSecurity.py [port] [server-ip-address]
 ```
 
+Ensure you use the same port. The server's IP address (private) should be discoverable using this command:
+
+```sh
+hostname -I | awk '{print $1}'
+```
+
+You can also run this one-liner Python script instead:
+
+```sh
+python3 -c "import socket; print(socket.gethostbyname(socket.gethostname()))"
+```
+
 {:.note}
-To get this to work, you most probably need to use <span style="color:#f77729;"><b>private</b></span> IP addresses. Just ensure that both machines are connected to the same WiFi and subnet. If you use SUTD WiFi, there's a chance that you are not in the same subnet. In that case, simply use your phone hotspot and both machines shall connect to it. 
+To get this to work, you most probably need to be on <span style="color:#f77729;"><b>the same subnet</b></span>. Just ensure that both machines are connected to the same WiFi and subnet. If you use SUTD WiFi, there's a chance that you are not in the same subnet. In that case, simply use your phone hotspot and both machines shall connect to it. 
+
+In the client machine, run this Python script to quickly check if you're on the same subnet:
+
+```py
+import ipaddress
+
+ip1 = input("Enter your IP: ").strip()
+ip2 = input("Enter server IP: ").strip()
+mask = input("Enter subnet mask (e.g., 255.255.255.0): ").strip() # discoverable via ifconfig or ip addr command
+
+net = ipaddress.IPv4Network(f"{ip1}/{mask}", strict=False)
+
+if ipaddress.IPv4Address(ip2) in net:
+    print("Same subnet")
+else:
+    print("Different subnet")
+```
 
 Consult the [Debug Notes](https://natalieagus.github.io/50005/pa2/debug-notes) page should you find any difficulties running the starter code. 
 
