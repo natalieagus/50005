@@ -153,7 +153,7 @@ import ipaddress
 
 ip1 = input("Enter your IP: ").strip()
 ip2 = input("Enter server IP: ").strip()
-mask = input("Enter subnet mask (e.g., 255.255.255.0): ").strip() # discoverable via ifconfig or ip addr command
+mask = input("Enter subnet mask (e.g., 255.255.255.0): ").strip() # discoverable via ifconfig (macOS) or ipconfig (Win) or ip addr (Linux) command
 
 net = ipaddress.IPv4Network(f"{ip1}/{mask}", strict=False)
 
