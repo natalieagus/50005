@@ -218,7 +218,7 @@ You are given the following trust graph extracted from a distributed certificate
 {:.note}
 Each edge represents a digital signature, where the upper node has signed the public key of the lower node.
 
-A client only trusts the **Root CA** initially and given the certificates of A, B, C, D, and E. Your task is to evaluate *which* keys are trusted and which are not.
+A client only trusts the **Root CA** initially and given the certificates of A (signed by Root), B (signed by A), C (signed by A), D (signed by B), and F (signed by E). Your task is to evaluate *which* keys are trusted and which are not.
 
 **Answer the following questions**:
 1. Which of the nodes' public keys are trusted from the client's perspective?
@@ -237,10 +237,10 @@ A client only trusts the **Root CA** initially and given the certificates of A, 
 <div cursor="pointer" class="collapsible">Show Answer</div>
 <div class="content_answer">
   <p>
-    A node’s key is trusted if there’s a valid chain of signatures to the Root CA, <span class="orange-bold">and</span> the client possesses the certificates for every node in that chain, including the node whose key is being validated. These include A (signed by Root CA), B and C (signed by A), D (signed by B), and E (signed by C). F is <strong>not</strong> trusted because although E signed F, the client has no way to verify E’s key because the client does not have E's certificate.
+    A node’s key is trusted if there’s a valid chain of signatures to the Root CA, <span class="orange-bold">and</span> the client possesses the certificates for every node in that chain, including the node whose key is being validated. These include A (signed by Root CA), B and C (signed by A), D (signed by B), and E (signed by C). The client possess' F's certificate that's signed by E, but does not have E's certificate. Therefore, the chain of trust is broken.
   </p>
   <p>
-    The client <span class="orange-bold">cannot</span> verify a message signed by F, because there is no complete chain of signatures from the Root CA down to F. Although F’s key is signed by E and E by C, the client does not necessarily trust F because the client does not have F's certificate and cannot *verify* if F's signature is legitimate or not.
+    The client <span class="orange-bold">cannot</span> verify a message signed by F, because there is no complete chain of signatures from the Root CA down to F as explained in the previous part.
   </p>
   <p>
     If D signs F, and D is already trusted via Root → A → B → D, and the since the Client now has F's newly signed certificate (by D), then there exists a new path: Root → A → B → D → F. This makes F trusted by transitivity. 
