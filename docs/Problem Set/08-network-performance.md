@@ -225,12 +225,14 @@ In the diagram below:
 
 This format helps visualize packet timing in a way that aligns with packet capture tools or stack traces, where newer events appear lower.
 
+From the diagram above, we can deduce that propagation delay is around 6ms, and transmission delay is 2ms (which makes bandwidth to be 1
+0.4 Mbps). 
 
 ### Scenario
 
 A host sends 5 packets (each 1000 bytes = 8000 bits) over a 1 Mbps link with 24 ms one-way propagation delay. The packets are sent back-to-back with no gaps.
 
-> **Refer to the space-time diagram** above for packet timing.
+> **Refer to the space-time diagram** above for illustration, but adjust the numbers to fit this scenario. 
 
 **Answer the following questions**:
 * What is the transmission delay per packet?
