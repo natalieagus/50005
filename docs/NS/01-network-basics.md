@@ -470,7 +470,7 @@ Below are some examples:
 * **Fiber Optic Cable**: Transmits data using light signals through glass or plastic fibers, providing high-speed, long-distance communication in fiber optic networks.
 
 {:.note}
-A physical layer packet of information is called a <span class="orange-bold">frame</span>.
+A physical layer unit of information is called <span class="orange-bold">bits</span>.
 
 ### Important Note 
 
