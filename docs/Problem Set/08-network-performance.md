@@ -431,8 +431,8 @@ The Sender sends 4 packets back-to-back at 10 Mbps. The Router receives them and
   <li>Sender → Router (10 Mbps): 8000 ÷ 10^7 = <strong>0.8 ms</strong></li>
   <li>Router → Receiver (1 Mbps): 8000 ÷ 10^6 = <strong>8 ms</strong></li>
 </ul>
-
-<p><strong>Packet arrival times at router:</strong></p>
+<p>These departure and arrival times should be treated as *timestamps*.</p>
+<p><strong>Packet arrival times at router (consider transmission delay from the sender + propagation delay):</strong></p>
 <ul>
   <li>Packet 1: 0.8 ms + 1 = <strong>1.8 ms</strong></li>
   <li>Packet 2: 1.6 ms + 1 = <strong>2.6 ms</strong></li>
@@ -440,7 +440,7 @@ The Sender sends 4 packets back-to-back at 10 Mbps. The Router receives them and
   <li>Packet 4: 3.2 ms + 1 = <strong>4.2 ms</strong></li>
 </ul>
 
-<p><strong>Packet departure times from router:</strong></p>
+<p><strong>Packet departure times from router (since we add transmission delay from sender and count it as arrival time, we don't doubly count it in departure):</strong></p>
 <ul>
   <li>Packet 1: <strong>1.8 ms</strong> (no queue)</li>
   <li>Packet 2: <strong>9.8 ms</strong> (queued behind Packet 1)</li>
@@ -456,7 +456,7 @@ The Sender sends 4 packets back-to-back at 10 Mbps. The Router receives them and
   <li>Packet 4: 25.8 - 4.2 = <strong>21.6 ms</strong></li>
 </ul>
 
-<p><strong>Arrival times at receiver (after 8 ms tx + 1 ms propagation):</strong></p>
+<p><strong>Arrival times at receiver:</strong></p>
 <ul>
   <li>Packet 1: 1.8 + 8 + 1 = <strong>10.8 ms</strong></li>
   <li>Packet 2: 9.8 + 8 + 1 = <strong>18.8 ms</strong></li>
