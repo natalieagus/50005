@@ -609,7 +609,7 @@ Assume:
   </p>
 
   <p>
-    If the server closes the connection after sending the third object, the client must start new connections for the fourth and fifth objects. Each of these requires 2 RTTs for setup and 1 RTT for transfer. The total becomes 2 RTTs for the first setup, 3 RTTs for the first three transfers, and then 2 setups and 2 transfers for the last two objects. This gives <strong>11 RTTs</strong> in total (1100 ms).
+    If the server closes the connection after sending the third object, the client must start new connections for the fourth and fifth objects. Each of these requires 2 RTTs for setup and 1 RTT for transfer. The total becomes 2 RTTs for the first setup, 3 RTTs for the first three transfers, and then 2 setups and 2 transfers for the last two objects. This gives <strong>9 RTTs</strong> in total (900 ms).
   </p>
 
   <p>
