@@ -230,7 +230,7 @@ Here's the space-time diagram visualising the connection between the two parties
 
 ### HTTP/1.1 with Pipelining
 
-Here's the space-time diagram visualising the connection between the two parties if HTTP/1.0 with pipelining is enabled: 
+Here's the space-time diagram visualising the connection between the two parties if HTTP/1.1 with pipelining is enabled: 
 
 
 <img src="{{ site.baseurl }}/docs/NS/images/cse2024-time-space-diagram-tcp.drawio.png"  class="center_seventy"/>
