@@ -481,7 +481,7 @@ Assumptions:
 * Each domain requires: 1 RTT (DNS) + 1 RTT (TCP) + 1 RTT (TLS) + 1 RTT (image)
 * DNS lookups for repeated domains are not reused in this scenario
 * All image objects are small (transfer in 1 RTT)
-* HTTPS is used (HTTP over TLS 1.3)
+* HTTPS is used (HTTP over TLS 1.3), with HTTP 1.0
 * No caching, reuse, or connection pooling unless otherwise stated
 * The network is ideal (no congestion, loss, or queuing)
 
