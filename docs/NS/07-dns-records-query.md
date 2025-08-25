@@ -178,7 +178,7 @@ The answer we obtain is <span class="orange-bold">non-authoritative</span> becau
 
 ### Obtaining authoritative answer
 
-How we find the IP translation from google.com’s authoritative name server? First, we need to find the NS-type record of `google.com` using nslookup:
+How do we find the IP translation from google.com’s authoritative name server? First, we need to find the NS-type record of `google.com` using nslookup:
 
 ```sh
 nslookup -type=ns google.com
