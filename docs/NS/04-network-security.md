@@ -40,7 +40,7 @@ Singapore University of Technology and Design
 >   - Illustrate the process of digital signing and verification with RSA.
 >   - **Evaluate** the strengths and weaknesses of RSA in different contexts.
 > 4. **Discuss Practical Considerations**
->   - Evaluate the c**omputational efficiency** of RSA compared to symmetric key algorithms.
+>   - Evaluate the **computational efficiency** of RSA compared to symmetric key algorithms.
 >   - Apply the concept of **session** keys in improving efficiency in message exchanges.
 >   - Evaluate the effectiveness of cryptographic solutions in mitigating specific security threats.
 >
@@ -93,7 +93,7 @@ Suppose you have a confidential word document, image, music, videos, executables
 In short, you can treat a message (e.g: plaintext, image, anything) like series of **integers** (simple binary to dec translation). 
 
 {:.note}
-Encrypting a simple text message is equivalent to *encrypting* a number, which means that we can performing <span class="orange-bold">mathematical</span> operations on those numbers. 
+Encrypting a simple text message is equivalent to *encrypting* a number, which means that we can perform <span class="orange-bold">mathematical</span> operations on those numbers. 
 
 The ciphertext (resulting encrypted value) will not be decodable anymore (which is the point!) until we decrypt them using the right *key* (method). As a side note: encryption is **not** equivalent to encoding. Read this [appendix](#cryptography-vs-encoding) section if you'd like to find out more.  
 

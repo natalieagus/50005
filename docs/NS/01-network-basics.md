@@ -252,7 +252,7 @@ Suppose Host A needs to send 128 MB (Mega **Bytes**) to Host B through a circuit
 >
 > Therefore, we need $$128\times8/2 = 512$$ seconds to transfer all the data. Given that we need 800ms of connection establishment time, the **total** transfer time becomes $$512 + 0.8 = 512.8$$ seconds. 
 
-Now, suppose used circuit switched network using **FDM** instead: given 24 frequency bands in total, with bit rate of 48Mbps and 800ms to establish an end-to-end connection, let's compute the seconds required in total to transfer **all the data**. 
+Now, suppose using circuit switched network using **FDM** instead: given 24 frequency bands in total, with bit rate of 48Mbps and 800ms to establish an end-to-end connection, let's compute the seconds required in total to transfer **all the data**. 
 
 {:.new-title}
 > Answer: FDM 

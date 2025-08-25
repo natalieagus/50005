@@ -72,7 +72,7 @@ Suppose A would like to communicate with B via the internet. Without any cryptog
 
 # Case 2: Plain Message + IP Header 
 
-In an attempt to prove A's identity, A will send a message to B along with their IP. However without any encryption T knows A's IP and will be able to craft a message with A's IP and send it B.  B won't be able to differentiate whether the message comes from T or A:
+In an attempt to prove A's identity, A will send a message to B along with their IP. However without any encryption T knows A's IP and will be able to craft a message with A's IP and send it to B.  B won't be able to differentiate whether the message comes from T or A:
 * Authentication is compromised
 * Integrity is also compromised
 * Confidentiality is also breached

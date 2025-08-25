@@ -145,7 +145,7 @@ Here we see that there are at least 10 **probes** in total (result truncated).
 
 ### How traceroute works 
 
-Traceroute is a network diagnostic tool used to trace the path that data packets take from one point to another on a network. raceroute relies on ICMP (Network Layer protocol) to work. 
+Traceroute is a network diagnostic tool used to trace the path that data packets take from one point to another on a network. Traceroute relies on ICMP (Network Layer protocol) to work. 
 {:.info}
 
 It works by sending a series of packets, each forming a **probe** with an incrementally increasing time-to-live (TTL) value, towards the destination. The TTL value determines how many network hops (routers) the packet can pass through before being discarded. Each router <span class="orange-bold">decrements</span> the TTL value by one. When the TTL reaches zero, the router discards the packet and sends an ICMP "Time Exceeded" message back to the sender.

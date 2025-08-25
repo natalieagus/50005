@@ -161,7 +161,7 @@ Components of the variable lengths of DNS query / reply:
 * **Additional information**: possibly helpful information 
 
 {:.note}
-Tools like `dig` and `nslookup` are designed to craft DNS query messagse and query DNS servers, then *render* out the information contained in DNS reply messages. They provide different levels of detail and formats, helping users and administrators understand DNS responses and diagnose network issues.
+Tools like `dig` and `nslookup` are designed to craft DNS query messages and query DNS servers, then *render* out the information contained in DNS reply messages. They provide different levels of detail and formats, helping users and administrators understand DNS responses and diagnose network issues.
 
 ## Example of DNS query via nslookup
 
@@ -178,7 +178,7 @@ The answer we obtain is <span class="orange-bold">non-authoritative</span> becau
 
 ### Obtaining authoritative answer
 
-Hdo we find the IP translation from google.com’s authoritative name server? First, we need to find the NS-type record of `google.com` using nslookup:
+How do we find the IP translation from google.com’s authoritative name server? First, we need to find the NS-type record of `google.com` using nslookup:
 
 ```sh
 nslookup -type=ns google.com
@@ -186,7 +186,7 @@ nslookup -type=ns google.com
 
 <img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-31-55.png"  class="center_seventy no-invert"/>
 
-There are **four** NS-type records, which means that all these servers are the authoritative name servers for `google.com`. What we have to do know is to query *one of them* instead about the IP address of `google.com`:
+There are **four** NS-type records, which means that all these servers are the authoritative name servers for `google.com`. What we have to do now is to query *one of them* instead about the IP address of `google.com`:
 
 ```sh
 nslookup google.com ns1.google.com
@@ -220,7 +220,7 @@ We can also use another tool: `dig` (Domain information groper) to query the IP 
 
 <img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-12-07-49.png"  class="center_seventy no-invert"/>
 
-The output is a little different because dig decodes the dns response and presents it in another format to us, but there’s some things we can relate to, and compare with the simplified DNS query and reply protocol we learned above. 
+The output is a little different because dig decodes the DNS response and presents it in another format to us, but there’s some things we can relate to, and compare with the simplified DNS query and reply protocol we learned above. 
 1. Look at the **header**: we have id (transaction id) 22259.
 
 2. The **flags** section gives us more information about the response. 
@@ -318,7 +318,7 @@ Example registrar: Amazon Domain Registrar, GoDaddy. GoDaddy and AWS Route 53 al
 
 Note that a registrar is <span class="orange-bold">not</span> a registry (see [appendix](#registry) for definition of registry). A Registrar interfaces with the general public regarding the registration of their domain names. **In short, they sell domain names**. See more examples of registrars [here](https://www.icann.org/en/accredited-registrars?filter-letter=a&sort-direction=desc&sort-param=name&page=1). 
 
-Therefore, suppose  for you want your website to be reachable at `examplesite.com`. You then need to **buy** this particular domain name (if it is still available) for any of the registrars above.   
+Therefore, suppose  for you want your website to be reachable at `examplesite.com`. You then need to **buy** this particular domain name (if it is still available) from any of the registrars above.   
 
 ## Authoritative Name Servers
 
