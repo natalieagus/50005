@@ -57,7 +57,7 @@ The <span style="color:#f77729;"><b>final</b></span> value of the shared variabl
 
 In this lab we are going to <span style="color:#f77729;"><b>exploit</b></span> a program that is <span style="color:#f7007f;"><b>vulnerable to race-condition</b></span>.
 
-- The program alone is single-threaded, so in the absence of an attacker, there’s nothing wrong with jthe program.
+- The program alone is single-threaded, so in the absence of an attacker, there’s nothing wrong with the program.
 - The program however is vulnerable because an attacker can exploit the fact that the program can be subjected to race-condition.
 
 You will learn about race condition properly in future lectures. This lab is just a preview.
