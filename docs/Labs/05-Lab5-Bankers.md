@@ -5,6 +5,7 @@ title: Banker's Algorithm
 description:  Implement Banker's Algorithm, a deadlock prevention method
 parent: Labs
 nav_order:  5
+nav_exclude: true
 ---
 
 * TOC
