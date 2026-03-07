@@ -127,7 +127,7 @@ You can ignore any other warnings for now like unused parameter/variable/functio
 ### C Basics
 
 The lab requires you to know a little bit about C language. Since you already know how to code in Python and Java, it shouldn't be really hard to pick up some C syntax on the go. Consult the [Appendix](#appendix) when in doubt. 
-# Banker's Algorithm
+
 
 # Introduction
 
