@@ -79,7 +79,7 @@ make --version
 Clone the starter code:
 
 ```
-git clone https://github.com/natalieagus/cse-lab5-2026-starter
+git clone https://github.com/natalieagus/cse-lab-banker-2026-starter.git
 ```
 
 You should have the following files:
