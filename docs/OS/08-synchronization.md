@@ -5,6 +5,7 @@ title: Processes and Threads Synchronization
 description: Methods on how processes and threads can be made cooperative
 parent: Operating System
 nav_order: 8
+nav_exclude: true
 ---
 
 * TOC
@@ -238,7 +239,7 @@ We define the <span style="color:#f7007f;"><b>regions</b></span> in a program wh
 
 Consider a system consisting of `n` processes `{P0, P1,..., Pn−1}`. Each process may have a <span style="color:#f77729;"><b>segment</b></span> of instructions, called a `critical section` (CS). The important <span style="color:#f7007f;"><b>feature</b></span> of the system is that <span style="color:#f77729;"><b>when one process is executing its critical section, no other process is allowed to execute its critical section</b></span>.
 
-In the consumer producer sample code above, the critical section in the producer’s code is the instruction `counter++` while the critical section in the consumer’s code is `counter-—`.
+In the consumer producer sample code above, the critical section in the producer’s code is the instruction `counter++` while the critical section in the consumer’s code is `counter -—`.
 
 In the critical section the (asynchronous) processes may be:
 
