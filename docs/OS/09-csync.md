@@ -1,8 +1,8 @@
 ---
 layout: default
 permalink: /os/c-sync
-title: Synchronization in Java
-description: Methods on how processes and threads can be made cooperative in Java
+title: Synchronization in C
+description: Methods on how processes and threads can be made cooperative in C
 parent: Operating System
 nav_order: 8
 ---
@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 
 # Synchronization in C (POSIX Threads)
 
-
+{.:highlight}
 > Detailed Learning Objectives
 >
 > 1. **Examine the Monitor Pattern in C**
