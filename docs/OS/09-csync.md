@@ -494,5 +494,5 @@ Key takeaways:
 - **C has no `finally`.** You are responsible for releasing locks on every code path, including error paths. Use `goto cleanup`, minimise locked regions, or use `pthread_cleanup_push` for robustness.
 
 
-{:.note}
-You are strongly recommended to try the toy code linked in Appendix below to further understand each pattern's behavior. We will ask questions with similar format in examination, where you are required to trace and debug if there exist a lock-leak or a deadlock.
+{:.important}
+You are strongly recommended to try the toy code [here]( https://github.com/natalieagus/cse-50005-csync-sample) to understand each pattern's behavior. We will ask questions with similar format in examination, where you are required to trace and debug if there exist a lock-leak or a deadlock.
