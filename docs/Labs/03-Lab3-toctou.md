@@ -250,7 +250,7 @@ The <span style="color:#f77729;"><b>reason</b></span> you can now successfully r
 
 You can open `rootdo.c` inside `/lab_toctou/FilesForRoot/` to examine how it works, especially this part where it just simply checks that you have keyed in `password` and proceed to `execvp` (execute) the input command:
 
-```java
+```c
     if (!strcmp(password, "password"))
     { // on success, returns 0
         printf("Login granted\n");
@@ -310,7 +310,7 @@ Our vulnerable program can be found in `/Root/vulnerable_root_prog`. Open `/File
 
 The program expects <span style="color:#f77729;"><b>two</b></span> arguments: to be stored at `char *fileName`, and `char *match`. It is a _supposedly secure_ program that will allow `root` to replace `*match` string inside `*fileName` with an SHA-512 hashed password `00000`.
 
-```java
+```c
     if (argc < 3)
     {
         printf("ERROR, no file supplied, and no username supplied. Exiting now.\n");
@@ -326,7 +326,7 @@ The program expects <span style="color:#f77729;"><b>two</b></span> arguments: to
 
 It will then <span style="color:#f77729;"><b>check</b></span> with the `access` <span style="color:#f7007f;"><b>system call</b></span> on whether or not the caller of this program (it's REAL ID) has <span style="color:#f7007f;"><b>permission</b></span> to access the target `fileName`:
 
-```java
+```c
     if (!access(fileName, W_OK))
     {
         printf("Access Granted \n");
@@ -367,7 +367,7 @@ We <span style="color:#f77729;"><b>exaggerate</b></span> the `DELAY` between:
 2. The time of <span style="color:#f77729;"><b>USE</b></span> (actual usage of the file) using `fopen`
    by setting `sleep(DELAY)` in between the two instructions, where `DELAY` is specified as 1 to simulate 1 second delay.
 
-```java
+```c
 ...
     if (!access(fileName, W_OK))
     {

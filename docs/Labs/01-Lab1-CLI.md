@@ -56,7 +56,7 @@ In order for us to be able to use CLI, we need to be familiar with their **comma
 `TASK 1:` To find your current shell, type the command: `ps -p $$`
 {:.task}
 
-```java
+```bash
 bash-3.2$ ps -p  $$
   PID TTY           TIME CMD
 70846 ttys003    0:00.01 bash
@@ -76,8 +76,7 @@ The CLI accepts **commands** (the **first** word, e.g. ps, that you type into th
 {:.task}
 
 E.g: type `date` and press enter. You should see today’s date given to you, for example:
-
-```java
+```bash
 bash-3.2$ date
 Thu May  5 14:08:51 +08 2022
 bash-3.2$
@@ -96,7 +95,7 @@ The commands you have typed above are those that **do not** require options or m
 
 For example, the command ps shows the list of processes for the current shell, while `ps -x` shows all processes that are owned by the current user even when it doesn’t have a **controlling terminal**.
 
-```java
+```bash
 bash-3.2$ ps
   PID TTY           TIME CMD
 61581 ttys000    0:01.80 /bin/zsh -l
@@ -233,7 +232,7 @@ The term "rc" in filenames like `.bashrc`, `.zshrc`, or `.vimrc` stands for "run
 - Restart your session by typing `exec bash`
 - Print your `$PATH` using `echo $PATH` command and notice how **Desktop** is now part of your environment variable
 
-```java
+```bash
 bash-3.2$ cd $HOME
 bash-3.2$ touch .bashrc
 bash-3.2$ nano .bashrc
@@ -454,7 +453,7 @@ When you open two terminal windows, each one creates a separate shell session. E
 2. Then, type the following in the command line (don't forget to navigate to your current directory first using `cd`!): `tr "[a-z]" "[A-Z]" test.txt`
 3. You will see such usage suggestion instead:
 
-```java
+```bash
 usage: 	tr [-Ccsu] string1 string2
         tr [-Ccu] -d string1
         tr [-Ccu] -s string1
@@ -599,7 +598,7 @@ print("Done")
 
 Running it with our script will **time** the execution of the python script above:
 
-```java
+```bash
 bash-3.2$ ./run.sh python3 hello.py
 Loading.....
 Done

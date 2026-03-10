@@ -56,7 +56,7 @@ This section contains the syllabus and materials for the first part of 50.005. Y
 * Describe and explain the concepts of mutex and condition synchronization
 * Explain other critical section solutions that do not require busy waiting: semaphores
 * Explain how semaphores can be used as a mutex and condition synchronization
-* Explain how Java implements synchronization using synchronized methods and named condition variables
+* Explain how (fine-grained) condition synchronisation, reentrant locks, and proper lock release is done
  
 ## Week 5: SGG Ch. 7.1-7.4, 7.5.1, 7.5.3, 7.6.2, 7.7
 * Explain the problem of deadlock
