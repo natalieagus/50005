@@ -66,7 +66,7 @@ brew install openssl          # macOS
 Download the starter code:
 
 ```
-git clone TBC
+git clone https://github.com/natalieagus/cse-lab-crypto-2026-starter
 ```
 
 This will result in a directory with the following structure:
