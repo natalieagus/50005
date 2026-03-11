@@ -16,7 +16,7 @@ Information Systems Technology and Design
 <br>
 Singapore University of Technology and Design
 <br>
-**Natalie Agus (Summer 2025)**
+**Natalie Agus (Summer 2026)**
 
 
 
@@ -718,3 +718,26 @@ sign_digest("original_files/longtext.txt");
 ```
 
 Here we test encryption of a digest using the public key (`enc_digest`) and signing of a digest using the private key (`sign_digest`), each tested with two files of differing length. Study the output carefully and head to eDimension to answer the rest of the questionnaires.
+
+# Summary
+
+This lab introduced the three cryptographic building blocks that form the foundation of Programming Assignment 2.
+
+**Part 1** covered symmetric encryption using AES-128-CBC combined with HMAC-SHA256 via `session_encrypt` and `session_decrypt` from `common.c`. You generated a session key, encrypted plaintext into a token with the layout `IV || ciphertext || HMAC`, and <span class="orange-bold">verified</span> that tampering causes `session_decrypt` to reject the token. In PA2 CP2, this is exactly how file data is protected in transit after the session key exchange.
+
+**Part 2** covered block cipher modes using 3DES directly through the raw OpenSSL EVP API, without the `common.c` wrappers. You implemented PKCS7 padding manually and observed the structural difference between ECB and CBC outputs on real images. ECB leaks patterns because identical plaintext blocks always produce identical ciphertext; CBC chains each block to the previous ciphertext and destroys those patterns. You will not use 3DES in PA2, but the padding logic and the EVP cipher API pattern (`EncryptInit` / `EncryptUpdate` / `EncryptFinal`) are the same ones `session_encrypt` uses internally with AES.
+
+**Part 3** covered RSA key generation, SHA-256 digests, and the two distinct uses of RSA: encrypting a digest with the public key (`rsa_encrypt_block`) and signing raw data with the private key (`sign_message_pss`). You saw that signing is faster than chunked RSA encryption because the data is hashed to a fixed 32-byte digest first, and that RSA-PSS is the correct padding scheme for signatures while OAEP is used for encryption.
+
+## What will be used in Programming Assignment 2
+
+| Lab concept | PA2 usage |
+|---|---|
+| `generate_session_key` / `session_encrypt` / `session_decrypt` | CP2: encrypting the file payload after key exchange |
+| `rsa_encrypt_block` / `rsa_decrypt_block` (OAEP) | CP1: direct file encryption; CP2: encrypting the session key |
+| `sign_message_pss` | All tasks: client authenticates itself to the server |
+| `verify_message_pss` | All tasks: server verifies the client signature (uses X.509 cert, not a raw key pair as in this lab) |
+| `load_cert_file` / `load_cert_bytes` / `verify_server_cert` | All tasks: client verifies the server's identity before sending anything |
+| PKCS7 padding | Applied automatically inside `session_encrypt`; you will not call it directly |
+
+The key difference in PA2 is that trust is established through **X.509 certificates** rather than a *pre-shared key pair* like in this lab. The server sends its signed certificate over the network; the client verifies it against the CA certificate shipped with the starter code, then extracts the server's public key from the verified cert. Only after that trust step does any encryption or signing take place. The `common.c` functions you used in this lab are the same ones that implement all of that.
