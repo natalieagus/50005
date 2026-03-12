@@ -57,10 +57,10 @@ You need a **C11-compatible compiler** (`gcc` or `clang`) and `make` to build th
 
 ### Source Code
 
-Clone the repository for this lab:
+Clone the starter code: 
 
 ```
-git clone TBC
+git clone https://github.com/natalieagus/cse-lab-htcpcp-2026-starter
 ```
 
 You should have the following files:
@@ -209,7 +209,7 @@ The diagram below summarises the architecture of the simple system:
 `TASK 1:` **Study** the architecture of the project, then complete all the `TODO` in `./src/server_pot.c`.
 {:.task}
 
-Please refer to the [readme](TBC) of the project before proceeding to understand further details about the system and answer related questions on eDimension. In particular, you should pay attention to the following:
+Please refer to the [readme](https://github.com/natalieagus/cse-lab-htcpcp-2026-starter/blob/main/README.md) of the project before proceeding to understand further details about the system and answer related questions on eDimension. In particular, you should pay attention to the following:
 
 1. What protocol(s) is/are used to exchange messages between the web application and the web browser?
 2. What protocol is used to exchange messages between the web application and the coffee server?
