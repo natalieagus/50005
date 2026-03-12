@@ -5,6 +5,7 @@ title: HTCPCP
 description:  Understand how HTTP works via HTCPCP Example
 parent: Labs
 nav_order:  8
+nav_exclude: true
 ---
 
 * TOC
