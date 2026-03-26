@@ -6,7 +6,6 @@ description: Reference guide on using common.c/h
 parent: Programming Assignment 2
 grand_parent: Programming Assignment
 nav_order:  10
-nav_exclude:  true
 ---
 
 
