@@ -5,7 +5,6 @@ title: Processes and Threads Synchronization
 description: Methods on how processes and threads can be made cooperative
 parent: Operating System
 nav_order: 8
-nav_exclude: true
 ---
 
 * TOC
