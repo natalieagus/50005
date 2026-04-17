@@ -109,7 +109,7 @@ shmctl(shmid, IPC_RMID, NULL);
 Of course one obvious issue that might happen here is that BOTH writer and reader are accessing the shared memory concurrently, therefore we will run into <span style="color:#f77729;"><b>synchronisation</b></span> problems whereby <span style="color:#f7007f;"><b>writer overwrites before reader finished reading</b></span> or <span style="color:#f7007f;"><b>reader attempts to read an empty memory value before writer finished writing</b></span>.
 {:.error}
 
-We will address such synchronisation problems in the next chapter.
+We will address such synchronisation problems in the [Synchronization chapter](/50005/os/synchronization).
 
 ### Program: IPC without SVC? {#code-ipc-is-impossible-without-system-calls}
 
