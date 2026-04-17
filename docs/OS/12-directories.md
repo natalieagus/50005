@@ -4,7 +4,7 @@ permalink: /os/directories
 title: UNIX Directories
 description: How UNIX directories are managed 
 parent: Operating System
-nav_order: 12
+nav_order: 13
 ---
 
 * TOC

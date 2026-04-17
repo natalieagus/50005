@@ -4,7 +4,7 @@ permalink: /os/deadlock
 title: Deadlock 
 description: Cause and solution to deadlock 
 parent: Operating System
-nav_order: 10
+nav_order: 11
 ---
 
 * TOC

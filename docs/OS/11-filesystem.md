@@ -4,7 +4,7 @@ permalink: /os/filesystem
 title: UNIX File System
 description: How UNIX file system is managed 
 parent: Operating System
-nav_order: 11
+nav_order: 12
 ---
 
 * TOC

@@ -4,7 +4,7 @@ permalink: /os/c-sync
 title: Synchronization in C
 description: Methods on how processes and threads can be made cooperative in C
 parent: Operating System
-nav_order: 8
+nav_order: 9
 ---
 
 * TOC

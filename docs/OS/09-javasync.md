@@ -4,7 +4,7 @@ permalink: /os/java-sync
 title: Synchronization in Java
 description: Methods on how processes and threads can be made cooperative in Java
 parent: Operating System
-nav_order: 9
+nav_order: 10
 nav_exclude: true
 ---
 
