@@ -174,7 +174,7 @@ There are two methods in the file, `enc_text(input_filename, output_filename)` a
 Quickly study what it does.
 {:.highlight}
 
-If you scroll below, you'll find these methods called repeteadly to encrypt and decrypt various files:
+If you scroll below, you'll find these methods called repeatedly to encrypt and decrypt various files:
 ```python
 if __name__ == "__main__":
     enc_text("original_files/shorttext.txt", "output/enc_shorttext.txt")
