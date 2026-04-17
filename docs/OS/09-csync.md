@@ -20,7 +20,7 @@ Singapore University of Technology and Design
 
 # Synchronization in C (POSIX Threads)
 
-{.:highlight}
+{:.highlight}
 > Detailed Learning Objectives
 >
 > 1. **Examine the Monitor Pattern in C**
