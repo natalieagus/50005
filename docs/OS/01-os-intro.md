@@ -177,6 +177,33 @@ A general purpose CPU has at least dual mode operation that should be supported 
 
 User programs have to perform **system calls** (supervisor call) when they require services from the kernel, such as access to the hardware or I/O devices. When they perform **system calls**, the user program changes its mode to **the kernel mode** and began executing the kernel instructions handling that call instead of their own program instructions. When the system call returns, the `PC` resumes the execution of the user program.
 
+### Tracing a System Call {#tracing-a-system-call}
+
+The paragraph above is abstract. To make the user/kernel boundary concrete, let us trace what actually happens when a user program reads a single byte from a file. Consider this one line of C:
+
+```c
+char c;
+read(fd, &c, 1);   // read 1 byte from file descriptor `fd` into `c`
+```
+
+From the CPU's point of view, **seven** things happen, in order:
+
+1. **User mode, user stack.** The program places `fd`, `&c`, and `1` into the registers (or on the stack, depending on the calling convention), then executes a single *trap* instruction — `syscall` on x86-64, `svc` on ARM, `TRAP` on the Beta CPU you saw in 50.002. This trap is one CPU instruction. The user program **cannot** simply `JMP` into kernel memory; the hardware does not allow it (recall the MSB-of-PC check from 50.002).
+2. **Mode flip (hardware).** The trap instruction atomically saves the user-mode `PC` and flags, flips the mode bit to **kernel mode**, and jumps to a *fixed* address in kernel memory — the system call entry point. The user program did **not** choose this address; the hardware did. This is what makes the boundary unforgeable.
+3. **Dispatch (kernel).** The entry point reads a register that holds the *syscall number* (e.g., `0` for `read` on Linux x86-64), looks it up in a kernel-resident table, and calls the matching handler — here, `sys_read`.
+4. **Handler runs in kernel mode.** `sys_read` validates the user-supplied pointer `&c`, asks the disk driver for the byte, and — if the data is not already in a cache — blocks the calling process until the disk's I/O-complete interrupt fires. The CPU is free to run other processes in the meantime.
+5. **Copy across the boundary.** Once the byte is sitting in a kernel buffer, the handler copies it into the user's address space at `&c`. User code cannot read kernel memory directly; kernel code *can* write into user memory, but only through a small set of verified helpers (e.g., `copy_to_user` on Linux).
+6. **Mode flip back (hardware).** The handler executes a *return-from-trap* instruction (`sysret` on x86-64, `eret` on ARM). This restores the saved `PC` and flags — flipping the mode bit back to **user mode** — and resumes the user program on the instruction *after* the trap.
+7. **User mode, one byte later.** `c` now holds the byte. The user program continues executing, with no knowledge of which CPU core it ran on, where the kernel buffer was, or how long step 4 took.
+
+Two things to hold onto:
+
+1. Every time you see `printf`, `malloc` (when it grows the heap), `fopen`, or any I/O in later chapters, **steps 1–7 are happening underneath** — usually several times per call. The system call is the *only* doorway into the kernel.
+2. The mode bit is flipped by **hardware**, not by software. Without this hardware support, a user program could forge kernel-mode execution and the entire dual-mode protection would collapse.
+{:.note}
+
+We will reuse this seven-step trace as a reference point throughout the course. When Chapter 5 introduces `fork()` and Chapter 6 introduces `pipe()`, they are syscalls that follow this **exact** shape — only the handler in step 4 changes.
+
 # Booting {#booting}
 
 Booting is the process of starting up a computer. **It is usually hardware initiated** (by the start button that users press) meaning that users physically initiate simple hardwired procedures to kickstart the chain of events that loads the firmware (BIOS) and eventually the entire OS to the main memory to be executed by the CPU. This process of loading basic software to help kickstart operation of a computer system after a hard reset or power on is called **bootstrapping**.
