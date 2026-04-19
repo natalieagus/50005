@@ -462,9 +462,7 @@ The actual implementation details (source code) of OS functions like `CopyFile` 
 ## System Call Detailed Implementation 
 
 System calls are interfaces through which user applications interact with the operating system's kernel to perform tasks that require higher privileges, such as I/O operations, process management, and file manipulations. Here’s a high-level overview of their implementation and the role of system call numbers:
-
 - **System Call Implementation**: System calls are implemented as part of the operating system kernel. When a user program invokes a system call, it executes a software interrupt or a special instruction that switches the processor from user mode to kernel mode. This transition is necessary because system calls often require accessing resources that are protected and can only be safely manipulated by the kernel.
-
 - **System Call Number**: Each system call is associated with a unique identifier known as a system call number. This number is used to index into a system call table maintained by the kernel, which maps numbers to the corresponding system call handlers. When a system call is invoked, the kernel uses this number to find the appropriate function to execute.
 
 The system call mechanism is a critical component of the operating system, allowing for safe and controlled interaction between user applications and hardware or kernel functions.
