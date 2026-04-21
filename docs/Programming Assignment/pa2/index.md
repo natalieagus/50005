@@ -192,13 +192,226 @@ Ensure you use the same port. The server's IP address (private) should be discov
 
 ```bash
 # Linux
-ipconfig getifaddr en0
+ip addr
 
 # macOS
 ipconfig getifaddr en0
 ```
 
 To get this to work, you most probably need to be on **the same subnet**. Just ensure that both machines are connected to the same WiFi and subnet. If you use SUTD WiFi, there's a chance that you are not in the same subnet. In that case, simply use your phone <span class="orange-bold">hotspot</span> and both machines shall connect to it.
+
+### Example: Direct LAN / Local AP setup
+
+You may try to create a local network using one Linux machine acting as a temporary Wi-Fi AP, or by directly connecting machines over Ethernet. This example assumes the Linux host uses NetworkManager via `nmcli`. If you use another network manager or a different OS, adapt the commands accordingly.
+
+Different examples below intentionally use different private subnets to reduce accidental address conflicts if you directly reuse the commands for multiple setups. In each individual example, all participating machines must still be placed on the same subnet.
+
+#### Example 1: Linux <--> Linux over RJ45 (nmcli)
+
+Find your interface:
+
+```bash
+nmcli device status
+```
+
+Look for a device name like `eth0`, `enp3s0` etc.
+
+Assign static IPs on the same private subnet.
+
+Host:
+
+```bash
+nmcli connection modify [connection name] \
+ipv4.method manual \
+ipv4.addresses 192.168.10.1/24
+nmcli connection up [connection name]
+```
+
+Client:
+
+```bash
+nmcli connection modify [connection name] \
+ipv4.method manual \
+ipv4.addresses 192.168.10.2/24
+nmcli connection up [connection name]
+```
+
+#### Example 2: Linux <--> Linux over RJ45 (no nmcli)
+
+Find your interface: 
+
+```bash
+ip link
+ip addr
+```
+
+Look for a device name like `eth0`, `enp3s0` etc.
+
+Assign static IPs in the same private subnet.
+
+Host:
+
+```bash
+ip addr add 192.168.20.1/24 dev eth0
+ip link set eth0 up
+```
+
+Client:
+
+```bash
+ip addr add 192.168.20.2/24 dev eth0
+ip link set eth0 up
+```
+
+#### Example 3: Linux host <--> Windows client over RJ45 (nmcli)
+
+Find your interface:
+
+```bash
+nmcli device status
+```
+
+Look for a device name like `eth0`, `enp3s0` etc.
+
+Assign static IPs in the same private subnet.
+
+Linux Host:
+
+```bash
+nmcli connection modify [connection name] \
+ipv4.method manual \
+ipv4.addresses 192.168.30.1/24
+nmcli connection up [connection name]
+```
+
+Windows Client (Ethernet adapter -> IPv4):
+- IP: 192.168.30.2/24
+- Subnet: 255.255.255.0
+- Gateway: [leave empty]
+
+#### Restore networking configuration
+
+Linux (NetworkManager):
+
+```bash
+nmcli connection modify [connection name] ipv4.method auto ipv4.addresses ""
+nmcli connection up [connection name]
+```
+
+Linux (manual):
+
+```bash
+ip addr flush dev eth0
+```
+
+Windows:
+- Set IPv4 back to "Obtain IP automatically"
+
+
+#### Example 4: Linux Host (AP with nmcli)
+
+Find your interface:
+
+```bash
+nmcli device status
+```
+
+Start AP:
+
+```bash
+nmcli device wifi hotspot \
+ifname [change this to the device name e.g. wlan0 / wlp2s1] \
+ssid [change this to network name e.g. pa2-lan] \
+password [change this e.g. 12345678]
+```
+
+Modify the IP:
+
+```bash
+nmcli connection modify Hotspot ipv4.method manual ipv4.addresses 192.168.40.1/24
+nmcli connection up Hotspot
+```
+
+#### Example 5: Linux Client (connect with nmcli)
+
+Find your interface:
+
+```bash
+nmcli device status
+```
+
+Find/Verify the AP exists:
+
+```bash
+nmcli dev wifi
+```
+
+Connect to the AP:
+
+```bash
+nmcli device wifi connect [network name, e.g. pa2-lan] password [password, e.g. 12345678]
+```
+
+Connect with a static IP:
+
+```bash
+nmcli connection modify [connection name, usually the SSID] \
+ipv4.method manual \
+ipv4.addresses 192.168.40.2/24 \
+ipv4.gateway 192.168.40.1
+nmcli connection up [connection name, usually the SSID]
+```
+
+#### Example 6: Linux Client (connect with wpa_supplicant)
+
+Create a minimal wpa_supplicant config file e.g. wpapa2.conf:
+
+```text
+network={
+    ssid="pa2-lan"
+    psk="12345678"
+}
+```
+
+Connect to the network defined in the config:
+
+```bash
+wpa_supplicant -i [wireless interface, e.g. wlan0] -c wpapa2.conf -B
+```
+
+Assign an IP on the same subnet as host:
+
+```bash
+ip addr add 192.168.40.3/24 dev [wireless interface, e.g. wlan0]
+ip link set [wireless interface, e.g. wlan0] up
+```
+
+#### Restore Normal Connection
+
+Host:
+
+```bash
+nmcli connection down Hotspot
+```
+
+Connect to usual Wi-Fi:
+
+```bash
+nmcli device wifi connect [some SSID] password [your password]
+```
+
+Remove the temporary hotspot profile if needed:
+
+```bash
+nmcli connection delete Hotspot
+```
+
+Restore DHCP if configured to static IP:
+
+```bash
+nmcli connection modify [connection name] ipv4.method auto ipv4.addresses "" ipv4.gateway ""
+nmcli connection up [connection name]
+```
 
 # Important Requirements
 
