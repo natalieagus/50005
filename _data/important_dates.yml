@@ -1,0 +1,182 @@
+- week: 1
+  items:
+    - date: "19 May"
+      day: "Tue"
+      time: "11:00"
+      badge: ext
+      task: "Extended Lecture: 30 mins"
+    - date: "24 May"
+      day: "Sun"
+      time: "23:59"
+      badge: pa
+      task: "<b>Form PA/Lab teams</b> (2 to 3 pax, same cohort)"
+    - date: "24 May"
+      day: "Sun"
+      time: "23:59"
+      badge: lab
+      task: "Submit Lab 1 (CLI) questionnaire"
+
+- week: 2
+  items:
+    - date: "26 May"
+      day: "Tue"
+      time: "11:00"
+      badge: ext
+      task: "Extended Lecture: 30 mins"
+
+- week: 3
+  items:
+    - date: "2 Jun"
+      day: "Tue"
+      time: "11:00"
+      badge: ext
+      task: "Extended Lecture: 30 mins"
+
+- week: 4
+  items:
+    - date: "9 Jun"
+      day: "Tue"
+      time: "10:00"
+      badge: quiz
+      task: "<b>Quiz 1</b> (Weeks 1 to 3)"
+    - date: "9 Jun"
+      day: "Tue"
+      time: "11:00"
+      badge: ext
+      task: "Extended Lecture: 30 mins"
+    - date: "12 Jun"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "Lab 4 (TOCTOU) team checkoff"
+    - date: "14 Jun"
+      day: "Sun"
+      time: "23:59"
+      badge: lab
+      task: "Submit Lab 4 (TOCTOU) questionnaire"
+    - date: "14 Jun"
+      day: "Sun"
+      time: "23:59"
+      badge: pa
+      task: "Join GitHub Classroom for PA1"
+
+- week: 5
+  items:
+    - date: "16 Jun"
+      day: "Tue"
+      time: "11:00"
+      badge: ext
+      task: "Extended Lecture: 30 mins"
+    - date: "21 Jun"
+      day: "Sun"
+      time: "23:59"
+      badge: lab
+      task: "Submit Lab 5 (Banker's) questionnaire"
+
+- week: 6
+  items:
+    - date: "23 Jun"
+      day: "Tue"
+      time: "09:00"
+      badge: pa
+      task: "<b>PA1 due</b> (push to GitHub)"
+    - date: "23 Jun"
+      day: "Tue"
+      time: "11:00"
+      badge: quiz
+      task: "<b>Quiz 2</b> (Weeks 4 to 5)"
+    - date: "26 Jun"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "Lab 5 (Banker's) team checkoff"
+    - span: true
+      time: "Lab time"
+      badge: pa
+      task: "PA1 Checkoff"
+
+- week: 7
+  items:
+    - span: true
+      badge: "off"
+      task: "Recess Week. <b>Test Lockdown Browser.</b>"
+
+- week: 8
+  items:
+    - date: "7 Jul"
+      day: "Tue"
+      time: "10:00 to 12:00"
+      badge: exam
+      task: "<b>Midterm Examination</b> (Weeks 1 to 6)"
+
+- week: 9
+  items:
+    - date: "19 Jul"
+      day: "Sun"
+      time: "23:59"
+      badge: lab
+      task: "Submit Lab 9 (Ping/Traceroute) questionnaire"
+
+- week: 10
+  items:
+    - date: "21 Jul"
+      day: "Tue"
+      time: "11:30"
+      badge: quiz
+      task: "<b>Quiz 3</b> (Weeks 8 to 9)"
+    - date: "26 Jul"
+      day: "Sun"
+      time: "23:59"
+      badge: pa
+      task: "Join GitHub Classroom for PA2"
+    - date: "26 Jul"
+      day: "Sun"
+      time: "23:59"
+      badge: lab
+      task: "Submit Lab 10 (Cryptography) questionnaire"
+
+- week: 11
+  items:
+    - date: "31 Jul"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "Lab 10 (Cryptography) team checkoff"
+
+- week: 12
+  items:
+    - date: "4 Aug"
+      day: "Tue"
+      time: "11:30"
+      badge: quiz
+      task: "<b>Quiz 4</b> (Weeks 10 to 11)"
+    - date: "9 Aug"
+      day: "Sun"
+      time: "23:59"
+      badge: lab
+      task: "Submit Lab 12 (HTCPCP) questionnaire"
+
+- week: 13
+  items:
+    - date: "11 Aug"
+      day: "Tue"
+      time: "09:00"
+      badge: pa
+      task: "<b>PA2 due</b> (push to GitHub)"
+    - span: true
+      time: "Lab time"
+      badge: lab
+      task: "PA2 and HTCPCP Checkoff"
+    - date: "14 Aug"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "Lab 12 (HTCPCP) team checkoff"
+
+- week: 14
+  items:
+    - date: "20 Aug"
+      day: "Thu"
+      time: "09:00 to 11:00"
+      badge: exam
+      task: "<b>Final Examination</b> (Weeks 8 to 12)"

@@ -1,0 +1,246 @@
+- week: 1
+  date: "18 May"
+  topic: "OS Introduction"
+  textbook: "SGG Ch. 1.1 to 1.6, 1.8.3, 1.13.3"
+  notes:
+    - label: "OS Introduction"
+      url: "/os/1-os-intro"
+    - label: "OS Roles"
+      url: "/os/2-os-roles"
+  activities:
+    - "1.1 Process and Concurrency"
+    - "1.2 Functional View of OS"
+  events:
+    - badge: ext
+      text: "Tuesday 11:00 to 11:30, LT1"
+    - badge: lab
+      text: "Introduction to Command Line (<b>2% questionnaire, due this Sunday 23:59</b>)"
+    - badge: prep
+      text: "Getting started this week"
+      details:
+        - "Prepare a POSIX-compliant OS before lab (see Getting Started)"
+        - "Read Introduction to C Part 1 if you want a smoother lab experience (structs, pointers, malloc). Recording on eDimension."
+        - "<b>Form teams of 2 to 3</b> for PAs and lab checkoffs (same cohort). Sign up on eDimension by <b>this Sunday, 23:59</b>."
+        - "Join the ED discussion forum (link on eDimension)"
+
+- week: 2
+  date: "25 May"
+  topic: "OS Services and Structure"
+  textbook: "SGG Ch. 2.1 to 2.6, 2.7.1 to 2.7.3, 2.9.2"
+  notes:
+    - label: "OS Services"
+      url: "/os/3-os-services"
+    - label: "OS Design Structure"
+      url: "/os/4-os-design-structure"
+  activities:
+    - "2.1 Privileges and System Calls"
+    - "2.2 OS Structure"
+  events:
+    - badge: ext
+      text: "Tuesday 11:00 to 11:30, LT1"
+    - badge: "off"
+      text: "No lab this week."
+    - badge: prep
+      text: "Read Introduction to C Part 2 (advanced memory allocation, static variables, function pointers, stack vs heap). Recording on eDimension."
+
+- week: 3
+  date: "1 Jun"
+  topic: "Process and Thread Management"
+  textbook: "SGG Ch. 3.1 to 3.3, 3.4.1, 3.6.1, 4.1 to 4.2, 4.3.1, 4.4, 4.5.1 to 4.5.2"
+  notes:
+    - label: "Processes"
+      url: "/os/processes"
+    - label: "IPC"
+      url: "/os/ipc"
+    - label: "Threads"
+      url: "/os/threads"
+  activities:
+    - "3.1 Multiprocess Program"
+    - "3.2 Kernel vs User Threads"
+  events:
+    - badge: "off"
+      text: "<b>Monday is a Public Holiday</b> (no Monday lecture)."
+    - badge: ext
+      text: "Tuesday 11:00 to 11:30, LT1"
+    - badge: "off"
+      text: "No lab this week."
+    - badge: prep
+      text: "Read Introduction to C Part 3 (shared memory, signal handling, fork, process termination). Recording on eDimension."
+
+- week: 4
+  date: "8 Jun"
+  topic: "Process Synchronisation"
+  textbook: "SGG Ch. 6.1 to 6.4, 6.5.1, 6.5.2, 6.6.1, 6.8.1 to 6.8.2, 6.8.4"
+  notes:
+    - label: "Synchronization"
+      url: "/os/synchronization"
+    - label: "Sync in C"
+      url: "/os/csync"
+  activities:
+    - "4.1 Semaphore Implementation"
+    - "4.2 Multiple Producers and Consumers"
+    - "4.3 Release vs Notify"
+    - "4.4 Peterson's Solution Correctness"
+  events:
+    - badge: quiz
+      text: "<b>Quiz 1:</b> Tuesday, first 20 mins before extended lecture. Open book, Weeks 1 to 3 material."
+    - badge: ext
+      text: "Tuesday 10:30 to 11:30, LT1"
+    - badge: lab
+      text: "TOCTOU Race Condition Attack (<b>2% questionnaire due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
+    - badge: pa
+      text: "<b>PA1 released.</b> Read the handout. Join the GitHub Classroom assignment on eDimension by <b>this Sunday 23:59</b>."
+
+- week: 5
+  date: "15 Jun"
+  topic: "Deadlock"
+  textbook: "SGG Ch. 7.1 to 7.4, 7.5.1, 7.5.3, 7.6.2, 7.7"
+  notes:
+    - label: "Deadlock"
+      url: "/os/deadlock"
+  activities:
+    - "5.1 Banker's Algorithm"
+  events:
+    - badge: ext
+      text: "Tuesday 11:00 to 11:30, LT1"
+    - badge: lab
+      text: "Banker's Algorithm (<b>2% questionnaire due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
+
+- week: 6
+  date: "22 Jun"
+  topic: "File System"
+  textbook: "SGG Ch. 10.1, 10.2, 10.3.2 to 10.3.7, 10.6, 11.2.1"
+  notes:
+    - label: "Filesystem"
+      url: "/os/filesystem"
+    - label: "Directories"
+      url: "/os/directories"
+  activities:
+    - "6.1 UNIX"
+    - "6.2 Linux File Operation"
+  events:
+    - badge: quiz
+      text: "<b>Quiz 2:</b> Tuesday, first 20 mins of lesson. Open book, Weeks 4 to 5 material."
+    - badge: ext
+      text: "Tuesday 11:00 to 11:30, LT1"
+    - badge: pa
+      text: "<b>PA1 due Tuesday 09:00.</b> Push to GitHub before the cutoff."
+    - badge: lab
+      text: "PA1 checkoff during lab slot. <b>All members must be present</b> and able to answer questions. Checkoff schedule on eDimension."
+
+- week: 7
+  date: "30 Jun"
+  special: "Recess Week"
+  events:
+    - badge: "off"
+      text: "No classes. <b>Test your Lockdown Browser</b> under the Lockdown Browser Test Run tab on eDimension before the midterm."
+
+- week: 8
+  date: "6 Jul"
+  topic: "Network Basics and Hierarchy"
+  textbook: "KR Ch. 1.1, 1.3, 1.5"
+  notes:
+    - label: "Network Basics"
+      url: "/ns/01-network-basics"
+    - label: "Internet Hierarchy"
+      url: "/ns/2-internet-hierarchy"
+  activities:
+    - "NS 1.1 Network Performance"
+    - "NS 1.2 Priority Inversion"
+  events:
+    - badge: exam
+      text: "<b>Midterm Examination:</b> Tuesday 10:00 to 12:00. Report by 09:45. Covers Weeks 1 to 6 material. Venues TBC."
+    - badge: "off"
+      text: "Tuesday lecture cancelled due to midterm. No lab this week."
+
+- week: 9
+  date: "13 Jul"
+  topic: "Network Performance, Delay and Throughput"
+  textbook: "KR Ch. 1.4"
+  notes:
+    - label: "Network Performance"
+      url: "/ns/03-network-performance"
+  activities:
+    - "NS 2.1 Delay and Throughput"
+    - "NS 2.2 Internet Application"
+  events:
+    - badge: lab
+      text: "Ping and Traceroute (<b>2% questionnaire due this Sunday 23:59</b>)"
+
+- week: 10
+  date: "20 Jul"
+  topic: "Network Security"
+  textbook: "KR Ch. 8.1 to 8.5"
+  notes:
+    - label: "Network Security"
+      url: "/ns/04-network-security"
+    - label: "Applications of NS"
+      url: "/ns/05-network-security-app"
+  activities:
+    - "NS 3.1 Public/Private Key Pair"
+    - "NS 3.2 Symmetric Key"
+    - "NS 3.3 The Birthday Problem"
+  events:
+    - badge: quiz
+      text: "<b>Quiz 3:</b> Tuesday, first 20 mins of lesson. Open book, Weeks 8 to 9 material."
+    - badge: lab
+      text: "Python Cryptography (<b>2% questionnaire due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
+    - badge: pa
+      text: "<b>PA2 released.</b> Read the handout. Join the GitHub Classroom assignment on eDimension by <b>this Sunday 23:59</b>."
+
+- week: 11
+  date: "27 Jul"
+  topic: "Internet Naming and Addressing"
+  textbook: "KR Ch. 2.1, 2.4"
+  notes:
+    - label: "DNS"
+      url: "/ns/06-internet-naming-and-addressing"
+    - label: "DNS Records & Query"
+      url: "/ns/07-dns-records-query"
+  activities:
+    - "NS 4.1 DNS via lookup"
+    - "NS 4.2 DNS via dig"
+  events:
+    - badge: "off"
+      text: "No lab this week. Use the time to work on PA2."
+
+- week: 12
+  date: "3 Aug"
+  topic: "Client-Server and the Web"
+  textbook: "KR Ch. 2.2, 2.7"
+  notes:
+    - label: "Network Application Layer"
+      url: "/ns/08-app-layer"
+    - label: "HTTP"
+      url: "/ns/09-http"
+  activities:
+    - "NS 5.1 Space-time Diagram"
+    - "NS 5.2 Be a Browser"
+    - "NS 5.3 Webcache"
+    - "NS 5.4 Wireshark and HTTP"
+  events:
+    - badge: quiz
+      text: "<b>Quiz 4:</b> Tuesday, first 20 mins of lesson. Open book, Weeks 10 to 11 material."
+    - badge: lab
+      text: "Web Server and Client / HTCPCP (<b>2% questionnaire due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
+
+- week: 13
+  date: "10 Aug"
+  special: "Project Week"
+  special_desc: "No new lecture content this week. Use the time to finish PA2."
+  events:
+    - badge: pa
+      text: "<b>PA2 due Tuesday 09:00.</b> Push to GitHub before the cutoff."
+    - badge: lab
+      text: "PA2 checkoff and HTCPCP lab checkoff during lab slot. <b>All members must be present.</b> Checkoff schedule on eDimension."
+
+- week: 14
+  date: ""
+  special: "Final Examination"
+  events:
+    - badge: exam
+      text: "<b>Final Examination:</b> Thursday, 09:00 to 11:00."
+      details:
+        - "Reporting time: 08:30"
+        - "Covers: Weeks 8 to 12 material"
+        - "Venues: TBC"

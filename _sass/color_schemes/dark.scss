@@ -174,3 +174,52 @@ figure.highlight::before {
 $dark-img-filter: invert(1) hue-rotate(180deg);
 $border-bottom-color: rgba(224, 243, 255, 0.1);
 $orange-bold: orange;
+// ── Calendar week cards ──
+.week-card {
+    background: $grey-dk-250;
+    border: 1px solid $bluegray-900;
+    border-left: 3px solid $dark-theme-main-color-1;
+    border-radius: $border-radius;
+    padding: 12px 16px;
+    margin: 12px 0;
+}
+.week-card .wr {
+    display: flex;
+    gap: 8px;
+    padding: 3px 0;
+    font-size: 0.92em;
+    line-height: 1.5;
+    flex-wrap: wrap;
+}
+.week-card .wl {
+    min-width: 80px;
+    font-weight: 600;
+    color: $bluegray-400;
+    flex-shrink: 0;
+}
+
+.week-card a, table a {
+    color: $dark-theme-main-color-1;
+    text-decoration: underline;
+    text-decoration-color: rgba($dark-theme-main-color-1, 0.3);
+    &:hover {
+        text-decoration-color: $dark-theme-main-color-1;
+    }
+}
+
+// ── Calendar badges ──
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: $border-radius;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-right: 4px;
+}
+.badge-exam { background: rgba($calloutsred-300, 0.15);      color: $calloutsred-100; }
+.badge-quiz { background: rgba($calloutslightred-300, 0.15);  color: $calloutslightred-100; }
+.badge-lab  { background: rgba($calloutsblue-300, 0.12);      color: $calloutsblue-300; }
+.badge-pa   { background: rgba($calloutsteal-300, 0.15);      color: $calloutsteal-300; }
+.badge-ext  { background: rgba($calloutsgreen-300, 0.12);     color: $calloutsgreen-300; }
+.badge-off  { background: $grey-dk-300;                        color: $bluegray-400; }
+.badge-prep { background: rgba($calloutsyellow-300, 0.12);    color: $calloutsyellow-100; }
