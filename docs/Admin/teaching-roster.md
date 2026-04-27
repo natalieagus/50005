@@ -20,9 +20,6 @@ nav_order: 4
 | Prof. David Yau | david_yau@sutd.edu.sg | By appointment (email) |
 | Natalie Agus | natalie_agus@sutd.edu.sg | By appointment (email/Telegram/ed discussion) |
 
-## Teaching Assistants
-
-TBC. This section will be updated once TA assignments are confirmed.
 
 ## Class Venue and Schedule
 
@@ -50,6 +47,20 @@ On selected weeks, there is a 30-minute <span class="orange-bold">extended</span
 {:.note}
 Not all weeks have lab sessions. Refer to the [Class Calendar]({{ site.baseurl }}/admin/class-calendar) for which weeks have labs, extended lectures, or PA checkoffs.
 
+
+## Teaching Assistants
+
+| CI Group | Day & Time | Teaching Assistants |
+|----------|------------|---------------------|
+| CI01 | Tue 16:00--18:00 | Ryan Pek Yi Ze, Lim Wei Ren Marcus |
+| CI02 | Thu 11:30--13:30 | Ng Keng Hwang, Chia Zhong Yi, Xue Yufeng |
+| CI03 | Thu 16:00--18:00 | Xue Yufeng, Ong Wei Yang |
+| CI04 | Thu 14:00--16:00 | Ong Wei Yang, Nurul Hidayah Binte Mohd Azmi |
+
+{:.note}
+They are responsible for checkoffs so please get to know them by attending the class and then making ad-hoc **appointments** for checkoffs.
+
+
 ## Weekly Roster
 
 | Week | Mon Lecture | Tue Lecture | Lab (CI01 Tue / CI02-04 Thu) | Topic |
@@ -61,10 +72,10 @@ Not all weeks have lab sessions. Refer to the [Class Calendar]({{ site.baseurl }
 | 5 | 15 Jun, Natalie | 16 Jun, Natalie (extended) | 17 Jun / 19 Jun, Prof. David | Deadlock / Banker's Lab |
 | 6 | 22 Jun, Natalie | 23 Jun, Natalie (extended) | PA1 Checkoff | File System |
 | 7 | Recess Week | | | |
-| 8 | 6 Jul, Prof. David | 7 Jul, Midterm Exam | No lab | Network Introduction |
+| 8 | 6 Jul, Prof. David | 7 Jul, **Midterm Exam** (10AM-12PM)| No lab | Network Introduction |
 | 9 | 13 Jul, Prof. David | 14 Jul, Prof. David | 14 Jul / 16 Jul, Natalie | Network Performance / Ping Lab |
 | 10 | 20 Jul, Prof. David | 21 Jul, Prof. David | 21 Jul / 23 Jul, Prof. David | Network Security / Cryptography Lab |
 | 11 | 27 Jul, Prof. David | 28 Jul, Prof. David | No lab | DNS |
 | 12 | 3 Aug, Prof. David | 4 Aug, Prof. David | 4 Aug / 6 Aug, Natalie | HTTP and the Web / HTCPCP Lab |
 | 13 | No lecture | No lecture | PA2 Checkoff | |
-| 14 | | | | 20 Aug, Final Exam (9 to 11 AM) |
+| 14 | | | | 20 Aug, **Final Exam** (9 to 11 AM) |
