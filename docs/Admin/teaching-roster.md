@@ -66,8 +66,8 @@ They are responsible for checkoffs so please get to know them by attending the c
 | Week | Mon Lecture | Tue Lecture | Lab (CI01 Tue / CI02-04 Thu) | Topic |
 |---|---|---|---|---|
 | 1 | 18 May, Natalie | 19 May, Natalie (extended) | 19 May / 21 May, Natalie | OS Introduction / CLI Lab |
-| 2 | 25 May, Natalie | 26 May, Natalie (extended) | No lab | OS Services |
-| 3 | 1 Jun, Public Holiday | 2 Jun, Natalie (extended) | No lab | Threads and Processes |
+| 2 | 25 May, Natalie | 26 May, Natalie (extended) | CI01 & CI02 (Shell & PA1 intro), CI03 & CI04 **no lab**, Natalie | OS Services |
+| 3 | 1 Jun, Public Holiday | 2 Jun, Natalie (extended) | CI03 & CI04 (Shell & PA1 intro), CI01 & CI02 **no lab**, Natalie | Threads and Processes |
 | 4 | 8 Jun, Natalie | 9 Jun, Natalie (extended) | 9 Jun / 11 Jun, Prof. David | Synchronisation / TOCTOU Lab |
 | 5 | 15 Jun, Natalie | 16 Jun, Natalie (extended) | 17 Jun / 19 Jun, Prof. David | Deadlock / Banker's Lab |
 | 6 | 22 Jun, Natalie | 23 Jun, Natalie (extended) | PA1 Checkoff | File System |
@@ -79,3 +79,11 @@ They are responsible for checkoffs so please get to know them by attending the c
 | 12 | 3 Aug, Prof. David | 4 Aug, Prof. David | 4 Aug / 6 Aug, Natalie | HTTP and the Web / HTCPCP Lab |
 | 13 | No lecture | No lecture | PA2 Checkoff | |
 | 14 | | | | 20 Aug, **Final Exam** (9 to 11 AM) |
+
+## Programming Assignments Checkoff
+
+**Week 6 PA1 checkoff**: 
+* Tue and Thurs, 23 Jun, 25 Jun (respective lab session time)
+* UTAs on duty: 
+  * Tue: 
+**Week 13 PA2 checkoff**: Tue and Thurs, 11 Aug, 13 Aug
