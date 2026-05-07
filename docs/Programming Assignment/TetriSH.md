@@ -856,15 +856,11 @@ If no group meets the prize eligibility standard, the prize may be withheld.
 This `tetriSH` project exist purely as a challenge to push your potential further. You are to embark on this solely if you are interested.
 
 
-If you're committed, it would replace PA1 and PA2 and carries the same course-mark ceiling as the normal PA1 + PA2 path.
+If you're committed, it would replace PA1 and PA2 and carries the same course-mark ceiling as the normal PA1 + PA2 path. There are no bonus marks for this, only a chance at the prize. 
 
-There are no bonus marks.
+Groups are to indicate interest by the end of Week 3 and the groups should consist of 3 members with declared roles. The live checkoff includes a demo, live patching & coding, and compulsory Q&A.
 
-Groups are to indicate interest by the end of Week 3 and the groups should consist of 3 members with declared roles.
-
-The live checkoff includes a demo, live patching & coding, and compulsory Q&A.
-
-The prize is separate from course marks.
+Note that the prize is separate from course marks.
 
 Depending on the course budget, one or two winning group receives multiple Apple products worth approximately S$3,000.
 
