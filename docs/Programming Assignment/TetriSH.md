@@ -1,0 +1,879 @@
+---
+layout: default
+title: tetriSH
+permalink: /pa/tetrish
+nav_order: 8
+parent: Programming Assignment
+---
+
+
+* TOC
+{:toc}
+
+**50.005 Computer System Engineering**
+<br>
+Information Systems Technology and Design
+<br>
+Singapore University of Technology and Design
+<br>
+**Natalie Agus (Summer 2026)**
+
+
+# tetriSH
+{:no-toc}
+
+{:.highlight}
+tetriSH is an alternative programming assignment track. It replaces PA1 and PA2 for accepted groups.
+
+This is not a bonus-mark assignment. tetriSH replaces:
+
+1. **PA1: shell, daemon, process management, signals, and basic IPC**
+2. **PA2: authenticated and confidential client-server communication**
+
+A group that takes tetriSH does <span class="orange-bold">not</span> need to separately submit PA1 and PA2.
+
+Instead, the group submits one integrated system that demonstrates the required PA1 and PA2 competencies through the tetriSH architecture. A polished game interface alone is <span class="orange-bold">not</span> sufficient, and this is an assessment on systems engineering. You will be interviewed and asked to implement live features during the checkoff.
+
+{:.important}
+The project component remains <span class="orange-bold">capped</span> at the same mark as the normal PA1 + PA2 path. There are **no additional bonus marks** for attempting tetriSH. However, there's a **prize** for the top 2 groups.
+
+
+Sections below are tagged so you can tell what is required and what is yours to design.
+
+{:.important-title}
+> **Required**
+> 
+> This is a hard requirement. You will be graded on whether your code does this and no deviation is allowed.
+
+{:.highlight-title}
+> **Open design**
+> 
+> A decision you must make and document neatly. We give you example approaches and you should pick, invent your own, but defend it in your `README` and at the live demo Q&A.
+
+
+## Overview
+
+`tetriSH` is a single integrated project that combines [PA1]({{ site.baseurl }}/pa1/intro) (shell + daemon) and [PA2]({{ site.baseurl }}/pa2/intro-c) (authenticated, confidential client-server protocol) into one <span class="orange-bold">terminal-based</span> Battle-Royale Tetris system written entirely in C.
+
+You should deliver **five binaries** and **three libraries**:
+
+| Component | Type | Role |
+|---|---|---|
+| `tetrish` | binary | Interactive shell, reads `.tetrishrc`, launches the daemons |
+| `tetrisd` | binary | Concurrent game server (the body of the system) |
+| `tetrislogd` | binary | Dedicated logger daemon (separate process) |
+| `tetrisctl` | binary | Admin CLI for the running game daemon |
+| `tetrisu` | binary | Terminal-based game client (the user-facing program) |
+| `libtetrissh` | library | Secure session (cert auth, RSA-wrapped AES, framing) |
+| `libhtttp` | library | HTTTP protocol parser and serialiser |
+| `libtetrisbrain` | library | Tetris game logic (board, pieces, gravity, line clear) |
+
+
+You may complete this challenge in **groups of 3 only**. This is an *opt-in replacement* for PA1 + PA2. Selection is competitive and is described in the later section [below](#selection-marking-and-prize).
+
+### Project Constraints
+
+This entire project **must** solely be terminal-based and it must be written in C.
+
+## Layering
+
+{:.important-title}
+> **Required**
+> 
+> The system has exactly **three** layers above the kernel and you should implement the upper two.
+
+```
++---------------------------------------------+
+|  Application: HTTTP messages                 |  
+|  (HyperText Tetris Transfer Protocol)        |
++---------------------------------------------+
+|  Secure session                              |  
+|  (cert auth, RSA-wrapped AES, framed)        |
++---------------------------------------------+
+|  Transport: TCP via POSIX sockets            |  
++---------------------------------------------+
+``` 
+
+{:.note}
+TCP is provided by the kernel through the socket API. We are not here to reimplement reliability, ordering, retransmission, or congestion control as it is out of scope and not the point of this course.
+
+
+## Binaries
+
+### `tetrish`: the shell
+
+{:.important-title}
+> **Required**
+> 
+> All PA1 shell behaviour: REPL, `fork()` plus `execvp()`, builtins (`cd, help, exit, usage, env, setenv, unsetenv`), `.tetrishrc` execution on startup, background process tracking and spawning using `sys`, `dspawn`, `dcheck`, no crashes on bad input.
+
+`tetrish` is the <span class="orange-bold">entry</span> point. From inside `tetrish`, the user can launch `tetrisd` and `tetrislogd` in the background, run `tetrisctl` queries  (server side), or start `tetrisu` (client side) to play.
+
+{:.highlight-title}
+> **Open design**
+> 
+> Whether you add `tetrish`-specific builtins (e.g. `tetris-status` as a wrapper around `tetrisctl status`, or `tetris-up` as a one-shot to launch the daemon and the logger together) is your call. 
+
+### 3.2 `tetrisd`: the game daemon
+
+{:.important-title}
+> **Required**
+> 
+> The daemon must:
+> - Detach from the controlling terminal when launched in background from `tetrish`
+> - Bind to the TCP port configured in `.tetrishrc`
+> - Accept multiple concurrent clients
+> - Establish a secure session (via `libtetrissh`) with each client before any HTTTP traffic
+> - Parse and serialise HTTTP messages (via `libhtttp`)
+> - Maintain rooms with multiple players, run game logic (via `libtetrisbrain`), broadcast state
+> - Handle `SIGTERM` (graceful shutdown), `SIGHUP` (reload config), `SIGUSR1` (dump state to log)
+> - Ignore `SIGPIPE`; detect broken connections via `write()` returning `EPIPE`
+> - Forward all log records to `tetrislogd` over IPC, with non-blocking enqueue from game-critical threads (see Section 7)
+> - Expose a control plane to `tetrisctl` (see Section 6)
+
+`tetrisd` is the **process** that runs the **server**. It contains threads. The threads inside `tetrisd` should orchestrate the listeners, per-client handlers, per-room game ticks, the signal handler, and the channel out to `tetrislogd`. The libraries (`libtetrissh`, `libhtttp`, `libtetrisbrain`) should provide the heavy lifting.
+
+{:.highlight-title}
+> **Open design**
+> 
+> The internal architecture of `tetrisd` is yours. We have three reference design for your perusal.
+
+#### Thread-per-client, room-ticker per room
+
+```
+   listener_thread  ---->  client_thread (one per client)
+                              |
+                              v
+                          room_t (mutex-protected)
+                              ^
+                              |
+                          ticker_thread (one per active room)
+
+   logshipper_thread (one)    signal_thread (one)
+   ctl_listener_thread (one)
+```
+
+- Listener `accept()`s, hands the `fd` to a **fresh** client thread.
+- Client thread calls into `libtetrissh` to do the handshake, then loops on HTTTP requests parsed by `libhtttp`.
+- Each active room runs a ticker thread at fixed Hz that mutates board state (via `libtetrisbrain`) under the room mutex and enqueues `STATE` broadcasts to each player's send queue.
+- A dedicated log-shipper thread drains the in-process log buffer and forwards records to `tetrislogd` over IPC.
+
+{:.note-title}
+> Tradeoffs
+> 
+> Thread count grows linearly with clients.
+
+#### Event loop with `epoll` / `kqueue`
+
+```
+   main_thread (epoll loop)  <----  all client fds
+                                    listener fd
+                                    ctl socket fd
+                                    timer fd (for room ticks)
+                                    logshipper fd (out to tetrislogd)
+
+   signal_thread (one)
+```
+
+- Single thread services all sockets via non-blocking I/O.
+- Room ticks come from `timerfd_create` (Linux) or `EVFILT_TIMER` (BSD/macOS).
+- Synchronisation problem mostly disappears because there is one mutator.
+
+{:.note-title}
+> Tradeoffs
+> 
+> Scalable, but requires heavy synchronisation.
+
+#### Master plus per-room worker processes
+
+```
+   master_process  ----fork()---->  room_worker (one per room)
+        |                                  ^
+        | shm_open + mmap                  | POSIX mq
+        v                                  v
+   shared lobby table                shared garbage queue (battle royale)
+```
+
+- Master accepts connections, spawns a worker process per room.
+- File descriptors for clients are passed to workers via `SCM_RIGHTS` over a Unix socket.
+- Global state (room directory, scoreboard) lives in shared memory.
+- Cross-room events (battle royale garbage) flow through POSIX message queues.
+
+{:.note-title}
+> Tradeoffs
+> 
+> This utilise IPC and is the most elegant solution but hard to debug.
+
+### `tetrislogd`
+
+This is your logger daemon.
+
+{:.important-title}
+> **Required**
+> 
+> `tetrislogd` is a separate <span class="orange-bold">process</span>, not a thread inside `tetrisd`. It receives log records over an IPC channel and writes them to disk.
+
+Required behaviour:
+- Accept log records from `tetrisd` over IPC
+- Write records to the log file specified in `.tetrishrc`
+- Maintain a "dropped records" counter that increments when the IPC channel cannot keep up, and emit a summary line periodically (e.g. `dropped 47 records in last 30s`)
+- Handle `SIGTERM` (flush buffered records, close file, exit) and `SIGHUP` (reopen log file, for log rotation)
+- Survive a `tetrisd` restart without dying (i.e. accept reconnections, do not exit when its IPC peer disappears)
+
+The reason why this should be a separate process is because:
+1. **Separation of failure domains:** A bug in the logger (file system full, slow disk, etc.) does not bring down the game daemon. The game keeps playing even if logs are momentarily lost.
+2. **Real IPC requirement:** This forces a real producer-consumer IPC channel between `tetrisd` and `tetrislogd`, exercising the OS chapter on IPC in a non-trivial way. Good to challenge yourself.
+3. **Production realism:** This is how `systemd-journald` and `rsyslogd` work. Daemons forward log records via a socket; the logger is its own process.
+
+{:.highlight-title}
+> **Open design**
+> 
+> The IPC mechanism between `tetrisd` and `tetrislogd` is yours. Reasonable options:
+> 
+> - **Unix domain socket** (datagram or stream, most flexible): reconnect logic must be written on `tetrisd` side if `tetrislogd` restarts.
+> - **POSIX message queue** (`mq_open`): built-in bounded buffer, drop policy is explicit.
+> - **Named pipe (FIFO)**: simplest in code but need careful lifecycle handling because there's no reconnection
+> - **Shared memory ring buffer plus a notification channel**: highest performance but hardest to debug and get right.
+> 
+> Wire format on the channel (line-based, length-prefixed binary, JSON, custom) is yours and you should document it properly.
+
+{:.highlight-title}
+> **Open design (lifecycle)**
+> 
+> Whether `tetrislogd` is launched by `tetrish` independently (user types `tetrislogd &` then `tetrisd &`), or `tetrisd` spawns `tetrislogd` automatically, or some other arrangement. Document the startup sequence in your `README`.
+
+### `tetrisctl`
+
+This is the admin CLI of your system.
+
+{:.important-title}
+> **Required**
+> 
+> `tetrisctl` is a separate binary that runs administrative actions against a running `tetrisd`. At minimum it must support a status query and a graceful shutdown trigger. The channel it uses must be a real IPC mechanism, not a network connection to the public TCP port.
+> 
+> The control plane must remain available even when the public TCP listener is saturated.
+
+{:.highlight-title}
+> **Open design**
+> 
+> The additional commands you offer here, the IPC mechanism (Unix domain socket, named pipe, POSIX message queue, signals plus state files, or a combination), and the wire format on that channel follows `HTTTP`, and it is fixed. See [this](#hypertext-tetris-transfer-protocol) section for details.  Document whatever additional things you add for `tetrisctl` in your README.
+
+Useful additional commands you may consider: `rooms`, `players`, `kick <player>`, `reload` (often implemented as sending `SIGHUP` to `tetrisd`), `log-level <level>` (forwards to `tetrislogd`), `dropped-logs` (queries the dropped-records counter from `tetrislogd`). None are mandatory.
+
+### `tetrisu`
+
+This binary is the game client.
+
+{:.important-title}
+> **Required**
+> 
+> Terminal-based. Must:
+> - Connect via TCP, complete the secure session handshake (via `libtetrissh`)
+> - Send HTTTP requests for game actions (via `libhtttp`)
+> - Receive and render server-pushed `STATE` frames
+> - Handle keyboard input non-blocking (so it can read input and network simultaneously)
+> - Exit cleanly on `q` or `SIGINT`
+
+{:.highlight-title}
+> **Open design**
+> 
+> Rendering technique: raw ANSI escape codes, `ncurses`, or anything else that renders in a terminal. You are free to determine the key bindings beyond the basics or whether the client supports reconnection.
+
+## Libraries
+
+The libraries are the durable, testable, reusable parts of the codebase. They are **statically** linked into the binaries that need them. Each library has one responsibility and you must stick to clean coding practice in this project.
+
+### `libtetrissh`
+
+This library implements the secure session handshake between client and server.
+
+{:.important-title}
+> **Required**
+> 
+> Every byte of HTTTP traffic flows inside an authenticated, confidential session established at connection time. The session protocol follows the PA2 pattern:
+> 
+> 1. Client connects, sends a fresh nonce.
+> 2. Server sends its X.509 certificate.
+> 3. Client verifies the certificate against the bundled CA (`cacsertificate.crt`).
+> 4. Server signs the client nonce with its private key (RSA-PSS).
+> 5. Client verifies the signature using the public key from the certificate.
+> 6. Client generates a 32-byte AES-256 session key, RSA-OAEP encrypts it with the server's public key, sends it.
+> 7. From this point on, every frame is `[4-byte big-endian length][AES ciphertext]` carrying one HTTTP message.
+> 
+> Frame size limit: 64 KiB. Larger HTTTP messages must be split by the application or rejected with `413 Payload Too Large`.
+> 
+> Cryptographic primitives come from PA2's `common.c`. You are <span class="orange-bold">not</span> allowed to modify `common.c` or use any cryptographic library other than OpenSSL.
+
+`libtetrissh` is linked into `tetrisd` (server-side handshake) and `tetrisu` (client-side handshake). Linking the same library into both ends <span class="orange-bold">prevents protocol drift</span> between client and server.
+
+{:.highlight-title}
+> **Open design**
+> 
+> The shape of the API.  An easy API would be something like: `session_handshake_server()`, `session_handshake_client()`, `session_send()`, `session_recv()`, `session_close()`. The exact signatures, the data structure that holds session state, error reporting conventions are yours to determine.
+
+### `libhtttp`
+
+This is the HTTTP protocol library.
+
+{:.important-title}
+> **Required**
+> 
+> `libhtttp` parses incoming HTTTP messages and serialises outgoing ones. Both `tetrisd` and `tetrisu` should link against it.
+> 
+> The wire format is fixed and details are described the section [below](#hypertext-tetris-transfer-protocol). `libhtttp` must conform to it exactly. 
+
+`libhtttp` is made as a separate library:
+
+1. **Testability**: The protocol parser can be unit-tested in isolation, without needing the daemon running or the client connected.
+2. **Reuse**: The same parser code is used on both sides of the connection and there won't be any drift (disagreement, outdated interface)
+3. **Separation of concerns**: The dispatcher in `tetrisd` reasons in terms of parsed **messages**, not **bytes**. The renderer in `tetrisu` reasons in terms of `STATE` structures, not strings. They belong in two different level of abstraction.
+
+{:.highlight-title}
+> **Open design**
+> 
+> You can freely design: whether parsing is one-shot ("*here is a buffer, give me a parsed message*") or streaming ("*feed me bytes, tell me when a message is complete*"), and whether the parsed-message data structure is heap-allocated, arena-allocated, or stack-friendly. The error codes and how they map to HTTTP status codes returned to the client is also yours to determine.
+
+### `libtetrisbrain`
+
+This library implements the main Tetris game logic,
+
+{:.important-title}
+> **Required**
+> 
+> `libtetrisbrain` implements the Tetris game rules. Pieces, rotation, gravity, line clear, scoring, lock delay, soft and hard drop, game over detection. It is **pure logic with no I/O**, no networking, no file system access and no side-effects. 
+> 
+> `tetrisd` links against it for authoritative server-side game state. `tetrisu` may link against it for client-side prediction (optional) or just render server state directly.
+
+It is common to have game logic separated out from the entire system supporting it as:
+1. **The game logic is non-trivial**: we need to separate it from the rest of the system for ease of development and testing, and also grading.
+2. **Pure functions are testable**: a board state plus a move produces a new board state, so you should have no mocking, no fixtures, and simply clean inputs and outputs.
+3. **Clean integration boundary**: `tetrisd` knows what `libtetrisbrain` exposes and nothing about how it works internally. The brain can be rewritten without touching the daemon.
+
+{:.highlight-title}
+> **Open design**
+> 
+> You can design the data structures for the board and pieces, the rotation system (SRS, ARS, classic Atari, your own invention), the scoring rules, the gravity curve, the lock delay rules. Please Document your choices.
+
+##  Hypertext Tetris Transfer Protocol
+
+This is an application-layer protocol.
+
+{:.important-title}
+> **Required**
+> 
+> The following wire format is fixed. 
+
+### Message grammar
+
+```
+REQUEST       ::= REQUEST-LINE CRLF *(HEADER CRLF) CRLF [BODY]
+REQUEST-LINE  ::= METHOD SP PATH SP "HTTTP/1.0" CRLF
+RESPONSE      ::= STATUS-LINE CRLF *(HEADER CRLF) CRLF [BODY]
+STATUS-LINE   ::= "HTTTP/1.0" SP STATUS-CODE SP REASON-PHRASE CRLF
+HEADER        ::= FIELD-NAME ":" SP FIELD-VALUE
+SP            ::= " "
+CRLF          ::= "\r\n"
+```
+
+<span class="orange-bold">We shall use `HTTTP/1.0` literal.</span>
+
+### Required methods
+
+| Method | Path | Purpose |
+|---|---|---|
+| `JOIN` | `/room/<id>` | Join or create a room |
+| `LEAVE` | `/room/<id>` | Leave a room |
+| `START` | `/room/<id>` | Begin the game (room owner only) |
+| `MOVE` | `/room/<id>/player/<pid>` | Body: `LEFT` or `RIGHT` |
+| `ROTATE` | `/room/<id>/player/<pid>` | Body: `CW` or `CCW` |
+| `DROP` | `/room/<id>/player/<pid>` | Body: `SOFT` or `HARD` |
+| `STATE` | `/room/<id>` | **Server-originated.** Pushed broadcast of board state. |
+
+`STATE` is the only server-originated message. Clients must read these unprompted while interleaving with their own request-response cycles.
+
+{:.highlight-title}
+> **Open design**
+> 
+> You may add methods (`CHAT`, `PAUSE`, `WHISPER`, `SPECTATE`, etc.). Document them. The live extension pool may ask you to add a method on the day; designing your `libhtttp` dispatcher to make that easy is a strategic choice.
+
+### Required status codes
+
+Use HTTP-like status codes with their conventional meanings. The following must be reachable:
+
+`200`, `201`, `400`, `401`, `403`, `404`, `409`, `429`, `500`.
+
+You may add others if you wish.
+
+### Required headers
+
+- `Content-Length` on every message with a body
+- `Content-Type: application/tetris-command` on client requests with a body
+- `Content-Type: application/tetris-state` on server `STATE` broadcasts
+- `Player-Id` on every authenticated request
+- `Date` on every response (RFC 1123 format)
+
+## The control plane
+
+{:.important-title}
+> **Required**
+> 
+> `tetrisctl` and `tetrisd` communicate via a real IPC mechanism, not the public TCP socket and not function calls. The mechanism must be <span class="orange-bold">local-only</span>.
+> 
+> The control plane must remain available even when the public TCP listener is congested. Imagine the server is being overwhelmed by client requests and you need to issue `tetrisctl shutdown`. <span class="orange-bold">It must still work.</span>
+
+{:.highlight-title}
+> **Open design**
+> 
+> Suggested mechanism: Unix domain socket, named pipe (FIFO), POSIX message queue, or signals plus a state file. Wire format on that channel: line-based, length-prefixed, JSON, or whatever else you want, just don't forget to document it.
+
+If you use Unix domain sockets, the path lives in `.tetrishrc`. If you use signals, **document** which signals trigger which actions and how state is returned to the user.
+
+## Logging
+
+{:.important-title}
+> **Required**
+> 
+> All logging is performed by `tetrislogd`, the dedicated logger daemon explained above. `tetrisd` and other binaries forward log records to `tetrislogd` over **IPC**.
+> 
+> Game-critical threads (the listener, client handlers, room tickers) **must not block** on the logger. If the IPC channel is <span class="orange-bold">full</span>, log records may be dropped, but the dropped count must be observable. `tetrislogd` exposes the dropped-records count, and `tetrisd` may also track its own local-side drops if it buffers internally.
+> 
+> Every connection event, secure session establishment, HTTTP request and response, room state change, and admin action <span class="orange-bold">must</span> be logged with a timestamp.
+
+{:.highlight-title}
+> **Open design**
+> 
+> The IPC mechanism between `tetrisd` and `tetrislogd` is free for you to design. So is the internal buffering inside `tetrisd` (a ring buffer drained by a dedicated shipper thread is one common pattern), the exact log line format and level tagging system and whether `tetrisctl` or `tetrisu` also log to `tetrislogd` (recommended, but your call).
+
+A typical pipeline looks like this:
+
+```
+[client_thread]                                      [tetrislogd]
+   log("connection from %s", ...)                          ^
+       |                                                   |
+       v                                                   |
+   ring_buffer_push() (non-blocking, drops on full)        |
+       |                                                   |
+       v                                                   |
+   [logshipper_thread] drains buffer                       |
+       |                                                   |
+       v                                                   |
+   IPC send  --------------------------------------------->|
+                                                           |
+                                                  writes to disk
+```
+
+{:.note}
+> Why so complex?
+> 
+> This pattern matches production loggers (`systemd-journald` drops with `Suppressed N messages` lines when overwhelmed). Your system does not need to be identical, but the principles (non-blocking on the producer, observable drops, separate process for the writer) are <span class="orange-bold">required</span>.
+
+## Concurrency
+
+{:.important-title}
+> **Required**
+> 
+> - Your daemon must handle multiple concurrent clients correctly. You should not suffer from data races, torn reads, double frees.
+> - You must document your locking strategy in the README: which mutex protects which structure, and the global lock acquisition order.
+> - Code must conform to the documented order. We will read the code with the README open.
+> - Never hold a mutex across a blocking syscall.
+> - If you use `fork()` from a multi-threaded process, the child must call `execve()` immediately or use only async-signal-safe functions.
+
+{:.highlight-title}
+> **Open design**
+> 
+> You can choose to implement it using threads vs processes vs hybrid. The Lock granularity is also up to you (the tradeoff is performance): one big lock, per-room locks, per-structure locks, lock-free queues. Synchronisation primitives used are also yours to pick: `pthread_mutex`, semaphores, condition variables, or anything else POSIX provides.
+
+## Battle Royale Mode
+
+Once you can implement a working Tetris game (**independent** client connected to server, auth, and create a new game), you shall implement the Battle Royale mode.
+
+When a player clears N lines in a single move with N >= 2, those rows minus 1 are converted to **garbage** and inserted at the bottom of a random other player's board in a different room.
+
+{:.important-title}
+> **Required**
+> 
+> Garbage transfer between rooms (server-side managed) must use a **real** IPC mechanism. Direct function call into another room's state while holding its mutex from the source room's thread does **not** count, even if it works. 
+
+{:.highlight-title}
+> **Open design**
+> 
+> Suggested mechanism: POSIX shared memory plus semaphore, POSIX message queue, named pipe, Unix domain socket carrying serialised events, or a combination.
+
+### Worked Example with `shm`
+This is a worked example with shared memory plus message queue:
+
+```
+shm: garbage_pool[N]   <- ring of pending garbage events
+mq:  /tetris-garbage   <- notification on new event
+```
+
+{:.highlight}
+A room that clears lines writes the event to the shared ring, signals via the message queue. Other rooms read events targeted at them and inject garbage into their own boards under their own room mutex.
+
+## The `.tetrishrc` file
+
+{:.important-title}
+> **Required directives** (the daemons cannot start without these):
+> 
+> - `listen_port`: TCP port for clients
+> - `cert_path`, `key_path`, `ca_path`: certificate paths
+> - `log_path`: path where `tetrislogd` writes log records
+> - `log_ipc`: address of the IPC channel between `tetrisd` and `tetrislogd` (the format depends on your chosen mechanism: a Unix socket path, an mq name, etc.)
+> 
+> The shell side requires no specific directives but must execute every line as it does in PA1.
+
+{:.highlight-title}
+> **Open design**
+> 
+> Tunable directives such as `max_rooms`, `max_players_per_room`, `tick_hz`, `log_level`, the control plane address, the prompt string, custom aliases. Add what you need. Sensible defaults if a directive is absent.
+
+## File system layout
+
+This is a suggested design. You are free to reorganise.
+
+{:.highlight-title}
+> **Open design**
+> 
+> All paths must be configurable via `.tetrishrc`. Every path should be relative to the project root. No hard-coded path should be there.
+
+```
+project/
+    bin/
+        tetrish
+        tetrisd
+        tetrislogd
+        tetrisctl
+        tetrisu
+    lib/
+        libtetrissh.a
+        libhtttp.a
+        libtetrisbrain.a
+    include/
+        tetrissh.h
+        htttp.h
+        tetrisbrain.h
+    auth/
+        server.crt
+        server.key
+        cacsertificate.crt
+        generate_keys.sh
+    sample.tetrishrc
+    var/
+        log/                 (created at runtime)
+        run/                 (sock, pid)
+    src/
+        tetrish/
+        tetrisd/
+        tetrislogd/
+        tetrisctl/
+        tetrisu/
+        libtetrissh/
+        libhtttp/
+        libtetrisbrain/
+    tests/
+    Makefile
+    README.md
+```
+
+
+## Out of scope
+
+There's absolutely no need to implement all these. You will not gain special considerations.
+- Reimplementing TCP, UDP, or any reliability protocol on top of UDP. Use TCP from the kernel.
+- Implementing your own crypto primitives. Use OpenSSL via PA2's `common.c` only.
+- Web frontend, GUI client, mobile client. Terminal only.
+
+
+## Grading
+
+This section explains how tetriSH is graded, how groups indicate that they are taking this track, what the live checkoff looks like and how the prize is awarded.
+
+Students who complete tetriSH are assessed against the same broad learning objectives as PA1 and PA2, but through one larger integrated system.
+
+{:.note}
+The prize is separate from course marks.
+
+
+### Features to Demo
+
+
+#### Baseline Tetris requirement
+
+{:.important}
+> Baseline is a requirement
+> 
+> To pass the tetriSH track, the system **must** include a working baseline Tetris game. This does not need to be a polished commercial-quality Tetris implementation, but it must be playable enough to prove that the client, server, protocol, secure session, game logic, concurrency, and logging are integrated correctly. <span class="orange-bold">Failure to fulfil the baseline demo results in 0 marks for your both PA</span>, so please consider carefully.
+
+The baseline game must demonstrate:
+1. a player can connect using `tetrisu`,
+2. the client completes the secure session handshake before any HTTTP traffic,
+3. the player can `JOIN` a room,
+4. the player can `START` a game,
+5. the server creates and maintains the game state,
+6. a Tetris piece falls over time,
+7. the player can move the piece left and right,
+8. the player can rotate the piece,
+9. the player can soft drop and hard drop,
+10. pieces lock when they reach the bottom or collide with existing blocks,
+11. completed lines are cleared,
+12. the score or line count updates after line clears,
+13. the game detects game over,
+14. the server sends `STATE` messages to the client,
+15. `tetrisu` renders the board in the terminal,
+16. the client can quit cleanly,
+17. the server logs game events through `tetrislogd`.
+
+The server is **authoritative**. `tetrisu` may render state and collect keyboard input, but the real game state must live in `tetrisd`, using `libtetrisbrain`.
+
+The client *must not* simply update its own local board and pretend the server accepted the move. Player commands must go through the full stack:
+
+```text
+tetrisu
+  -> libhtttp
+  -> libtetrissh
+  -> TCP socket
+  -> tetrisd
+  -> libtetrisbrain
+  -> STATE response back to tetrisu
+```
+
+From the system architexture point of view, here's what you should have:
+1. `tetrisd` accepting multiple concurrent clients,
+2. `tetrisu` rendering a user friendly playable terminal client,
+3. `libhtttp` parsing and serialising HTTTP messages and handle error messages properly,
+4. `libtetrisbrain` implementing core Tetris game logic efficiently,
+5. `tetrislogd` receiving log records over IPC and writing them to disk in an organised manner (logs are labeled warning, debug, error, info, etc),
+6. `tetrisctl` communicating with `tetrisd` over a local IPC control plane,
+7. **clean** build instructions from a fresh checkout,
+8. a README explaining architecture, concurrency, IPC choices, security assumptions, and known limitations.
+
+
+
+
+#### Group formation and Week 3 indication
+
+tetriSH is completed in **groups of 3**, the same group for your labs. By the end of **Week 3**, groups intending to take the tetriSH track must notify the instructor of your intent
+
+You should submit a short document on eDimension detailing:
+1. group member names,
+2. declared role for each member,
+3. a short architecture sketch,
+4. intended thread or process model,
+5. intended IPC mechanisms,
+6. intended division of work,
+7. repository link, if available.
+
+
+{:.important}
+If there are too many participants, for logistics reasons, your instructor has the right to filter the selection based on your proposal.
+
+
+After Week 3, there's no more chance to switch to this track.
+
+### Roles
+
+Each group declares one member for each role. This **should be decided up front**. Here's a sample:
+
+| Role | Owns |
+|---|---|
+| **Systems** | `tetrish`, `tetrisd` process model, concurrency, `tetrislogd`, `tetrisctl`, signal handling, and IPC channels |
+| **Networking and Security** | `libtetrissh`, `libhtttp`, secure session correctness, HTTTP parser and serialiser, threat model, and request dispatch |
+| **Application and Integration** | `tetrisu`, `libtetrisbrain`, room lifecycle, game loop, build system, and integration tests |
+
+Members may help one another. That is expected. However, each member <span class="orange-bold">must be able to answer live Q&A questions</span> about their declared role.
+
+The role declaration is not meant to stop collaboration but it is meant to make individual responsibility clear.
+
+### How grading works
+
+The tetriSH project is graded as a **group programming assignment**. Group work management is expected to be **professional**, and hence the role declaration above.
+
+All three members receive the **same** project mark, subject to the live Q&A validation described later.
+
+The grading focuses on whether the submitted system demonstrates the learning objectives of PA1 and PA2 through the tetriSH system.
+
+| Area | What is assessed |
+|---|---|
+| **Shell and process management** | `tetrish`, process spawning, background jobs, daemon lifecycle |
+| **IPC and control plane** | `tetrislogd`, `tetrisctl`, local IPC, log forwarding, shutdown and reload behaviour |
+| **Networking** | TCP server, concurrent clients, request handling, server-pushed state |
+| **Security** | certificate verification, nonce proof, RSA-wrapped AES session, encrypted frames |
+| **Protocol design** | HTTTP parser, serialiser, headers, status codes, malformed input handling |
+| **Concurrency** | thread or process model, lock discipline, avoiding races and deadlocks |
+| **Application logic** | terminal client, game loop, Tetris rules, room state consistency |
+| **Code quality** | modularity, memory management, error handling, build cleanliness |
+| **Documentation** | README clarity, architecture explanation, known limitations |
+
+{:.important}
+The project <span class="orange-bold">does not need</span> to be the most feature-rich submission to receive full project marks. It must be correct, demonstrable, understandable, and aligned with the required systems objectives.
+
+## Commitment Policy 
+
+
+tetriSH is an optional alternative track. Groups may withdraw from tetriSH and return to the normal PA1 + PA2 path, but only before the fallback deadline.
+
+{:.important}
+The fallback deadline is **end of Week 5**.
+
+Before this deadline, a group <span class="orange-bold">must</span> notify the instructor that it is withdrawing from tetriSH. The group will then complete PA1 and PA2 in the normal way and will be graded using the normal PA1 and PA2 rubrics.
+
+There is **no penalty** for falling back before the deadline.
+
+After the fallback deadline, the group is committed to the tetriSH track. The group must submit and demonstrate tetriSH at the final checkoff.
+
+{:.important}
+Failing to deliver the MVP during the final checkoff warrants 0 marks for both PA1 and PA2 components.
+
+
+## Live checkoff
+
+{:.highlight}
+Each tetriSH group must attend a live checkoff.
+
+The live checkoff is used to **verify** that the submitted system works and that the group understands the system.
+
+A typical checkoff is **60 to 90 minutes**, depending on the number of groups.
+
+The grades are separated into two segments: **functionality and live extension + QnA.**
+
+### Functionality (10%)
+
+
+| Phase | Activity |
+|---|---|
+| **Baseline demo** | The group demonstrates the required system running from a clean build. |
+| **Systems inspection** | TAs inspect selected parts of the implementation, logs, IPC behaviour, and failure handling. |
+| **Live Q&A** | Each member answers questions about their declared role. |
+| **Prize consideration** | For prize-eligible groups, we consider engineering quality, code quality, product quality and possible extensions. |
+
+The group should be prepared to run:
+
+1. `tetrish`,
+2. `tetrisd`,
+3. `tetrislogd`,
+4. `tetrisctl`,
+5. at least two `tetrisu` clients,
+6. packet inspection or logging evidence showing that post-handshake traffic is encrypted using wireshark.
+
+{:.highlight}
+The demo must be reproducible from the submitted repository.
+
+
+### Live Extension and Q&A (10%)
+
+
+
+The live Q&A part is used to **validate** that the submitted work was understood by the group. Other students are free to attend this session and your responsibility covers answering their queries too.
+
+The purpose of the Q&A is not to create extra marks. It is to verify authorship, understanding, and engineering ownership.
+
+Each member is questioned mainly on their declared role. The other members may be present but should not answer on their behalf.
+
+The Q&A is technical and code-based. It may include:
+
+1. explaining a function selected by the TA,
+2. explaining why a lock is needed,
+3. explaining how a daemon shuts down cleanly,
+4. explaining how the secure session prevents a specific attack,
+5. explaining how malformed HTTTP input is handled,
+6. explaining how a slow client affects the server,
+7. explaining what happens when `tetrislogd` crashes,
+8. explaining how room state is protected from races,
+9. explaining how the game loop and server broadcasts interact,
+10. explaining a known weakness honestly.
+
+A student is not expected to memorise every line of code. However, each student is expected to understand the design and implementation of their declared part.
+
+The live extension part requires you to extend the functionality of your project live, without AI help. It is to assess your projects' structure and your programming skill. For instance, we may ask you to extend HTTTP to support more messages, and throw error code, or we may ask you to update the security protocol and relaunch the server and client, we may also ask you to modify the game logic. The point is to be able to do this elegantly and with minimal hiccups. 
+
+#### Good QnA Example
+
+A good answer is specific to the submitted code.
+
+For example:
+
+> “This mutex protects the room state. We acquire it in the ticker thread before applying gravity, and in the client thread before applying player movement. We never hold it while writing to the socket, because a slow client would block the room.”
+
+This is a good answer because it explains the structure, the reason, and the failure mode.
+
+#### Weak QnA Example
+
+A weak answer is vague or detached from the actual code.
+
+For example:
+
+> “We used a mutex to prevent race conditions.”
+
+This is too generic. It does not show that the student understands the submitted implementation.
+
+## AI-generated code
+
+Using AI tools is allowed. However, the submitted code must be understood and you must own the architecture. A group may use AI tools heavily and still do well, provided they read, test, debug, modify, and understand the generated code.
+
+A group that submits working AI-generated code but cannot explain it may lose <span class="orange-bold">immediate 10% penalty</span> and will not be eligible for the prize.
+
+
+## Prize eligibility
+
+The prize is separate from course marks.
+
+To be eligible for the prize, a group must:
+
+1. complete the baseline tetriSH implementation,
+2. pass the live demo,
+3. pass the live Q&A validation,
+4. demonstrate that all three members understand their declared roles,
+5. build successfully from a clean checkout,
+6. have no academic integrity issues.
+
+A group may receive project credit but *still be ineligible for the prize* if the live Q&A shows weak understanding.
+
+### Selection of Winning group
+
+Among prize-eligible groups, the winning group is selected based on **overall** engineering quality. There's no limit to what you can do, as long as you do not violate the [constraints](#project-constraints) above.
+
+The following criteria are considered:
+
+| Criterion | What we look for |
+|---|---|
+| **Correctness** | The required system works reliably during the demo. |
+| **Architecture** | The process model, library boundaries, IPC choices, and control plane are clean and defensible. |
+| **Code quality** | The code is readable, modular, maintainable, and handles errors properly. |
+| **Systems depth** | The group demonstrates strong understanding of processes, signals, IPC, concurrency, and shutdown behaviour. |
+| **Security depth** | The secure session is implemented correctly and the group understands its threat model. |
+| **Protocol robustness** | HTTTP parsing, status handling, framing, and malformed input behaviour are sensible. |
+| **Application quality** | The terminal client is usable and the game logic is stable. |
+| **Testing and debugging discipline** | The group can show evidence of testing, logging, and debugging. |
+| **Q&A performance** | All three members demonstrate ownership of their declared parts. |
+| **Extensions beyond baseline** | Battle Royale, richer admin controls, better logging, observability, tests, or other well-integrated extensions may strengthen the submission. |
+
+The prize is <span class="orange-bold">not</span> awarded purely for the most features. Basically, a smaller but cleaner and better-understood system may beat a larger but fragile system.
+
+If no group meets the prize eligibility standard, the prize may be withheld.
+
+## Summary
+
+This `tetriSH` project exist purely as a challenge to push your potential further. You are to embark on this solely if you are interested.
+
+
+If you're committed, it would replace PA1 and PA2 and carries the same course-mark ceiling as the normal PA1 + PA2 path.
+
+There are no bonus marks.
+
+Groups are to indicate interest by the end of Week 3 and the groups should consist of 3 members with declared roles.
+
+The live checkoff includes a demo, live patching & coding, and compulsory Q&A.
+
+The prize is separate from course marks.
+
+Depending on the course budget, one or two winning group receives multiple Apple products worth approximately S$3,000.
+
+
+{:.important-title}
+> Important Reminder
+> 
+> **You are NOT allowed to modify `common.h` or `common.c`.** These files contain all the cryptographic wrappers and socket helpers you need. This is the same rule as PA2.
+>
+> **Memory management in C**: Every `malloc`'d buffer, `X509*`, and `EVP_PKEY*` must be freed by the owner. Run your demo under `valgrind`; visible leaks at checkoff lose marks.
+>
+> **No HTTPS:** You should implement the secure session yourself in `libtetrissh` over TCP. You are not using TLS, OpenSSL's `SSL_*` API, or any reverse proxy. Cryptographic primitives come from `common.c` only.
