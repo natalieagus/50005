@@ -11,7 +11,7 @@ nav_order: 7
 
 There are two programming assignments in this course:
 1. Programming Assignment 1: CSEShell (10%)
-2. Programming Assignment 2: Secure FTP (8%)
+2. Programming Assignment 2: Secure FTP (10%)
 
 {:.note-title}
 > Grouping
