@@ -114,7 +114,7 @@ TCP is provided by the kernel through the socket API. We are not here to reimple
 > 
 > Whether you add `tetrish`-specific builtins (e.g. `tetris-status` as a wrapper around `tetrisctl status`, or `tetris-up` as a one-shot to launch the daemon and the logger together) is your call. 
 
-### 3.2 `tetrisd`: the game daemon
+### `tetrisd`: the game daemon
 
 {:.important-title}
 > **Required**
