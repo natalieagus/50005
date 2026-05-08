@@ -54,8 +54,8 @@ Not all weeks have lab sessions. Refer to the [Class Calendar]({{ site.baseurl }
 |----------|------------|---------------------|
 | CI01 | Tue 16:00--18:00 | Ryan Pek Yi Ze, Lim Wei Ren Marcus |
 | CI02 | Thu 11:30--13:30 | Ng Keng Hwang, Chia Zhong Yi, Xue Yufeng |
-| CI03 | Thu 16:00--18:00 | Xue Yufeng, Ong Wei Yang |
-| CI04 | Thu 14:00--16:00 | Ong Wei Yang, Nurul Hidayah Binte Mohd Azmi |
+| CI03 | Thu 16:00--18:00 | Nurul Hidayah Binte Mohd Azmi, Ong Wei Yang |
+| CI04 | Thu 14:00--16:00 | Ong Wei Yang, Xue Yufeng |
 
 {:.note}
 They are responsible for checkoffs so please get to know them by attending the class and then making ad-hoc **appointments** for checkoffs.
