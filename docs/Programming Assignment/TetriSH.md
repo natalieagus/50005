@@ -706,7 +706,8 @@ The role declaration is not meant to stop collaboration but it is meant to make 
 
 The tetriSH project is graded as a **group programming assignment**. Group work management is expected to be **professional**, and hence the role declaration above.
 
-All three members receive the **same** project mark, subject to the live Q&A validation described later.
+{:.note}
+All three members receive the **same** project mark. The grades are separated into 3 parts: functionality (5%), live extension (5%), live QnA (10%).
 
 The grading focuses on whether the submitted system demonstrates the learning objectives of PA1 and PA2 through the tetriSH system. Battle Royale mode is part of the <span class="orange-bold">required</span> tetriSH system. However, the baseline MVP is *assessed first* because it proves that the core shell, daemon, networking, security, protocol, logging, control plane, and server-authoritative game loop are working.
 
@@ -748,7 +749,7 @@ Failing to deliver the MVP during the final checkoff warrants 0 marks for both P
 ## Live checkoff
 
 {:.highlight}
-Each tetriSH group must attend a live checkoff.
+Each tetriSH group must attend a live checkoff. Only tetriSH groups that can complete at least the MVP can schedule the checkoff. Otherwise, they would obtain zero regardless of the state of the code.
 
 The live checkoff is used to **verify** that the submitted system works and that the group understands the system.
 
@@ -756,15 +757,14 @@ A typical checkoff is **60 to 90 minutes**, depending on the number of groups.
 
 The grades are separated into two segments: **functionality and live extension + QnA.**
 
-### Functionality (10%)
-
-
 | Phase | Activity |
 |---|---|
 | **Baseline demo** | The group demonstrates the required system running from a clean build. |
-| **Systems inspection** | TAs inspect selected parts of the implementation, logs, IPC behaviour, and failure handling. |
+| **Systems inspection** | Instructor inspect selected parts of the implementation, logs, IPC behaviour, and failure handling. Also play the game.|
 | **Live Q&A** | Each member answers questions about their declared role. |
 | **Prize consideration** | For prize-eligible groups, we consider engineering quality, code quality, product quality and possible extensions. |
+
+### Functionality (5%)
 
 The group should be prepared to run:
 
@@ -778,53 +778,158 @@ The group should be prepared to run:
 {:.highlight}
 The demo must be reproducible from the submitted repository.
 
-
-### Live Extension and Q&A (10%)
-
+Two sections below. Take what you want.
 
 
-The live Q&A part is used to **validate** that the submitted work was understood by the group. Other students are free to attend this session and your responsibility covers answering their queries too.
+### Live Extension (5%)
 
-The purpose of the Q&A is not to create extra marks. It is to verify authorship, understanding, and engineering ownership.
+The live extension tests whether you can navigate and modify your own codebase under time pressure. The purpose of this activity is to ensure that not only you "understand" what your code is doing but also own its architecture. It demonstrates long-term planning as well since clean architecture would make making these small changes easy.
 
-Each member is questioned mainly on their declared role. The other members may be present but should not answer on their behalf.
+Your group have approximately **20 minutes** to implement a small extension on your running system, plus 5 minutes to walk the diff.
 
-The Q&A is technical and code-based. It may include:
+{:.notes-title}
+> AI Tool Policy
+>
+> No agentic or autonomous coding tool. Chat-based assistants are allowed, but no copy-pasting is allowed. Every line you accept from the AI must be one you can explain. Instructor can interrupt and ask why this line, and you should be able to explain fully.
 
-1. explaining a function selected by the TA,
-2. explaining why a lock is needed,
-3. explaining how a daemon shuts down cleanly,
-4. explaining how the secure session prevents a specific attack,
-5. explaining how malformed HTTTP input is handled,
-6. explaining how a slow client affects the server,
-7. explaining what happens when `tetrislogd` crashes,
-8. explaining how room state is protected from races,
-9. explaining how the game loop and server broadcasts interact,
-10. explaining a known weakness honestly.
 
-A student is not expected to memorise every line of code. However, each student is expected to understand the design and implementation of their declared part.
+#### Task pool
+Here are the sample task pool. We may select from these OR ask you to implement adjacents.
 
-The live extension part requires you to extend the functionality of your project live, without AI help. It is to assess your projects' structure and your programming skill. For instance, we may ask you to extend HTTTP to support more messages, and throw error code, or we may ask you to update the security protocol and relaunch the server and client, we may also ask you to modify the game logic. The point is to be able to do this elegantly and with minimal hiccups. 
+**Networking and Security (`libhtttp`, `libtetrissh`)**
 
-#### Good QnA Example
+1. Add a new HTTTP method (e.g. `PAUSE` on `/room/<id>`), including parser handling, dispatch in `tetrisd`, a reachable `409` if the game is not active, and a log entry on every call.
+2. Add a new required header (e.g. `X-Client-Build`) and reject any request missing it with the right status code.
+3. Add a `Retry-After` header on every `429` response and have the client honour it.
+4. Swap RSA-OAEP key wrapping for RSA-PKCS1v15 (or vice versa). Explain the security difference.
+5. Change the symmetric key derivation: instead of the client generating a raw 32-byte AES key, derive it via HKDF-SHA256 over a fresh client nonce + server nonce, using primitives already exposed by `common.c`.
+6. Add HMAC over the ciphertext frame (if your current frame has no auth tag) and have the receiver verify before decrypting.
+7. Add per-session replay protection: a monotonic counter header on every request, server rejects out-of-order or duplicate counters with `400`.
+8. Reduce the AES key size from 256 to 128 bits and explain whether this materially changes your threat model.
 
-A good answer is specific to the submitted code.
+**Systems (`tetrish`, `tetrisd`, `tetrislogd`, `tetrisctl`)**
 
-For example:
+1. Add a new `tetrisctl` subcommand that returns a structured snapshot of one room (player count, current piece, score, tick rate).
+2. Add `SIGUSR2` to `tetrisd` for a one-shot full state dump to log without restart.
+3. Implement size-based log rotation in `tetrislogd` without dropping records during the rotation.
+4. Add a per-IP connection limit configurable in `.tetrishrc`, enforced at `accept()`, rejection logged at warning level.
+5. Implement `tetrisctl drain`: stop accepting new connections, let in-flight games finish, then exit cleanly on the next `tetrisctl shutdown`.
+6. Add a `kick <player>` admin command that closes that player's session and broadcasts the room update.
+7. Swap your logger IPC mechanism from one option to another (e.g. Unix socket to POSIX message queue, or named pipe to socket). The drop counter must still work.
+8. Add a `reload` path that re-reads `.tetrishrc` on `SIGHUP` and applies a subset of directives at runtime (e.g. log level, tick rate) without dropping connections.
 
-> “This mutex protects the room state. We acquire it in the ticker thread before applying gravity, and in the client thread before applying player movement. We never hold it while writing to the socket, because a slow client would block the room.”
+**Application and Integration (`tetrisu`, `libtetrisbrain`)**
 
-This is a good answer because it explains the structure, the reason, and the failure mode.
+1. Add a hold-piece feature (one swap per piece, key-bound on the client, preview rendered).
+2. Switch rotation system (SRS to classic, or whatever you implemented to a different one). Demonstrate a kick that worked before and not after, or vice versa.
+3. Change the scoring rule for tetrises (four-line clear) and demonstrate it changing across two rounds.
+4. Add a ghost piece projection at the landing position. Defend whether the server needs to send extra state for this.
+5. Add a hard-drop preview line in the client.
+6. Change Battle Royale targeting from "random other room" to "the room with the highest current score." This is a real integration task: brain, broadcast, cross-room IPC.
+7. Add a configurable starting level (faster initial gravity) read from `.tetrishrc`.
+8. Add a "spectate" mode in the client that subscribes to a room without joining as a player.
 
-#### Weak QnA Example
 
-A weak answer is vague or detached from the actual code.
+Here's the marking scheme:
+| Score | Outcome |
+| --- | --- |
+| 5 | Compiled, ran, behaved correctly, defended in walkthrough. |
+| 4 | Compiled and ran, minor messiness or one bug honestly acknowledged, defended. |
+| 3 | Compiled and ran but partially incorrect or incomplete. Direction was right. |
+| 2 | Did not compile at the bell, or compiled but did not behave. Some progress visible. |
+| 1 | Floundered. Could not orient in own codebase. |
+| 0 | Did not engage, used a forbidden tool, or accepted code that could not be explained. |
 
-For example:
 
-> “We used a mutex to prevent race conditions.”
+### Live Q&A (10%)
 
-This is too generic. It does not show that the student understands the submitted implementation.
+{:.note}
+This part of the checkoff is an extensive ownership test.
+
+We want to **validates** that the submitted system is actually yours and that you understand it. Each member will be questioned on their declared role plus the integration boundary with the other roles. Other members may attend but **may not answer, prompt, or signal** during your turn.
+
+You are allowed to refer to your own submitted code and lecture notes. You are also allowed to discuss among your team members. No AI tools or online searches are allowed. 
+
+{:.important-title}
+> Procedure
+> 
+> You will be having a **conversation** with your instructor for 30 minutes. Instructor is free to ask at most 6 questions in the style of the pool below. Follow-up questions and questions about the code e.g: "what does this line do? which functions call this?" don't count either. 
+
+#### Question pool 
+
+Questions can be about **anything** in your project. Some examples by area are written below.
+
+**Concurrency and lifecycle**
+
+1. Walk me through what happens, line by line, when a client sends `MOVE LEFT` while the room ticker is mid-gravity. Which lock do you hold? In what order? Why?
+2. I `kill -SIGTERM` your `tetrisd` while a game is in progress. Walk me through the shutdown path. Where does each thread or process learn it should exit?
+3. Show me where you handle a slow client. What happens to the room if one client stops reading?
+4. What is your global lock acquisition order? Show me one site that respects it and one that could deadlock if you got the order wrong.
+5. Your `tetrislogd` IPC channel fills up. Show me the line that decides to drop. What is the drop counter, and how does it become visible?
+
+**Networking and security**
+
+1. Walk me through the handshake from `accept()` to the first encrypted HTTTP frame.
+2. A man-in-the-middle replays a `MOVE` frame from earlier in the session. What stops it? Show me the code.
+3. The client sends an HTTTP request with `Content-Length` larger than the actual body. Where do you detect this? What status code do you return?
+4. What attack does RSA-PSS prevent that RSA-PKCS1v15 signing does not?
+5. Show me where you free the `X509*` and `EVP_PKEY*` from the handshake. What happens if the handshake fails halfway?
+
+**Protocol and parsing**
+
+1. A client sends a request with `\n` line endings instead of `\r\n`. What happens?
+2. A header has a value with a colon in it. Show me how your parser handles this.
+3. Walk me through the path of a `STATE` broadcast from the room ticker to the client's terminal.
+4. Where is `Date` set on a response? Why there?
+5. Two clients hit the same room with `START` simultaneously. What happens? Show me the code path.
+
+**IPC and control plane**
+
+1. I run `tetrisctl shutdown` while the public TCP listener is being flooded. Why does the control command still work?
+2. Your `tetrislogd` dies. What does `tetrisd` do? Show me the reconnection logic.
+3. Walk me through the wire format on your control plane channel. Show me the parser.
+
+**Application and game logic**
+
+1. Show me the line clear function. Walk me through it on a board where rows 18 and 20 are full.
+2. Where does lock delay live? Walk me through a piece that is being held in place by repeated rotations.
+3. A garbage row arrives from another room while the local ticker is mid-tick. What synchronises this?
+4. Your client is rendering at 30 Hz but the server ticks at 60 Hz. What happens visually? Where in the code?
+
+
+{:.note-title}
+> Code query
+> 
+> Instructor is free to ask about ANY line of submitted code, any directive in `.tetrishrc`, any entry in your README, any commit in your git history, any test in your test suite. 
+
+
+#### Multiplier scheme
+
+Each group starts with a multiplier of `1.0` on their Q&A mark. We would then ask a question with a certain topic. Here's what you'll gain:
+
+- **Strong answer**: specific, code-grounded, identifies the structure and the failure mode. No multiplier change.
+- **Weak answer**: vague, generic, or detached from your actual code (the handout's "we used a mutex to prevent race conditions" example). Multiplier applied: `× 0.85`.
+- **Cannot answer**: silence, a wrong answer you concede, or "I don't know." Multiplier applied: `× 0.7`.
+
+These multipliers would <span class="orange-bold">compound</span>, not add.
+
+| Misses | Resulting multiplier (rough) |
+| --- | --- |
+| 0 | 1.00 |
+| 2 weak | 0.72 |
+| 1 weak + 1 cannot | 0.60 |
+| 3 cannot | 0.34 |
+| 2 cannot in declared role | 0.25 |
+| 4+ cannot, mixed | below 0.20 |
+
+Final Q&A mark is computed as `10% × multiplier`.
+
+#### Honesty discount
+
+A simple "I don't know, but here is how I'd find out in my code" is worth more than a confident wrong answer. Our instructor will make judgments and impose penalty accordingly.
+
+Bullshitting compounds harder than admitting a gap. If you bluff and the instructor catches it on a follow-up, that question is treated as a "cannot answer".
+
 
 ## AI-generated code
 
