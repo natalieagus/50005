@@ -49,7 +49,17 @@ Sections below are tagged so you can tell what is required and what is yours to 
 > **Open design**
 > 
 > A decision you must make and document neatly. We give you example approaches and you should pick, invent your own, but defend it in your `README` and at the live demo Q&A.
+### tl;dr
 
+Indicate your interest to embark on this track by Week 3, Monday 6PM to your instructor. You may still withdraw by the end of Week 5 Friday, 6PM. 
+
+Once you're committed to this track, here's the rule:
+**To avoid zero:** baseline MVP must work
+**To complete tetriSH properly**: baseline MVP + Battle Royale must work
+**To get good marks**: system must be correct, clean, documented, and understood, also pass live QnA and live patching
+**To win prize**: full required system + strong engineering quality + flawless Q&A
+
+Refer to the individual sections below for clarifications.
 
 ## Overview
 
@@ -485,14 +495,18 @@ A typical pipeline looks like this:
 
 ## Battle Royale Mode
 
-Once you can implement a working Tetris game (**independent** client connected to server, auth, and create a new game), you shall implement the Battle Royale mode.
+Battle Royale mode is a <span class="orange-bold">required</span> part of tetriSH.
+
+However, you should implement it only *after* the baseline Tetris system is working: independent terminal client, server-authoritative game state, secure session, HTTTP messages, logging, and control plane.
 
 When a player clears N lines in a single move with N >= 2, those rows minus 1 are converted to **garbage** and inserted at the bottom of a random other player's board in a different room.
 
 {:.important-title}
 > **Required**
 > 
-> Garbage transfer between rooms (server-side managed) must use a **real** IPC mechanism. Direct function call into another room's state while holding its mutex from the source room's thread does **not** count, even if it works. 
+> Battle Royale mode is required for tetriSH completion.
+>
+> Garbage transfer between rooms must be server-side managed and must use a **real IPC mechanism**. Direct function call into another room's state while holding its mutex from the source room's thread does **not** count, even if it works.
 
 {:.highlight-title}
 > **Open design**
@@ -600,7 +614,7 @@ The prize is separate from course marks.
 #### Baseline Tetris requirement
 
 {:.important}
-> Baseline is a requirement
+> Baseline is a requirement to avoid zero
 > 
 > To pass the tetriSH track, the system **must** include a working baseline Tetris game. This does not need to be a polished commercial-quality Tetris implementation, but it must be playable enough to prove that the client, server, protocol, secure session, game logic, concurrency, and logging are integrated correctly. <span class="orange-bold">Failure to fulfil the baseline demo results in 0 marks for your both PA</span>, so please consider carefully.
 
@@ -647,12 +661,16 @@ From the system architexture point of view, here's what you should have:
 7. **clean** build instructions from a fresh checkout,
 8. a README explaining architecture, concurrency, IPC choices, security assumptions, and known limitations.
 
+#### Battle Royale Requirement 
 
+Battle Royale mode is not part of the baseline MVP demo, but it is still required for full tetriSH completion.
+
+The baseline MVP exists to define the minimum integrated system that must work <span class="orange-bold">before</span> Battle Royale can be meaningfully assessed. A group that cannot demonstrate the baseline MVP <span class="orange-bold">cannot</span> pass tetriSH, even if some Battle Royale code exists.
 
 
 #### Group formation and Week 3 indication
 
-tetriSH is completed in **groups of 3**, the same group for your labs. By the end of **Week 3**, groups intending to take the tetriSH track must notify the instructor of your intent
+tetriSH is completed in **groups of 3**, the same group for your labs. By Monday, 6PM of **Week 3**, groups intending to take the tetriSH track must notify the instructor of your intent
 
 You should submit a short document on eDimension detailing:
 1. group member names,
@@ -668,7 +686,7 @@ You should submit a short document on eDimension detailing:
 If there are too many participants, for logistics reasons, your instructor has the right to filter the selection based on your proposal.
 
 
-After Week 3, there's no more chance to switch to this track.
+After Week 3 Monday 6PM, there's no more chance to switch to this track.
 
 ### Roles
 
@@ -690,7 +708,9 @@ The tetriSH project is graded as a **group programming assignment**. Group work 
 
 All three members receive the **same** project mark, subject to the live Q&A validation described later.
 
-The grading focuses on whether the submitted system demonstrates the learning objectives of PA1 and PA2 through the tetriSH system.
+The grading focuses on whether the submitted system demonstrates the learning objectives of PA1 and PA2 through the tetriSH system. Battle Royale mode is part of the <span class="orange-bold">required</span> tetriSH system. However, the baseline MVP is *assessed first* because it proves that the core shell, daemon, networking, security, protocol, logging, control plane, and server-authoritative game loop are working.
+
+A group that cannot demonstrate the baseline MVP cannot rely on Battle Royale features to compensate for missing core systems behaviour. A group that completes only baseline MVP without Battle Royale feature will gain some marks but  <span class="orange-bold">NOT</span> full marks.
 
 | Area | What is assessed |
 |---|---|
@@ -713,9 +733,9 @@ The project <span class="orange-bold">does not need</span> to be the most featur
 tetriSH is an optional alternative track. Groups may withdraw from tetriSH and return to the normal PA1 + PA2 path, but only before the fallback deadline.
 
 {:.important}
-The fallback deadline is **end of Week 5**.
+The fallback deadline is **Week 5**, Friday, 6PM.
 
-Before this deadline, a group <span class="orange-bold">must</span> notify the instructor that it is withdrawing from tetriSH. The group will then complete PA1 and PA2 in the normal way and will be graded using the normal PA1 and PA2 rubrics.
+Before this deadline, a group <span class="orange-bold">must</span> notify the instructor that it is *withdrawing* from tetriSH. The group will then complete PA1 and PA2 in the normal way and will be graded using the normal PA1 and PA2 rubrics.
 
 There is **no penalty** for falling back before the deadline.
 
@@ -815,18 +835,26 @@ A group that submits working AI-generated code but cannot explain it may lose <s
 
 ## Prize eligibility
 
-The prize is separate from course marks.
+The prize is <span class="orange-bold">separate</span> from course marks.
 
 To be eligible for the prize, a group must:
 
-1. complete the baseline tetriSH implementation,
-2. pass the live demo,
-3. pass the live Q&A validation,
-4. demonstrate that all three members understand their declared roles,
-5. build successfully from a clean checkout,
-6. have no academic integrity issues.
+1. complete the baseline MVP,
+2. complete Battle Royale mode,
+3. pass the live demo,
+4. pass the live Q&A validation,
+5. demonstrate that all three members understand their declared roles,
+6. build successfully from a clean checkout,
+7. have no academic integrity issues.
 
-A group may receive project credit but *still be ineligible for the prize* if the live Q&A shows weak understanding.
+A group may receive project credit but still be ineligible for the prize if:
+
+1. the implementation is too fragile to evaluate beyond the baseline,
+2. the live Q&A shows weak understanding,
+3. there are serious code ownership concerns,
+4. Battle Royale is present but clearly hacked together without proper systems design.
+
+Completing Battle Royale does not guarantee winning the prize. It only makes the group eligible for prize consideration.
 
 ### Selection of Winning group
 
