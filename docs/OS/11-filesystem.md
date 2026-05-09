@@ -44,6 +44,7 @@ Singapore University of Technology and Design
 > These learning objectives are designed to provide a detailed understanding of how files and file systems function within UNIX and other operating systems, including how files are accessed, managed, and utilized by different processes.
 
 ## File
+
 A file is a <span style="color:#f77729;"><b>named</b></span> collection of related information that is stored on the secondary storage. It acts as a <span style="color:#f77729;"><b>logical</b></span> storage unit in the computer, defined by the operating system. In layman terms, they are a <span style="color:#f77729;"><b>group of data bytes</b></span> which are stored neatly in a known location with a unique name (<span style="color:#f77729;"><b>path</b></span>).
 {:.info}
 
@@ -191,6 +192,8 @@ To create a file, we need to ensure two things are done:
 
 ### File Read and Write
 
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4561.PNG"  class="center_thirty no-invert"/>
+
 In order to R/W to a file, you must first have the <span style="color:#f77729;"><b>permission</b></span> to `open` the file. From Lab 1: The creator of the file can modify such permissions using `chmod` command.
 
 If permitted, you can then:
@@ -256,6 +259,8 @@ Whenever a process `open()` or `dup()` a file, the opened file is associated wit
 
 - A file descriptor is a number that <span style="color:#f77729;"><b>uniquely</b></span> (unique in that process) identifies an open file in a computer's operating system
 - A file descriptor has a file `pointer` field, that is a pointer to the <span style="color:#f7007f;"><b>system wide open-file-table</b></span>.
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4560.WEBP"  class="center_fifty no-invert"/>
 
 {:.note}
 > What is a file descriptor under the hood? 

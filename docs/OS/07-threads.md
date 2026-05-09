@@ -65,6 +65,8 @@ The figure below _(taken from SGG book)_ shows the illustration of a single-thre
 
 # Multithreading Benefits
 
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4554.JPG"  class="center_fifty no-invert"/>
+
 ## Responsiveness
 
 Threads make the program seem more <span style="color:#f7007f;"><b>responsive</b></span>. Multithreading an interactive application may allow a program to continue running even if <span style="color:#f7007f;"><b>part</b></span> of it is <span style="color:#f7007f;"><b>blocked</b></span> or is performing a lengthy operation, thereby increasing <span style="color:#f7007f;"><b>responsiveness</b></span> to the user.
@@ -187,6 +189,8 @@ We can also equivalently create threads in C using the `pthread` library. The co
 3. Use `pthread_join` to <span style="color:#f77729;"><b>wait</b></span> for a thread to finish
 
 ### Program: pthread creation {#code-c-threading}
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4557.JPG"  class="center_fifty no-invert"/>
 
 We can pass <span style="color:#f77729;"><b>arguments</b></span> to a thread, <span style="color:#f77729;"><b>wait</b></span> for its completion and get its <span style="color:#f77729;"><b>return</b></span> value.
 
@@ -446,6 +450,8 @@ Hyper-threading was Intel's first effort (proprietary method) to bring parallel 
 This is <span style="color:#f77729;"><b>possible</b></span> if a big chunk of CPU time is wasted as it waits for data from cache or RAM.
 
 # Multicore Programming {#multicore-programming}
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4586.JPG"  class="center_seventy no-invert"/>
 
 On a system with multiple cores and supported kernel mapping, concurrency means that the threads can run in parallel, because the system can assign a separate thread to each core.
 {:.warning}

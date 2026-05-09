@@ -55,6 +55,8 @@ Singapore University of Technology and Design
 
 ## Finite System Resources
 
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4587.PNG"  class="center_thirty no-invert"/>
+
 A system consists of a <span style="color:#f7007f;"><b>finite</b></span> number of resources to be distributed among a number of <span style="color:#f7007f;"><b>competing processes</b></span>. Each type of resource can have several finite instances. Some example include:
 
 - CPU cycles / cores

@@ -140,7 +140,8 @@ Range of IPv4: `0.0.0.0` to `255.255.255.255`. You can find out your IP address 
 There are two types of addresses in general:
 1. Local address, for example the above (also known as private IP)
 2. Public gateway address (also known as public IP)
- 
+
+
 The gateway address is what your address looks like to the outside world. A router has an internal and external interface, where the external interface has a different IP than its internal interface. 
 - The IP address `192.168.1.254` is usually the default private IP address for some home broadband routers
 - The IP address 192.168.1.0 is typically reserved to identify the **network** itself and is not assignable to individual devices within the network.

@@ -159,6 +159,8 @@ This is due to the presence of <span class="orange-bold">race condition</span>.
 
 # The Race Condition
 
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4558.JPG"  class="center_fifty no-invert"/>
+
 Assume `buffer` and `counter` are shared between the two processes / threads. The instructions `counter ++` and `counter -- `are not implemented in a single clock cycle (it is <span style="color:#f77729;"><b>not atomic</b></span>).
 
 ## Atomic Operation

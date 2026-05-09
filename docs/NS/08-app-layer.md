@@ -131,6 +131,9 @@ When a UDP <span class="orange-bold">datagram</span> arrives, the kernel uses th
 
 
 # Transport Layer Protocols 
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4592.JPG"  class="center_thirty no-invert"/>
+
 In the previous chapter, we learned that DNS is used to translate between hostname to its IP address. Then, we use a socket to direct the packet to the right application on the computer. 
 
 Now, we need communication protocols (transport layer protocols) between two applications over the internet so that the two may send packets in an orderly fashion. 
@@ -145,6 +148,7 @@ Socket programming in the application layer relies on TCP and UDP services in th
 The diagram below might help you recap on the purpose of each network layer protocols:
 
 <img src="{{ site.baseurl }}/docs/NS/images/08-app-layer/cse2024-network-stack.drawio.png"  class="center_seventy"/>
+
 
 ## TCP 
 

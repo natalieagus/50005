@@ -91,6 +91,11 @@ From this point onwards, we are going to refer simply to the scheduler as the ke
 Recall how the system calls <span style="color:#f7007f;"><b>piggyback</b></span> the currently running user-process which mode has been changed to kernel mode. Likewise, the scheduler is just a set of instructions, part of the kernel realm whose job is to <span style="color:#f77729;"><b>manage</b></span> other processes. It is inevitable for the scheduler to be executed as well upon invoking certain system calls such as `read` or get `stdin` input which requires some <span style="color:#f7007f;"><b>waiting</b></span> time.
 
 # Process Management
+
+When you master this chapter, this won't look amusing to you anymore:
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4577.PNG"  class="center_fourty no-invert"/>
+
 ## Process Scheduling States {#process-scheduling-state}
 
 As a process executes, it changes its <span style="color:#f7007f;"><b>scheduling state</b></span> which reflects the <span style="color:#f7007f;"><b>current</b></span> activity of the process.

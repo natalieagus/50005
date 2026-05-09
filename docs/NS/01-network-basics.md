@@ -105,6 +105,9 @@ When one end system has data to send to another end system, the sending end syst
 The resulting packages of information, known as **packets** in the jargon of computer networks, are then sent through the network to the destination end system, where they are **reassembled** into the original data.
 
 ### Packet Switches
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4576.JPG"  class="center_fifty no-invert"/>
+
 A packet switch takes a packet arriving on one of its incoming communication links and forwards that packet on one of its outgoing communication links. 
 
 Types of packet switches include:
@@ -318,6 +321,8 @@ Packet switched networks are **cheaper** than circuit switched networks, as cost
 The data traffic pattern when you are playing an online game, making conference calls, or downloading contents of the web leans towards continuous stream of data. A circuit switched network is therefore more ideal for this, however, since this requires “reservation” of resources along the network path and it is much more expensive. 
 
 ## Network Layering
+
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4593.JPG"  class="center_twenty no-invert"/>
 
 {:.info-title}
 > Network Layering

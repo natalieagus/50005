@@ -134,6 +134,8 @@ For example, the command: `git commit -v -a --amend` stands for:
 
 # Path
 
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4588.PNG"  class="center_thirty no-invert"/>
+
 ## Basics of Directory
 
 The file system has many directories, starting from the **ROOT** (symbolised as a single forward slash /) and you can have directories within a directory thus forming a **hierarchy** of directories. Each “level” is separated by the forward slash symbol.

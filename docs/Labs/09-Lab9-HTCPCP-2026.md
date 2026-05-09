@@ -166,6 +166,9 @@ make run-local
 
 ### `localhost` vs `127.0.0.1`
 
+<img src="{{ site.baseurl }}/docs/OS/images/memes/IMG_4590.PNG"  class="center_thirty no-invert"/> 
+
+
 You might have heard the term `localhost` or `127.0.0.1` if you just want to spawn a web server locally during development Both "localhost" and "127.0.0.1" are used to refer to the _local host_ or the **loopback interface** of a device.
 
 "localhost" is a **hostname** that is used to refer to the current device itself. It is a standard hostname that resolves to the loopback IP address, which is typically "127.0.0.1" in IPv4 or "::1" in IPv6.
