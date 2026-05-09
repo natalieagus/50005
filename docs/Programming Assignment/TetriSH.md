@@ -49,6 +49,8 @@ Sections below are tagged so you can tell what is required and what is yours to 
 > **Open design**
 > 
 > A decision you must make and document neatly. We give you example approaches and you should pick, invent your own, but defend it in your `README` and at the live demo Q&A.
+
+
 ### tl;dr
 
 Indicate your interest to embark on this track by Week 3, Monday 6PM to your instructor. You may still withdraw by the end of Week 5 Friday, 6PM. 
