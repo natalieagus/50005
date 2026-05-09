@@ -67,7 +67,7 @@ Refer to the individual sections below for clarifications.
 
 `tetriSH` is a single integrated project that combines [PA1]({{ site.baseurl }}/pa1/intro) (shell + daemon) and [PA2]({{ site.baseurl }}/pa2/intro-c) (authenticated, confidential client-server protocol) into one <span class="orange-bold">terminal-based</span> Battle-Royale Tetris system written entirely in C.
 
-You should deliver **five binaries** and **three libraries**:
+You should deliver at least these **five binaries** and **three libraries**:
 
 | Component | Type | Role |
 |---|---|---|
@@ -81,7 +81,7 @@ You should deliver **five binaries** and **three libraries**:
 | `libtetrisbrain` | library | Tetris game logic (board, pieces, gravity, line clear) |
 
 
-You may complete this challenge in **groups of 3 only**. This is an *opt-in replacement* for PA1 + PA2. Selection is competitive and is described in the later section [below](#selection-marking-and-prize).
+You may complete this challenge in **groups of 3 only**. This is an *opt-in replacement* for PA1 + PA2. Selection is competitive and is described in the later section below. 
 
 ### Project Constraints
 
@@ -378,13 +378,11 @@ This is an application-layer protocol.
 ### Message grammar
 
 ```
-REQUEST       ::= REQUEST-LINE CRLF *(HEADER CRLF) CRLF [BODY]
+REQUEST       ::= REQUEST-LINE *(HEADER CRLF) CRLF [BODY]
 REQUEST-LINE  ::= METHOD SP PATH SP "HTTTP/1.0" CRLF
-RESPONSE      ::= STATUS-LINE CRLF *(HEADER CRLF) CRLF [BODY]
+
+RESPONSE      ::= STATUS-LINE *(HEADER CRLF) CRLF [BODY]
 STATUS-LINE   ::= "HTTTP/1.0" SP STATUS-CODE SP REASON-PHRASE CRLF
-HEADER        ::= FIELD-NAME ":" SP FIELD-VALUE
-SP            ::= " "
-CRLF          ::= "\r\n"
 ```
 
 <span class="orange-bold">We shall use `HTTTP/1.0` literal.</span>
@@ -423,6 +421,34 @@ You may add others if you wish.
 - `Content-Type: application/tetris-state` on server `STATE` broadcasts
 - `Player-Id` on every authenticated request
 - `Date` on every response (RFC 1123 format)
+
+### Sample
+
+HTTTP JOIN Request:
+```
+JOIN /arena/main HTTTP/1.0
+Host: tetrish.local
+User: alice
+Mode: battle-royale
+Client-Version: 1.0
+Content-Length: 35
+
+{"skin":"cyan","start_level":0}
+```
+
+HTTTP Response:
+```
+HTTTP/1.0 200 JOINED
+Session-Id: s-8f31a2
+Player-Id: p17
+Tick-Rate: 20
+Content-Type: application/json
+Content-Length: 94
+
+{"arena":"main","player_id":"p17","board_width":10,"board_height":20,"next_tick":48122}
+```
+
+
 
 ## The control plane
 
