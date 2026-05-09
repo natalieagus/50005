@@ -436,9 +436,9 @@ Content-Length: 35
 {"skin":"cyan","start_level":0}
 ```
 
-HTTTP Response:
+HTTTP JOIN Response:
 ```
-HTTTP/1.0 200 JOINED
+HTTTP/1.0 200 OK
 Session-Id: s-8f31a2
 Player-Id: p17
 Tick-Rate: 20
@@ -448,7 +448,24 @@ Content-Length: 94
 {"arena":"main","player_id":"p17","board_width":10,"board_height":20,"next_tick":48122}
 ```
 
+HTTTP rejected move sample:
+```
+HTTTP/1.0 409 INVALID_MOVE
+Seq: 43
+Server-Tick: 48124
+Content-Type: application/json
+Content-Length: 82
 
+{"accepted":false,"reason":"collision","authoritative_x":3,"authoritative_y":14}
+```
+
+HTTTP Battle Royale status poll:
+
+```
+GET /arena/main/state HTTTP/1.0
+Session-Id: s-8f31a2
+Accept: application/json
+```
 
 ## The control plane
 
