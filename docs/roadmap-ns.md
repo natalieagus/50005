@@ -1,6 +1,6 @@
 ---
 layout: default 
-nav_order: 3
+nav_order: 2
 permalink: /notes/roadmap-ns
 title: NS Roadmap
 description: Bird's eyeview of the course.  
