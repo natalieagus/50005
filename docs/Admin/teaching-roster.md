@@ -84,6 +84,9 @@ They are responsible for checkoffs so please get to know them by attending the c
 
 **Week 6 PA1 checkoff**: 
 * Tue and Thurs, 23 Jun, 25 Jun (respective lab session time)
-* UTAs on duty: 
-  * Tue: 
+
 **Week 13 PA2 checkoff**: Tue and Thurs, 11 Aug, 13 Aug
+
+* UTAs on duty: 
+  * Tue: Hidayah, Wei Yang, Marcus, Ryan
+  * Thur: Hidayah, Keng Hwang, Yufeng, Ryan, Zhong Yi
