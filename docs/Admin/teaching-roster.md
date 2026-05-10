@@ -33,7 +33,7 @@ All classes are conducted in person unless otherwise stated.
 | Lecture 2 | Tuesday | 11:30 to 13:00 | LT1 (Albert Hong Theatre) |
 
 {:.note}
-On selected weeks, there is a 30-minute <span class="orange-bold">extended</span> lecture on **Tuesday 11:00 to 11:30** at LT1, held before the regular Tuesday lecture. Extended lecture weeks are indicated in the [Class Calendar]({{ site.baseurl }}/admin/class-calendar). On these weeks, there is no lab session.
+On week 1-6, there is a 30-minute <span class="orange-bold">extended</span> lecture on **Tuesday 11:00 to 11:30** at LT1, held before the regular Tuesday lecture. Extended lecture weeks are indicated in the [Class Calendar]({{ site.baseurl }}/admin/class-calendar) and in teaching roster below.
 
 ### Lab Cohorts
 
