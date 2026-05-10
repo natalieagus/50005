@@ -51,11 +51,11 @@ Notes contain additional materials and explanations to complement the official s
 {% endfor %}
 <span class="badge badge-{{ badge_key }}">{{ badge_label }}</span> {{ e.text }}
 {% if e.details %}
-
+<ul class="event-details">
 {% for d in e.details %}
-- {{ d }}
+  <li>{{ d }}</li>
 {% endfor %}
-
+</ul>
 {% endif %}
 
 {% endfor %}
