@@ -83,7 +83,7 @@
     - "4.4 Peterson's Solution Correctness"
   events:
     - badge: quiz
-      text: "<b>Quiz 1:</b> Tuesday, first 20 mins before extended lecture. Open book, Weeks 1 to 3 material."
+      text: "<b>Quiz 1:</b> Tuesday, first 20 mins of extended lecture. Open book, Weeks 1 to 3 material."
     - badge: ext
       text: "Tuesday 10:30 to 11:30, LT1"
     - badge: lab
@@ -120,7 +120,7 @@
     - "6.2 Linux File Operation"
   events:
     - badge: quiz
-      text: "<b>Quiz 2:</b> Tuesday, first 20 mins of lesson. Open book, Weeks 4 to 5 material."
+      text: "<b>Quiz 2:</b> Tuesday, first 20 mins of of extended lecture. Open book, Weeks 4 to 5 material."
     - badge: ext
       text: "Tuesday 11:00 to 11:30, LT1"
     - badge: pa
