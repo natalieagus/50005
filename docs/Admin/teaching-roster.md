@@ -82,8 +82,7 @@ They are responsible for checkoffs so please get to know them by attending the c
 
 ## Programming Assignments Checkoff
 
-**Week 6 PA1 checkoff**: 
-* Tue and Thurs, 23 Jun, 25 Jun (respective lab session time)
+**Week 6 PA1 checkoff**: Tue and Thurs, 23 Jun, 25 Jun (respective lab session time)
 
 **Week 13 PA2 checkoff**: Tue and Thurs, 11 Aug, 13 Aug
 
