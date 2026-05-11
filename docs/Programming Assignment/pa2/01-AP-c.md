@@ -330,7 +330,7 @@ No matter which method you choose, both are still _under_ `MODE 1`, which means 
 
 # Grading
 
-We will **manually** check the implementation of your `MODE 3` in both Client and Server source files. This will be done during the demo (consult course handout for details).
+We will **manually** check the implementation of your `MODE 3` in both Client and Server source files. This will be done during the live demo in Week 13. Schedule can be found in the link on eDimension.
 
 ## Commit Task 1
 

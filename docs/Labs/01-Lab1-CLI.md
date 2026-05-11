@@ -39,7 +39,7 @@ No checkoff required for this lab.
 
 A **shell** is one of these user applications that acts as an interface to allow users to **access** OS services. It is named shell because it is seen as an *“outer”* layer around the OS kernel. OS shells are made either in a form of command-line interface (**CLI**, also known as) where users can **provide commands** via **text**, or graphical user interface (**GUI**) where users can provide commands via mouse clicks. In this lab, we are going to learn a little bit about the command-line interface, bash scripting, and makefiles. 
 
-You would need to install any POSIX-compliant OS before coming to this lab. The guide is provided in our course handout. 
+You would need to install any POSIX-compliant OS before coming to this lab. See [here for guide]({{ site.baseurl }}/admin/getting-started). 
 {:.warning}
 
 In order for us to be able to use CLI, we need to be familiar with their **commands** and their calling **syntax**. In particular, we are concerned with **UNIX-type shells** (POSIX is an IEEE standard that acts as a standard UNIX version) in this course. 

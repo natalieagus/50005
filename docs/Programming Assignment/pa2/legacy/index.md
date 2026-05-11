@@ -19,7 +19,7 @@ In this assignment, you will implement a <span style="color:#f77729;"><b>secure<
 2. Secondly, you want to ensure that you’re talking to a <span style="color:#f7007f;"><b>live</b></span> server too.
 3. Thirdly, while carrying out the upload you should be able to protect the <span style="color:#f7007f;"><b>confidentiality</b></span> of the data against eavesdropping by any curious adversaries.
 
-You may complete this assignment in <span style="color:#f7007f;"><b>groups of 2-3 pax</b></span>. Indicate your partner's name in the google sheet provided in our course handout.
+You may complete this assignment in <span style="color:#f7007f;"><b>groups of 2-3 pax</b></span>. 
 {:.important}
 
 There are <span style="color:#f7007f;"><b>three</b></span> parts of this assignment:
@@ -46,7 +46,7 @@ While you can develop in Python using any OS, you still need to ensure that your
 
 # Starter Code
 
-You should have joined the GitHub Classroom and obtain the starter code for this assignment there. The link can be found in the Course Calendar portion of your Course Handout.
+You should have joined the GitHub Classroom and obtain the starter code for this assignment there. 
 
 
 ### PA2 Files

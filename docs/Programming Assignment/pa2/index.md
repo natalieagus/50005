@@ -31,7 +31,7 @@ _Secure_ means that it fulfiles these **three** requirements simultaneously:
 2. **Secondly**, you want to ensure that you're talking to a **live** server.
 3. **Thirdly**, while carrying out the upload you should be able to protect the **confidentiality** of the data against eavesdropping by any curious adversaries.
 
-You may complete this assignment in **groups of 2-3 pax**. Indicate your partner's name in the google sheet provided in our course handout.
+You may complete this assignment in **groups of 2-3 pax**. Indicate your partner's name in the google sheet link that can be found on eDimension. 
 
 There are **three** parts of this assignment:
 
@@ -71,7 +71,7 @@ sudo dnf install gcc openssl-devel
 
 ## Starter Code
 
-You should have joined the GitHub Classroom and obtained the starter code for this assignment there. The link can be found in the Course Calendar portion of your Course Handout.
+You should have joined the GitHub Classroom and obtained the starter code for this assignment there. The link can be found on eDimension.
 
 ### PA2 Files
 

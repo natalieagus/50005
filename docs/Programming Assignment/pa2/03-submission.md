@@ -223,7 +223,7 @@ The following gif shows the expected interaction between Server and Client proce
 
 ## Checkoff Procedure 
 
-Please be present at your designated slots (refer to course handout) for your PA2 demo. Even though you have submitted your code, we still want to witness your PA2 **in person**. You will <span class="orange-bold">clone</span> your submitted code (fresh) and run it <span class="orange-bold">on a different machine</span>. 
+Please be present at your designated slots (refer to the checkoff link on eDimension) for your PA2 demo. Even though you have submitted your code, we still want to witness your PA2 **in person**. You will <span class="orange-bold">clone</span> your submitted code (fresh) and run it <span class="orange-bold">on a different machine</span>. 
 
 ### QnA (2%)
 We will ask 3 questions regarding the code that you write. Any member in the group should be prepared to answer the questions. We might select certain people to answer. You gain 1% for each question you can answer, with a maximum of 2%.

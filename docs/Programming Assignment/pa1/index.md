@@ -23,7 +23,7 @@ The assignment is written entirely in C. At the end of this assignment, you shou
 - Create and maintain environment variables 
 - Customise your shell via simple `.rc` file
 
-You may complete this assignment in <span style="color:#f7007f;"><b>groups of 2-3 pax</b></span>. Indicate your partner's name in the google sheet provided in our course handout.
+You may complete this assignment in <span style="color:#f7007f;"><b>groups of 2-3 pax</b></span>. Indicate your partner's name in the google sheet provided on eDimension.
 {:.info}
 
 ## Starter Code
@@ -31,11 +31,11 @@ You may complete this assignment in <span style="color:#f7007f;"><b>groups of 2-
 You might want to run this assignment in your **POSIX compliant OS**, using `gcc` version 10.X or below. **Using version 11.X and above** might be _okay_, but the bot is running `gcc 10` version so if you use some newer fancy stuffs then the bot might not be able to run it. You can try first.
 {:.error}
 
-You should have joined the GitHub Classroom and obtain the starter code for this assignment there. The link can be found in the Course Calendar portion of your Course Handout.
+You should have joined the GitHub Classroom and obtain the starter code for this assignment there. The link can be found on eDimension.
 
 ## Submission 
 
-Simply push your completed shell code to the github classroom repository by the stipulated due date in the course handout. You will then meet our TAs/instructors for a live demo (checkoff, schedule in course handout). You are to expand the shell to implement various **additional functionalities** that will be elaborated throughout this assignment's handout. Read along to find out more. 
+Simply push your completed shell code to the github classroom repository by the stipulated due date stated on your github classroom repo. You will then meet our TAs/instructors for a live demo (checkoff, schedule in the sheet which link can be found on eDimension). You are to expand the shell to implement various **additional functionalities** that will be elaborated throughout this assignment's handout. Read along to find out more. 
 
 Your shell should <span style="color:#f7007f;"><b>NOT</b></span> crash due to any input from the user or any <span style="color:#f7007f;"><b>ABSENCE</b></span> of input from the user after the given command.
 {:.error}

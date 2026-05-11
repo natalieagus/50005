@@ -16,7 +16,7 @@ There are two programming assignments in this course:
 {:.note-title}
 > Grouping
 >
-> You may complete theses assignments in groups of 2-3 pax. Signup sheets are available in the Course Handout. You will be assigned to the <span class="orange-bold">same</span> group for both assignments. 
+> You may complete theses assignments in groups of 2-3 pax. Signup sheets are available on eDimension. You will be assigned to the <span class="orange-bold">same</span> group for both assignments. 
 
-Both assignments will be graded on two aspects: your code and your live demo. Please refer to the course calendar for the demo schedule. You should also have downloaded the starter code from the Github Classroom link provided in the course handout.
+Both assignments will be graded on two aspects: your code and your live demo. Please refer to the course calendar for the demo schedule. You should also have downloaded the starter code from the Github Classroom link provided on eDimension.
 

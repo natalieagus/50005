@@ -22,7 +22,6 @@ This course is about the design and implementation of complex computing systems,
 
 Before Anything Else, do:
 
-- **Bookmark** the Course Handout that can be found in eDimension
 - **Join** MS Teams Classroom
 - **Read** the **Syllabus** and **Class Calendar**
 - **Bookmark** this website
