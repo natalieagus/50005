@@ -59,7 +59,7 @@ Once you're committed to this track, here's the rule:
 **To avoid zero:** baseline MVP must work
 **To complete tetriSH properly**: baseline MVP + Battle Royale must work
 **To get good marks**: system must be correct, clean, documented, and understood, also pass live QnA and live patching
-**To win prize**: full required system + strong engineering quality + flawless Q&A
+**To win prize**: full required system + strong engineering quality + flawless Q&A + shippable bundle that the cohort can play on + a git history that proves your team actually built this
 
 Refer to the individual sections below for clarifications.
 
@@ -985,7 +985,7 @@ A group that submits working AI-generated code but cannot explain it may lose <s
 
 ## Prize eligibility
 
-The prize is <span class="orange-bold">separate</span> from course marks.
+The prize is <span class="orange-bold">separate</span> from course marks. There will be a live demo session for shortlisted groups in Week 13, stay tuned.
 
 To be eligible for the prize, a group must:
 
@@ -995,7 +995,15 @@ To be eligible for the prize, a group must:
 4. pass the live Q&A validation,
 5. demonstrate that all three members understand their declared roles,
 6. build successfully from a clean checkout,
-7. have no academic integrity issues.
+7. have no academic integrity issues
+8. ship a clean release bundle from a tagged commit (build instructions, sample `.tetrishrc`, certificates, install steps) that <span class="orange-bold">any other group in the cohort</span> can clone and run end to end without your assistance,
+9. survive a cohort-scale playtest. We might ask other students to point their `tetrisu` at a hosted instance of your `tetrisd` and play. The system must hold up under real concurrent load from the rest of the batch, not just from your own team's demo machines.
+10. must project the server's cli in front of the cohort, and live log the sessions / peek into any rooms, or manage live users when asked.
+
+{:.note-title}
+> SUTD Wifi
+>
+> It is your responsibility to check how clients can connect to the server's private IP via SUTDWifi. Otherwise, you may also host it somewhere and ssh into it. See [this]({{ site.baseurl }}/pa2/intro-c) for more info.
 
 A group may receive project credit but still be ineligible for the prize if:
 
@@ -1003,8 +1011,37 @@ A group may receive project credit but still be ineligible for the prize if:
 2. the live Q&A shows weak understanding,
 3. there are serious code ownership concerns,
 4. Battle Royale is present but clearly hacked together without proper systems design.
+5. the system (client) cannot be run cleanly by anyone other than the original authors.
+6. the cohort-scale playtest exposes deadlocks, leaks, or crashes that would not show up on a two-client local demo.
 
 Completing Battle Royale does not guarantee winning the prize. It only makes the group eligible for prize consideration.
+
+
+### Version control discipline
+
+{:.note-title}
+> **Required for prize eligibility (not for passing the project)**
+>
+> Your git history must read like the record of a real team of three building a real system over 13 weeks. Specifically:
+>
+> - Meaningful commit messages that describe intent, not "update" or "fix stuff" or pasted AI output.
+> - Sensible branching. Feature branches merged via PR (or equivalent) with the other two members visible as reviewers in the history.
+> - At least one tagged release for the bundle you submit for the cohort-scale playtest (e.g. `v1.0-mvp`, `v1.0-br`).
+> - No squashed "final commit" that dumps the whole project in one go.
+> - Co-authorship visible. If 2/3 members pair-programmed a module, the commit reflects that.
+> - The three declared roles should be traceable in the history. We should be able to see which member touched which subsystem.
+>
+> We will read your git log during prize consideration. A clean codebase with a fabricated git history is not a clean codebase.
+
+### Cohort-scale playtest
+
+Each prize-eligible group hosts their own `tetrisd` and `tetrislogd` during a scheduled window in Week 13. The cohort is invited to point `tetrisu` (built from the group's own repository) at the hosted daemon and play.
+
+The group decides where to host: campus WiFi, home network with port forwarding, a VPS, a tunnel, anything that lets the cohort actually reach the daemon. Hosting choice is part of the engineering decision and will be discussed at Q&A.
+
+**Expected concurrent load**: approximately [N] connections. Your system must remain responsive under this load. The system must survive ill-behaved clients (malformed HTTTP, oversized frames, slow readers, half-open handshakes) without the daemon crashing or hanging.
+
+
 
 ### Selection of Winning group
 
