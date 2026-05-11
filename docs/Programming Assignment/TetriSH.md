@@ -56,10 +56,10 @@ Sections below are tagged so you can tell what is required and what is yours to 
 Indicate your interest to embark on this track by Week 3, Monday 6PM to your instructor. You may still withdraw by the end of Week 5 Friday, 6PM. 
 
 Once you're committed to this track, here's the rule:
-**To avoid zero:** baseline MVP must work
-**To complete tetriSH properly**: baseline MVP + Battle Royale must work
-**To get good marks**: system must be correct, clean, documented, and understood, also pass live QnA and live patching
-**To win prize**: full required system + strong engineering quality + flawless Q&A + shippable bundle that the cohort can play on + a git history that proves your team actually built this
+- **To avoid zero:** baseline MVP must work
+- **To complete tetriSH properly**: baseline MVP + Battle Royale must work
+- **To get good marks**: system must be correct, clean, documented, and understood, also pass live QnA and live patching
+- **To win prize**: full required system + strong engineering quality + flawless Q&A + shippable bundle that the cohort can play on + a git history that proves your team actually built this
 
 Refer to the individual sections below for clarifications.
 
