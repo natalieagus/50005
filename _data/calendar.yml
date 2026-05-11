@@ -11,8 +11,6 @@
     - "1.1 Process and Concurrency"
     - "1.2 Functional View of OS"
   events:
-    - badge: ext
-      text: "Tuesday 11:00 to 11:30, LT1"
     - badge: lab
       text: "Introduction to Command Line (<b>2% questionnaire, due this Sunday 23:59</b>)"
     - badge: prep
@@ -36,10 +34,8 @@
     - "2.1 Privileges and System Calls"
     - "2.2 OS Structure"
   events:
-    - badge: ext
-      text: "Tuesday 11:00 to 11:30, LT1"
-    - badge: "off"
-      text: "No lab this week."
+    - badge: lab
+      text: "Lab will continue lecture materials"
     - badge: prep
       text: "Read Introduction to C Part 2 (advanced memory allocation, static variables, function pointers, stack vs heap). Recording on eDimension."
 
@@ -60,10 +56,8 @@
   events:
     - badge: "off"
       text: "<b>Monday is a Public Holiday</b> (no Monday lecture)."
-    - badge: ext
-      text: "Tuesday 11:00 to 11:30, LT1"
-    - badge: "off"
-      text: "No lab this week."
+    - badge: lab
+      text: "Lab will continue lecture materials"
     - badge: prep
       text: "Read Introduction to C Part 3 (shared memory, signal handling, fork, process termination). Recording on eDimension."
 
@@ -101,8 +95,6 @@
   activities:
     - "5.1 Banker's Algorithm"
   events:
-    - badge: ext
-      text: "Tuesday 11:00 to 11:30, LT1"
     - badge: lab
       text: "Banker's Algorithm (<b>2% questionnaire due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
 
