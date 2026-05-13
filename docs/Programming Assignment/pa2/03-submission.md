@@ -5,7 +5,7 @@ title: Submission and Demo
 description: Submission Protocol
 parent: Programming Assignment 2
 grand_parent: Programming Assignment
-nav_order:  3
+nav_order:  4
 ---
 
 
@@ -37,8 +37,10 @@ You are expected to <span style="color:#f77729;"><b>save</b></span> <span class=
 For example, you should have the following files after sending `file.txt` and `image.ppm`:
 
 
-```bash
+```text
 .[PROJECT_DIR]
+├── tests/ -- test-related files, omitted for clarity
+├── other-admin-files -- makefile, readme, etc (omitted for clarity)
 ├── cleanup.sh
 ├── ClientWithoutSecurity
 ├── ClientWithSecurityAP
@@ -53,8 +55,6 @@ For example, you should have the following files after sending `file.txt` and `i
 │   ├── squeak.wav
 │   ├── vscodejsim.mp4
 │   └── week9.html
-├── Makefile
-├── readme.md
 ├── recv_files
 │   ├── recv_file.txt
 │   └── recv_image.ppm
@@ -226,6 +226,12 @@ The following gif shows the expected interaction between Server and Client proce
 Please be present at your designated slots (refer to the checkoff link on eDimension) for your PA2 demo. Even though you have submitted your code, we still want to witness your PA2 **in person**. You will <span class="orange-bold">clone</span> your submitted code (fresh) and run it <span class="orange-bold">on a different machine</span>. 
 
 ### QnA (2%)
+
+{:.important}
+> Time Limit
+>
+> The time limit for you to answer is 60 seconds per question. If you're unable to give a good answer, or any answer that indicates extra time is needed, then we take it as you can't answer the question and move on.
+
 We will ask 3 questions regarding the code that you write. Any member in the group should be prepared to answer the questions. We might select certain people to answer. You gain 1% for each question you can answer, with a maximum of 2%.
 
 
@@ -235,12 +241,13 @@ If all goes well, you should obtain a maximum score of 10% of your overall 50.00
 ### Grade breakdown
 
 Here's the breakdown of PA2 assessment, based on each feature: 
-1. Task 1 (3%): Authentication Protocol
+1. Task 1 (2%): Authentication Protocol
 2. Task 2 (2%): Confidentiality Protocol 1 (CP1)
 3. Task 3 (2%): Confidentiality Protocol 2 (CP2)
 4. Following given protocols closely (1%)
-5. Able to answer at least 2 out of 3 question given about the code submitted (2%)
-6. Incorporate attempts to support sustainability and inclusivity (**failure** to do so results in -3%)
+5. Presence of reasonable test cases, both integration and unit test (1%)
+6. Able to answer at least 2 out of 3 question given about the code submitted (2%)
+7. Incorporate attempts to support sustainability and inclusivity (**failure** to do so results in -3%)
 
 **Total maximum PA2 grades: 10%**. 
 

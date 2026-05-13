@@ -77,7 +77,7 @@ We have given our CA certificate in your starter project: `source/auth/cacsertif
 
 Please read this whole section from start to end carefully before you begin your implementation. You need to stick to the <span class="orange-bold">suggested protocol</span> carefully to obtain the highest tier of marks for this assignment.
 
-## Task 1 (3%)
+## Task 1 (2%)
 
 {:.task}
 `TASK 1:` **Implement an Authentication Protocol**. You are expected to make a copy of the starter non-secure FTP and modify it. Read along first to get the general idea.
@@ -168,7 +168,7 @@ During the step labeled `CHECK SERVER ID`, the client must do the following (fun
 > There's one **problem** with the proposed AP above (means it has a **vulnerability**). You need to **identify and fix this problem** in your submission.
 
 {:.highlight}
-A complete implementation of the AP including fixing this flaw will grant you **3%** of your grades.
+A complete implementation of the AP including fixing this flaw will grant you **2%** of your grades.
 
 # Starter Non-secure FTP
 

@@ -5,7 +5,7 @@ title: Submission and Demo
 description: Admin details on submission and demo of PA1
 parent: Programming Assignment 1
 grand_parent: Programming Assignment
-nav_order:  6
+nav_order:  7
 ---
 
 
@@ -31,6 +31,7 @@ Singapore University of Technology and Design
 > 2. Implement all 7 shell builtin commands: `cd, help, exit, usage, env, setenv, unsetenv`
 > 3. Implement the functionality to read and interpret `.cseshellrc`  
 > 4. Implement 4 more system programs: `sys`, `dspawn`, `dcheck`, and `backup`  
+> 5. Implement unit and integration test whenever possible
 
 # Additional Feature
 
@@ -44,7 +45,7 @@ You are then free to implement <span class="orange-bold">any additional feature(
 {:.task-title}
 > Additional Shell Feature 
 >
-> This accounts for 1.5% of your grade (PA1 in total accounts for 10% of your grades). Be <span class="orange-bold">creative</span>, you are to implement one or two great functionalities (there's no need to implement 50 of them). *There's no rubric for this.* It is both objective (in terms of functionality and difficulty of implementation) and subjective (in terms of usefulness and looks).  
+> This accounts for 2% of your grade (PA1 in total accounts for 10% of your grades). Be <span class="orange-bold">creative</span>, you are to implement one or two great functionalities (there's no need to implement 50 of them). *There's no rubric for this.* It is both objective (in terms of functionality and difficulty of implementation) and subjective (in terms of usefulness and looks).  
 
 # Sustainability and Inclusivity 
 
@@ -117,8 +118,9 @@ No <span class="orange-bold">late submission</span> will be entertained. You wil
 You are expected to write a <span class="orange-bold">clear</span> and <span class="orange-bold">succint</span> README file as part of your project submission, detailing the following:
 1. How to compile and run your shell
 2. Builtin functions supported
-3. Additional features supported 
-4. How you have considered sustainability and/or inclusivity in your assignment
+3. How to run the tests and what tests are supported
+4. Additional features supported 
+5. How you have considered sustainability and/or inclusivity in your assignment
 
 # Live Demo
 
@@ -139,12 +141,13 @@ Here's the breakdown of PA1 assessment, based on each feature:
 1. Shell main loop (1%): this is a <span class="orange-bold">requirement</span>, without this, you will automatically obtain 0 marks for PA1. Upon proper bugless completion, you get permission to do checkoff. Otherwise, if your shell is buggy and only work under ideal condition, you obtain a max of 1%. 
    - All commands **must** be able to be executed even after you `cd`. Failure to do this results in -1% <span class="orange-bold">penalty</span>. 
 2. Shell builtin functions (1.5%): `cd` (0.25%), `help` (0.25%), `usage` (0.25%), `env` (0.25%), `setenv` (0.25%), `unsetenv` (0.25%)
-3. `.cseshellrc` interpretation (1.5%): `PATH` setting (0.5%), Command execution (0.5%), able to handle empty lines (0.5%)
+3. `.cseshellrc` interpretation (1%): `PATH` setting (0.5%), Command execution (0.25%), able to handle empty lines (0.25%)
 4. System programs (2%): `sys` (0.5%), `dspawn` (0.5%), `dcheck` (0.5%), `backup` (0.5%). 
    - Your shell **must** also be able to execute any system program set in `PATH` using `.cseshellrc` at all times (even when we `cd`). Failure to do this results in -1% <span class="orange-bold">penalty</span>.  
-5. Additional functionality (2%) 
-6. QnA (2%)
-6. Incorporate attempts to support sustainability and inclusivity (**failure** to do so results in -3%)
+5. Presence of reasonable test cases, both integration and unit test (1%)
+6. Additional functionality (2%) 
+7. QnA (2%)
+8. Incorporate attempts to support sustainability and inclusivity (**failure** to do so results in -3%)
 
 **Total maximum PA1 grades: 10%**. 
 
@@ -154,10 +157,12 @@ We will ask several implementation-related questions, and even ask you to <span 
 
 ### QnA (2%)
 
+{:.important}
+> Time Limit
+>
+> The time limit for you to answer is 60 seconds per question. If you're unable to give a good answer, or any answer that indicates extra time is needed, then we take it as you can't answer the question and move on.
+
 We will ask 3 questions regarding the code that you write. Any member in the group should be prepared to answer the questions. We might select certain people to answer. You gain 1% for each question you can answer, with a maximum of 2%.
-
-
-
 
 {:.highlight}
 If all goes well, you should obtain a maximum score of 10% of your overall 50.005 grades. 
