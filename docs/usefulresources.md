@@ -32,3 +32,8 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 
 ### C Programming
 [The Ten Commandments for C Programmers](https://doc.cat-v.org/henry_spencer/ten-commandments) (Annotated Edition) by Henry Spencer, inventer of Regex: A humorous and sharp list detailing the ten worst "sins" committed by C programmers.
+
+### Concurrent Programming
+
+[The Little Book of Semaphores](https://greenteapress.com/wp/semaphores/): a great textbook that introduces the principles of synchronization for concurrent programming.
+
