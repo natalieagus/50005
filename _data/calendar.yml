@@ -79,7 +79,7 @@
     - badge: quiz
       text: "<b>Quiz 1:</b> Tuesday, first 20 mins of extended lecture. Open book, Weeks 1 to 3 material."
     - badge: ext
-      text: "Tuesday 10:30 to 11:30, LT1"
+      text: "Tuesday 11:00 to 11:30, LT1"
     - badge: lab
       text: "TOCTOU Race Condition Attack (<b>2% quiz due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
     - badge: pa
