@@ -35,7 +35,7 @@
     - "2.2 OS Structure"
   events:
     - badge: lab
-      text: "Lab will continue lecture materials"
+      text: "Lab will continue lecture materials + C programming"
     - badge: prep
       text: 'Read <a href="https://docs.google.com/document/d/1KcY8mW6D9XM2l-I73KUXmYdaGgYILoRBdkFPcVJBjpM/edit?usp=sharing">Introduction to C Part 2</a> (advanced memory allocation, static variables, function pointers, stack vs heap)'
 
@@ -57,7 +57,7 @@
     - badge: "off"
       text: "<b>Monday is a Public Holiday</b> (no Monday lecture)."
     - badge: lab
-      text: "Lab will continue lecture materials"
+      text: "Lab will continue lecture materials + C programming checkoff"
     - badge: prep
       text: 'Read <a href="https://docs.google.com/document/d/1OfXAu2Zaap_pDR4oLrByyVMv2YyUP0WonJTiVuvWsHs/edit">Introduction to C Part 3</a> (shared memory, signal handling, fork, process termination).'
 
