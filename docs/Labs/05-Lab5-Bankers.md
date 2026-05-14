@@ -41,7 +41,7 @@ You will be implementing the <span style="color:#f77729;"><b>Safety Algorithm</b
 
 # Submission
 
-You are to complete this lab's questionnaire on eDimension as you complete the tasks. 
+You are to complete this lab's quiz on eDimension as you complete the tasks. 
 
 Once you have completed `Banker.py`, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
 

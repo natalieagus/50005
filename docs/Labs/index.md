@@ -33,5 +33,5 @@ The labs make up 13% of your assessment:
 * Lab 8: DNS (1.5%), Week 11
 * Lab 9: Web server and client (1.5%), Week 12 
 
-Please refer to the individual lab handouts for further details (questionnaire, grading, submission procedure, etc).
+Please refer to the individual lab handouts for further details (quiz, grading, submission procedure, etc).
 

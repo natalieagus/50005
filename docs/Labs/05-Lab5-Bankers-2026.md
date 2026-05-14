@@ -40,7 +40,7 @@ You will be implementing the <span class="orange-bold">Safety Algorithm</b></spa
 
 # Submission
 
-You are to complete this lab's questionnaire on eDimension and complete all the sections labeled `TODO` in the starter code. There are 4 `TODO` tasks in total.
+You are to complete this lab's quiz on eDimension and complete all the sections labeled `TODO` in the starter code. There are 4 `TODO` tasks in total.
 
 Once you have completed all the `TODO` in `banker.c`, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
 

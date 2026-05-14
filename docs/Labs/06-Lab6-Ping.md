@@ -34,7 +34,7 @@ In this lab exercise, you will learn how to use `ping` and `traceroute` programs
 You will need both ping and traceroute to be installed on your OS. Most Ubuntu or macOS installations should already include ping by default. You can install traceroute by running `sudo apt install traceroute` from the command line.
 
 # Submission
-You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+You are to complete this lab's quiz on eDimension as you complete the tasks.
 
 
 No checkoff required for this lab. 

@@ -30,7 +30,7 @@ An operating system Kernel’s job is to provide **services** so that softwares 
 * Protection (security and permission settings), etc. 
 
 # Submission
-You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+You are to complete this lab's quiz on eDimension as you complete the tasks.
 
 No checkoff required for this lab. 
 

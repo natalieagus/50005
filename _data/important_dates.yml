@@ -1,10 +1,5 @@
 - week: 1
   items:
-    - date: "19 May"
-      day: "Tue"
-      time: "11:00"
-      badge: ext
-      task: "Extended Lecture: 30 mins"
     - date: "24 May"
       day: "Sun"
       time: "23:59"
@@ -14,29 +9,21 @@
       day: "Sun"
       time: "23:59"
       badge: lab
-      task: "Submit Lab 1 (CLI) questionnaire"
-
-- week: 2
-  items:
-    - date: "26 May"
-      day: "Tue"
-      time: "11:00"
-      badge: ext
-      task: "Extended Lecture: 30 mins"
+      task: "Submit Lab CLI quiz"
 
 - week: 3
   items:
-    - date: "2 Jun"
-      day: "Tue"
-      time: "11:00"
-      badge: ext
-      task: "Extended Lecture: 30 mins"
+    - date: "29 May"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "C Programming team checkoff"
 
 - week: 4
   items:
     - date: "9 Jun"
       day: "Tue"
-      time: "10:00"
+      time: "11:00"
       badge: quiz
       task: "<b>Quiz 1</b> (Weeks 1 to 3)"
     - date: "9 Jun"
@@ -44,16 +31,11 @@
       time: "11:00"
       badge: ext
       task: "Extended Lecture: 30 mins"
-    - date: "12 Jun"
-      day: "Fri"
-      time: "18:00"
-      badge: lab
-      task: "Lab 4 (TOCTOU) team checkoff"
     - date: "14 Jun"
       day: "Sun"
       time: "23:59"
       badge: lab
-      task: "Submit Lab 4 (TOCTOU) questionnaire"
+      task: "Submit Lab TOCTOU quiz"
     - date: "14 Jun"
       day: "Sun"
       time: "23:59"
@@ -62,16 +44,16 @@
 
 - week: 5
   items:
-    - date: "16 Jun"
-      day: "Tue"
-      time: "11:00"
-      badge: ext
-      task: "Extended Lecture: 30 mins"
     - date: "21 Jun"
       day: "Sun"
       time: "23:59"
       badge: lab
-      task: "Submit Lab 5 (Banker's) questionnaire"
+      task: "Submit Lab Banker's quiz"
+    - date: "19 Jun"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "Lab TOCTOU team checkoff"
 
 - week: 6
   items:
@@ -85,15 +67,15 @@
       time: "11:00"
       badge: quiz
       task: "<b>Quiz 2</b> (Weeks 4 to 5)"
-    - date: "26 Jun"
-      day: "Fri"
-      time: "18:00"
-      badge: lab
-      task: "Lab 5 (Banker's) team checkoff"
     - span: true
       time: "Lab time"
       badge: pa
       task: "PA1 Checkoff"
+    - date: "26 Jun"
+      day: "Fri"
+      time: "18:00"
+      badge: lab
+      task: "Lab Banker team checkoff"
 
 - week: 7
   items:
@@ -115,7 +97,7 @@
       day: "Sun"
       time: "23:59"
       badge: lab
-      task: "Submit Lab 9 (Ping/Traceroute) questionnaire"
+      task: "Submit Lab Ping/Traceroute quiz"
 
 - week: 10
   items:
@@ -133,7 +115,7 @@
       day: "Sun"
       time: "23:59"
       badge: lab
-      task: "Submit Lab 10 (Cryptography) questionnaire"
+      task: "Submit Lab Cryptography quiz"
 
 - week: 11
   items:
@@ -154,7 +136,7 @@
       day: "Sun"
       time: "23:59"
       badge: lab
-      task: "Submit Lab 12 (HTCPCP) questionnaire"
+      task: "Submit Lab HTCPCP quiz"
 
 - week: 13
   items:
@@ -166,12 +148,12 @@
     - span: true
       time: "Lab time"
       badge: lab
-      task: "PA2 and HTCPCP Checkoff"
+      task: "PA2 Checkoff"
     - date: "14 Aug"
       day: "Fri"
       time: "18:00"
       badge: lab
-      task: "Lab 12 (HTCPCP) team checkoff"
+      task: "Lab HTCPCP team checkoff"
 
 - week: 14
   items:

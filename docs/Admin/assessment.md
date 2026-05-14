@@ -40,19 +40,19 @@ There is no dedicated peer review. Since teams are small, any disputes should be
 
 ## Labs
 
-Six labs + 1 C Programming Lab across the term, combining individual questionnaires and team checkoffs:
+Six labs + 1 C Programming Lab across the term, combining individual quizs and team checkoffs:
 
 | Week | Lab | Weightage |
 |---|---|---|
-| 1 | Introduction to Command Line | 2% (questionnaire) |
+| 1 | Introduction to Command Line | 2% (quiz) |
 | 3 | C Programming | 2% (team checkoff) |
-| 4 | TOCTOU Race Condition Attack | 3% (2% questionnaire + 1% team checkoff) |
-| 5 | Banker's Algorithm | 3% (2% questionnaire + 1% team checkoff) |
-| 9 | Ping and Traceroute | 2% (questionnaire) |
-| 10 | Python Cryptography | 3% (2% questionnaire + 1% team checkoff) |
-| 12 | Web Server and Client (HTCPCP) | 3% (2% questionnaire + 1% team checkoff) |
+| 4 | TOCTOU Race Condition Attack | 3% (2% quiz + 1% team checkoff) |
+| 5 | Banker's Algorithm | 3% (2% quiz + 1% team checkoff) |
+| 9 | Ping and Traceroute | 2% (quiz) |
+| 10 | Python Cryptography | 3% (2% quiz + 1% team checkoff) |
+| 12 | Web Server and Client (HTCPCP) | 3% (2% quiz + 1% team checkoff) |
 
-Each lab is designed to be completable within a 2-hour lab slot. Questionnaires allow 5 attempts; the latest submission is taken. Team checkoffs are due by the Friday after the lab week, 6 PM.
+Each lab is designed to be completable within a 2-hour lab slot. quizs allow 5 attempts; the latest submission is taken. Team checkoffs are due by the Friday after the lab week, 6 PM.
 
 ## Examinations
 

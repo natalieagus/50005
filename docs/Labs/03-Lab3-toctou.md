@@ -37,7 +37,7 @@ The lab is written <span style="color:#f77729;"><b>entirely in C</b></span>, and
 - Understand the difference between <span style="color:#f77729;"><b>symbolic</b></span> and <span style="color:#f77729;"><b>hard</b></span> links
 
 # Submission 
-You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+You are to complete this lab's quiz on eDimension as you complete the tasks.
 
 Schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
 

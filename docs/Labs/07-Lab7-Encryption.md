@@ -41,7 +41,7 @@ There are 3 parts of this lab:
 
 # Submission 
 
-You are to complete this lab's questionnaire on eDimension as you complete the tasks.
+You are to complete this lab's quiz on eDimension as you complete the tasks.
 
 Once you have completed all tasks, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
 
@@ -759,4 +759,4 @@ if __name__ == "__main__":
     sign_digest("original_files/longtext.txt")
 ```
 
-Here we test encryption of digest using public key (`enc_digest`) and encryption of digest using private key (`sign_digest`), and we test each with two files of differing length. Study its output carefully and head to edimension to answer the rest of the questionnaires.
+Here we test encryption of digest using public key (`enc_digest`) and encryption of digest using private key (`sign_digest`), and we test each with two files of differing length. Study its output carefully and head to edimension to answer the rest of the quizs.

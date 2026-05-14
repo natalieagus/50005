@@ -34,7 +34,7 @@ At the end of this lab exercise, you should be able to:
 - Use <span style="color:#f77729;"><b>Wireshark</b></span> to trace and read DNS packets sent to and from a machine
 
 ## Submission 
-There's only lab questionnaire on eDimension for this lab, no code submission needed. 
+There's only lab quiz on eDimension for this lab, no code submission needed. 
 
 ## Part 1: Exploring DNS via dig
 

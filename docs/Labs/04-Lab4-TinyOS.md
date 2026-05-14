@@ -24,9 +24,9 @@ Singapore University of Technology and Design
 
 You are expected to continue where you left off from Lab 2. We will be using TinyOS in this lab to implement more user processes and synchronise their execution using Semaphore.
 
-## Checkoff and Lab Questionnaire
+## Checkoff and Lab quiz
 
-You are required to finish the lab questionnaire on eDimension and complete two `CHECKOFF`{:.info} during this session. Simply show that your bsim simulates the desirable checkoff outcome for Part A and Part B (binary grading, either you complete it or you don't) of the lab. Read along to find out more.
+You are required to finish the lab quiz on eDimension and complete two `CHECKOFF`{:.info} during this session. Simply show that your bsim simulates the desirable checkoff outcome for Part A and Part B (binary grading, either you complete it or you don't) of the lab. Read along to find out more.
 
 There will be **no makeup slot** for checkoff for this lab. If you miss the class in Week 4 with no LOA, you get zero. If you have LOA, show it to our TAs and you can checkoff during the following Week's Lab session or at the TA's discretion.
 {:.error}

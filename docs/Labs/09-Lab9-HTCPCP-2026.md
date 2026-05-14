@@ -475,7 +475,7 @@ Then, interact with the site: brew some coffee with milk, view your coffee beans
 
 <img src="{{ site.baseurl }}//assets/images/lab4_2-inspect/2023-06-27-17-45-37.png"  class="center_full no-invert"/>
 
-Head to eDimension to answer a few questionnaire pertaining to this task.
+Head to eDimension to answer a few quiz pertaining to this task.
 {:.info}
 
 ### Task 3
