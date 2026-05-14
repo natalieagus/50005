@@ -18,9 +18,9 @@ nav_order: 0
 | In-class quizzes (best 3 of 4) | 6% |
 | Programming Assignment 1 | 10% |
 | Programming Assignment 2 | 10% |
-| Labs | 16% |
-| Midterm Examination | 25% |
-| Final Examination | 25% |
+| Labs | 18% |
+| Midterm Examination | 24% |
+| Final Examination | 24% |
 | Course Survey | 2% |
 | Total | 100% |
 
@@ -40,12 +40,13 @@ There is no dedicated peer review. Since teams are small, any disputes should be
 
 ## Labs
 
-Six labs across the term, combining individual questionnaires and team checkoffs:
+Six labs + 1 C Programming Lab across the term, combining individual questionnaires and team checkoffs:
 
 | Week | Lab | Weightage |
 |---|---|---|
 | 1 | Introduction to Command Line | 2% (questionnaire) |
-| 3 | TOCTOU Race Condition Attack | 3% (2% questionnaire + 1% team checkoff) |
+| 3 | C Programming | 2% (team checkoff) |
+| 4 | TOCTOU Race Condition Attack | 3% (2% questionnaire + 1% team checkoff) |
 | 5 | Banker's Algorithm | 3% (2% questionnaire + 1% team checkoff) |
 | 9 | Ping and Traceroute | 2% (questionnaire) |
 | 10 | Python Cryptography | 3% (2% questionnaire + 1% team checkoff) |

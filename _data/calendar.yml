@@ -17,7 +17,7 @@
       text: "Getting started this week"
       details:
         - "Prepare a POSIX-compliant OS before lab (see Getting Started)"
-        - "Read Introduction to C Part 1 if you want a smoother lab experience (structs, pointers, malloc). Recording on eDimension."
+        - "Read <a href="https://docs.google.com/document/d/1hcMLXwKqblB9UtalLnbPjIHmxrdAnZaK7Haadhql9jo/edit?usp=sharing">Introduction to C Part 1</a> if you want a smoother experience (structs, pointers, malloc)"
         - "<b>Form teams of 2 to 3</b> for PAs and lab checkoffs (same cohort). Sign up on eDimension by <b>this Sunday, 23:59</b>."
         - "Join the ED discussion forum (link on eDimension)"
 
@@ -37,7 +37,7 @@
     - badge: lab
       text: "Lab will continue lecture materials"
     - badge: prep
-      text: "Read Introduction to C Part 2 (advanced memory allocation, static variables, function pointers, stack vs heap). Recording on eDimension."
+      text: "Read <a href="https://docs.google.com/document/d/1KcY8mW6D9XM2l-I73KUXmYdaGgYILoRBdkFPcVJBjpM/edit?usp=sharing">Introduction to C Part 2</a> (advanced memory allocation, static variables, function pointers, stack vs heap)"
 
 - week: 3
   date: "1 Jun"
@@ -59,7 +59,7 @@
     - badge: lab
       text: "Lab will continue lecture materials"
     - badge: prep
-      text: "Read Introduction to C Part 3 (shared memory, signal handling, fork, process termination). Recording on eDimension."
+      text: "Read <a href="https://docs.google.com/document/d/1OfXAu2Zaap_pDR4oLrByyVMv2YyUP0WonJTiVuvWsHs/edit">Introduction to C Part 3</a> (shared memory, signal handling, fork, process termination)."
 
 - week: 4
   date: "8 Jun"
