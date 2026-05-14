@@ -69,7 +69,7 @@ They are responsible for checkoffs so please get to know them by attending the c
 | 2 | 25 May, Natalie | 26 May, Natalie | 26 May / 28 May, Natalie | OS Services |
 | 3 | 1 Jun, Public Holiday | 2 Jun, Natalie | 2 Jun / 4 Jun, Natalie | Threads and Processes |
 | 4 | 8 Jun, Natalie | 9 Jun, Natalie (**extended**) | 9 Jun / 11 Jun, Prof. David | Synchronisation / TOCTOU Lab |
-| 5 | 15 Jun, Natalie | 16 Jun, Natalie | 17 Jun / 19 Jun, Prof. David | Deadlock / Banker's Lab |
+| 5 | 15 Jun, Natalie | 16 Jun, Natalie | 16 Jun / 18 Jun, Prof. David | Deadlock / Banker's Lab |
 | 6 | 22 Jun, Natalie | 23 Jun, Natalie (**extended**) | PA1 Checkoff | File System |
 | 7 | Recess Week | | | |
 | 8 | 6 Jul, Prof. David | 7 Jul, **Midterm Exam** (10AM-12PM)| No lab | Network Introduction |
