@@ -126,7 +126,9 @@ Anything under `source/` is where you will work for this assignment. All files i
         └── unity.h
 ```
 
-This structure is self-explanatory, and similar to PA1 and any other C projects. Refer to appendix for details if you're interested.
+This structure is self-explanatory, and similar to PA1 and any other C projects. Refer to [appendix](#appendix) for details if you're interested.
+
+We also assume that you're familiar with `Makefile` by now. If not, read [this](#makefile-details) section.
 
 
 ### Run `./setup.sh`
@@ -809,6 +811,58 @@ Generated or received files go in recv_files/ or *_enc/
 ```
 
 This makes the project easier to build, test, and extend.
+
+### Makefile Details
+
+
+This `Makefile` builds the Secure FTP project and provides commands for compiling programs, running tests, generating unit tests, and cleaning the workspace. It assumes the project uses `source/` for main C files, `source/libs/` for shared C implementations, `includes/` for headers, `tests/unit/` for C unit tests, `tests/integration/` for Bash integration tests, and `tests/unity/` for the Unity test framework. :contentReference[oaicite:0]{index=0}
+
+The compiler is set using `CC = gcc`. The main path variables are `SRC_ROOT = ./source`, `LIB_DIR = ./source/libs`, and `INC_DIR = ./includes`. These variables *avoid repeating long folder paths* throughout the Makefile.
+
+`LIB_SOURCES = $(wildcard $(LIB_DIR)/*.c)` automatically collects every `.c` file inside `source/libs/`. This means shared helper code such as `source/libs/common.c` is compiled together with each main program. Its matching header is expected to be in `includes/libs/common.h`, so source files should include it using `#include "libs/common.h"`.
+
+The `ALL` variable lists all client and server executables, such as `ClientWithoutSecurity`, `ServerWithoutSecurity`, `ClientWithSecurityAP`, `ServerWithSecurityAP`, and the CP1/CP2 versions. Running `make` builds everything in this list. The shortcut targets `make NoSec`, `make AP`, `make CP1`, and `make CP2` build only the selected client/server pair.
+
+The `Makefile` detects whether it is running on macOS or Linux. On macOS, it uses Homebrew to find OpenSSL and adds the correct OpenSSL include and library paths. On Linux, it assumes OpenSSL is available through the system paths. The project is linked with `-lssl -lcrypto`.
+
+The generic build rule:
+
+```make
+%: $(SRC_ROOT)/%.c $(LIB_SOURCES)
+	$(CC) $(CFLAGS) -o $@ $(sort $^) $(LDFLAGS)
+```
+
+This means that an executable is built from a `.c` file with the same name in `source/`. For example, `ClientWithoutSecurity` is built from `source/ClientWithoutSecurity.c`, together with all files in `source/libs/`.
+
+Unit tests are automatically discovered from files matching `tests/unit/test_*.c`. Their compiled binaries are placed in `tests/unit/bin/`. The Makefile also includes the Unity framework from `tests/unity/`, so each unit test can use `#include "unity.h"`.
+
+The unit test rules try to match each test file with a corresponding implementation file. For example, `tests/unit/test_common.c` may be compiled with either `source/common.c` or `source/libs/common.c`. If no exact matching source file exists, the fallback rule still compiles the test with all shared library files from `source/libs/`.
+
+Running `make unit` builds and runs all unit tests, then prints how many passed and failed. Running `make integration` first builds the non-secure client/server pair, then runs every Bash test script in `tests/integration/`. Running `make test` runs both unit and integration tests.
+
+The `ai-unit-tests` target generates unit tests using the helper script in `scripts/gen_unit_tests.sh`. It requires a module name, for example:
+
+```bash
+make ai-unit-tests MODULE=common
+```
+
+This looks for files such as `includes/libs/common.h` and `source/libs/common.c`, then generates a matching test file such as `tests/unit/test_common.c`.
+
+The `clean` target removes compiled programs and unit test binaries, then runs `setup.sh` to reset the workspace. This is useful when the project needs to be rebuilt from a clean state.
+
+Common commands:
+
+```bash
+make                 # build all programs
+make NoSec           # build non-secure client and server
+make AP              # build AP client and server
+make CP1             # build CP1 client and server
+make CP2             # build CP2 client and server
+make unit            # run unit tests
+make integration     # run integration tests
+make test            # run all tests
+make clean           # clean and reset project
+```
 
 
 
