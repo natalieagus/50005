@@ -6,8 +6,8 @@ nav_order: 8
 parent: Programming Assignment
 ---
 
-- TOC
-  {:toc}
+* TOC
+{:toc}
 
 **50.005 Computer System Engineering**
 <br>
@@ -21,6 +21,8 @@ Singapore University of Technology and Design
 
 {:.highlight}
 **CoreStack** is a cross-course alternative track jointly offered by 50.005 and 50.003. A group that opts in builds one shared systems core (the `corestack` library: shell, concurrency utilities, IPC primitives, secure session, logging client) and uses it to deliver **two** separate applications. The 50.005 application is `tetriSH`. The 50.003 application is of the group's choosing (web app, terminal app, SSH-based service, replay viewer, anything reasonable) and must depend on the same `corestack` in a non-trivial way.
+
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/images/TetriSH/2026-05-15-18-48-24.png"  class="center_fifty no-invert"/>
 
 {:.note}
 It is up to you to define what the `core` is. This should be part of your proposal in Week 3.
