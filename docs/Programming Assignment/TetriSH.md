@@ -22,7 +22,7 @@ Singapore University of Technology and Design
 {:.highlight}
 **CoreStack** is a cross-course alternative track jointly offered by 50.005 and 50.003. A group that opts in builds one shared systems core (the `corestack` library: shell, concurrency utilities, IPC primitives, secure session, logging client) and uses it to deliver **two** separate applications. The 50.005 application is `tetriSH`. The 50.003 application is of the group's choosing (web app, terminal app, SSH-based service, replay viewer, anything reasonable) and must depend on the same `corestack` in a non-trivial way.
 
-<img src="{{ site.baseurl }}//docs/Programming%20Assignment/images/TetriSH/2026-05-15-18-48-24.png"  class="center_fifty no-invert"/>
+<img src="{{ site.baseurl }}//docs/Programming%20Assignment/images/TetriSH/2026-05-15-18-48-24.png"  class="center_seventy no-invert"/>
 
 {:.note}
 It is up to you to define what the `core` is. This should be part of your proposal in Week 3.
@@ -64,7 +64,10 @@ Sections below are tagged so you can tell what is required and what is yours to 
 
 ### tl;dr
 
-Indicate your interest to embark on this track by Week 3, Monday 6PM to **both** your 50.005 instructor and your 50.003 instructor. All three group members must be enrolled in both 50.003 and 50.005 in the current term. You may still withdraw by the end of Week 5 Friday, 6PM, but withdrawal is all-or-nothing across both courses.
+Indicate your interest to embark on this track by Week 3, Monday 6PM to **both** your 50.005 instructor and your 50.003 instructor. All three group members must be enrolled in both 50.003 and 50.005 in the current term. You may still withdraw by the end of Week 3 Friday, 6PM, but withdrawal is all-or-nothing across both courses. 
+
+{:.note}
+You should discuss with your 50.003 instructor on what happened if you withdraw, as the grouping will then be different. The three of you might be assigned to different groups, whichever has slot. 
 
 Once you're committed to this track, here's the rule (50.005 side):
 
@@ -833,7 +836,7 @@ The project <span class="orange-bold">does not need</span> to be the most featur
 CoreStack is an optional alternative track. Groups may withdraw and return to the normal PA1 + PA2 path on the 50.005 side, but only before the fallback deadline, and withdrawal must happen on both courses at the same time.
 
 {:.important}
-The fallback deadline is **Week 5**, Friday, 6PM.
+The fallback deadline is **Week 3**, Friday, 6PM.
 
 Before this deadline, a group <span class="orange-bold">must</span> notify both the 50.005 and 50.003 instructors that it is _withdrawing_. The group will then complete PA1 and PA2 in the normal way and will be graded using the normal PA1 and PA2 rubrics on the 50.005 side.
 
