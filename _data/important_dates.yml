@@ -13,7 +13,7 @@
 
 - week: 3
   items:
-    - date: "29 May"
+    - date: "5 Jun"
       day: "Fri"
       time: "18:00"
       badge: lab
@@ -40,7 +40,7 @@
       day: "Sun"
       time: "23:59"
       badge: pa
-      task: "Join GitHub Classroom for PA1"
+      task: "Join GitHub Classroom for PA1, link on eDim"
 
 - week: 5
   items:
@@ -110,7 +110,7 @@
       day: "Sun"
       time: "23:59"
       badge: pa
-      task: "Join GitHub Classroom for PA2"
+      task: "Join GitHub Classroom for PA2 (link on eDim)"
     - date: "26 Jul"
       day: "Sun"
       time: "23:59"

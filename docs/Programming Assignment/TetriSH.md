@@ -1,6 +1,6 @@
 ---
 layout: default
-title: tetriSH
+title: 50.003 x 50.005 CoreStack Challenge
 permalink: /pa/tetrish
 nav_order: 8
 parent: Programming Assignment
@@ -18,8 +18,9 @@ Singapore University of Technology and Design
 <br>
 **Natalie Agus (Summer 2026)**
 
+# 50.003 x 50.005 CoreStack Challenge
 
-# tetriSH
+## tetriSH
 {:no-toc}
 
 {:.highlight}
