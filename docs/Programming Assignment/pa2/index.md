@@ -79,27 +79,54 @@ Anything under `source/` is where you will work for this assignment. All files i
 
 ```
 .[PROJECT_DIR]
+├── AGENTS.md
+├── ClientWithoutSecurity
 ├── files
-│   ├── cbc.bmp
-│   ├── file.txt
-│   ├── image.ppm
-│   ├── jsim.jar
-│   ├── player.psd
-│   ├── squeak.wav
-│   ├── vscodejsim.mp4
-│   └── week9.html
+│   ├── cbc.bmp
+│   ├── file.txt
+│   ├── image.ppm
+│   ├── jsim.jar
+│   ├── player.psd
+│   ├── squeak.wav
+│   ├── vscodejsim.mp4
+│   └── week9.html
 ├── Makefile
+├── prompts
+│   └── generate-unit-tests.md
 ├── README.md
 ├── recv_files
+│   └── recv_file.txt
 ├── recv_files_enc
+├── scripts
+│   └── gen_unit_tests.sh
 ├── send_files_enc
+├── ServerWithoutSecurity
 ├── setup.sh
-└── source
-    ├── auth
-    │   ├── cacsertificate.crt
-    │   └── generate_keys.sh
-    ├── ClientWithoutSecurity.c
-    └── ServerWithoutSecurity.c
+├── source
+│   ├── auth
+│   │   ├── cacsertificate.crt
+│   │   └── generate_keys.sh
+│   ├── ClientWithoutSecurity.c
+│   ├── common.c
+│   ├── common.h
+│   └── ServerWithoutSecurity.c
+└── tests
+    ├── integration
+    │   ├── _lib.sh
+    │   ├── test_exit.sh
+    │   ├── test_multi_transfer.sh
+    │   ├── test_transfer_binary.sh
+    │   └── test_transfer.sh
+    ├── unit
+    │   ├── bin
+    │   │   ├── test_int_bytes
+    │   │   └── test_socket
+    │   ├── test_int_bytes.c
+    │   └── test_socket.c
+    └── unity
+        ├── unity_internals.h
+        ├── unity.c
+        └── unity.h
 ```
 
 ### Run `./setup.sh`

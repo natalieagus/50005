@@ -33,6 +33,8 @@ Singapore University of Technology and Design
 > 4. Implement 4 more system programs: `sys`, `dspawn`, `dcheck`, and `backup`  
 > 5. Implement unit and integration test whenever possible
 
+Ensure that you adhere to good project structure at all times, e.g: all header files at `includes`, main implementation under `source`, etc.
+
 # Additional Feature
 
 You are then free to implement <span class="orange-bold">any additional feature(s)</span> to your shell as you wish:

@@ -28,9 +28,9 @@ Singapore University of Technology and Design
 
 You need to implement a few key features: a continuous loop to read commands, forking to create child processes for command execution, and proper process management. 
 
-## Modify `main()` to Implement Shell Functionality
+## Modify Project to Implement Shell Functionality
 
-The `main()` function should have the following **functionality**:
+The shell should have the following **functionality**:
 - Enters an <span class="orange-bold">infinite</span> loop where it calls `type_prompt` to display the shell prompt and `read_command` to read and parse a command from the user.
 - Skips execution if the command is empty.
 - Exits the loop (and the shell) if the command is "exit".
@@ -45,7 +45,7 @@ Your shell should <span class="orange-bold">never</span> abruptly terminate, eve
 
 ### Tips for Cleaning up 
 
-`strdup` in `read_command` will **allocate** a new memory location for your new string. This location is stored at `char** cmd`. It is essential to **free** this for the next loop of prompt. At the end of your shell `main()` function you should do the following before looping to get another prompt from the user:
+`strdup` in `read_command` will **allocate** a new memory location for your new string. This location is stored at `char** cmd`. It is essential to **free** this for the next loop of prompt. At the end of your shell `main()` function (inside `source/main.c`) you should do the following before looping to get another prompt from the user:
 
 ```cpp 
   // Free the allocated memory for the command arguments before exiting
@@ -55,6 +55,7 @@ Your shell should <span class="orange-bold">never</span> abruptly terminate, eve
   }
 ```
 
+{:.important}
 The starter code didn't include this cleanup because the program was meant to run just one command and terminate. Since the shell program is now looping and never terminates, you should do proper cleanup (garbage collection) as stated above. 
 
 

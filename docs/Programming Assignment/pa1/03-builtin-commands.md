@@ -41,7 +41,7 @@ The shell must be expanded support the following 7 builtin commands: `cd, help, 
 
 ## List the builtin commands 
 
-We suggest that you declare them as an array of `char*` in `shell.h`: 
+We suggest that you declare them as an array of `char*` in some header file, e.g: `shell.h`: 
 
 ```c 
 const char *builtin_commands[] = {

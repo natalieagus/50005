@@ -46,60 +46,6 @@ Run: printf "ls\nexit\n" | ./myshell
 
 You are to **design your code** so that important logic can be tested <span class="orange-bold">without</span> always running the full shell.
 
-### Project Structure
-
-Your end project should follow this general structure:
-
-```text
-shell-project/
-  include/
-    parser.h
-    builtins.h
-    shell.h
-    logger.h
-
-  src/
-    parser.c
-    builtins.c
-    shell.c
-    logger.c
-    main.c
-
-  tests/
-    unit/
-      test_parser.c
-      test_builtins.c
-      test_logger.c
-
-    integration/
-      test_basic_shell.sh
-      test_logging.sh
-
-    unity/
-      unity.c
-      unity.h
-      unity_internals.h
-
-  scripts/
-    run_integration_tests.sh
-    gen_unit_tests.sh
-
-  prompts/
-    generate-unit-tests.md
-
-  AGENTS.md
-  Makefile
-  README.md
-```
-
-Here's the main 3 locations that you should expand:
-
-```text
-src/ contains your program logic.
-include/ contains function declarations.
-tests/ contains code that checks whether your logic works.
-```
-
 
 ## Code Placement Philosophy
 
@@ -120,7 +66,7 @@ int main(void) {
 This is a better structure:
 
 ```c
-#include "shell.h"
+#include "shell_core.h"
 
 int main(void) {
     return shell_loop();
@@ -130,9 +76,9 @@ int main(void) {
 You can put the real shell behavior in testable functions:
 
 ```c
-// include/shell.h
-#ifndef SHELL_H
-#define SHELL_H
+// include/shell_core.h
+#ifndef SHELL_CORE_H
+#define SHELL_CORE_H
 
 int shell_loop(void);
 int shell_run_line(const char *line);
@@ -141,8 +87,8 @@ int shell_run_line(const char *line);
 ```
 
 ```c
-// src/shell.c
-#include "shell.h"
+// src/shell_core.c
+#include "shell_core.h"
 
 int shell_run_line(const char *line) {
     // parse and execute one line
@@ -161,13 +107,191 @@ Now tests can call these functions without running the entire interactive shell 
 shell_run_line("echo hello");
 ```
 
+## Headers, implementation files, and `main()`
+
+{:.important}
+A header file does <span class="orange-bold">not</span> contain the function by itself. It only tells C that the function exists *somewhere*.
+
+For example, this declaration in a header:
+
+```c
+// include/libs/parser.h
+int parse_command(const char *input, command_t *cmd);
+```
+
+only means:
+
+```text
+There is a function named parse_command with this input/output shape.
+```
+
+The actual function body must still be compiled and linked from a `.c` file:
+
+```c
+// src/libs/parser.c
+#include "parser.h"
+
+int parse_command(const char *input, command_t *cmd) {
+    // actual implementation here
+    return 0;
+}
+```
+
+So a unit test usually needs both:
+
+```text
+1. The header file, so the test knows the function declaration.
+2. The implementation `.c` file, so the linker can find the actual function body.
+```
+
+Example:
+
+```bash
+gcc -Iinclude -Itests/unity \
+    tests/unit/test_parser.c \
+    src/parser.c \
+    tests/unity/unity.c \
+    -o tests/unit/test_parser
+```
+
+{:.important}
+Do <span class="orange-bold">NOT</span> link a `.c` file that contains another `main()` into a Unity unit test. A final executable can only have one `main()` function. Unity tests usually already have their own test runner `main()`.
+
+This will usually fail if `src/shell.c` also contains `main()`:
+
+```bash
+gcc tests/unit/test_shell.c src/shell.c tests/unity/unity.c -o test_shell
+```
+
+because the linker may see two `main()` functions:
+
+```text
+main() from the shell program
+main() from the Unity test runner
+```
+
+The cleaner design is:
+
+```text
+src/main.c       contains main() only
+src/shell.c      contains shell_loop(), shell_run_line(), and other testable logic
+include/shell.h  declares shell_loop(), shell_run_line(), and other public functions
+```
+
+Then your real program links everything:
+
+```text
+src/main.c + src/shell.c + src/parser.c + src/builtins.c
+```
+
+and your unit test links only the code it is testing:
+
+```text
+tests/unit/test_shell.c + src/shell.c + src/parser.c + src/builtins.c + tests/unity/unity.c
+```
+
+The important point is that `main()` should be kept in a small file that unit tests do not need to link.
+
+### Example: testing a helper from `ldr.c`
+
+Suppose `ldr.c` currently contains this helper:
+
+```c
+void perms_to_string(mode_t mode, char str[11]) {
+    // convert mode bits to something like -rw-r--r--
+}
+```
+
+If `ldr.c` also contains `main()`, do not unit test `perms_to_string()` by linking the whole `ldr.c` file into the test. Instead, split the helper out:
+
+```text
+source/system_programs/ldr.c       contains main() and command behavior
+source/system_programs/perms.c     contains perms_to_string()
+source/system_programs/perms.h     declares perms_to_string()
+tests/unit/test_perms.c            tests perms_to_string()
+```
+
+`perms.h` should contain only the declaration:
+
+```c
+#ifndef PERMS_H
+#define PERMS_H
+
+#include <sys/stat.h>
+
+void perms_to_string(mode_t mode, char str[11]);
+
+#endif
+```
+
+`perms.c` should contain the implementation:
+
+```c
+#include "perms.h"
+
+#include <string.h>
+#include <sys/stat.h>
+
+void perms_to_string(mode_t mode, char str[11]) {
+    strcpy(str, "----------");
+
+    if (S_ISDIR(mode)) str[0] = 'd';
+    if (S_ISCHR(mode)) str[0] = 'c';
+    if (S_ISBLK(mode)) str[0] = 'b';
+
+    if (mode & S_IRUSR) str[1] = 'r';
+    if (mode & S_IWUSR) str[2] = 'w';
+    if (mode & S_IXUSR) str[3] = 'x';
+
+    if (mode & S_IRGRP) str[4] = 'r';
+    if (mode & S_IWGRP) str[5] = 'w';
+    if (mode & S_IXGRP) str[6] = 'x';
+
+    if (mode & S_IROTH) str[7] = 'r';
+    if (mode & S_IWOTH) str[8] = 'w';
+    if (mode & S_IXOTH) str[9] = 'x';
+}
+```
+
+Then the unit test can include the header:
+
+```c
+#include "unity.h"
+#include "perms.h"
+
+#include <sys/stat.h>
+
+void test_regular_file_644(void) {
+    char str[11];
+
+    perms_to_string(S_IFREG | 0644, str);
+
+    TEST_ASSERT_EQUAL_STRING("-rw-r--r--", str);
+}
+```
+
+and the test links against `perms.c`, not `ldr.c`:
+
+```bash
+gcc -Iinclude -Isource/system_programs -Itests/unity \
+    tests/unit/test_perms.c \
+    source/system_programs/perms.c \
+    tests/unity/unity.c \
+    -o tests/unit/test_perms
+```
+
+{:.note}
+Do not put normal function bodies in `.h` files just to make tests compile. Put declarations in `.h` files and implementations in `.c` files.
+
 
 ## Unit Tests
 
 {:.note}
 Unit tests should focus on small, predictable functions.
 
-These are good unit test targets, assuming you have files like these that implement specific functions for your shell. We gave you one sample in the starter code `test_perms.c`, `test_rc_parser.c`.
+These are good unit test targets, assuming you have files like these that implement specific functions for your shell. We gave you samples in the starter code such as `test_perms.c` and `test_rc_parser.c`; these are meant to show the style of a unit test, but the better long-term design is to test the real implementation by linking the relevant `.c` file <span class="orange-bold">that does not contain `main()`</span>.
+
+For example:
 
 ```text
 parser.c
@@ -195,7 +319,7 @@ process_info.c
   parse_ps_line()
 ```
 
-These are good because they usually take clear input, produce clear output, and do not depend too heavily on operating-system behavior.
+These are GOOD because they usually take clear input, produce clear output, and do not depend too heavily on operating-system behavior.
 
 
 ### Example Unit Test
@@ -500,8 +624,9 @@ Rules:
 3. Use the public function declarations in include/*.h.
 4. Write tests for normal cases, edge cases, and invalid input.
 5. Do not directly unit test fork(), execvp(), signals, terminal behavior, or daemon detachment.
-6. Mark generated tests with a comment saying they are AI-generated drafts.
-7. Keep the tests simple and readable.
+6. Do not link unit tests against a `.c` file that contains `main()`. Test smaller implementation files instead.
+7. Mark generated tests with a comment saying they are AI-generated drafts.
+8. Keep the tests simple and readable.
 ```
 
 For a specific file:
@@ -580,7 +705,7 @@ We want you to gain some experience in testing your work thoroughly. The rule of
 
 Split large function into smaller functions, but do not over-split either. It's kinda like an art, and you need to code and gain experience to get a feel of what is "small enough".
 
-Also, keep `main()` small, and keep operating-system behavior separate from parsing, formatting, and validation logic.
+Also, keep `main()` small and preferably isolated in its own file, and keep operating-system behavior separate from parsing, formatting, and validation logic.
 
 Then:
 - Use unit tests for small logic.

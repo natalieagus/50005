@@ -26,6 +26,9 @@ Singapore University of Technology and Design
 {:.task}
 In this part, you are tasked to create 4 **more** system programs:  **sys** (simple system information), **dspawn** (daemon spawn), **dcheck** (daemon check), and **backup** (zip certain dir, and move the zipped dir to `./archive` as backup). 
 
+{:.note}
+You should add scripts for each system program under `source/system_programs` and create the appropriate library `.h/.c` accordingly in the right places. Each of these system program `.c` file **should** contain a `main()`.
+
 # `sys` 
 
 The `sys` system program prints out basic information about your operating system as follows: 
@@ -65,7 +68,7 @@ To list daemon processes on a Linux system using the ps command, you can look fo
 For the sake of our lab and our machine’s health, our daemon <span style="color:#f77729;"><b>terminates</b></span> after a certain period of time and _violates the traditional daemon definition_, but we’re sure you get the idea.
 {:.info}
 
-### Overgoogling
+### Overgoogling/Over AI-ing
 
 The basic information about daemons presented in this handout is <span style="color:#f7007f;"><b>sufficient</b></span>. Do not over-Google about Daemons unless you are really interested in it. The concept of daemons alone is very complex and large, and is out of our scope.
 
