@@ -71,7 +71,7 @@ Either your browser or your OS **ships** with **a set of trusted CA certificates
 
 In this assignment, you won't use VeriSign or IDA. Instead, the CSE teaching staff has volunteered to be your trusted CA. We call our service **csertificate**, and we'll tell you (i.e., your SecureStore and any client programs) our public key in **advance** as "common knowledge".
 
-We have given our CA certificate in your starter project: `source/auth/cacsertificate.crt`. This is analogous to how your browser or OS ships with a set of trusted CA certificates.
+We have given our CA certificate in your starter project: `auth/cacsertificate.crt`. This is analogous to how your browser or OS ships with a set of trusted CA certificates.
 
 # Proposed AP
 
@@ -86,7 +86,7 @@ To get you started, we suggest a few things that you can do to authenticate the 
 
 ### SecureStore Public Key Generation
 SecureStore **generates** RSA private and public key pair (use **1024 bit** keys). It also creates a certificate signing request (`.csr`), where it submits the public key and other credentials (e.g., its legal name).
- - You can do this by running the `generate_keys.sh` script provided in `source/auth`
+ - You can do this by running the `generate_keys.sh` script provided in `auth`
  - This uses the `openssl` command-line tool to generate `server_private_key.pem` and `server_certificate_request.csr`. Study what `generate_keys.sh` does carefully.
 
 ### `csr` Creation and Upload
@@ -103,11 +103,11 @@ SecureStore server **uploads** the certificate signing request (`.csr` file) for
 <img src="{{ site.baseurl }}/docs/Programming Assignment/pa2/images/Screenshot 2026-03-24 at 10.40.37 AM.png"  class="center_fourty no-invert"/>
 
 ### Obtaining signed certificate
-SecureStore retrieves the signed certificate by our CA by downloading it from the bot. Now, **save** the file `server_signed.crt` under `source/auth/` directory. 
+SecureStore retrieves the signed certificate by our CA by downloading it from the bot. Now, **save** the file `server_signed.crt` under `auth/` directory. 
 
 When clients later ask the SecureStore server for its public key, the server provides this<span class="orange-bold"> **signed** certificate</span>.
  - The client can **verify** that this certificate is indeed **signed** (authorised) by our trusted CA csertificate using csertificate's Public Key, embedded within `cacsertificate.crt`.
- - Use the provided method `verify_server_cert(server_cert, "source/auth/cacsertificate.crt")`. This function handles the `PKCS1v15` verification and validity period check internally.
+ - Use the provided method `verify_server_cert(server_cert, "auth/cacsertificate.crt")`. This function handles the `PKCS1v15` verification and validity period check internally.
 
 Recall that csertificate's public key is embedded within `cacsertificate.crt` given to you in the starter code. In real life, this should be a *well known* certificate shipped by the Browser/OS.
 
@@ -153,7 +153,7 @@ PSS padding is considered **better** than PKCS#1 v1.5 because it introduces **ra
 During the step labeled `CHECK SERVER ID`, the client must do the following (functions to use are listed below):
 
 1. **Verify** the signed certificate sent by the Server using CA's public key Kca+ obtained from `cacsertificate.crt` file:
-   - `verify_server_cert(server_cert, "source/auth/cacsertificate.crt")`, this returns 1 if valid, 0 if not
+   - `verify_server_cert(server_cert, "auth/cacsertificate.crt")`, this returns 1 if valid, 0 if not
 2. Extract `server_public_key` Ks+ from the verified cert:
    - `EVP_PKEY *server_pub_key = X509_get_pubkey(server_cert);`
 3. Verify the signed message using `verify_message_pss()` to confirm that M is the same message sent by the client in the first place
@@ -337,6 +337,6 @@ We will **manually** check the implementation of your `MODE 3` in both Client an
 Save your changes and commit the changes (assuming your current working directory is the project root):
 
 ```bash
-git add source/ServerWithSecurityAP.c source/ClientWithSecurityAP.c source/auth/server_signed.crt source/auth/server_private_key.pem
+git add source/ServerWithSecurityAP.c source/ClientWithSecurityAP.c auth/server_signed.crt auth/server_private_key.pem
 git commit -m "feat: Complete Task 1"
 ```

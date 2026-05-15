@@ -80,7 +80,9 @@ Anything under `source/` is where you will work for this assignment. All files i
 ```
 .[PROJECT_DIR]
 ├── AGENTS.md
-├── ClientWithoutSecurity
+├── auth
+│   ├── cacsertificate.crt
+│   └── generate_keys.sh
 ├── files
 │   ├── cbc.bmp
 │   ├── file.txt
@@ -90,25 +92,23 @@ Anything under `source/` is where you will work for this assignment. All files i
 │   ├── squeak.wav
 │   ├── vscodejsim.mp4
 │   └── week9.html
+├── includes
+│   └── libs
+│       └── common.h
 ├── Makefile
 ├── prompts
 │   └── generate-unit-tests.md
 ├── README.md
 ├── recv_files
-│   └── recv_file.txt
 ├── recv_files_enc
 ├── scripts
 │   └── gen_unit_tests.sh
 ├── send_files_enc
-├── ServerWithoutSecurity
 ├── setup.sh
 ├── source
-│   ├── auth
-│   │   ├── cacsertificate.crt
-│   │   └── generate_keys.sh
 │   ├── ClientWithoutSecurity.c
-│   ├── common.c
-│   ├── common.h
+│   ├── libs
+│   │   └── common.c
 │   └── ServerWithoutSecurity.c
 └── tests
     ├── integration
@@ -118,9 +118,6 @@ Anything under `source/` is where you will work for this assignment. All files i
     │   ├── test_transfer_binary.sh
     │   └── test_transfer.sh
     ├── unit
-    │   ├── bin
-    │   │   ├── test_int_bytes
-    │   │   └── test_socket
     │   ├── test_int_bytes.c
     │   └── test_socket.c
     └── unity
@@ -128,6 +125,9 @@ Anything under `source/` is where you will work for this assignment. All files i
         ├── unity.c
         └── unity.h
 ```
+
+This structure is self-explanatory, and similar to PA1 and any other C projects. Refer to appendix for details if you're interested.
+
 
 ### Run `./setup.sh`
 
@@ -451,3 +451,364 @@ nmcli connection up [connection name]
 > No other cryptographic libraries allowed
 > 
 > You are also not allowed to use any cryptographic library other than OpenSSL (which is what `common.c` already uses). You may use any standard C library headers (`stdio.h`, `stdlib.h`, `string.h`, etc.) as they are already included via `common.h`.
+
+
+## Appendix
+
+
+This project is organised into separate folders for source code, header files, test files, scripts, authentication material, and sample files used for transfer testing.
+
+### Root Directory
+
+```txt
+.
+├── AGENTS.md
+├── Makefile
+├── README.md
+├── setup.sh
+```
+
+#### `AGENTS.md`
+
+Contains instructions or notes for AI coding assistants. This is usually used to describe project conventions, expected behaviour, or development rules.
+
+#### `Makefile`
+
+Builds the project. It compiles the main C programs, links the required source files, and produces executable binaries.
+
+The Makefile should know where to find:
+
+```txt
+source/
+includes/
+source/libs/
+includes/libs/
+```
+
+#### `README.md`
+
+Main project documentation. This should explain what the project does, how to build it, how to run the client/server, and how to run tests.
+
+#### `setup.sh`
+
+Setup script for preparing the environment. This can be used to create required folders, generate keys, install dependencies, or initialise the project.
+
+
+
+### Authentication Folder
+
+```txt
+auth
+├── cacsertificate.crt
+└── generate_keys.sh
+```
+
+#### `auth/`
+
+Contains files related to authentication and security.
+
+#### `cacsertificate.crt`
+
+A certificate file used for secure communication or certificate validation.
+
+
+#### `generate_keys.sh`
+
+Script used to generate cryptographic keys and certificates.
+
+
+### Input / Sample Files
+
+```txt
+files
+├── cbc.bmp
+├── file.txt
+├── image.ppm
+├── jsim.jar
+├── player.psd
+├── squeak.wav
+├── vscodejsim.mp4
+└── week9.html
+```
+
+#### `files/`
+
+Contains sample files used for testing file transfer.
+
+These files are intentionally of different types:
+
+```txt
+.txt   text file
+.bmp   bitmap image
+.ppm   image file
+.jar   binary Java archive
+.psd   Photoshop file
+.wav   audio file
+.mp4   video file
+.html  webpage file
+```
+
+This is useful because a file transfer program should work for **both** text files and binary files.
+
+
+
+### Header Files
+
+```txt
+includes
+└── libs
+    └── common.h
+```
+
+#### `includes/`
+
+Contains header files.
+
+#### `includes/libs/common.h`
+
+Header file for shared helper functions used by multiple source files.
+
+Since the file is inside `includes/libs/`, source files should include it like this:
+
+```c
+#include "libs/common.h"
+```
+
+This keeps the include path clean and avoids needing relative includes like:
+
+```c
+#include "../libs/common.h"
+```
+
+
+
+### Source Code
+
+```txt
+source
+├── ClientWithoutSecurity.c
+├── ServerWithoutSecurity.c
+└── libs
+    └── common.c
+```
+
+#### `source/`
+
+Contains the main C source files.
+
+#### `ClientWithoutSecurity.c`
+
+Client program without security features. This connects to the server and sends or receives files using plain socket communication.
+
+#### `ServerWithoutSecurity.c`
+
+Server program without security features. This listens for client connections and receives or sends files.
+
+#### `source/libs/common.c`
+
+Implementation file for shared helper functions declared in:
+
+```txt
+includes/libs/common.h
+```
+
+This file **should** be compiled together with any program that uses `common.h`.
+
+For example:
+
+```bash
+gcc ... source/ClientWithoutSecurity.c source/libs/common.c ...
+```
+
+The `makefile` already handles this.
+
+### Transfer Output Folders
+
+```txt
+recv_files
+recv_files_enc
+send_files_enc
+```
+
+#### `recv_files/`
+
+Stores files received by the non-secure server or client.
+
+#### `recv_files_enc/`
+
+Stores received files after encrypted transfer.
+
+#### `send_files_enc/`
+
+Stores files prepared for encrypted sending.
+
+These folders help keep original test files separate from received or encrypted files.
+
+
+### Scripts
+
+```txt
+scripts
+└── gen_unit_tests.sh
+```
+
+#### `scripts/`
+
+Contains helper scripts for development and testing.
+
+#### `gen_unit_tests.sh`
+
+Script for generating unit tests, probably using the prompt file in:
+
+```txt
+prompts/generate-unit-tests.md
+```
+
+
+### Prompts
+
+```txt
+prompts
+└── generate-unit-tests.md
+```
+
+#### `prompts/`
+
+Contains AI prompt templates or written instructions used during development.
+
+#### `generate-unit-tests.md`
+
+Prompt file for generating unit tests. This keeps test-generation instructions separate from the source code.
+
+
+
+### Tests
+
+```txt
+tests
+├── integration
+│   ├── _lib.sh
+│   ├── test_exit.sh
+│   ├── test_multi_transfer.sh
+│   ├── test_transfer_binary.sh
+│   └── test_transfer.sh
+├── unit
+│   ├── test_int_bytes.c
+│   └── test_socket.c
+└── unity
+    ├── unity_internals.h
+    ├── unity.c
+    └── unity.h
+```
+
+#### `tests/`
+
+Contains all test-related files.
+
+#### Integration Tests
+
+```txt
+tests/integration
+├── _lib.sh
+├── test_exit.sh
+├── test_multi_transfer.sh
+├── test_transfer_binary.sh
+└── test_transfer.sh
+```
+
+#### `tests/integration/`
+
+Contains shell-script tests that test the full client-server behaviour. These tests usually run the actual server and client programs together.
+
+#### `_lib.sh`
+
+Shared shell functions used by the integration tests. This avoids repeating setup, cleanup, process management, and assertion logic in every test script.
+
+#### `test_exit.sh`
+
+Tests whether the program exits correctly.
+
+#### `test_transfer.sh`
+
+Tests basic file transfer.
+
+#### `test_transfer_binary.sh`
+
+Tests binary file transfer. This is **important** because binary files must not be treated as strings.
+
+#### `test_multi_transfer.sh`
+
+Tests multiple file transfers, possibly to check repeated transfers or concurrent behaviour.
+
+
+
+### Unit Tests
+
+```txt
+tests/unit
+├── test_int_bytes.c
+└── test_socket.c
+```
+
+#### `tests/unit/`
+
+Contains C unit tests for individual helper functions.
+
+#### `test_int_bytes.c`
+
+Tests integer-to-byte or byte-to-integer conversion functions.
+
+This is useful when sending fixed-size integer values over a socket.
+
+#### `test_socket.c`
+
+Tests socket-related helper functions.
+
+
+### Unity Test Framework
+
+```txt
+tests/unity
+├── unity_internals.h
+├── unity.c
+└── unity.h
+```
+
+#### `tests/unity/`
+
+Contains the Unity C testing framework, which is the lightweight testing framework for C you used in PA1 as well.
+
+
+### Overall Structure
+
+The structure separates the project into clear responsibilities:
+
+```txt
+source/          main C programs
+source/libs/     shared C implementations
+includes/libs/   shared header files
+files/           sample input files
+recv_files/      received output files
+auth/            certificates and key generation
+tests/unit/      C unit tests
+tests/integration/ full client-server tests
+tests/unity/     Unity test framework
+scripts/         helper scripts
+prompts/         AI prompt templates
+```
+
+The main idea is:
+
+```txt
+Headers go in includes/
+Implementations go in source/
+Shared library code goes under libs/
+Tests go in tests/
+Test input files go in files/
+Generated or received files go in recv_files/ or *_enc/
+```
+
+This makes the project easier to build, test, and extend.
+
+
+

@@ -90,7 +90,7 @@ For example, you should have the following files after sending `file.txt` and `i
 The new files are mainly (<span class="orange-bold">names must be exactly these</span>):
 
 ```sh
-1. certificate_request.csr, server_signed.crt, server_private_key.pem # in source/auth
+1. certificate_request.csr, server_signed.crt, server_private_key.pem # in auth
 2. ClientWithSecurity[AP|CP1|CP2].c # in source/
 3. ServerWithSecurity[AP|CP1|CP2].c # in source/
 ```

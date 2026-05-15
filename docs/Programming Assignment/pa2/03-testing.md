@@ -73,7 +73,7 @@ int main(int argc, char *argv[]) {
 Instead, you should pull all logic out of `main()` into pure functions that take inputs and return outputs:
 
 ```c
-// source/auth_proto.h
+// includes/auth_proto.h
 #ifndef AUTH_PROTO_H
 #define AUTH_PROTO_H
 
@@ -443,7 +443,7 @@ A test that *decrypt* fails on a flipped bit is more valuable than three tests t
 
 ## Testing X.509 certificate verification
 
-The starter code includes `source/auth/cacsertificate.crt` and a helper `generate_keys.py` that mints server keys and CSRs. You can use these for unit tests on `verify_server_cert`:
+The starter code includes `auth/cacsertificate.crt` and a helper `generate_keys.py` that mints server keys and CSRs. You can use these for unit tests on `verify_server_cert`:
 
 ```text
 Unit test:
@@ -460,7 +460,7 @@ void test_verify_server_cert_accepts_ca_signed(void) {
     X509 *cert = load_cert_file("tests/fixtures/server_signed.crt");
     TEST_ASSERT_NOT_NULL(cert);
     TEST_ASSERT_EQUAL_INT(1,
-        verify_server_cert(cert, "source/auth/cacsertificate.crt"));
+        verify_server_cert(cert, "auth/cacsertificate.crt"));
     X509_free(cert);
 }
 
@@ -468,7 +468,7 @@ void test_verify_server_cert_rejects_self_signed(void) {
     X509 *cert = load_cert_file("tests/fixtures/server_selfsigned.crt");
     TEST_ASSERT_NOT_NULL(cert);
     TEST_ASSERT_EQUAL_INT(0,
-        verify_server_cert(cert, "source/auth/cacsertificate.crt"));
+        verify_server_cert(cert, "auth/cacsertificate.crt"));
     X509_free(cert);
 }
 ```
@@ -607,7 +607,7 @@ Rules:
 3. Use the public function declarations in source/<name>.h.
 4. Write tests for normal cases, edge cases, and invalid input.
 5. For socket helpers, use socketpair() in setUp() rather than a real TCP listener.
-6. For crypto helpers, generate keys in-memory or load fixtures from source/auth/.
+6. For crypto helpers, generate keys in-memory or load fixtures from auth/.
 7. Do not write tests that bind to a TCP port, spawn a server, call fork(), or read from stdin.
 8. Mark generated tests with a comment saying they are AI-generated drafts.
 9. Keep the tests simple and readable.

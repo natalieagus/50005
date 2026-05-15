@@ -342,7 +342,7 @@ The verification chain works as follows:
 Here are the general steps:
 ```c
 X509    *server_cert   = load_cert_bytes(cert_data, cert_len);
-int      ok            = verify_server_cert(server_cert, "source/auth/cacertificate.crt");
+int      ok            = verify_server_cert(server_cert, "auth/cacertificate.crt");
 EVP_PKEY *server_pub   = X509_get_pubkey(server_cert);
 ```
 
@@ -528,7 +528,7 @@ Verifies that `server_cert` was signed by the CA at `ca_cert_path`, and that the
 Here's how to use it:
 ```c
 X509    *server_cert = load_cert_bytes(cert_data, cert_len);
-int      ok          = verify_server_cert(server_cert, "source/auth/cacertificate.crt");
+int      ok          = verify_server_cert(server_cert, "auth/cacertificate.crt");
 if (!ok) { /* abort handshake */ }
 EVP_PKEY *server_pub = X509_get_pubkey(server_cert);
 ```
