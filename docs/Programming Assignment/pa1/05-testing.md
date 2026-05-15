@@ -23,8 +23,7 @@ Singapore University of Technology and Design
 # Testing 
 {: .no_toc}
 
-Writing a working shell is just one aspect of programming. It is also equally important that you thoroughly test it, just like what you've learned from your other subject, ESC. 
-
+Writing a working shell is just one aspect of programming. It is also equally important that you thoroughly test it, just like what you've learned from your other subject, 50.003 
 There are two kinds of tests in this assignment:
 
 ```text
