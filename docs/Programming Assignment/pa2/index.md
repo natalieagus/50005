@@ -62,7 +62,7 @@ Install the dependencies:
 # Ubuntu / Debian
 sudo apt-get install build-essential libssl-dev
 
-# macOS (Homebrew) — the Makefile auto-detects the path
+# macOS (Homebrew): the Makefile auto-detects the path
 brew install openssl
 
 # Fedora / RHEL
@@ -620,7 +620,7 @@ For example:
 gcc ... source/ClientWithoutSecurity.c source/libs/common.c ...
 ```
 
-The `makefile` already handles this.
+The `Makefile` already handles this.
 
 ### Transfer Output Folders
 

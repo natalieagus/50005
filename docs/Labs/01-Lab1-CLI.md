@@ -649,7 +649,7 @@ In case you haven't connected the dots, `gcc` compiles all the input argument fi
 
 ## Makefile
 
-In this simple context, it is feasible to type out the source file one by one each time you want to compile your program. However in a large scale project with thousands of files, it is very tedious to type the compilation command all the time. Hence, the make command allows us to compile these files more easily. It requires a special file called the `makefile`.
+In this simple context, it is feasible to type out the source file one by one each time you want to compile your program. However in a large scale project with thousands of files, it is very tedious to type the compilation command all the time. Hence, the make command allows us to compile these files more easily. It requires a special file called the `Makefile`.
 
 1. Now instead of typing gcc and all that above, type `make` instead
 2. After executing `make`, realize that prog.o is made. You can run the executable in the terminal by typing `./prog.o` or by simply clicking that executable in your shell GUI (your desktop).

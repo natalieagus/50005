@@ -56,7 +56,7 @@ The project is organized as follows:
 │   │   └── rc_parser.h
 │   ├── shell.h
 │   └── system_program.h
-├── makefile
+├── Makefile
 ├── prompts
 │   └── generate-unit-tests.md
 ├── README.md
@@ -282,6 +282,9 @@ Uses preprocessor directives to clear the screen in a way that is compatible wit
 ### Makefile Notes
 
 This project uses a single Makefile to build the main shell executable, the bundled system programs, and the unit/integration tests.
+
+{:.important}
+It is important for you to know how it works. Similar `Makefile` is used for PA2 later on and we will not explain it again.
 
 The compiler is configured using:
 

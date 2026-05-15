@@ -40,7 +40,7 @@ For example, you should have the following files after sending `file.txt` and `i
 ```text
 .[PROJECT_DIR]
 ├── tests/ -- test-related files, omitted for clarity
-├── other-admin-files -- makefile, readme, etc (omitted for clarity)
+├── other-admin-files -- Makefile, readme, etc (omitted for clarity)
 ├── cleanup.sh
 ├── ClientWithoutSecurity
 ├── ClientWithSecurityAP

@@ -40,7 +40,7 @@ You are free to print out the information in any format. It should include some 
 <img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/05-system-program/2024-04-11-11-53-35.png"  class="center_full no-invert"/>
 
 {:.important}
-You should place `sys` source file inside `[PROJECT_DIR]/source/system_programs/`. The `makefile` will <span class="orange-bold">automatically</span> detect this new script and **compile** it into `[PROJECT_DIR]/bin` 
+You should place `sys` source file inside `[PROJECT_DIR]/source/system_programs/`. The `Makefile` will <span class="orange-bold">automatically</span> detect this new script and **compile** it into `[PROJECT_DIR]/bin` 
 
 # `dspawn` 
 
