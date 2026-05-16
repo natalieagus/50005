@@ -52,7 +52,7 @@ In order for us to be able to use CLI, we need to be familiar with their **comma
 > The term "terminal" in the context of operating systems and computing has its origins in the early days of computers. Initially, computers were large, centralized machines that were accessed by multiple users through individual terminal devices. These terminals were called "terminal" because they served as the endpoint (or the terminus) of a communication line between the user and the mainframe or minicomputer. Today, when we refer to the "terminal" on a computer, we're usually talking about a <span class="orange-bold">terminal emulator</span> program that provides a text-based interface to the operating system. Users can enter commands through a shell (like bash, zsh, or PowerShell), which are then executed by the operating system. The term "terminal" has thus evolved from its original meaning but retains the core concept of being the point of interaction between a user and the computer system.
 
 
-### Task 1
+### Task 
 `TASK 1:` To find your current shell, type the command: `ps -p $$`
 {:.task}
 
@@ -72,7 +72,7 @@ The CLI accepts **commands** (the **first** word, e.g. ps, that you type into th
 
 ### Task 2
 
-`TASK 2:` Try the following basic commands in sequence `date`, `cal`, `pwd`, `who`, `clear`:
+`TASK 2:` Try the following basic commands in sequence `date`, `cal`, `pwd`, `who`, `clear`.
 {:.task}
 
 E.g: type `date` and press enter. You should see today’s date given to you, for example:
@@ -377,7 +377,46 @@ Standard streams are **input** **and** output communication channels between a <
 The three input/output (I/O) connections are called standard input (stdin), standard output (stdout) and standard error (stderr).
 {:.info}
 
-Streams are usually connected to the **terminal** in which they are executed. By default, `stdin` is connected to your **keyboard**, and `stdout + stderr` are directed to your **terminal**. You might be wondering how your keyboard and display then is shared among so many processes? The details require Streams in Linux are treated as though they were files (**Week 6 Material**). E.g: you can **read** text from a file, and you can **write** text into a file. <span style="color:#f7007f;"><b>Both of these actions involve streams of data</b></span>.
+The terminal does <span class="orange-bold">not</span> directly “understand” your commands. It is only the text interface. The shell is the command interpreter, communicating with the terminal through stdin, stdout, and stderr.
+
+Streams are usually connected to the **terminal** in which they are executed. By default, `stdin` is receives input from your **keyboard**, while `stdout + stderr` sends output back to your **terminal**. 
+
+{:.note}
+If you're interested to read how the OS plays a part in this, read [this](#how-terminal-io-works) section.
+
+You might be wondering how your keyboard and display then is shared among so many processes? The details require Streams in Linux are treated as though they were files (**Week 6 Material**). E.g: you can **read** text from a file, and you can **write** text into a file. <span style="color:#f7007f;"><b>Both of these actions involve streams of data</b></span>.
+
+```text
+                       keyboard
+                          |
+                          v
++-------------------+   writes    +-------------------+
+| Terminal app      | ----------> | PTY master        |
+| Terminal/iTerm    |             | terminal side     |
+| VS Code terminal  | <---------- |                   |
++-------------------+   displays  +---------+---------+
+                                            |
+                                            | connected by OS
+                                            |
+                                  +---------+---------+
+                                  | PTY slave         |
+                                  | process side      |
+                                  | e.g. /dev/pts/3   |
+                                  +----+---------+----+
+                                       ^         ^
+                                       |         |
+                              stdin fd 0         | stdout fd 1
+                                       |         | stderr fd 2
+                                       |         |
+                                  +----+---------+----+
+                                  | Shell process     |
+                                  | bash / zsh        |
+                                  |                   |
+                                  | reads commands    |
+                                  | starts programs   |
+                                  +-------------------+
+```                                  
+
 
 When you run a python script, e.g: `python3 playground.py`,
 
@@ -858,3 +897,418 @@ echo 'eval "$(jump shell)"' >> ~/.zshrc
 
 Exit your current shell and reopen. You should use `zsh` now and have your prompt look as such. Press `TAB` after a command and you will be faced with nicely rendered choices as shown. Take your time to explore and install new tools as necessary to elevate your CLI usage and navigation experience. 
 <img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2024-04-02-01-41-22.png"  class="center_full no-invert"/>
+
+## Enabling `ssh`
+
+{:.note-title}
+> SSH
+> 
+> SSH means Secure Shell. It is a way to open a terminal on another machine over the network, securely.
+
+In your VM terminal, run:
+
+```sh
+sudo apt update && sudo apt install openssh-server -y
+```
+
+Then enable the service:
+
+```sh
+sudo systemctl enable --now ssh
+```
+
+Check that it's actually running:
+
+```sh
+sudo systemctl status ssh
+```
+
+Then find the VM's private IP address using `ifconfig`. This is assuming you are using bridged/shared network setting (read [below](#vm-networking-modes-for-ssh) for details):
+
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2026-05-16-09-45-17.png"  class="center_seventy no-invert"/>
+
+Then from your host machine, simply do:
+
+```sh
+ssh username@VM_IP_ADDRESS
+```
+
+## VM networking modes for SSH
+
+A VM usually needs some kind of virtual network connection before you can SSH into it. The two common modes are **bridged networking** and **shared/NAT networking**. Both can work for SSH, but they behave differently. Refer to your VM docs for the specific terms but these two are the most common.
+
+### Bridged networking
+
+In **bridged mode**, the VM joins the same physical network as the host machine. It behaves like a **separate** computer connected to the same router.
+
+Example:
+
+```text
+Host machine:  192.168.1.20
+Ubuntu VM:     192.168.1.50
+Router:        192.168.1.1
+```
+
+The VM gets its own IP address on the LAN. This means the host can SSH into the VM directly:
+
+```bash
+ssh username@192.168.1.50
+```
+
+Other devices on the same network may also be able to reach the VM. This is useful if the VM is acting like a small server, or if you want access from multiple machines. The downside is that bridged mode depends on the physical network. Some school, office, hotel, or restricted WiFi networks may block bridged VMs or refuse to give them their own IP address.
+
+### Shared / NAT networking
+
+In **shared** or **NAT** mode, the VM accesses the network **through the host machine**. The VM is placed behind a private virtual network managed by the virtualization software, so in other words: the VM accesses the network through the host. The implementation is host-VM specific.
+
+Example:
+
+```text
+Host machine:  192.168.1.20
+Ubuntu VM:     192.168.64.5
+```
+
+The VM can usually access the internet, but it is not exposed to the whole LAN in the same way as bridged mode. Depending on the virtualization software, the host may still be able to SSH directly into the VM using the VM’s private IP:
+
+```bash
+ssh username@192.168.64.5
+```
+
+This is often the simplest setup for local development because the VM can access the internet, and the host can still connect to it.
+
+### Port forwarding
+
+Port forwarding is used when the VM is *behind* NAT and you want to expose a VM service through a port on the host machine. You would know that you need this if you <span class="orange-bold">cannot</span> simply do despite typing the `VM_IP_ADDRESS` correctly.
+
+```
+ssh username@VM_IP_ADDRESS
+```
+
+For SSH, the mapping is usually (by "usual" it means "by convention", not that it's automatically done for you):
+
+```text
+// common mappings, choose one
+Host port 22022  →  VM port 22 
+Host port 2222  →  VM port 22
+```
+
+You must set this through your VM. Here's the setting using UTM:
+
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2026-05-16-09-51-53.png"  class="center_seventy no-invert"/>
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2026-05-16-09-52-03.png"  class="center_seventy no-invert"/>
+
+Then from the host machine, you connect using:
+
+```bash
+ssh -p 22022 username@localhost
+```
+
+This means:
+
+```text
+localhost:2222 on the host forwards to port 22 inside the VM
+```
+
+Port forwarding is useful when the VM does not have an IP address that the host can directly SSH into, or when you specifically want a stable localhost-based command.
+
+
+## How Terminal IO Works
+
+{:.note}
+This is a full walk-through version with **system calls, interrupts, OS, terminal, PTY, shell, stdin/stdout/stderr** all connected. You should read this after mastering Week 1 and 2 materials (until OS Services).
+
+
+The terminal, shell, and running programs do not talk to the keyboard and screen directly. They communicate through the **operating system** using **file descriptors**, **system calls**, and usually a **terminal device** or **pseudo-terminal (PTY)**.
+
+For an interactive shell, the shell process usually has:
+
+```text
+fd 0 = stdin   = input stream
+fd 1 = stdout  = normal output stream
+fd 2 = stderr  = error output stream
+```
+
+These file descriptors are usually connected to a **terminal device**. In a modern terminal app, such as Terminal, iTerm, VS Code terminal, or an SSH session, this is usually a **PTY** (or **TTY**).
+
+```text
++-------------------+        system calls        +-------------------+
+| Terminal app      | <------------------------> | OS kernel         |
+| Terminal / iTerm  |                            | PTY driver        |
++-------------------+                            +---------+---------+
+                                                            |
+                                                            |
+                                                    +-------+-------+
+                                                    | PTY slave     |
+                                                    | /dev/pts/N    |
+                                                    +-------+-------+
+                                                            |
+                                                            |
+                                               fd 0 / fd 1 / fd 2
+                                                            |
+                                                    +-------+-------+
+                                                    | Shell process |
+                                                    | bash / zsh    |
+                                                    +---------------+
+```
+
+### Typing a Command
+
+Suppose you type:
+
+```bash
+ls
+```
+
+The process is roughly:
+
+```text
+1. You press a key on the keyboard.
+2. The keyboard hardware reports the key event to the computer 
+3. The OS receives the event through a hardware INTERRUPT or input event system.
+4. The OS passes the key EVENT to the terminal app.
+5. The terminal app writes the character into the PTY master using a SYSTEM CALL.
+6. The OS PTY driver makes that input available on the PTY slave side.
+7. The shell is blocked in a read() system call on stdin, fd 0.
+8. When input arrives, the OS wakes the shell.
+9. The shell receives the characters, parses the command, and decides what to run.
+```
+
+So the shell does <span class="orange-bold">not</span> magically know what you typed. It is just reading bytes from `stdin`.
+
+Perhaps this diagram might illustrate the process better:
+```text
+Keyboard
+   |
+   | hardware interrupt / OS input event
+   v
+OS kernel
+   |
+   v
+Terminal app
+   |
+   | write() system call
+   v
+PTY master
+   |
+   | managed by OS
+   v
+PTY slave
+   |
+   | read() system call on fd 0
+   v
+Shell process
+```
+
+### Shell process the command: runs a process
+
+After the shell reads `ls`, it usually does something like:
+
+```text
+fork()   creates a child process
+exec()   replaces the child process with the ls program
+wait()   waits for the child process to finish
+```
+
+The new `ls` process usually **inherits** the same standard streams:
+
+```text
++-------------------+        fork + exec        +-------------------+
+| Shell process     | ------------------------> | ls process        |
+|                   |                           |                   |
+| fd 0 -> terminal  |                           | fd 0 -> terminal  |
+| fd 1 -> terminal  |                           | fd 1 -> terminal  |
+| fd 2 -> terminal  |                           | fd 2 -> terminal  |
++-------------------+                           +-------------------+
+```
+
+This is why `ls` output appears in the same terminal. It inherited `stdout` from the shell.
+
+### When the process prints output
+
+When `ls` wants to print output, it does not draw text on the screen itself. It calls `write()`, something like this. This triggers a **system call**.
+
+```c
+write(1, "file.txt\n", 9); // 1 means fd 1: stdout
+```
+
+
+This fires the following events:
+
+```text
+1. ls calls write(1, ...).
+2. The write() system call enters the OS kernel.
+3. The OS sees that fd 1 points to the PTY slave.
+4. The OS sends the bytes to the PTY master.
+5. The terminal app reads those bytes from the PTY master.
+6. The terminal app renders the text in the terminal window.
+```
+
+Again, a simpler diagram to illustrate the sequence of actions:
+
+```text
+ls process
+   |
+   | write(1, "file.txt\n", ...)
+   v
+OS kernel
+   |
+   v
+PTY slave
+   |
+   v
+PTY master
+   |
+   | terminal app reads
+   v
+Terminal app
+   |
+   v
+Screen display
+```
+
+As you can see, the output is OS-managed because (1) the program writes to a stream, then (2) OS moves the bytes, and finally (3) the terminal app displays them. 
+
+{:.note}
+As long as we have interprocess communication (IPC), we need OS Services. You'll learn more about it [here]({{ site.baseurl }}/os/ipc).
+
+### stdin, stdout, and stderr
+
+By default, any interactive program has:
+
+```text
+fd 0: stdin   <--- terminal input
+fd 1: stdout  ---> terminal output
+fd 2: stderr  ---> terminal output
+```
+
+Here's a visual representation:
+
+```text
+                         +-------------------+
+                         | Terminal app      |
+                         | keyboard/display  |
+                         +---------+---------+
+                                   |
+                                   |
+                         +---------+---------+
+                         | OS terminal / PTY |
+                         +---------+---------+
+                                   |
+              +--------------------+--------------------+
+              |                    |                    |
+              v                    v                    v
+        stdin fd 0           stdout fd 1          stderr fd 2
+              |                    |                    |
+              v                    ^                    ^
+                         +---------+---------+
+                         | Shell / Program   |
+                         +-------------------+
+```
+
+`stdout` and `stderr` **both** usually appear on the terminal, but they are separate streams. This is why you can redirect them separately:
+
+```bash
+program > out.txt 2> err.txt
+```
+
+This means:
+
+```text
+stdout fd 1 -> out.txt
+stderr fd 2 -> err.txt
+```
+
+### Important OS idea
+
+The process does <span class="orange-bold">not</span> need to know whether `stdin` is coming from a keyboard, file, pipe, or another program. It just calls:
+
+```c
+read(0, buffer, size);
+```
+
+The process also does <span class="orange-bold">not</span> need to know whether `stdout` is going to a terminal, file, pipe, or another program. It just calls:
+
+```c
+write(1, buffer, size);
+```
+
+The OS **manages** what each file descriptor is connected to. All of these stuffs work using the same basic mechanism (OS Service):
+
+```bash
+cat file.txt
+cat < file.txt
+ls > out.txt
+ls | grep txt
+```
+
+In each case, the shell sets up the file descriptors before starting the program.
+
+### Pipe
+
+For the following, the shell creates a **pipe** (an IPC mechanism) in the OS:
+
+```bash
+ls | grep txt
+```
+
+It connects:
+
+```text
+ls stdout fd 1  ->  pipe write end
+grep stdin fd 0 <-  pipe read end
+```
+
+Here's a simplified diagram:
+
+```text
++-------------+       pipe managed by OS       +-------------+
+| ls process  | -----------------------------> | grep process|
+| stdout fd 1 |                                | stdin fd 0  |
++-------------+                                +-------------+
+                                                       |
+                                                       | stdout fd 1
+                                                       v
+                                                terminal / PTY
+```
+
+Again, the programs do <span class="orange-bold">not</span> directly know much about each other. `ls` just writes to `stdout`. `grep` just reads from `stdin`. The OS connects the streams.
+
+### Summary
+
+The full process illustration from keyboard presses to "something" being displayed as the effect of it in your terminal is:
+
+```text
+Keyboard input
+   |
+   | interrupt / OS input event
+   v
+OS kernel
+   |
+   v
+Terminal app
+   |
+   | write() to PTY master
+   v
+PTY managed by OS
+   |
+   | shell read() from stdin fd 0
+   v
+Shell process
+   |
+   | fork(), exec()
+   v
+Program process
+   |
+   | write() to stdout fd 1 or stderr fd 2
+   v
+PTY managed by OS
+   |
+   | terminal app read()
+   v
+Terminal display
+```
+
+
+Processes make system calls using `read()` and `write()`. The OS manages file descriptors and stream connections. The shell interprets commands after receiving the input via `read()`. The terminal app provides the visible text interface. The `PTY` connects the terminal app to the shell/programs.
+
+

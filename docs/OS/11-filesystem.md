@@ -466,6 +466,9 @@ For example:
    - A child inheriting the parent’s file descriptor after `fork()`. Note that child and parent processes have a separated file descriptor table (note that they are two _different_, separate processes)
 2. A single process that has two or more file descriptors referencing to the same file. In fact, you can do this by doing the system call `dup()` or `dup2()`
 
+
+
+
 <span style="color:#f77729;"><b>Case 2:</b></span> Multiple system-wide open file table entries can point to the same file in the inode table.
 {:.note}
 
@@ -546,7 +549,20 @@ Note that fd_d is a <span style="color:#f77729;"><b>different entry</b></span> i
 A child process will inherit the parent's file descriptor table after `fork`. They will have a separate file descriptor *table* but pointing to the same entry(ies) in the system wide file descriptor table, meaning they share the same file **offset** `cp`. This can be used as a way for parent and child processes to **communicate**. 
 {:.info}
 
-For instance, suppose we have 3 text files: `input.txt`, `output.txt`, and `foo.txt` in the current working directory, and a `c` program as shown below. To check whether the two processes share a kernel resource, [we use `kcmp`](https://man7.org/linux/man-pages/man2/kcmp.2.html). You can read the `main` function straightaway to quickly understand what the sample code below does:
+For instance, when the shell starts a program, the program usually inherits the same three file descriptors:
+
+```text
++-------------------+        fork/exec        +-------------------+
+| Shell process     | ----------------------> | Program process   |
+|                   |                         | e.g. ls, grep     |
+| fd 0 -> PTY       |                         | fd 0 -> PTY       |
+| fd 1 -> PTY       |                         | fd 1 -> PTY       |
+| fd 2 -> PTY       |                         | fd 2 -> PTY       |
++-------------------+                         +-------------------+
+```
+
+
+To make the concept clearer, suppose we have 3 text files: `input.txt`, `output.txt`, and `foo.txt` in the current working directory, and a `c` program as shown below. To check whether the two processes share a kernel resource, [we use `kcmp`](https://man7.org/linux/man-pages/man2/kcmp.2.html). You can read the `main` function straightaway to quickly understand what the sample code below does:
 
 ```cpp
 #define _GNU_SOURCE
