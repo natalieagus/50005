@@ -16,14 +16,14 @@ This course uses a POSIX-compliant OS throughout all labs and lecture examples. 
 
 ## Setting Up a POSIX-Compliant OS
 
-POSIX-compliant means UNIX or UNIX-like: Linux distributions, macOS, or WSL on Windows. Anything mainstream that is not native Windows will work. We recommend Ubuntu 22 or 24 if you are a beginner. If you are feeling adventurous, ArchLinux is a good learning experience.
+POSIX-compliant means UNIX or UNIX-like: Linux distributions, macOS, or WSL on Windows. Anything mainstream that is not native Windows will work. We recommend Ubuntu 22 or newer if you are a beginner. If you are feeling adventurous, ArchLinux is a good learning experience.
 
 ### macOS Users
 
 macOS is already POSIX-compliant, so you can do most labs and run all lecture code as-is. The one exception is [**Lab TOCTOU Race Condition Attack**]({{ site.baseurl }}/labs/02-toctou), which requires a Linux environment. You have two options:
 
 1. Pair with a teammate who has Linux for that lab.
-2. Install UTM with Ubuntu 22. This works out of the box on Apple Silicon and takes about 5 GB. If you want the full CLI experience, the server version (no desktop environment) is sufficient. Download links are available on eDimension.
+2. Install UTM with Ubuntu 22 or newer. This works out of the box on Apple Silicon and takes about 5 GB. If you want the full CLI experience, the server version (no desktop environment) is sufficient. 
 
 ### Windows Users
 
