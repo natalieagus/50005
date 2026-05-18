@@ -88,4 +88,4 @@ They are responsible for checkoffs so please get to know them by attending the c
 
 * UTAs on duty: 
   * Tue: Hidayah, Wei Yang, Marcus, Ryan
-  * Thur: Hidayah, Keng Hwang, Ryan, Zhong Yi
+  * Thur: Hidayah, Keng Hwang, Ryan, Zhong Yi, Xue Yufeng
