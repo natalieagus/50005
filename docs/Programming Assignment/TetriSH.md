@@ -1092,7 +1092,7 @@ Each prize-eligible group hosts their own `tetrisd` and `tetrislogd` during a sc
 
 The group decides where to host: campus WiFi, home network with port forwarding, a VPS, a tunnel, anything that lets the cohort actually reach the daemon. Hosting choice is part of the engineering decision and will be discussed at Q&A.
 
-**Expected concurrent load**: approximately [N] connections. Your system must remain responsive under this load. The system must survive ill-behaved clients (malformed HTTTP, oversized frames, slow readers, half-open handshakes) without the daemon crashing or hanging.
+**Expected concurrent load**: approximately 10-20 concurrent connections or more. Your system must remain responsive under this load. The system must survive ill-behaved clients (malformed HTTTP, oversized frames, slow readers, half-open handshakes) without the daemon crashing or hanging.
 
 ### Selection of Winning group
 
