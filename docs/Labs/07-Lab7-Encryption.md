@@ -5,6 +5,7 @@ title: Python Cryptography
 description:  Symmetric key encryption on images and texts
 parent: Labs
 nav_order:  7
+nav_exclude: true
 ---
 
 * TOC
