@@ -372,7 +372,7 @@ After saving, you can check the content of the file using the command `cat <path
 
 # Standard Streams
 
-Standard streams are **input** **and** output communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution. They are **streams** of data that travel from where a program was **executed**, to the places where the program is **processed** and then back again to where the program was **executed**.
+Standard streams are **input** **and** **output** communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution. They are **streams** of data that travel from where a program was **executed**, to the places where the program is **processed** and then back again to where the program was **executed**.
 
 The three input/output (I/O) connections are called standard input (stdin), standard output (stdout) and standard error (stderr).
 {:.info}
