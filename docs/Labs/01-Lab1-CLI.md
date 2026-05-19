@@ -501,12 +501,14 @@ usage: 	tr [-Ccsu] string1 string2
         tr [-Ccu] -ds string1 string2
 ```
 
-This is because tr <span class="orange-bold">cannot</span> get input directly from a file. It only reads from `stdin`. 4. Now try` tr "[a-z]" "[A-Z]" < test.txt`. Your console should print ”HELLO, HAVE A GOOD DAY TODAY!”, capitalizing the content of the `test.txt` file (but not changing its content). 5. So based on your observation, can you deduce what is the difference between these two commands:
+This is because tr <span class="orange-bold">cannot</span> get input directly from a file. It only reads from `stdin`.
 
-1.  `tr "[a-z]" "[A-Z]" < test.txt`
-2.  `tr "[a-z]" "[A-Z]" test.txt`
-3.  Now what if we want to store the capitalized content to another file? Try: `tr "[a-z]" "[A-Z]" < test.txt > new_test.txt`. You should find that “HELLO, HAVE A GOOD DAY TODAY!” exists within `new_test.txt`, since we **redirect** `stdout` to create this new file.
-4.  What if we want to write back to `test.txt`? What can you deduce from the output?
+4. Now try` tr "[a-z]" "[A-Z]" < test.txt`. Your console should print ”HELLO, HAVE A GOOD DAY TODAY!”, capitalizing the content of the `test.txt` file (but not changing its content). 
+5. So based on your observation, can you deduce what is the difference between these two commands:
+    -  `tr "[a-z]" "[A-Z]" < test.txt`
+    -  `tr "[a-z]" "[A-Z]" test.txt`
+6.  Now what if we want to store the capitalized content to another file? Try: `tr "[a-z]" "[A-Z]" < test.txt > new_test.txt`. You should find that “HELLO, HAVE A GOOD DAY TODAY!” exists within `new_test.txt`, since we **redirect** `stdout` to create this new file.
+7.  What if we want to write back to `test.txt`? What can you deduce from the output?
 
 The screenshot below might help you for steps 1-7 above.
 
