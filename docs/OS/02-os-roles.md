@@ -274,7 +274,7 @@ Head to the [appendix](#ivt-in-various-architectures) to learn more about actual
 # Reentrant vs Preemptive Kernel
 ## Reentrancy
 
-A reentrant kernel is the one which allows <span style="color:#f7007f;"><b>multiple</b></span> processes to be executing in the kernel mode at any given point of time (concurrent), hopefully without causing any consistency problems among the kernel data structures. If the kernel is non re-entrant, the kernel is not designed to handle multiple overlapping system calls. A process could still be suspended in kernel mode, but that would mean that it <span style="color:#f77729;"><b>blocks</b></span> kernel mode execution on <span style="color:#f77729;"><b>all other processes</b></span>. No other processes can make system calls (will be put to wait) until the suspended process in kernel mode resumes and returns from the system call. 
+A reentrant kernel is the one which allows <span style="color:#f7007f;"><b>multiple</b></span> processes to be executing in the kernel mode at any given point of time (concurrent) without causing any consistency problems among the kernel data structures. This requires shared kernel structures such as the process table, file table, ready queue, and buffers to be protected properly. If the kernel is non re-entrant, the kernel is not designed to handle multiple overlapping system calls. A process could still be suspended in kernel mode, but that would mean that it <span style="color:#f77729;"><b>blocks</b></span> kernel mode execution on <span style="color:#f77729;"><b>all other processes</b></span>. No other processes can make system calls (will be put to wait) until the suspended process in kernel mode resumes and returns from the system call. 
 
 {:.note}
 Head to [appendix](#reentrant-kernel-behavior) if you'd like to view a simple example of a reentrant Kernel that supports concurrency. 
@@ -288,6 +288,9 @@ For example, consider Process 1 that is <span style="color:#f7007f;"><b>voluntar
 ## Preemption
 
 A pre-emptive Kernel <span style="color:#f77729;"><b>allows the scheduler</b></span> to <span style="color:#f7007f;"><b>interrupt</b></span> processes in Kernel mode to execute the highest priority task that are ready to run, thus enabling kernel functions to be <span style="color:#f7007f;"><b>interrupted</b></span> just like regular user functions. The CPU will be assigned to perform other tasks, from which it later returns to finish its kernel tasks. In other words, the scheduler is permitted to <span style="color:#f7007f;"><b>forcibly</b></span> perform a context switch.
+
+This is more difficult than blocking reentrancy because the kernel code may be stopped at almost any point, so shared kernel data must be carefully protected with locks or interrupt disabling.
+
 
 Likewise, in a non-preemptive kernel the scheduler is not capable of rescheduling a task while its CPU is executing in the kernel mode.
 {:.info}
