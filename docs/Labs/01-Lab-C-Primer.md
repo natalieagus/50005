@@ -26,6 +26,551 @@ This notes will be used in Week 2 and Week 3 Labs when we introduce C and finish
 
 During the lab, we will use [this](https://github.com/natalieagus/50005-C-exercises) exercises. Special thanks to [Ryan Pek](https://github.com/rpeky/50005-C-exercises), a 2027 CSD graduate who created this exercise.
 
+## Header `.h` files vs `.c` files in C
+
+In C, a header file should usually describe **what other files are allowed to use**. A `.c` file should usually contain the actual **implementation**.
+
+{:.note-title}
+> General Rule 
+> 
+> Put declarations in `.h` files. Put definitions in `.c` files.
+
+This matters because `#include` literally copies the header file into the `.c` file before compilation. If many `.c` files include the same header, they all receive the same header content.
+
+So if you define a global variable inside a header, every `.c` file gets its own copy. That commonly causes linker errors such as:
+
+```text
+duplicate symbol '_something'
+```
+
+Below we list things that belong in the header file.
+
+### Function Declaration 
+A function declaration tells C that this function exists somewhere.
+
+Example header:
+
+```c
+// math_utils.h
+#ifndef MATH_UTILS_H
+#define MATH_UTILS_H
+
+int add(int a, int b);
+int multiply(int a, int b);
+
+#endif
+```
+
+The function bodies go in the `.c` file:
+
+```c
+// math_utils.c
+#include "math_utils.h"
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int multiply(int a, int b) {
+    return a * b;
+}
+```
+
+Another file can use these functions:
+
+```c
+// main.c
+#include <stdio.h>
+#include "math_utils.h"
+
+int main(void) {
+    printf("%d\n", add(3, 4));
+    return 0;
+}
+```
+
+
+
+The header says what functions exist and the `.c` file (that includes it) contains the actual implementation.
+
+
+### Global variables
+
+Suppose you want to share a global counter between multiple `.c` files. Do **not** write this in the header:
+
+```c
+// counter.h
+int total_requests = 0;   // This is bad
+```
+
+This is a <span class="orange-bold">definition</span>. It creates real **storage**.
+
+{:.important-title}
+> Why definition in header file is bad
+> 
+> If both `main.c` and `server.c` include this header, then both files define their own `total_requests`.
+
+That causes a <span class="orange-bold">duplicate</span> symbol error. Some people however don't care about this because they know that this header file will only be included by exactly 1 `.c` file so in this case that's okay.
+
+This is the good version:
+
+```c
+// counter.h
+#ifndef COUNTER_H
+#define COUNTER_H
+
+extern int total_requests;
+
+void increment_requests(void);
+
+#endif
+```
+
+Then define the variable in exactly one `.c` file:
+
+```c
+// counter.c
+#include "counter.h"
+
+int total_requests = 0;
+
+void increment_requests(void) {
+    total_requests++;
+}
+```
+
+Now other files can use the same shared variable:
+
+```c
+// main.c
+#include <stdio.h>
+#include "counter.h"
+
+int main(void) {
+    increment_requests();
+    increment_requests();
+
+    printf("Total requests: %d\n", total_requests);
+
+    return 0;
+}
+```
+
+The key difference is that this means this variable exists somewhere else:
+
+```c
+extern int total_requests;
+```
+
+But the following means: create the actual variable here.
+
+
+```c
+int total_requests = 0;
+```
+### Arrays
+
+The same rule applies to arrays. This is a <span class="orange-bold">bad</span> header:
+
+```c
+// colors.h
+const char *colors[] = {
+    "red",
+    "green",
+    "blue"
+};
+```
+
+This creates the actual array every time the header is included.
+
+This is the correct header:
+
+```c
+// colors.h
+#ifndef COLORS_H
+#define COLORS_H
+
+extern const char * const colors[];
+extern const int NUM_COLORS;
+
+#endif
+```
+
+And the correct `.c` file:
+
+```c
+// colors.c
+#include "colors.h"
+
+const char * const colors[] = {
+    "red",
+    "green",
+    "blue"
+};
+
+const int NUM_COLORS =
+    sizeof(colors) / sizeof(colors[0]);
+```
+
+You can use it elsewhere freely too:
+
+```c
+// main.c
+#include <stdio.h>
+#include "colors.h"
+
+int main(void) {
+    for (int i = 0; i < NUM_COLORS; i++) {
+        printf("%s\n", colors[i]);
+    }
+
+    return 0;
+}
+```
+
+This is safe because only `colors.c` creates the real array.
+
+
+### Private variables should stay in the `.c` file
+
+Not everything needs to be exposed through a header. Suppose `logger.c` has an internal log level.
+
+```c
+// logger.c
+#include <stdio.h>
+
+static int log_level = 1;
+
+void log_message(const char *message) {
+    if (log_level > 0) {
+        printf("[LOG] %s\n", message);
+    }
+}
+```
+
+The `static` keyword at file scope means: *this variable is private to this `.c` file.*
+
+Other files <span class="orange-bold">cannot</span> directly access `log_level`.
+
+The header only exposes the public function:
+
+```c
+// logger.h
+#ifndef LOGGER_H
+#define LOGGER_H
+
+void log_message(const char *message);
+
+#endif
+```
+
+Other files do not need to know how the logger stores its internal state. They only need to call:
+
+```c
+log_message("Program started");
+```
+
+
+This is usually better design, but you probably won't need to care about it in this course since we don't go really deep into C.
+
+### Structs and typedefs
+
+Headers are good places to put <span class="orange-bold">shared</span> types.
+
+Example:
+
+```c
+// point.h
+#ifndef POINT_H
+#define POINT_H
+
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+int point_distance_squared(Point p);
+
+#endif
+```
+
+Implementation:
+
+```c
+// point.c
+#include "point.h"
+
+int point_distance_squared(Point p) {
+    return p.x * p.x + p.y * p.y;
+}
+```
+
+Usage:
+
+```c
+// main.c
+#include <stdio.h>
+#include "point.h"
+
+int main(void) {
+    Point p = {3, 4};
+
+    printf("%d\n", point_distance_squared(p));
+
+    return 0;
+}
+```
+
+This is fine because the header defines a type, not a global variable with storage. 
+
+#### About `typedef`
+
+{:.note}
+`typedef` gives an existing type a new name.
+
+Example:
+
+```c
+typedef unsigned int uint;
+```
+
+Now instead of writing:
+
+```c
+unsigned int age;
+```
+
+you can write:
+
+```c
+uint age;
+```
+
+Most common use is with `struct`. Without `typedef`, you need the keyword `struct` to declare it:
+
+```c
+struct Point {
+    int x;
+    int y;
+};
+
+struct Point p;
+```
+
+With `typedef`, it gets a little neater:
+
+```c
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+Point p;
+```
+
+So this means: *create a struct type with `x` and `y`, and let me call that type `Point`*.
+
+```c
+typedef struct {
+    int x;
+    int y;
+} Point;
+```
+
+It does **not** create a variable, only a type name.
+
+### Constants
+
+For simple integer constants, this is okay to put in a header:
+
+```c
+// config.h
+#ifndef CONFIG_H
+#define CONFIG_H
+
+#define MAX_USERS 100
+#define BUFFER_SIZE 1024
+
+#endif
+```
+
+Another common style is to use `enum`:
+
+```c
+// config.h
+#ifndef CONFIG_H
+#define CONFIG_H
+
+enum {
+    MAX_USERS = 100,
+    BUFFER_SIZE = 1024
+};
+
+#endif
+```
+
+Both are fine for simple compile-time constants, but <span class="orange-bold">avoid</span> putting actual global variables in the header:
+
+```c
+// config.h
+int max_users = 100;   // BAD
+```
+
+Instead use this correct version:
+
+```c
+// config.h
+#ifndef CONFIG_H
+#define CONFIG_H
+
+extern int max_users;
+
+#endif
+```
+
+```c
+// config.c
+#include "config.h"
+
+int max_users = 100;
+```
+
+
+
+### Include guards
+
+Every header <span class="orange-bold">should</span> usually have an include guard:
+
+```c
+#ifndef FILE_NAME_H
+#define FILE_NAME_H
+
+// declarations here
+
+#endif
+```
+
+Example:
+
+```c
+// point.h
+#ifndef POINT_H
+#define POINT_H
+
+typedef struct {
+    int x;
+    int y;
+} Point;
+
+int point_distance_squared(Point p);
+
+#endif
+```
+
+The guard prevents the *same* header from being processed multiple times in one compilation unit.
+
+For example:
+
+```c
+// main.c
+#include "point.h"
+#include "geometry.h"
+```
+
+If `geometry.h` also includes `point.h`, then `point.h` may be included twice.
+
+The include guard prevents duplicate type definitions and repeated declarations inside the same `.c` file.
+
+Meaning:
+
+```c
+#ifndef POINT_H
+```
+
+means:
+
+```text
+If POINT_H has not been defined yet, continue.
+```
+
+Then the following marks *this* header as already included so that the second time the compiler sees the same header, it skips the content.
+
+```c
+#define POINT_H
+```
+
+
+### Summary about Header files
+
+If you don't want to read anything else, at least read these:
+
+```c
+// Good things for .h files
+
+int add(int a, int b);                 // function declaration
+
+extern int total_requests;             // global variable declaration
+
+typedef struct {
+    int x;
+    int y;
+} Point;                               // shared type definition
+
+#define BUFFER_SIZE 1024               // macro constant
+```
+
+And put these in `.c` files:
+
+```c
+// Good things for .c files
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int total_requests = 0;
+
+static int internal_state = 123;
+```
+
+<span class="orange-bold">Avoid</span> this in headers because these create actual storage, and every `.c` file that includes the header will define another copy:
+
+```c
+// Bad in .h files
+
+int total_requests = 0;
+
+const char *colors[] = {
+    "red",
+    "green",
+    "blue"
+};
+```
+
+So basically, a header file should usually contain:
+
+```text
+Declarations
+Shared types
+Constants
+Function prototypes
+extern variable declarations
+```
+
+A `.c` file should usually contain:
+
+```text
+Function bodies
+Actual global variable definitions
+Private helper functions
+Private static variables
+Implementation logic
+```
+
+
+The header tells other files what they can use and the `.c` file contains the actual code and storage.
+
+
 ## Pointers and Double Pointers in C
 
 This is a quick note about `T *` vs `T **`, and what’s actually happening underneath, complete with snippets and sample code just enough to make you understand the basics. You still need to do more practice on your own to actually feel natural about it.

@@ -183,10 +183,10 @@ unsigned char *encrypted_bytes = session_encrypt(
 {:.note-title}
 > Token Layout
 >
-> The output token produced by `session_encrypt` mirrors the Fernet token format:
+> The output token produced by `session_encrypt` have these components:
 > * **IV**: 16 bytes, the initialization vector (randomly generated per call)
 > * **Ciphertext**: variable length, the AES-128-CBC encrypted, PKCS7-padded data
-> * **HMAC**: 32 bytes, HMAC-SHA256 over (IV || ciphertext), providing integrity
+> * **HMAC**: 32 bytes, HMAC-SHA256 over (IV \|\| ciphertext -- concatenation), providing integrity
 
 ### Task 1-3
 
