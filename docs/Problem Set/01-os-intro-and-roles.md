@@ -370,7 +370,7 @@ You notice that **sometimes**, during large or repeated writes, the system **cra
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p> 
 The crash and erratic behavior stem from the fact that `write_to_device()` is **not reentrant**, yet it may be interrupted mid-execution, and then **called again** by the interrupt handler, leading to **race conditions** and **corruption** of shared state.
 <br><br>
-Reentrancy means a function can be **safely interrupted** and **re-invoked** before the previous call finishes. For that to work, the function must **not** use static or global variables without protection, must **avoid** modifying shared resources unless properly synchronized, must **not** depend on **execution order** or **side effects**.
+**Reentrancy** in general means a function can be entered again before an earlier invocation has finished, and both invocations still behave correctly. Kernel reentrancy means a process can enter kernel mode, block or sleep inside the kernel, and while that kernel invocation is still unfinished, another process can enter the kernel safely. For that to work, the function must **not** use static or global variables without protection, must **avoid** modifying shared resources unless properly synchronized, must **not** depend on **execution order** or **side effects**.
 <br><br>
 In this scenario, `write_to_device()` accesses a shared buffer, possibly overwriting in-progress data or resetting internal state. If the interrupt handler re-enters it mid-way, you can get corrupted buffers, multiple concurrent transfers, lost or duplicated data.
 <br><br>
