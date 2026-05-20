@@ -27,7 +27,11 @@ Singapore University of Technology and Design
 In this part, you are tasked to create 4 **more** system programs:  **sys** (simple system information), **dspawn** (daemon spawn), **dcheck** (daemon check), and **backup** (zip certain dir, and move the zipped dir to `./archive` as backup). 
 
 {:.note}
-You should add scripts for each system program under `source/system_programs` and create the appropriate library `.h/.c` accordingly in the right places. Each of these system program `.c` file **should** contain a `main()`.
+> You should write the code for each system program under `source/system_programs` and create the appropriate library `.h/.c` accordingly in the right places. Header files belong under `includes/` and the matching implementation under `source/`. It is up to you whether you want these programs to share a common library or not. 
+>
+> Each of these system program should have one `.c` file that contains a `main()`.
+
+Consult the `makefile` if you're confused.
 
 # `sys` 
 

@@ -41,7 +41,19 @@ The shell must be expanded support the following 7 builtin commands: `cd, help, 
 
 ## List the builtin commands 
 
-We suggest that you declare them as an array of `char*` in some header file, e.g: `shell.h`: 
+We suggest that you declare them as an array of `char*` in some header file, e.g `shell.h`: 
+
+```c
+extern const char *builtin_commands[];
+```
+
+{:.note-title}
+> An array of character pointers
+> 
+> `extern const char *builtin_commands[]` declares an array of character pointers where each pointer is pointing to a constant character string. 
+
+
+Then write the definition in e.g: `shell.c`:
 
 ```c 
 const char *builtin_commands[] = {
@@ -55,14 +67,10 @@ const char *builtin_commands[] = {
     };
 ```
 
-{:.note-title}
-> An array of character pointers
-> 
-> `const char *builtin_commands[]` declares an array of character pointers where each pointer is pointing to a constant character string. 
 
 
 ## Builtin command handler
-It is recommended that you refactor the shell code such that each builtin command will call a specific handler function, instead of writing a gigantic `if-else` string matching clause in the `main`. You can do this elegantly in c by first declaring each handler in the header file:
+It is recommended that you refactor the shell code such that each builtin command will call a specific handler function, instead of writing a gigantic `if-else` string matching clause in the `main`. You can do this elegantly by first declaring each handler in the header file:
 
 
 ```c
@@ -81,8 +89,13 @@ int unset_env_var(char **args);
 {:.important}
 Ensure they have the same signature. 
 
-Then declare an array of functions as follows. 
+Then declare an array of functions as follows in `shell.h`:
 
+```c
+extern int (*builtin_command_func[])(char **);
+```
+
+And place the implementation in the `.c` file:
 ```c
 /*** This is array of functions, with argument char ***/
 int (*builtin_command_func[])(char **) = {
