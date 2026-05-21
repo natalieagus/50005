@@ -497,16 +497,16 @@ When you open two terminal windows, each one creates a separate shell session. E
 2. Then, type the following in the command line (don't forget to navigate to your current directory first using `cd`!): `tr "[a-z]" "[A-Z]" test.txt`
 3. You will see such usage suggestion instead:
 
-```bash
-usage: 	tr [-Ccsu] string1 string2
-        tr [-Ccu] -d string1
-        tr [-Ccu] -s string1
-        tr [-Ccu] -ds string1 string2
-```
+    ```bash
+    usage:  tr [-Ccsu] string1 string2
+            tr [-Ccu] -d string1
+            tr [-Ccu] -s string1
+            tr [-Ccu] -ds string1 string2
+    ```
 
 This is because tr <span class="orange-bold">cannot</span> get input directly from a file. It only reads from `stdin`.
 
-4. Now try` tr "[a-z]" "[A-Z]" < test.txt`. Your console should print ”HELLO, HAVE A GOOD DAY TODAY!”, capitalizing the content of the `test.txt` file (but not changing its content). 
+4. Now try `tr "[a-z]" "[A-Z]" < test.txt`. Your console should print ”HELLO, HAVE A GOOD DAY TODAY!”, capitalizing the content of the `test.txt` file (but not changing its content).
 5. So based on your observation, can you deduce what is the difference between these two commands:
     -  `tr "[a-z]" "[A-Z]" < test.txt`
     -  `tr "[a-z]" "[A-Z]" test.txt`
