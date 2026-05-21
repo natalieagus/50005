@@ -55,3 +55,8 @@ thead {
     border-bottom: $border $border-color;
   }
 }
+
+td code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
