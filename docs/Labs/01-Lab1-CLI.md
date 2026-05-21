@@ -372,10 +372,13 @@ After saving, you can check the content of the file using the command `cat <path
 
 # Standard Streams
 
-Standard streams are **input** **and** **output** communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution. They are **streams** of data that travel from where a program was **executed**, to the places where the program is **processed** and then back again to where the program was **executed**.
+Standard streams are **input** **and** **output** communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution. They carry data from the environment that launched the program (typically the terminal) into the program as input, and then carry the program's output back to that same environment.
 
 The three input/output (I/O) connections are called standard input (stdin), standard output (stdout) and standard error (stderr).
 {:.info}
+
+For example, when you run `tr 'a-z' 'A-Z'` in a terminal and type `hello`, the characters travel from the terminal into the `tr` process through `stdin`. The program converts them to uppercase and sends `HELLO` back out through `stdout`, which appears in the same terminal.
+
 
 The terminal does <span class="orange-bold">not</span> directly “understand” your commands. It is only the text interface. The shell is the command interpreter, communicating with the terminal through stdin, stdout, and stderr.
 
