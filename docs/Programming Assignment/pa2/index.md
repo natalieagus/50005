@@ -144,6 +144,27 @@ You should see exactly the above file structure afterwards. `./setup.sh` is a ba
 
 All complex OpenSSL calls are **wrapped for you** in `common.h` / `common.c`. You call these wrapper functions and you do NOT need to write raw OpenSSL `EVP_*` code yourself.
 
+Here's a summary of what `common.c` contains:
+
+| Functionality       | C function (in `common.h`)                                                    |
+| ------------------------- | ----------------------------------------------------------------------- |
+| Generate random bytes     | `RAND_bytes(buf, len)`                                                  | 
+| Send 8-byte int           | `send_int(sockfd, val)`                                                 | 
+| Send raw bytes            | `send_all(sockfd, buf, len)`                                            | 
+| Read exact bytes          | `read_bytes(sockfd, len)`, must `free()`                               | 
+| Convert 8B buf to int      | `bytes_to_int(buf)`                                                     | 
+| Parse cert from bytes     | `load_cert_bytes(data, len)`, must `X509_free()`                       | 
+| Verify cert vs CA         | `verify_server_cert(cert, ca_path)`, returns 1 or 0                    | 
+| Verify RSA-PSS signature  | `verify_message_pss(cert, sig, sig_len, msg, msg_len)`, 1/0            | 
+| Sign with RSA-PSS         | `sign_message_pss(key, msg, len, &sig_len)`, must `free()`             | 
+| Load private key          | `load_private_key(path)`, must `EVP_PKEY_free()`                       |
+| Extract pub key from cert | `X509_get_pubkey(cert)`, must `EVP_PKEY_free()`                        | 
+| RSA encrypt one block     | `rsa_encrypt_block(key, pt, pt_len, &ct_len, use_oaep)`, must `free()` |
+| RSA decrypt one block     | `rsa_decrypt_block(key, ct, ct_len, &pt_len, use_oaep)`, must `free()` | 
+| Generate session key      | `generate_session_key(key_buf)`                                         | 
+| Symmetric encrypt         | `session_encrypt(key, pt, pt_len, &ct_len)`, must `free()`             |
+| Symmetric decrypt         | `session_decrypt(key, ct, ct_len, &pt_len)`, must `free()`             | 
+
 {:.note-title}
 > Memory management in C
 >
