@@ -279,7 +279,7 @@ A reentrant kernel is the one which allows <span style="color:#f7007f;"><b>multi
 {:.note}
 Head to [appendix](#reentrant-kernel-behavior) if you'd like to view a simple example of a reentrant Kernel that supports concurrency. 
 
-For example, consider Process 1 that is <span style="color:#f7007f;"><b>voluntarily</b></span> voluntarily suspended when it is in the middle of handling its `read` system call because the it has to wait for some data from disk to become available. It is <span style="color:#f77729;"><b>suspended in Kernel Mode</b></span> by `yielding` itself. Another Process 2 is now scheduled and wishes to make `print` system call. 
+For example, consider Process 1 that is <span style="color:#f7007f;"><b>voluntarily</b></span> suspended when it is in the middle of handling its `read` system call because the it has to wait for some data from disk to become available. It is <span style="color:#f77729;"><b>suspended in Kernel Mode</b></span> by `yielding` itself. Another Process 2 is now scheduled and wishes to make `print` system call. 
 
 - In a reentrant kernel: Process 2 is currently executed; able to execute its `print` system call.
 - In a non-reentrant kernel: Process 2, although currently executed must **wait** for Process 1 to exit from the Kernel Mode if Process 2 wishes to execute its `print` system call.
