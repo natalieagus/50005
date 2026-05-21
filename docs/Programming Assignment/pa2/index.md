@@ -432,8 +432,6 @@ nmcli connection up [connection name]
 > No other cryptographic libraries allowed
 > 
 > You are also not allowed to use any cryptographic library other than OpenSSL (which is what `common.c` already uses). You may use any standard C library headers (`stdio.h`, `stdlib.h`, `string.h`, etc.) as they are already included via `common.h`.
-
-
 ## Appendix
 
 
@@ -441,7 +439,7 @@ This project is organised into separate folders for source code, header files, t
 
 ### Root Directory
 
-```txt
+```
 .
 ├── AGENTS.md
 ├── Makefile
@@ -459,7 +457,7 @@ Builds the project. It compiles the main C programs, links the required source f
 
 The Makefile should know where to find:
 
-```txt
+```
 source/
 includes/
 source/libs/
@@ -478,7 +476,7 @@ Setup script for preparing the environment. This can be used to create required 
 
 ### Authentication Folder
 
-```txt
+```
 auth
 ├── cacsertificate.crt
 └── generate_keys.sh
@@ -500,7 +498,7 @@ Script used to generate cryptographic keys and certificates.
 
 ### Input / Sample Files
 
-```txt
+```
 files
 ├── cbc.bmp
 ├── file.txt
@@ -518,7 +516,7 @@ Contains sample files used for testing file transfer.
 
 These files are intentionally of different types:
 
-```txt
+```
 .txt   text file
 .bmp   bitmap image
 .ppm   image file
@@ -535,7 +533,7 @@ This is useful because a file transfer program should work for **both** text fil
 
 ### Header Files
 
-```txt
+```
 includes
 └── libs
     └── common.h
@@ -565,7 +563,7 @@ This keeps the include path clean and avoids needing relative includes like:
 
 ### Source Code
 
-```txt
+```
 source
 ├── ClientWithoutSecurity.c
 ├── ServerWithoutSecurity.c
@@ -589,7 +587,7 @@ Server program without security features. This listens for client connections an
 
 Implementation file for shared helper functions declared in:
 
-```txt
+```
 includes/libs/common.h
 ```
 
@@ -605,7 +603,7 @@ The `Makefile` already handles this.
 
 ### Transfer Output Folders
 
-```txt
+```
 recv_files
 recv_files_enc
 send_files_enc
@@ -628,7 +626,7 @@ These folders help keep original test files separate from received or encrypted 
 
 ### Scripts
 
-```txt
+```
 scripts
 └── gen_unit_tests.sh
 ```
@@ -641,14 +639,14 @@ Contains helper scripts for development and testing.
 
 Script for generating unit tests, probably using the prompt file in:
 
-```txt
+```
 prompts/generate-unit-tests.md
 ```
 
 
 ### Prompts
 
-```txt
+```
 prompts
 └── generate-unit-tests.md
 ```
@@ -665,7 +663,7 @@ Prompt file for generating unit tests. This keeps test-generation instructions s
 
 ### Tests
 
-```txt
+```
 tests
 ├── integration
 │   ├── _lib.sh
@@ -688,7 +686,7 @@ Contains all test-related files.
 
 #### Integration Tests
 
-```txt
+```
 tests/integration
 ├── _lib.sh
 ├── test_exit.sh
@@ -725,7 +723,7 @@ Tests multiple file transfers, possibly to check repeated transfers or concurren
 
 ### Unit Tests
 
-```txt
+```
 tests/unit
 ├── test_int_bytes.c
 └── test_socket.c
@@ -748,7 +746,7 @@ Tests socket-related helper functions.
 
 ### Unity Test Framework
 
-```txt
+```
 tests/unity
 ├── unity_internals.h
 ├── unity.c
@@ -764,7 +762,7 @@ Contains the Unity C testing framework, which is the lightweight testing framewo
 
 The structure separates the project into clear responsibilities:
 
-```txt
+```
 source/          main C programs
 source/libs/     shared C implementations
 includes/libs/   shared header files
@@ -780,7 +778,7 @@ prompts/         AI prompt templates
 
 The main idea is:
 
-```txt
+```
 Headers go in includes/
 Implementations go in source/
 Shared library code goes under libs/
