@@ -34,7 +34,7 @@ Four short quizzes conducted during selected Tuesday lectures (Weeks 4, 6, 10, 1
 
 ## Programming Assignments
 
-Two programming assignments, each done in groups of 2 to 3 (same group for both). Grading is by checkoff: PA1 in Week 8, PA2 in Week 13. All members must be present at checkoff and able to answer questions, which will affect the team's grade.
+Two programming assignments, each done in groups of 2 to 3 (same group for both). Grading is by checkoff: PA1 in Week 6, PA2 in Week 13. All members must be present at checkoff and able to answer questions, which will affect the team's grade.
 
 There is no dedicated peer review. Since teams are small, any disputes should be communicated early (at least 1 week before the due date). Members proven absent or unable to complete agreed-upon tasks may receive 0 marks on a case-by-case basis.
 
