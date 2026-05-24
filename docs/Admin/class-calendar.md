@@ -16,7 +16,7 @@ nav_order: 3
 
 Notes contain additional materials and explanations to complement the official slides. You do not need to study the notes exhaustively for exams; the official slides are sufficient for revision. You are expected to attend lessons in person.
 
-<span class="badge badge-exam">Exam</span> <span class="badge badge-quiz">Quiz</span> <span class="badge badge-lab">Lab</span> <span class="badge badge-pa">PA</span> <span class="badge badge-ext">Extended Lecture</span> <span class="badge badge-off">No Lab</span> <span class="badge badge-prep">Preparation</span>
+<span class="badge badge-exam">Exam</span> <span class="badge badge-quiz">Quiz</span> <span class="badge badge-lab">Lab</span> <span class="badge badge-pa">PA</span> <span class="badge badge-off">No Lab</span> <span class="badge badge-prep">Preparation</span>
 
 {% for w in site.data.calendar %}
 ---
