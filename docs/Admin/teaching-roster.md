@@ -32,8 +32,7 @@ All classes are conducted in person unless otherwise stated.
 | Lecture 1 | Monday | 10:30 to 12:00 | LT1 (Albert Hong Theatre) |
 | Lecture 2 | Tuesday | 11:30 to 13:00 | LT1 (Albert Hong Theatre) |
 
-{:.note}
-On Week 4 Tuesday and Week 6 Tuesday, there is a 30-minute <span class="orange-bold">extended</span> lecture on **Tuesday 11:00 to 11:30** at LT1, held before the regular Tuesday lecture. Extended lecture weeks are indicated in the [Class Calendar]({{ site.baseurl }}/admin/class-calendar) and in teaching roster below.
+
 
 ### Lab Cohorts
 
@@ -68,9 +67,9 @@ They are responsible for checkoffs so please get to know them by attending the c
 | 1 | 18 May, Natalie | 19 May, Natalie | 19 May / 21 May, Natalie | OS Introduction / CLI Lab |
 | 2 | 25 May, Natalie | 26 May, Natalie | 26 May / 28 May, Natalie | OS Services |
 | 3 | 1 Jun, Public Holiday | 2 Jun, Natalie | 2 Jun / 4 Jun, Natalie | Threads and Processes |
-| 4 | 8 Jun, Natalie | 9 Jun, Natalie (**extended**) | 9 Jun / 11 Jun, Prof. David | Synchronisation / TOCTOU Lab |
+| 4 | 8 Jun, Natalie | 9 Jun, Natalie | 9 Jun / 11 Jun, Prof. David | Synchronisation / TOCTOU Lab |
 | 5 | 15 Jun, Natalie | 16 Jun, Natalie | 16 Jun / 18 Jun, Prof. David | Deadlock / Banker's Lab |
-| 6 | 22 Jun, Natalie | 23 Jun, Natalie (**extended**) | PA1 Checkoff | File System |
+| 6 | 22 Jun, Natalie | 23 Jun, Natalie | PA1 Checkoff | File System |
 | 7 | Recess Week | | | |
 | 8 | 6 Jul, Prof. David | 7 Jul, **Midterm Exam** (10AM-12PM)| No lab | Network Introduction |
 | 9 | 13 Jul, Prof. David | 14 Jul, Prof. David | 14 Jul / 16 Jul, Natalie | Network Performance / Ping Lab |
