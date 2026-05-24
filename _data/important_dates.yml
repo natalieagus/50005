@@ -23,14 +23,9 @@
   items:
     - date: "9 Jun"
       day: "Tue"
-      time: "11:00"
+      time: "11:30"
       badge: quiz
       task: "<b>Quiz 1</b> (Weeks 1 to 3)"
-    - date: "9 Jun"
-      day: "Tue"
-      time: "11:00"
-      badge: ext
-      task: "Extended Lecture: 30 mins"
     - date: "14 Jun"
       day: "Sun"
       time: "23:59"
@@ -64,7 +59,7 @@
       task: "<b>PA1 due</b> (push to GitHub)"
     - date: "23 Jun"
       day: "Tue"
-      time: "11:00"
+      time: "11:30"
       badge: quiz
       task: "<b>Quiz 2</b> (Weeks 4 to 5)"
     - span: true
