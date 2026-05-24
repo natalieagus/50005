@@ -35,38 +35,87 @@ You are to complete this lab's quiz on eDimension as you complete the tasks.
 No checkoff required for this lab. 
 
 
-# The Shell
+# The Terminal and The Shell 
 
-A **shell** is one of these user applications that acts as an interface to allow users to **access** OS services. It is named shell because it is seen as an *“outer”* layer around the OS kernel. OS shells are made either in a form of command-line interface (**CLI**, also known as) where users can **provide commands** via **text**, or graphical user interface (**GUI**) where users can provide commands via mouse clicks. In this lab, we are going to learn a little bit about the command-line interface, bash scripting, and makefiles. 
+## The Terminal 
+The terminal is **environment** (window) where you type and read the output, while the shell is the program that interprets and executes those commands. You are probably using macOS Terminal, iTerm2, Windows Terminal, GNOME Terminal depending on your OS.
 
+{:.new-title}
+> Fun fact 
+> 
+> The term "terminal" in the context of operating systems and computing has its origins in the early days of computers. Initially, computers were large, centralized machines that were accessed by multiple users through individual terminal devices. 
+> 
+> These terminals were called "terminal" because they served as the endpoint (or the terminus) of a communication line between the user and the mainframe or minicomputer. 
+> 
+> Today, when we refer to the "terminal" on a computer, we're usually talking about a <span class="orange-bold">terminal emulator</span> program that provides a text-based interface to the operating system. Users can enter commands through a shell (like bash, zsh, or PowerShell), which are then executed by the operating system. The term "terminal" has thus **evolved** from its original meaning but retains the core concept of being the point of interaction between a user and the computer system.
+
+### The History
+This is how we access the mainframe (a gigantic computer) in the past, via end-devices called the "terminals":
+
+<img src="{{ site.baseurl }}/docs/Labs/images/vintage-computer-room-stockcake.jpg.webp"  class="center_seventy no-invert"/>
+
+Each terminal is that keyboard/screen set and they're wired to connect to the mainframe (the computer) where the kernel and OS is. The shell **runs** on the mainframe so the shell must send/read data to/from the Terminal. Here's the rough setup:
+
+```
+Cold war terminal keyboard/screen
+        |
+   serial cable
+        |
+serial port on mainframe/minicomputer
+        |
+OS device file: /dev/ttyS0
+        |
+login program / shell
+```
+
+Pay attention to the *device file*: `/dev/ttyS0` is the software handle for “serial port 0”. There can be many terminals connected, each has its own port plugged to the mainframe and each has a device file `/dev/ttySx`. Its job is to let programs read/write bytes to that port, so a read from `/dev/ttyS0` receives what the terminal keyboard typed, and a write to `/dev/ttyS0` sends chars to appear on the terminal screen. The real hardware is something like a UART/serial controller on the computer and the OS driver exposes it as /dev/ttyS0. In modern computers, the terminal is just one "window" in the same computer you're working on, so everything is virtualised. We will dive deeper into it in [this](#streams) section.
+
+### Modern Setup
+When you open a Terminal window, it will **launch** the CLI shell process (or more accurately: make syscall to exec shell process) and connecting your keyboard/screen to that shell’s input/output.
+
+## The Shell
+
+A **shell** is one of these user applications that acts as an interface to allow users to **access** OS services. It is named shell because it is seen as an *“outer”* layer around the OS kernel. 
+
+### CLI and GUI Shell Overview
+OS shells are made either in a form of command-line interface (**CLI**, also known as) where users can **provide commands** via **text**, or graphical user interface (**GUI**) where users can provide commands via mouse clicks. In this lab, we are going to learn a little bit about the command-line interface, how stream works, and shell scripting (using `bash`).
+
+For a GUI shell, there usually is no terminal. The “shell” is the desktop environment or launcher itself, such as: `explorer.exe` (Windows), `Finder + Dock + desktop server` (macOS), `GNOME Shell / KDE Plasma` (Linux).
+
+### CLI Shell
 You would need to install any POSIX-compliant OS before coming to this lab. See [here for guide]({{ site.baseurl }}/admin/getting-started). 
 {:.warning}
+
 
 In order for us to be able to use CLI, we need to be familiar with their **commands** and their calling **syntax**. In particular, we are concerned with **UNIX-type shells** (POSIX is an IEEE standard that acts as a standard UNIX version) in this course. 
 * **Open** your terminal/command line window. 
 * The terminal window in front of you contains a `shell`, which enables you to use commands to access OS services.
 
-{:.new-title}
-> Fun fact 
-> 
-> The term "terminal" in the context of operating systems and computing has its origins in the early days of computers. Initially, computers were large, centralized machines that were accessed by multiple users through individual terminal devices. These terminals were called "terminal" because they served as the endpoint (or the terminus) of a communication line between the user and the mainframe or minicomputer. Today, when we refer to the "terminal" on a computer, we're usually talking about a <span class="orange-bold">terminal emulator</span> program that provides a text-based interface to the operating system. Users can enter commands through a shell (like bash, zsh, or PowerShell), which are then executed by the operating system. The term "terminal" has thus evolved from its original meaning but retains the core concept of being the point of interaction between a user and the computer system.
 
 
 ### Task 
-`TASK 1:` To find your current shell, type the command: `ps -p $$`
+`TASK 1:` To find your current shell, type the command: `echo $SHELL`
 {:.task}
 
-```bash
-bash-3.2$ ps -p  $$
-  PID TTY           TIME CMD
-70846 ttys003    0:00.01 bash
-bash-3.2$
-```
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2026-05-22-11-14-01.png"  class="center_fifty no-invert"/>
+
 Bash shell ([bash](https://en.m.wikipedia.org/wiki/Bash_(Unix_shell)) is used in the screenshot above. There are other shells as well: [z-shell](https://en.m.wikipedia.org/wiki/Z_shell)) or [fish](https://en.m.wikipedia.org/wiki/Fish_(Unix_shell)). Which one to choose? It is entirely up to you. 
 
 The CLI accepts **commands** (the **first** word, e.g. ps, that you type into the CLI is the command), **entered line by line** and it will be executed **sequentially**. There are two types of commands in general, commands **with** and **without** options or arguments.
 
+
 # Basic Commands
+
+## Introduction
+
+{:.important}
+There are two types of commands in general: system programs or built-in.
+
+A **command** is none other than just the name of the program we want the shell to execute plus its inputs/options/arguments. When we type the command `git clone https://some-url`, we are asking the shell to make a syscall to create a new process, run `git`, and pass `clone https://some-url` as an input. It then wait for `git` to complete and terminate, before presenting the user with a new prompt.
+
+Therefore, if your shell complains that `command x not found`, it simply **couldn't** find the executable whose name matches the first word of your command. 
+
+Not all commands are system programs though, some of them are **built into the Shell's source code** (commands like `exit` and `cd`) because
 
 ## Without Options
 
@@ -191,13 +240,17 @@ In the example below, the environment variable `$MESSAGE1` initially did not exi
 
 One of the most important environment variables you’ll work with on the command line is <span style="color:#f7007f;"><b>$PATH</b></span>.
 
-- This is the key to how our shell **knows** which file to execute for commands like cd or echo or other built-in or installed programs.
+- This is the key to how our shell **knows** which file to execute for commands like cd or echo or other **built-in** or installed programs.
 - The PATH variable provides the <span style="color:#f7007f;"><b>additional context</b></span> that the command line needs to figure out where that particular file is in the system.
-- Hence, if you have installed an app (e.g: Telegram) and tried to execute the binary from the command line and met with the error `command not found`, it simply means you haven’t added the path where that binary is to the `$PATH` environment variable.
+ 
+Therefore, if you have installed an app (e.g: Telegram) and tried to execute the binary from the command line and met with the error `command not found`, it simply means you haven’t added the path where that binary is to the `$PATH` environment variable.
 
 For example, you can add the **binary** of the **Telegram** app onto the `$PATH` using the command `export`, and now you can simply execute it from anywhere (a new Telegram window is opened on the second Telegram command):
 
 <img src="{{ site.baseurl }}/assets/images/lab1/5.png"  class="center_seventy no-invert"/>
+
+{:.note}
+Some commands, such as `cd`, are usually shell built-ins, so they do not need to be found through `$PATH`.
 
 ### Task 4
 
@@ -226,8 +279,9 @@ The term "rc" in filenames like `.bashrc`, `.zshrc`, or `.vimrc` stands for "run
 `TASK 5:` Add _Desktop_ to your `$PATH` environment variable **permanently**.
 {:.task}
 
+We assume you use `bash`:
 - Go to your home directory: `cd $HOME`
-- Create a new file called .bashrc: `touch .bashrc`
+- Create a new file called .bashrc: `touch .bashrc` (or `.zshrc` if you're using `zsh`, etc)
 - Open the file with any text editor, eg: `nano .bashrc`
 - Type: `export PATH="$HOME/Desktop:$PATH" ` at the end of the file 
 - Save the file by pressing <span style="color:#f7007f;"><b>CTRL+X</b></span>, and then follow the instruction and press `Enter`
@@ -256,8 +310,8 @@ An `alias` lets you create a **shortcut** name for a command, file name, or any 
 
 Or **create** an alias:
 
-- `alias name=’command’`
-- Example: `alias gst=’git status’`
+- `alias name='command'`
+- Example: `alias gst='git status'`
 
 <img src="{{ site.baseurl }}/assets/images/lab1/8.png"  class="center_fifty no-invert"/>
 
@@ -313,7 +367,7 @@ Displays **information** about all network interfaces currently in operation.
 <hr>
 `kill -9 <pid>, pkill <process_name>`
 {:.highlight}
-**Kills** (ends) the process matching the given pid, the same thing happens when you click the close (x) button on the window of a running app.
+**Kills** (ends) the process matching the given pid, analogous to when you click the close (x) button on the window of a running app, but stronger (find the details on your own).
 <hr>
 `ping <servername> <options>`
 {:.highlight}
@@ -370,26 +424,184 @@ You can open any created text file using the command:
 
 After saving, you can check the content of the file using the command `cat <path/to/filename>`.
 
-# Standard Streams
+# Standard Streams {#streams}
 
-Standard streams are **input** **and** **output** communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution. They carry data from the environment that launched the program (typically the terminal) into the program as input, and then carry the program's output back to that same environment.
+{:.note-title}
+> Disclaimer
+> 
+> This section is longer than a normal CLI tutorial because we are using the CLI as the first concrete example of an OS abstraction. You do <span class="orange-bold">not</span> need to memorise every device name yet. Focus on the idea that a process reads and writes through file descriptors, and the OS connects those descriptors to terminals, files, or pipes.
 
-The three input/output (I/O) connections are called standard input (stdin), standard output (stdout) and standard error (stderr).
+Standard streams are **input** and **output** communication channels between a <span style="color:#f7007f;"><b>running process</b></span> and its <span style="color:#f7007f;"><b>environment</b></span> when it begins execution.
+
+They **carry** data from the environment that launched the program, typically the terminal, into the program as input, and then carry the program's output back to that same environment.
+
 {:.info}
+> The three standard I/O connections are:
+> * **standard input**: `stdin`
+> * **standard output**: `stdout`
+> * **standard error**: `stderr`
 
-For example, when you run `tr 'a-z' 'A-Z'` in a terminal and type `hello`, the characters travel from the terminal into the `tr` process through `stdin`. The program converts them to uppercase and sends `HELLO` back out through `stdout`, which appears in the same terminal.
 
+For example, when you run:
 
-The terminal does <span class="orange-bold">not</span> directly “understand” your commands. It is only the text interface. The shell is the command interpreter, communicating with the terminal through stdin, stdout, and stderr.
+```bash
+tr '[:lower:]' '[:upper:]' < test.txt
+```
 
-Streams are usually connected to the **terminal** in which they are executed. By default, `stdin` is receives input from your **keyboard**, while `stdout + stderr` sends output back to your **terminal**. 
+and type:
 
-{:.note}
-If you're interested to read how the OS plays a part in this, read [this](#how-terminal-io-works) section.
+```
+hello
+```
 
-You might be wondering how your keyboard and display then is shared among so many processes? The details require Streams in Linux are treated as though they were files (**Week 6 Material**). E.g: you can **read** text from a file, and you can **write** text into a file. <span style="color:#f7007f;"><b>Both of these actions involve streams of data</b></span>.
+the characters <span class="orange-bold">travel</span> from the terminal into the `tr` process through `stdin`. The program *converts* them to uppercase and sends:
+
+```
+HELLO
+```
+
+back out through `stdout`, which *appears* in the same terminal.
+
+{:.important}
+The movement of data from the terminal into `tr`, and from `tr` back to the terminal, happens through **streams**. A stream is a **flow** of bytes between a process and something else, such as a terminal, file, or pipe.
+
+From the earlier section, we know that the **terminal** is the text interface, while the **shell** is the command interpreter. The terminal does <span class="orange-bold">not</span> directly “understand” your commands. The shell interprets commands, starts programs, and connects their standard streams.
+
+By default:
+
+* `stdin` receives input from your keyboard.
+* `stdout` sends normal output back to your terminal display.
+* `stderr` sends error output back to your terminal display.
+
+## How Terminal I/O Works 
+
+The keyboard and display can be shared among so many processes in our modern computers.
+
+{:.note-title}
+> Key Idea 
+> 
+> **Streams** in Linux/Unix-like systems are treated as though they were files. You can **read** text from a file, and you can **write** text into a file. <span style="color:#f7007f;"><b>Both of these actions involve streams of data</b></span>.
+
+Processes do not need to know whether their input comes from a real keyboard, a file, a pipe, or a terminal emulator. They simply **read** from `stdin` and write to `stdout` or `stderr`. 
+
+## From Physical Terminal to Modern Terminal Emulator
+
+In the earlier history section, we saw that old terminals were real keyboard/screen devices connected to a mainframe or minicomputer.
+
+The setup looked roughly like this:
 
 ```text
+Cold war terminal keyboard/screen
+        |
+   serial cable
+        |
+serial port on mainframe/minicomputer
+        |
+OS device file: /dev/ttyS0
+        |
+login program / shell
+```
+
+The important point is:
+
+```text
+/dev/ttyS0 is not the physical terminal itself.
+```
+
+It is the OS device file representing the serial port connected to that terminal.
+
+So if a program reads from `/dev/ttyS0`, it receives bytes typed on the terminal keyboard. If a program writes to `/dev/ttyS0`, those bytes are sent back to the terminal screen.
+
+The old physical setup can be visualised like this:
+
+```text
+OLD PHYSICAL TERMINAL SYSTEM
+============================
+
+Physical terminal
+keyboard + screen
+        |
+        | serial cable carrying bytes
+        |
+Main computer serial port hardware
+UART / serial controller
+        |
+OS device driver
+        |
+/dev/ttyS0
+        |
++-----------------------------+
+| Shell process               |
+|                             |
+| fd 0 stdin   ── read  ─────┐ |
+| fd 1 stdout  ── write ───┐ | |
+| fd 2 stderr  ── write ─┐ | | |
++-------------------------|-|-|-+
+                          | | |
+                          v v v
+                      also to /dev/ttyS0
+```
+
+The mapping is:
+
+```text
+Physical terminal  = the keyboard + screen box
+Serial cable       = carries raw characters
+UART/serial port   = real hardware on the main computer
+/dev/ttyS0         = OS device file for that serial port
+Shell              = program running on the main computer
+```
+
+Input flow:
+
+```text
+"l" is pressed
+   ↓
+terminal sends byte 'l'
+   ↓
+serial cable
+   ↓
+main computer serial port
+   ↓
+OS driver
+   ↓
+/dev/ttyS0
+   ↓
+shell reads it as stdin
+```
+
+Output flow:
+
+```text
+shell prints "hello"
+   ↓
+writes bytes to stdout
+   ↓
+/dev/ttyS0
+   ↓
+OS driver
+   ↓
+serial port
+   ↓
+serial cable
+   ↓
+physical terminal screen shows "hello"
+```
+
+{:.important}
+The physical terminal is mostly just a keyboard and screen and the shell runs on the main computer.
+
+## Modern Terminal Emulator Setup
+
+Today, when you open Terminal, iTerm2, or the VS Code terminal, we are not using a real serial terminal, but instead it's a **terminal emulator**.
+
+{:.highlight}
+A terminal emulator simulates the old physical terminal using a **pseudo-terminal**, usually shortened to **PTY**.
+
+```
+MODERN TERMINAL EMULATOR SETUP
+==============================
+
                        keyboard
                           |
                           v
@@ -418,58 +630,394 @@ You might be wondering how your keyboard and display then is shared among so man
                                   | reads commands    |
                                   | starts programs   |
                                   +-------------------+
-```                                  
+```
+
+Modern mapping:
+
+```
+Old physical terminal      → modern terminal app window
+Old serial cable           → pseudo-terminal connection
+Old /dev/ttyS0             → modern /dev/pts/3
+Old shell on mainframe     → modern zsh/bash on your computer
+```
 
 
-When you run a python script, e.g: `python3 playground.py`,
+So the difference is that:
+- `/dev/ttyS0` is a real serial terminal line handler in the OS
+- `/dev/pts/3` is a virtual terminal line handler in the OS
+
+
+Both give the shell the same illusion "*I have a keyboard input stream and a screen output stream.*"
+
+## Standard Streams and Terminal Devices
+
+<img src="{{ site.baseurl }}/docs/Labs/images/shell_vs_terminal_pty_routing.svg"  class="center_seventy no-invert"/>
+
+Before we can continue, we need to know beforehand that EVERY running process starts with three standard file descriptors.
+
+### File Descriptors {#file-descriptors}
+
+A file descriptor is a small integer used by the OS to identify an open file-like <span class="orange-bold">resource</span> belonging to a process. We summarise briefly here but you will learn more about it in the later weeks when we reach Filesystem.
+
+The standard file descriptors are:
+
+```text
+0 = stdin
+1 = stdout
+2 = stderr
+```
+
+So when a process starts, it usually already has these three file descriptors open:
+
+```text
+fd 0  →  standard input
+fd 1  →  standard output
+fd 2  →  standard error
+```
+
+In a terminal session, they often **point** to the same terminal device:
+
+```text
+fd 0  →  /dev/pts/3
+fd 1  →  /dev/pts/3
+fd 2  →  /dev/pts/3
+```
+
+or on macOS:
+
+```text
+fd 0  →  /dev/ttys004
+fd 1  →  /dev/ttys004
+fd 2  →  /dev/ttys004
+```
+
+This means:
+
+```text
+read input from the terminal
+write normal output to the terminal
+write error output to the terminal
+```
+
+### Back to the Process 
+
+When a process starts, it usually **inherits** three already-open file descriptors from its parent process: `0`, `1`, and `2`. By convention, these are called `stdin`, `stdout`, and `stderr`.
+
+| File descriptor | Stream name | Usual meaning |
+|---|---|---|
+| `0` | `stdin` | where the process reads input from |
+| `1` | `stdout` | where the process writes normal output to |
+| `2` | `stderr` | where the process writes error messages to |
+
+{:.note}
+`stdin`, `stdout`, and `stderr` are represented using **file descriptors**.
+
+These three are not physical devices. They are simply the process’s default input and output channels. 
+
+When you run a program from a terminal, the shell usually connects **all three file descriptors** to the same terminal device:
+
+```
+fd 0  stdin   → terminal device
+fd 1  stdout  → terminal device
+fd 2  stderr  → terminal device
+```
+
+
+That is why when you inspect a running program with tools like `lsof`, you may see its file descriptors `0` (`stdin`), `1` (`stdout`), and `2` (`stderr`) pointing to something like `/dev/pts/x`:
+
+<img src="{{ site.baseurl }}//docs/Labs/images/01-Lab1-CLI/2026-05-22-14-34-43.png"  class="center_seventy no-invert"/>
+
+Those are the terminal devices that the OS connected to the **process’s standard streams**. 
+
+Another example: when you run a Python script as such:
+
+```bash
+python3 playground.py
+```
+
+the shell starts the Python process and connects the Python process’s standard streams to the terminal.
 
 <img src="{{ site.baseurl }}/assets/images/lab1/10.png"  class="center_seventy no-invert"/>
-* **Input** from your keyboard is passed from the terminal into the python process, and 
-* **Output** from your python process is passed back to your terminal **display**. Here’s a simplified illustration:
+
+* **Input** from your keyboard is passed to the terminal app, then terminal device file like `/dev/pts/x` and finally Python process's `fd 0`: `stdin`.
+* **Output** from your Python process is passed through `fd 1`: `stdout` to the terminal device file `/dev/pts/x` and then to the terminal app, then we can see it on the screen.
+* **Error messages** works the same as **output** just that it's routed via `fd 2`: `stderr`.
+
+Here’s a simplified illustration:
+
 <img src="{{ site.baseurl }}/assets/images/lab1/11.png"  class="center_seventy"/>
 
-> *Where are these “files” for `stdin`, `stdout`, and `stderr` respectively?*
+You can observe the 3 file descriptors by running a Python script in one terminal and letting it hang. Then, from another terminal, find its process ID and inspect it using the `lsof` command.
 
-`stdin`, `stdout`, and `stderr` are **created** by your OS. You can witness this pretty easily if you run a python script on one terminal (and let it hang there, don’t let it terminate yet! Shown on the right side), find out its process id and then see its details on another terminal (shown on the left) using the `lsof` command.
-{:.info}
 <img src="{{ site.baseurl }}/assets/images/lab1/12.png"  class="center_full no-invert"/>
 
-You can see in the last three lines that stdin (0u), stdout (1u), and stderr (2u) all point to the file `/dev/ttys004`. This is the file that is created by the OS and watched by our terminal.
+You can see in the last few lines that `stdin`, `stdout`, and `stderr` all point to a terminal device file, such as:
 
-### Standard output
+```text
+/dev/ttys004
+```
 
-A standard output is a **default** _place_ (it's just a file actually) for output to go, also known as `stdout`. Your shell is constantly **watching** that output file, and whenever there’s something there, it will automatically print to your screen. For instance, `echo "hello"` is a command that means ”output the string hello to standard output”.
+or, on Linux:
 
-- The process echo prints to `stdout` (probably `/dev/ttyx`),
-- ...and your terminal in turn shows it in its GUI display.
+```text
+/dev/pts/3
+```
 
-### Standard input
+The exact name depends on your OS and terminal system.
 
-The standard input (`stdin`) is a default place where processes listen for information. For example, all the commands above with no other arguments listen for input on `stdin`.
-Try typing `cat` on the command line and press enter:
+Common examples:
 
-- Notice you can type any character from your keyboard, because it watches for input on `stdin`,
-- Then, output what you type to `stdout` (and your shell is watching that output place so it is being printed on your screen), until you type an EOF (end of line) character: `CTRL + d`.
+```text
+/dev/ttyS0    = physical serial port terminal
+/dev/ttyUSB0  = USB serial adapter
+/dev/ttys004  = macOS terminal device
+/dev/pts/3    = Linux pseudo-terminal slave
+```
 
-### Standard error
+{:.important}
+> The big idea is that `stdin`, `stdout`, and `stderr` are the process-side names.
+> `/dev/pts/3`, `/dev/ttys004`, files, or pipes are the OS-side objects they are **connected** to.
 
-The standard error (`stderr`) is the place where error messages go. Try this command that will prompt an error such as: `cat <inexistent_path/to/filename>`.
+### Standard Output
 
-What is the output that you see? Similar to stdout, stderr is printed directly to your screen by your shell.
+A standard output is the **default place** where normal output goes. It is also called `stdout`. When a process writes to `stdout`, the output usually appears in the terminal.
+
+For example:
+
+```bash
+echo "hello"
+```
+
+means:
+
+```text
+write the string "hello" to standard output
+```
+
+The flow is:
+
+```text
+echo process
+   ↓ writes to stdout
+terminal device
+   ↓
+terminal app displays "hello"
+```
+
+More precisely:
+
+* The `echo` process writes to `stdout`.
+* `stdout` is connected to a terminal device such as `/dev/pts/3` or `/dev/ttys004`.
+* The terminal app displays the output in its window.
+
+{:.note}
+The shell starts `echo`, but the shell is not the thing visually drawing the characters on the screen. The terminal app is responsible for displaying the text.
+
+### Standard Input
+
+The standard input, `stdin`, is the default place where a process receives input.
+
+For example, try typing the following and pressing Enter.
+
+```bash
+cat
+```
+
+The `cat` program **waits** for input from `stdin`. Since `stdin` is connected to your terminal, anything you type from the keyboard is sent into the `cat` process.
+
+The flow is:
+
+```text
+keyboard
+   ↓
+terminal app
+   ↓
+terminal device
+   ↓
+cat stdin
+   ↓
+cat stdout
+   ↓
+terminal display
+```
+
+That is why `cat` appears to *repeat* whatever you type.
+
+It continues until you send EOF, which means **end of file**. In a terminal, you can usually send EOF by pressing:
+
+```text
+CTRL + d
+```
+
+### Standard Error
+
+The standard error, `stderr`, is where error messages go.
+
+For example:
+
+```bash
+cat <inexistent_path/to/filename>
+```
+
+This command tries to read from a file that does not exist, so `cat` prints an error message.
+
 <img src="{{ site.baseurl }}/assets/images/lab1/13.png"  class="center_fourty no-invert"/>
 
+`stderr` is separate from `stdout` because we often want to treat normal output and error output differently. For example, a program may produce useful output on `stdout`, while also producing warnings or error messages on `stderr`.
 
-### Stream Redirection
+{:.note}
+By default, both `stdout` and `stderr` are displayed in the same terminal window. However, they are still separate streams.
 
-`stdin`, `stdout`, and `stderr` for every process is symbolized with [file descriptor](https://en.wikipedia.org/wiki/File_descriptor) `0`, `1`, and `2` respectively. Each file associated with a process is allocated a unique number to identify it, this number is called the **file descriptor**.
+## Stream Redirection
 
-We can <span style="color:#f7007f;"><b>redirect</b></span> stdin using the `< `operator, stdout using the `>` operator, and stderr using the `2>` operator.
+We can <span style="color:#f7007f;"><b>redirect</b></span> standard streams.
 
-- `<command> > <filename>`:  we are **redirecting** the `stdout` of `<command>` to the file `<filename>`. That means, we will write whatever that was printed out by the process `<command>` to the file with `<filename>`.
-- `<command> < <filename>`: we are **redirecting** the `stdin` of `<command>`, e.g: use the **content** of filename as an **input** to command. This is particularly useful for commands that only take in input streams, and are unable to read the content of a file given a filename.
+Redirection means changing where `stdin`, `stdout`, or `stderr` points.
 
-Note that `stdout` redirection will **truncate** (<span class="orange-bold">erase</span>) the original content of the `<filename>`. If you want to append to the **existing** content of file instead, you can use the `>>` operator.
+The common operators are:
+
+```text
+<    redirect stdin
+>    redirect stdout
+2>   redirect stderr
+>>   append stdout
+```
+
+### Redirecting stdout
+
+```bash
+<command> > <filename>
+```
+
+This redirects the `stdout` of `<command>` to `<filename>`.
+
+That means whatever the command prints normally will be written into the file instead of displayed on the terminal.
+
+Example:
+
+```bash
+echo "hello" > output.txt
+```
+
+Instead of showing `hello` on the terminal, the shell connects `stdout` to `output.txt`.
+
+```text
+echo process
+   ↓ stdout
+output.txt
+```
+
 {:.warning}
+`>` will truncate, meaning erase, the original content of the file before writing new output.
+
+If you want to append to the existing content instead, use:
+
+```bash
+echo "hello again" >> output.txt
+```
+
+### Redirecting stdin
+
+```bash
+<command> < <filename>
+```
+
+This redirects the `stdin` of `<command>` so that the command reads input from the file instead of the keyboard.
+
+Example:
+
+```bash
+tr 'a-z' 'A-Z' < input.txt
+```
+
+This means:
+
+```text
+read text from input.txt
+send it into tr through stdin
+print converted output to stdout
+```
+
+The flow is:
+
+```text
+input.txt
+   ↓ stdin
+tr process
+   ↓ stdout
+terminal display
+```
+
+This is particularly useful for commands that naturally read from input streams.
+
+### Redirecting stderr
+
+```bash
+<command> 2> <filename>
+```
+
+This redirects `stderr` to a file.
+
+Example:
+
+```bash
+cat missing_file.txt 2> error.txt
+```
+
+The normal output stream is still connected to the terminal, but error messages are written into `error.txt`.
+
+The flow is:
+
+```text
+cat process stdout  → terminal
+cat process stderr  → error.txt
+```
+
+This is useful because normal program output and error messages are separate streams.
+
+## Summary of Standard Streams
+
+A process usually starts with three standard streams:
+
+```text
+stdin   fd 0   input stream
+stdout  fd 1   normal output stream
+stderr  fd 2   error output stream
+```
+
+In a normal terminal session, all three are connected to a terminal device:
+
+```text
+fd 0  → terminal input
+fd 1  → terminal output
+fd 2  → terminal error output
+```
+
+Historically, this terminal device could be a real serial terminal line like:
+
+```text
+/dev/ttyS0
+```
+
+Today, in a terminal emulator, it is often a pseudo-terminal like:
+
+```text
+/dev/pts/3
+```
+
+The shell interprets commands and starts programs:
+
+```text
+terminal app  →  shell  →  program
+```
+
+But the standard streams connect the running program to its environment:
+
+```text
+keyboard/file/pipe  →  stdin  →  process  →  stdout/stderr  →  terminal/file/pipe
+```
+
+
 
 ### Test write to other session's output
 
@@ -570,7 +1118,7 @@ curl -o GPL-3 https://www.gnu.org/licenses/gpl-3.0.txt
 Now search for a string inside a file using the commands:
 
 - `grep "<string>” <path/to/file>`
-- For example: `grep “GNU” GPL-3` prints every line containing “GNU” word.
+- For example: `grep "GNU" GPL-3` prints every line containing “GNU” word.
 - Some shells don't require the quotation marks for single-word search, so you can try `grep GNU GPL-3` as well.
 
 <img src="{{ site.baseurl }}/assets/images/lab1/17.png"  class="center_seventy no-invert"/>
@@ -658,125 +1206,6 @@ For example, you can [customize your prompt](https://github.com/arialdomartini/o
 
 <img src="{{ site.baseurl }}/assets/images/lab1/20.png"  class="center_seventy no-invert"/>
 
-# Compiling Programs
-
-We can also compile and run programs from the **command** line, provided that you have the **compiler** or **interpreter**, e.g. `python3`, `gcc`, or `javac`.
-
-### Task 10
-
-`TASK 10:` Compile a C program. 
-{:.task}
-
-To demonstrate this idea, clone this starter code: 
-
-```
-git clone https://github.com/natalieagus/makeFileDemo.git
-```
-
-We require you to have `gcc` for this task. If your OS doesn't have it, you can install it with (Ubuntu):
-
-```
-sudo apt update
-sudo apt install build-essential
-```
-
-Read all the `.c` and `.h` files and get an understanding of what each file is supposed to do. To **compile** the files and **run** the executable:
-
-1. Navigate to this directory and type the command: `gcc -o prog.o main.c hello.c factorial.c binary.c `
-2. And then execute by typing `./prog.o`
-
-Experiment with the program a little bit. You should see a prompt for you to key in a number. Simply type something and press enter.
-
-<img src="{{ site.baseurl }}/assets/images/lab1/21.png"  class="center_seventy no-invert"/>
-
-In case you haven't connected the dots, `gcc` compiles all the input argument files: `main.c, hello.c, factorial.c, binary.c` and produces a binary **output** (this is what `-o` means) named `prog.o` which you can execute using `./prog.o `.
-
-## Makefile
-
-In this simple context, it is feasible to type out the source file one by one each time you want to compile your program. However in a large scale project with thousands of files, it is very tedious to type the compilation command all the time. Hence, the make command allows us to compile these files more easily. It requires a special file called the `Makefile`.
-
-1. Now instead of typing gcc and all that above, type `make` instead
-2. After executing `make`, realize that prog.o is made. You can run the executable in the terminal by typing `./prog.o` or by simply clicking that executable in your shell GUI (your desktop).
-
-Lets now examine how makefile is made.
-
-```makefile
-# Define required macros here
-REMOVE = rm
-CC = gcc
-DEPENDENCIES = main.c hello.c factorial.c binary.c
-OUT = prog.o
-
-# Explicit rules, all the commands you can call with make
-# (note: the <tab> in the command line is necessary for make to work)
-# target:  dependency1 dependency2 ...
-#       <tab> command
-
-#Called by: make prg
-#also executed when you just called make. This calls the first target.
-prog: main.c hello.c factorial.c binary.c
-        gcc -o prog.o main.c hello.c factorial.c binary.c
-
-prog1: $(DEPENDENCIES)
-        $(CC) $(DEPENDENCIES) -o $(OUT)
-
-prog2: main.o hello.o factorial.o binary.o
-        gcc -o prog2 main.o hello.o factorial.o binary.o
-
-
-##make clean will remove myexecoutprog.o from the directory
-clean:
-        rm prog.o
-
-clean1:
-        $(REMOVE) $(OUT)
-
-clean2:
-        rm prog2 *.o
-
-#Implicit rules
-main.o : main.c functions.h
-factorial.o: factorial.c functions.h
-hello.o: hello.c functions.h
-binary.o: binary.c functions.h
-```
-
-1. The first four lines are the MACROS, which are convenient shorthands you can make to make your life easier when typing these codes.
-2. Afterwards, there’s a bunch of explicit rules that you can call using make. So in this makefile, you can try calling these in sequence and observe what each rule do:
-   - `make prog`
-   - `make prog1`
-   - `make clean`
-   - `make clean1`
-
-
-If `make` is not installed, you can install it using your package manager, for instance using `apt` (Ubuntu / Debian) :
-
-```
-sudo apt update
-sudo apt install build-essential
-```
-
-## Recompilation
-
-Run this command consecutively:
-
-- `make clean`
-- `make prog2`
-
-You should see the following output on your terminal as a result of `make prog2`:
-<img src="{{ site.baseurl }}/assets/images/lab1/22.png"  class="center_fifty no-invert"/>
-
-Now open `binary.c` in the `nano` and add another instruction in it, eg a `printf` function at the end:
-<img src="{{ site.baseurl }}/assets/images/lab1/23.png"  class="center_fifty no-invert"/>
-
-When you try to `make prog2` again, the output shows that we only compile files concerning `binary.c` and <span style="color:#f7007f;"><b>not all files are recompiled</b></span>. Scroll down to the end of the makefile, and notice there’s **implicit** rules there to determine dependencies.
-
-<img src="{{ site.baseurl }}/assets/images/lab1/24.png"  class="center_fifty no-invert"/>
-
-This gives more **efficient** compilation. It only recompiles parts that are changed. The Figure below shows the data dependency between files that are specified in the makefile.
-Note: `File_1` → `File_2` means that `File_2` depends on `File_1`.
-
-<img src="{{ site.baseurl }}/assets/images/lab1/25.png"  class="center_seventy "/>
 
 # Summary 
 In this lab, you are exposed to various commands and how to navigate your system using the CLI. It needs time to develop the habit. Perhaps one of the more fun things to do is to decorate and beautify your shell. You may [check this out](https://ohmyz.sh) for a beginner-friendly start (macOS/Linux using zsh) and [this](https://ohmyposh.dev/docs/installation/windows) for Windows (powershell). Zsh users: for a slimmer alternative, you can try [Antidote](https://antidote.sh). You can also use another shell entirely, try [fish](https://fishshell.com). 

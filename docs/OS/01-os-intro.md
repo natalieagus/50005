@@ -219,11 +219,12 @@ In other words, I/O devices and the CPU can execute **instructions** in parallel
 
 ## Device Drivers {#device-drivers}
 
-A system must have **device drivers installed** for each device type. This driver is a specific program to <span style="color:#f7007f;"><b>interpret</b></span> the behavior of each device type. We typically install/download _device drivers_ when we plug in **new** I/O units to our computers through the USB port.
+
+A system must have **device drivers installed** for each device type. This driver is a specific program to <span style="color:#f7007f;"><b>interpret</b></span> the behavior of each device type. We typically install/download _device drivers_ when we plug in **new** I/O units to our computers through the USB port. 
 
 <img src="/50005/assets/images/week1/7.png"  class="center_seventy no-invert"/>
 
-It provides a software **interface** to hardware devices so that the device controller is able to communicate with the OS or an application program.
+A device driver is kernel software that knows how to control a specific device/controller, translate OS requests into device commands, handle device responses/interrupts, and present the device as a clean abstraction to the rest of the OS. In short, it provides a software **interface** to hardware devices so that the device controller is able to communicate with the OS or an application program.
 {:.info}
 
 ### Running Device Drivers
