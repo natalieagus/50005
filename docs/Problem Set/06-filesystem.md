@@ -240,8 +240,6 @@ A data processing service writes output to a temporary log file. An administrato
 > * Use tools like <code>lsof</code> to find unlinked but open files.
 > * Space is reclaimed only after all file descriptors are closed.
 
-
-
 <div cursor="pointer" class="collapsible">Show Answer</div><div class="content_answer"><p>
 <p>
 In UNIX, deleting a file using <code>rm</code> unlinks its name from the directory structure, but the file’s inode and data blocks remain allocated as long as any process holds an open file descriptor to it. The kernel keeps the file alive until all such references are closed.
