@@ -48,6 +48,11 @@ In other words, <span style="color:#f7007f;"><b>the OS provides services for use
 
 Below are the brief list of operating system services that are usually provided to the users via the Operating System <span style="color:#f77729;"><b>Interface</b></span>: terminal and GUI. We will learn more about each of them this week
 
+### TinyOS
+
+Although it is not part of the syllabus, it is worth to check out [this](https://github.com/natalieagus/lab-tinyOS) tinyOS written for the Beta CPU Processor while trying to understand how kernel works. 
+
+
 ### Basic Support
 
 Basic <span style="color:#f77729;"><b>support</b></span> for computer system usage via <span style="color:#f77729;"><b>system call</b></span> routines:
