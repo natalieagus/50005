@@ -41,7 +41,7 @@ The shell must be expanded support the following 7 builtin commands: `cd, help, 
 
 ## List the builtin commands 
 
-We suggest that you declare them as an array of `char*` in some header file, e.g `shell.h`: 
+You can declare them as an array of `char*` in some header file, e.g `shell.h` (note: this allows your test c file to include it and test):
 
 ```c
 extern const char *builtin_commands[];
@@ -53,7 +53,7 @@ extern const char *builtin_commands[];
 > `extern const char *builtin_commands[]` declares an array of character pointers where each pointer is pointing to a constant character string. 
 
 
-Then write the definition in e.g: `shell.c`:
+Then write the definition in e.g: `shell.c`
 
 ```c 
 const char *builtin_commands[] = {
@@ -70,7 +70,7 @@ const char *builtin_commands[] = {
 
 
 ## Builtin command handler
-It is recommended that you refactor the shell code such that each builtin command will call a specific handler function, instead of writing a gigantic `if-else` string matching clause in the `main`. You can do this elegantly by first declaring each handler in the header file:
+It is recommended that you refactor the shell code such that each builtin command will call a specific handler function, instead of writing a gigantic `if-else` string matching clause in the `main`. You can do this elegantly by first declaring each handler in the header file (again only if you're sharing it for testing etc, otherwise just directly implement it in the c file):
 
 
 ```c
