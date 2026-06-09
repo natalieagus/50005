@@ -75,7 +75,7 @@
     - "4.4 Peterson's Solution Correctness"
   events:
     - badge: quiz
-      text: "<b>Quiz 1:</b> Tuesday, first 20 mins of lecture. Open book, Weeks 1 to 3 material."
+      text: "<b>Quiz 1:</b> Tuesday, 11:00-11:20. Open book, Weeks 1 to 3 material."
     - badge: lab
       text: "TOCTOU Race Condition Attack (<b>2% quiz due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
     - badge: pa
@@ -108,7 +108,7 @@
     - "6.2 Linux File Operation"
   events:
     - badge: quiz
-      text: "<b>Quiz 2:</b> Tuesday, first 20 mins of lecture. Open book, Weeks 4 to 5 material."
+      text: "<b>Quiz 2:</b> Tuesday, 11:00-11:20. Open book, Weeks 4 to 5 material."
     - badge: pa
       text: "<b>PA1 due Tuesday 09:00.</b> Push to GitHub before the cutoff."
     - badge: lab
@@ -168,7 +168,7 @@
     - "NS 3.3 The Birthday Problem"
   events:
     - badge: quiz
-      text: "<b>Quiz 3:</b> Tuesday, first 20 mins of lesson. Open book, Weeks 8 to 9 material."
+      text: "<b>Quiz 3:</b> Tuesday, 11:00-11:20. Open book, Weeks 8 to 9 material."
     - badge: lab
       text: "Python Cryptography (<b>2% quiz due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
     - badge: pa
@@ -206,7 +206,7 @@
     - "NS 5.4 Wireshark and HTTP"
   events:
     - badge: quiz
-      text: "<b>Quiz 4:</b> Tuesday, first 20 mins of lesson. Open book, Weeks 10 to 11 material."
+      text: "<b>Quiz 4:</b> Tuesday, 11:00 - 11:20. Open book, Weeks 10 to 11 material."
     - badge: lab
       text: "Web Server and Client / HTCPCP (<b>2% quiz due this Sunday 23:59</b> + <b>1% team checkoff by next Friday 18:00</b>)"
 
