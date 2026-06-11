@@ -282,7 +282,7 @@ While rootdo seems like a <span style="color:#f77729;"><b>dangerous</b></span> p
 {:.info}
 
 
-When you typo `sudo <command>`, it prompts you for your <span style="color:#f77729;"><b>password</b></span>, then the program checks whether the user is verified, before executing with root privileges. In our little `rootdo` example, we just use hardcoded `password` to proceed.
+When you type `sudo <command>`, it prompts you for your <span style="color:#f77729;"><b>password</b></span>, then the program checks whether the user is verified, before executing with root privileges. In our little `rootdo` example, we just use hardcoded `password` to proceed.
 
 
 Setting of `rootdo`'s <span style="color:#f77729;"><b>SUID</b></span> bit is done in the `Makefile` inside `FilesForRoot` that you execute earlier while logged in as root,
