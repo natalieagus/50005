@@ -49,6 +49,7 @@ Singapore University of Technology and Design
 
 ## The Monitor Pattern in C
 
+{:.info-title}
 > Monitor
 >
 > A **monitor** is a synchronization construct that bundles **mutual exclusion** (a lock) and **condition synchronization** (one or more condition variables) into a single logical unit. A thread <span class="orange-bold">must</span> hold the monitor's lock before it can wait on or signal any of its condition variables.
