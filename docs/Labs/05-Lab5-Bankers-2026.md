@@ -36,7 +36,7 @@ There are two parts of the Banker's Algorithm:
 1. <span style="color:#f77729;"><b>Resource Allocation</b></span> Algorithm
 2. <span style="color:#f77729;"><b>Safety</b></span> Algorithm
 
-You will be implementing the <span class="orange-bold">Safety Algorithm</b></span> and then calling it in <span class="orange-bold">Resource Allocation Algorithm</span> in this lab.
+You will be implementing the <span class="orange-bold">Safety Algorithm</span> and then calling it in <span class="orange-bold">Resource Allocation Algorithm</span> in this lab.
 
 # Submission
 
