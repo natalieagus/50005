@@ -710,7 +710,7 @@ You need to initialise `finish`: set all elements to `False`. This indicates tha
 <span style="color:#f77729;"><b>Hypothetically</b></span> grant the current request by customer `customer_index` by updating:
 - `work[i] = work[i] - request[i]` for all `i<M`
 - `need[customer_index][i] = need[customer_index][i] - request[i]` for all `i<M`
-- `allocation[customer_index][i] = allocation[customer_index][] + request[i]` for all `i<M`
+- `allocation[customer_index][i] = allocation[customer_index][i] + request[i]` for all `i<M`
   
 Note that this request granting is _hypothetical_ because we are modifying a copy of the Banker's state via `work`, `temp_alloc` and `temp_need`. In reality, we haven't granted the request yet, we simply compute this hypothetical situation and decide whether it will be `safe` or `unsafe`.
 
