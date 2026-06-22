@@ -141,7 +141,7 @@ You can type `exit` to exit the shell:
 
 <img src="{{ site.baseurl }}//docs/Programming%20Assignment/pa1/images/01-intro/2024-04-10-12-39-32.png"  class="center_full no-invert"/>
 
-As the starter code only contains basic shell framework, it lacks the typical continuous loop for reading an processing commaands. The shell will terminate each time you enter a command. To type another command, you need to run `./cseshell` again. 
+As the starter code only contains basic shell framework, it lacks the typical continuous loop for reading an processing commands. The shell will terminate each time you enter a command. To type another command, you need to run `./cseshell` again. 
 
 {:.note}
 Note that only system programs at `[PROJECT_DIR]/bin` is currently **accessible** by the shell, and hence only these three commands: `find`, `ld`, `ldr` are supported. 
