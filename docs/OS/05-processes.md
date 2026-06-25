@@ -61,7 +61,7 @@ A single process includes all of the following information, which we call the pr
 2. Value of the Program Counter (<span style="color:#f77729;"><b>PC</b></span>)
 3. Contents of the processor’s <span style="color:#f77729;"><b>registers</b></span>
 4. Dedicated[^1] <span style="color:#f77729;"><b>address space</b></span> (block of location) in memory
-5. <span style="color:#f77729;"><b>Stack</b></span> (temporary data such as function parameters, return address, and local variables, grows downwards),
+5. <span style="color:#f77729;"><b>Stack</b></span> (temporary data such as function parameters, return address, and local variables),
 6. <span style="color:#f77729;"><b>Data</b></span> (allocated memory during compile time such as global and static variables that have predefined values)
 7. <span style="color:#f77729;"><b>Heap</b></span> (dynamically allocated memory -- typically by calling `malloc `in C -- during process runtime, grows upwards)[^2]
 
