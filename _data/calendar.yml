@@ -135,7 +135,7 @@
     - "NS 1.2 Priority Inversion"
   events:
     - badge: exam
-      text: "<b>Midterm Examination:</b> Tuesday 10:00 to 12:00. Report by 09:45. Covers Weeks 1 to 6 material. Venues TBC."
+      text: "<b>Midterm Examination:</b> Tuesday 10:00 to 12:00. Report by 09:45. Covers Weeks 1 to 6 material. Venues will be emailed to you and announced on eDimension."
     - badge: "off"
       text: "Tuesday lecture cancelled due to midterm. No lab this week."
 
@@ -229,4 +229,4 @@
       details:
         - "Reporting time: 08:30"
         - "Covers: Weeks 8 to 12 material"
-        - "Venues: TBC"
+        - "Venues: Look out for emails and eDimension announcements"
