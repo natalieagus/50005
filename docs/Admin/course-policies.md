@@ -32,7 +32,7 @@ The following rules apply to both the midterm and final examinations.
 
 **Lockdown Browser:** You must test Lockdown Browser before each exam. Problems encountered on exam day will not result in extra time if you did not test in advance.
 
-Specific dates, times, venues, and material coverage for each exam are listed in the [Class Calendar](/admin/class-calendar).
+Specific dates, times, venues, and material coverage for each exam are listed in the [Class Calendar]({{ site.baseurl }}/admin/class-calendar).
 
 ## Quiz Rules
 
