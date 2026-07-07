@@ -110,7 +110,7 @@ For example, consider two mutex locks being initialized:
 
 ```cpp
 pthread_mutex_t first_mutex;
-Pthread_mutex_t second_mutex;
+pthread_mutex_t second_mutex;
 pthread_mutex_init(&first_mutex,NULL);
 pthread_mutex_init(&second_mutex,NULL);
 ```
@@ -342,14 +342,14 @@ Using the above prior known information, the banker's algorithm maintains these 
 
 ### Part 1: Resource Allocation Algorithm
 
-You will be implementing this algorithm during [Lab](https://natalieagus.github.io/50005/labs/05-bankers-algorithm). As such, detailed explanation of the algorithm will not be repeated here.
+You will be implementing this algorithm during [Lab](https://natalieagus.github.io/50005/labs/05-bankers-algorithm-c). As such, detailed explanation of the algorithm will not be repeated here.
 {:.note}
 
 This algorithm decides whether to give or not give resources to requesting processes over time. As time progresses, more <span style="color:#f77729;"><b>resource request</b></span> or <span style="color:#f77729;"><b>resource release</b></span> can be invoked by any of the processes. <span style="color:#f77729;"><b>Releasing</b></span> resources is a trivial process as we simply update the `allocation`, `available`, and `need` data structures. However, for each resource request received, we need to run the Safety Algorithm (next section) once. The output of the algorithm can be either `Granted` or `Rejected` depending on whether the system will be in a <span style="color:#f77729;"><b>safe state</b></span> _if the resource is granted_
 
 ### Part 2: The Safety Algorithm
 
-You will be implementing this algorithm during [Lab](https://natalieagus.github.io/50005/labs/05-bankers-algorithm). As such, detailed explanation of the algorithm will not be repeated here.
+You will be implementing this algorithm during [Lab](https://natalieagus.github.io/50005/labs/05-bankers-algorithm-c). As such, detailed explanation of the algorithm will not be repeated here.
 {:.note}
 
 This algorithm receives a <span class="orange-bold">copy</span> of `available` (named as `work`), `need`, and `allocation` data structures to perform a _hypothetical situation_ of whether the system <span style="color:#f7007f;"><b>will</b></span> be in a safe state *if* the current request is granted.
@@ -439,7 +439,7 @@ The deadlock detection algorithm works as follows:
     - True `otherwise` (means process i doesn’t request for anything else anymore and can be resolved or finished)
   - No update of `allocation, need` needed. We are checking whether the CURRENT state is safe, not whether a HYPOTHETICAL state is safe.
 - <span style="color:#f77729;"><b>Step 2</b></span>: find an index `i` such that <span style="color:#f77729;"><b>both</b></span> conditions below are fulfilled,
-  - `Finish[i] == False`
+  - `finish[i] == False`
   - `request[i] <= work` (element-wise comparison for these vectors)
 - <span style="color:#f77729;"><b>Step 3</b></span>:
   - If Step 2 produces such index `i`, update `work` and `finish[i]`,

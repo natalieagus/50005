@@ -217,7 +217,7 @@ These “extra names” mapped to the same inode entry are called <span class="o
 A hard link is a feature in many file systems that allows multiple filenames to refer to the same physical location on disk. In other words, a hard link is essentially another name for an existing file. 
 {:.info}
 
-Let's begin with an example. A containing `helloworld` characters is created, with inode `54346159`. We name it `input`. At this point, a directory entry named `input` pointing to this file containing `helloworld` is created within the directory named `Links`. We call this entry the original filename.
+Let's begin with an example. A file containing `helloworld` characters is created, with inode `54346159`. We name it `input`. At this point, a directory entry named `input` pointing to this file containing `helloworld` is created within the directory named `Links`. We call this entry the original filename.
 
 <img src="{{ site.baseurl }}/assets/images/week6/14.png"  class="center_full no-invert"/>
 
