@@ -439,7 +439,7 @@ The deadlock detection algorithm works as follows:
     - True `otherwise` (means process i doesn’t request for anything else anymore and can be resolved or finished)
   - No update of `allocation, need` needed. We are checking whether the CURRENT state is safe, not whether a HYPOTHETICAL state is safe.
 - <span style="color:#f77729;"><b>Step 2</b></span>: find an index `i` such that <span style="color:#f77729;"><b>both</b></span> conditions below are fulfilled,
-  - `Finish[i] == False`
+  - `finish[i] == False`
   - `request[i] <= work` (element-wise comparison for these vectors)
 - <span style="color:#f77729;"><b>Step 3</b></span>:
   - If Step 2 produces such index `i`, update `work` and `finish[i]`,
