@@ -110,7 +110,7 @@ For example, consider two mutex locks being initialized:
 
 ```cpp
 pthread_mutex_t first_mutex;
-Pthread_mutex_t second_mutex;
+pthread_mutex_t second_mutex;
 pthread_mutex_init(&first_mutex,NULL);
 pthread_mutex_init(&second_mutex,NULL);
 ```
