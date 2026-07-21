@@ -254,7 +254,7 @@ RSA involves a set of algorithms for key generation, encryption, and decryption:
 
 Let's shoose 2 prime numbers (small, for illustration purposes), $$p=61$$, $$q=53$$.
 
-We can compute: $$n=p \times q =3233$$, $$z=60 \times 52 = 3120$$. Choose $$e=17$$ since $$e<z$$ and both $$e=17$$ and $$z=60$$ are **relatively prime (coprime)**. Then, calculate $$d$$ such that $$(d*17) \bmod 3120 = 1$$. 
+We can compute: $$n=p \times q =3233$$, $$z=60 \times 52 = 3120$$. Choose $$e=17$$ since $$e<z$$ and both $$e=17$$ and $$z=3120$$ are **relatively prime (coprime)**. Then, calculate $$d$$ such that $$(d*17) \bmod 3120 = 1$$. 
 
 One possible value for $$d$$ is $$2753$$.  
 
