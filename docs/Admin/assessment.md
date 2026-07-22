@@ -49,7 +49,7 @@ Six labs + 1 C Programming Lab across the term, combining individual quizs and t
 | 4 | TOCTOU Race Condition Attack | 3% (2% quiz + 1% team checkoff) |
 | 5 | Banker's Algorithm | 3% (2% quiz + 1% team checkoff) |
 | 9 | Ping and Traceroute | 2% (quiz) |
-| 10 | C Cryptography | 3% (2% quiz + 1% team checkoff) |
+| 10 | C Cryptography | 3% (team checkoff) |
 | 12 | Web Server and Client (HTCPCP) | 3% (2% quiz + 1% team checkoff) |
 
 Each lab is designed to be completable within a 2-hour lab slot. quizs allow 5 attempts; the latest submission is taken. Team checkoffs are due by the Friday after the lab week, 6 PM.

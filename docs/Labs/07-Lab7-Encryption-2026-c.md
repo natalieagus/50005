@@ -43,14 +43,13 @@ There are 3 parts of this lab:
 
 # Submission 
 
-You are to complete this lab's quiz on eDimension as you complete the tasks.
 
-Once you have completed all tasks, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. 
+Once you have completed all tasks, schedule a checkoff as a Team with your Lab TA by next week Friday 6PM. This is a bigger checkoff, worth 3% of your grade.
 
 {:.task-title}
 > ✅ Checkoff
 > 
-> Demonstrate completion of ALL tasks in this handout: encryption and decryption of text, encryption and decryption of images using CBC and ECB mode, generation of message digest and verification. 
+> Demonstrate completion of ALL tasks in this handout: encryption and decryption of text, encryption and decryption of images using CBC and ECB mode, generation of message digest and verification. You are also required to answer questions pertaining to RSA, message digest, and just general knowledge from Week 10 Lecture to obtain full marks during the checkoff. 
 
 ### System Requirements
 
@@ -717,7 +716,7 @@ sign_digest("original_files/shorttext.txt");
 sign_digest("original_files/longtext.txt");
 ```
 
-Here we test encryption of a digest using the public key (`enc_digest`) and signing of a digest using the private key (`sign_digest`), each tested with two files of differing length. Study the output carefully and head to eDimension to answer the rest of the quizs.
+Here we test encryption of a digest using the public key (`enc_digest`) and signing of a digest using the private key (`sign_digest`), each tested with two files of differing length. Study the output carefully.
 
 # Summary
 
