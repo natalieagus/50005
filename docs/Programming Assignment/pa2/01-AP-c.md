@@ -288,8 +288,8 @@ Now both client and server must implement `MODE: 3` (`MSG_AUTH`), which signifie
      - `M1`: size of incoming `M2` in bytes
      - `M2`: signed authentication message
    - `SET 2`: 
-      - `M1`: size of incoming `M4` in bytes (this is `server_signed.crt`)
-      - `M2`: `server_signed.crt`
+      - `M3`: size of incoming `M4` in bytes (this is `server_signed.crt`)
+      - `M4`: `server_signed.crt`
 
 Once the client receives the above, it shall carefully [check server's id as specified above](#checking-server-id) using the CA's public key extracted from `cacsertificate.crt`. If check is successful, the regular non-secure FTP should proceed where we can key in the file names one by one for the server to receive. Otherwise, close the connection immediately.
 
