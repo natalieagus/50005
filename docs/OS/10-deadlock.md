@@ -269,7 +269,7 @@ Process with <span style="color:#f77729;"><b>protocol 1</b></span> _may never st
 With Protocol 1, resources are allocated at once but it is likely that they <span style="color:#f77729;"><b>aren’t used simultaneously</b></span> (e.g: the sample process requests a printer but it doesn’t utilize it when writing to disk first).
 With Protocol 2, lots of time is <span style="color:#f77729;"><b>wasted</b></span> for requesting and releasing many resources in the <span style="color:#f77729;"><b>middle</b></span> of execution.
 
-### No Preemption Prevention (Allow Preemption)
+## No Preemption Prevention (Allow Preemption)
 
 To _allow_ preemption, we need a certain protocols in place to ensure that progress is not lost.
 
