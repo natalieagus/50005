@@ -118,7 +118,7 @@ It is important that you follow these rules to ensure that the tester works as i
 
 ### Test run
 
-You can try compile the code using `make`. It should produce the binary `banker` upon successful compile. You can run `banker` with any of the `test_files/[TEST_FILE].txt. See `Makefile` and the `readme.md` for further information.
+You can try compile the code using `make`. It should produce the binary `banker` upon successful compile. You can run `banker` with any of the `test_files/[TEST_FILE].txt`. See `Makefile` and the `readme.md` for further information.
 
 <img src="{{ site.baseurl }}//docs/Labs/images/05-Lab5-Bankers-2026/2026-03-06-15-34-52.png"  class="center-full no-invert"/>
 
