@@ -25,7 +25,7 @@ Singapore University of Technology and Design
 {:.highlight-title}
 > Detailed Learning Objectives
 >
-> 1. **Identify Important Security Properties (CAP)**
+> 1. **Identify Important Security Properties (CIA)**
 >   - Describe the concepts of confidentiality, integrity, authentication, and access/availability in network security.
 >   - Explain the purpose and scope of **cryptography** in ensuring **secure** communication over the internet.
 > 2. **Explain Symmetric Key Cryptography**
