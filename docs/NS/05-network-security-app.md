@@ -360,7 +360,7 @@ This technique alone does **not** support non repudiation: B cannot prove to the
 
 If A needs to communicate securely with B and non-repudiation must be supported (e.g: prove that A's messages are written by A), then A must provide a signed digest and encrypt both the message + encrypted hash together with the symmetric key: 
 
-Once B receives and decrypt the content: message + signed digest with the session key, B can: 
+Once B receives and decrypt the content: message + signed digest with the session key, B can do the steps in Case 7 again:
 1. Hash the received message 
 2. Decrypt the signed digest with CA-verified A's public key 
 3. Compare the two hashes to confirm message integrity, i.e: the message is sent and written by A
