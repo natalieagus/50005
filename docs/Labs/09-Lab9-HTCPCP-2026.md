@@ -273,6 +273,14 @@ When you implement this properly, you should see the following printed out:
 static void handle_connection(int conn){
     // other code 
 
+      /* Process additions */
+    char additions[MAX_ADDITIONS][MAX_STR_FIELD];
+    int additions_count = 0;
+    bool additions_valid = true;
+    char pour_milk_start[MAX_STR_FIELD] = "";
+    process_additions(message, additions, &additions_count, &additions_valid,
+                        pour_milk_start, sizeof(pour_milk_start));
+
     if (!additions_valid || !str_in_list(method, ACCEPTED_METHODS)) {
         // TODO: craft 406 response
         /* 406 Not Acceptable with list of valid additions */
@@ -290,6 +298,17 @@ static void handle_connection(int conn){
 ```
 
 Construct `resp` to complete this `TODO`. It should contain appropriate HTCPCP headers with error code [406](https://datatracker.ietf.org/doc/html/rfc2324#section-2.3.1) because the client requested something unacceptable. You should write a list of accepted additions as the response body. You can iterate over `ACCEPTED_ADDITIONS` (defined in `config.h`) to build this list. Don't forget to format the response properly with `\r\n` line endings as you did in the previous `TODO`.
+
+#### Update `ACCEPTED_ADDITIONS` in `config.h`
+
+```c
+static const Addition ACCEPTED_ADDITIONS[] = {
+    /* TODO: modify the ACCEPTED_ADDITIONS accordingly, see LISTED_ADDITIONS and get an appropriate subset of it */
+    {NULL, NULL}};
+```
+
+`process_addition` consults `config.h` to determine which additions are acceptable to our coffee. Edit `ACCEPTED_ADDITIONS` in `config.h` to suit this accordingly.
+
 
 This is what  you should see in the console once you implement this method properly:
 
