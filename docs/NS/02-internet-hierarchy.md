@@ -106,8 +106,8 @@ Nevertheless, PoP serves the following benefits:
 
 ## Further Consideration 
 Why do we need the internet hierarchy: 
-**Presence of competitors**: Competitions allow for many of Tier-1 ISPs in the world, and global/regional ISPs within each region. 
 
+**Presence of competitors**: Competitions allow for many of Tier-1 ISPs in the world, and global/regional ISPs within each region. 
 
 **Multi-home**: Except tier-1 ISPs, any ISPs may choose to multi-home, that is, to connect to two or more ISPs. This is to ensure that network traffic is not crippled in case one of their providers suffer failures. 
 
