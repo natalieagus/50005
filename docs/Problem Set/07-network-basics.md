@@ -378,8 +378,6 @@ Two machines on different networks are both assigned the same private IP address
 <p>To avoid such conflicts, VPNs often use distinct address pools or reassign IPs during connection. Network administrators can also coordinate to ensure different sites use non-overlapping private ranges.</p>
 ```
 
-Let me know if you're ready to continue with **#9 – The Shrinking Mask** (subnetting).
-
 </p></div><br>
 
 
