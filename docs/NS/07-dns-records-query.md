@@ -128,6 +128,11 @@ After that, the client, if performing iterative resolution itself, or more commo
 
 Suppose `NS2.server.com` has the following records:
 
+| Name | Type | Value |
+|---|---|---|
+| `b.example.com` | `CNAME` | `a.example.com` |
+| `a.example.com` | `A` | `10.12.14.145` |
+
 The response from `NS2.server.com` shows that `b.example.com` is a `CNAME` record, meaning that it is an alias for another hostname, `a.example.com`.
 
 ### Resolving `b.example.com`
