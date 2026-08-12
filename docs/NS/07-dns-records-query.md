@@ -118,22 +118,24 @@ This means that your local DNS server does <span class="orange-bold">not</span> 
 {:.note}
 Since `b.example.com` NS record points to `NS2.server.com`, it means that `NS2.server.com` is the **authoritative** nameserver for `b.example.com`.
 
-### Further probe to `b.example.com` authoritative nameserver 
-The local DNS server can then do the job of translating  `NS2.server.com` into its IP address: `111.222.125.124` since it already has the A record of `NS2.server.com`. Otherwise, we have to find the IP for NS2.server.com first by querying either the root server or the .com TLD server.
+### Further probe to `b.example.com` authoritative nameserver
 
-Afterwhich, we (or the local DNS server, depending on whether the query is iterative or recurisve) shall ask `111.222.125.124` (`NS2.server.com`)  if it has the A record of `b.example.com`. 
+The local DNS server can then translate `NS2.server.com` into its IP address, `111.222.125.124`, if it already has the corresponding A record cached. Otherwise, it must first resolve `NS2.server.com`, for example by querying the appropriate root and `.com` TLD nameservers.
+
+After that, the client, if performing iterative resolution itself, or more commonly the local DNS server, queries `NS2.server.com` at `111.222.125.124` for the A record of `b.example.com`.
 
 ### Sample authoritative nameserver records
-Now suppose NS2.server.com has the following record: 
 
-<img src="{{ site.baseurl }}//docs/NS/images/06-dns/2024-05-08-11-24-02.png"  class="center_seventy no-invert"/>
+Suppose `NS2.server.com` has the following records:
 
-The first query to `NS2.server.com` will show that  `b.example.com` is a `CNAME` record, so it is simply an **alias** of another hostname called `a.example.com`.
+The response from `NS2.server.com` shows that `b.example.com` is a `CNAME` record, meaning that it is an alias for another hostname, `a.example.com`.
 
 ### Resolving `b.example.com`
-The local DNS server *or* the NS server (depending on whether it is an iterative or recursive query) has to continue the probe and send another DNS query to resolve the IP address for `a.example.com`, and finally `NS2.server.com` returns `a.example.com`'s A record with IP of `10.12.14.145`. 
 
-Now that hostname-IP translation for `b.example.com` is resolved, we can start sending requests to `10.12.14.145` (our intended `b.example.com` host). 
+The resolver must then obtain the A record for `a.example.com`. If the client is performing iterative resolution itself, the client continues the lookup. If the client sent a recursive query to its local DNS server, the local DNS server performs the lookup on the client's behalf.
+
+Since `NS2.server.com` also has the A record for `a.example.com`, it can return the IP address `10.12.14.145`. In practice, this A record may also be included together with the CNAME record in the same DNS response.
+
 
 # DNS Query and Reply Protocol
 
