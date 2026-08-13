@@ -930,6 +930,7 @@ Here are the sample task pool. We may select from these OR ask you to implement 
 8. Add a "spectate" mode in the client that subscribes to a room without joining as a player.
 
 Here's the marking scheme:
+
 | Score | Outcome |
 | --- | --- |
 | 5 | Compiled, ran, behaved correctly, defended in walkthrough. |
