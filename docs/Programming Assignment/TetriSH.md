@@ -879,7 +879,6 @@ The group should be prepared to run:
 {:.highlight}
 The demo must be reproducible from the submitted repository.
 
-Two sections below. Take what you want.
 
 ### Live Extension (5%)
 
