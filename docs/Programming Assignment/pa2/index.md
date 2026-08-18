@@ -442,6 +442,131 @@ nmcli connection modify [connection name] ipv4.method auto ipv4.addresses "" ipv
 nmcli connection up [connection name]
 ```
 
+### Common networking debugging steps
+
+#### WSL (Windows)
+
+If your PA2 client and server cannot connect to each other when running inside WSL, try the following steps.
+
+Check the WSL Network Interface:
+
+Inside WSL run ip a (shorthand for ip addr)
+
+Look for the IP address assigned to your main network interface, usually something such as eth0.
+
+Note: 127.0.0.1 is the loopback address and will always appear under the lo interface.
+What matters is the address assigned to eth0 or another non-loopback interface.
+
+By default, WSL2 may use a virtual network behind the Windows host. This can make direct connections between two WSL machines more difficult.
+
+On Windows, open PowerShell and run:
+
+notepad $env:USERPROFILE\.wslconfig
+
+Add the following configuration:
+
+[wsl2]
+networkingMode=mirrored
+
+Save the file.
+
+Mirrored networking allows WSL to more closely mirror the Windows host's network configuration, making communication with other machines on the same network easier.
+
+##### Restart WSL 
+
+After changing .wslconfig, restart WSL completely: wsl --shutdown
+
+Then start WSL again: wsl
+
+Inside WSL, check the interfaces again: ip a
+
+##### Check the Windows Firewall
+
+Make sure the TCP port used by your PA2 application is allowed through the Windows Firewall.
+
+For example, if your server listens on TCP port 5000, allow TCP port 5000 through the firewall.
+
+Check both:
+
+Inbound TCP traffic — required for the machine running the server.
+Outbound TCP traffic — normally already allowed, but check it if connections are still failing.
+
+The firewall rule should use the same TCP port that your program is listening on.
+
+#### VMware / VirtualBox Networking Troubleshooting
+
+If you are running PA2 inside a virtual machine using VMware or Oracle VirtualBox, make sure the VM's network adapter is configured in Bridged mode.
+
+For VMware and VirtualBox, the equivalent of putting the VM directly onto the host's network is generally called Bridged Networking, not mirrored networking.
+
+With bridged networking, the VM behaves more like a separate machine on the same LAN as the host and should receive its own IP address.
+
+##### Check the VM's Current IP Address
+
+Inside the Linux VM, run "ip a"
+
+Look for the main network interface, usually something such as "eth0 / ens33 / enp0s3"
+
+You should see an IP address belonging to the same LAN as the other machine.
+
+For example, if the Windows host is: 192.168.1.20
+
+the VM may receive something like: 192.168.1.35
+
+An address under 127.0.0.0/8 is only the loopback interface and cannot be used by another machine to connect to the VM.
+
+##### VMware: Use Bridged Networking
+
+Shut down the VM first.
+
+In VMware: 
+
+VM Settings -> Network Adapter -> Bridged
+
+Select "Bridged: Connected directly to the physical network"
+
+If available, you can also select "Replicate physical network connection state"
+
+Start the VM again and run "ip a"
+
+The VM should now have its own IP address on the same LAN as the other machine.
+
+##### Oracle VirtualBox: Use Bridged Adapter
+
+Shut down the VM first.
+
+In VirtualBox:
+
+VM -> Settings -> Network -> Adapter 1
+
+Make sure "Enable Network Adapter" is enabled.
+
+Set "Attached to: Bridged Adapter"
+
+Then under "Name" select the physical network interface that the host is actually using, for example "Wi-Fi adapter / Ethernet adapter"
+
+Start the VM again and run "ip a"
+
+The VM should now have its own IP address on the same LAN as the other machine.
+
+##### Check Firewalls
+
+Make sure the selected TCP port is allowed through the firewall of the machine running the server.
+
+Depending on the setup, this may include:
+
+Windows Firewall on the host
+ufw
+firewalld
+another firewall running inside the VM
+
+For example, if PA2 uses TCP port 5000, ensure inbound TCP traffic to port 5000 is allowed.
+
+#### Mac / Linux
+
+These should run fine by default, check if you have created any user firewall rules or custom configurations.
+
+
 # Important Requirements
 
 {:.important-title}
