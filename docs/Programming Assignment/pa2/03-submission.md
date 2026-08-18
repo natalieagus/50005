@@ -153,8 +153,8 @@ Failure to show attempts to incorporate initiatives to support sustainability an
    - **Task**: Implement features such as file compression before transfer and efficient chunking of data to reduce the amount of data sent over the network while still following the protocols closely
 
 2. **Efficient Encryption Practices**:
-   - **Description**: Use energy-efficient practices within the constraints of the Python cryptography modules.
-   - **Task**: Choose the most efficient algorithms provided by the Python cryptography library for encryption and decryption to ensure minimal resource usage while maintaining security.
+   - **Description**: Use energy-efficient practices within the constraints of the provided cryptography library.
+   - **Task**: Choose the most efficient algorithms provided by the OpenSSL cryptography library for encryption and decryption to ensure minimal resource usage while maintaining security.
 
 3. **Logging and Monitoring**:
    - **Description**: Include logging and monitoring to track resource usage during file transfers.
