@@ -37,3 +37,11 @@ This page is dedicated to list certain useful and fun resources to aid your lear
 
 [The Little Book of Semaphores](https://greenteapress.com/wp/semaphores/): a great textbook that introduces the principles of synchronization for concurrent programming.
 
+### Further Reading
+
+[Operating Systems: Three Easy Pieces](https://pages.cs.wisc.edu/~remzi/OSTEP/): A practical and easy to digest introdution to operating systems, covering virtualization, concurrency, and persistence in C.
+
+[Beej's Guide to C Programming](https://beej.us/guide/bgc/): Additional free online guide on learning C.
+
+[Beej's Guide to Network Programming](https://beej.us/guide/bgnet/): Additional guide on network programming via Internet sockets in C.
+
