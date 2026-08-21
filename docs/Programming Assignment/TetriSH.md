@@ -887,7 +887,6 @@ The live extension tests whether you can navigate and modify your own codebase u
 Your group have approximately **20 minutes** to implement a small extension on your running system, plus 5 minutes to walk the diff.
 
 {:.notes-title}
-
 > AI Tool Policy
 >
 > No agentic or autonomous coding tool. Chat-based assistants are allowed, but no copy-pasting is allowed. Every line you accept from the AI must be one you can explain. Instructor can interrupt and ask why this line, and you should be able to explain fully.

@@ -659,7 +659,6 @@ In summary, this chapter provides an essential overview of HTTP, covering web in
 In summary, the web is a vast collection of interconnected documents and multimedia content accessed via the internet, which is the global network enabling this and other forms of digital communication.
 
 ## Web Browsing With HTTPs
-Sure, here's a concrete example of how HTTPS works, including details about the certificate exchange and symmetric key establishment.
 
 **Example: Accessing `https://example.org`**
 
